@@ -1,0 +1,142 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/2
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "UserModel.proto";
+
+service ReportService{//统计报表
+rpc getReportList (totalSales) returns (tatalReply){}//销售概况
+rpc getSaleTopList (classList) returns (classReplay){}//销售排行
+rpc getUserTopList (UserList) returns (UserReplay){}//会员排行
+rpc getSaleList (salesDetails) returns (salesReplay){}//销售明细
+rpc getUserList (userStatistics) returns (userReplay){}//会员统计
+rpc getFinanceList (operation) returns (operationReplay){}//运营概况
+rpc gitProfitList (pushQuery) returns (pushReplay){}//推送查询
+}
+
+/*获取销售总额和订单数*/
+message totalSales{
+	string now=1;//当前时间
+	int32 type=2[default=0];//0的状态表示退货
+	int32 pay_status=5[default=1];//支付状态
+	payTime=3;//调用查询时间
+}
+message totalReply{
+	int32 total_amount=1;//返回订单总额
+	int32 today_order=2; //返回今日订单数
+	int32 cancel_order=3;//今日取消订单数
+	int32 cancel_money=4;//今日取消订单总钱数
+	int32 return_money=5;//总退单金额
+	int32 return_count=6;//总退单个数
+	int32 tnum=7//返回订单总数
+	int32 sum_user=8//有单会员数
+}
+/*分类排行列表*/
+message classList{
+	int32 order_id=1;//
+	payTime=2;//调用查询时间
+	string orderIdList=3;//查询时间内的订单列表
+	sellerClassList=4;//seller销售排行查询
+
+}
+message classReplay{
+	repeated string salesRanking=1;//销售排行
+	repeated string className=2;//分类名称(二级)
+	repeated string salesNumber=4;//销售数量
+	repeated string salesTotal=5;//销售总额
+	repeated string singleRanking=6;//单品排行
+	repeated string goodsName=7;//商品名
+	repeated int32 saleNum=8;//销量
+	repeated int32 sale_amount=9;//销售额
+	repeated string cat1=10;//商品分类名称一级
+	repeated string cat2=11;//商品分类名称二级
+	repeated string cart3=12;//商品分类名称三级
+	repeated string goods_sn=13;//货号
+	repeated int32 average_price=14;//均价
+}
+message sellerClassList{
+	int32 store_id=1;//商家ID
+}
+/*会员排行*/
+message UserList{
+	payTime=1;
+	optional string Email=2;//查询条件邮箱
+	optional int32 PhoneNum=3;//手机号查询条件
+}
+message UserReplay{
+ 	repeated int32 user_id=1;//显示用户ID
+	repeated int32 ranking=2;//排行第几
+	repeated string user_name=3;//会员名称可以是手机号和邮箱
+	repeated int32 order_num=4;//显示订单数
+	repeated int32 amount=5;//显示购物金额
+}
+/*销售明细*/
+message salesDetails{
+	payTime=1;//查询开始结束时间
+int32 cat_id=2;//分类ID
+int32 brand_id=3;//品牌ID
+}
+message salesReplay{
+	repeated int32 order_id=1;//商品ID
+	repeated string goods_name=2;//商品名称
+	repeated string goods_sn=3;//商品货号
+	repeated int32 goods_num=4;//商品数量
+	repeated int32 goods_price=5;//售价
+	repeated string add_time=6;//出售日期
+	repeated string bring_list=7;//排序好的品牌列表
+	repeated string cat_list=8;//排序好的分类列表
+}
+/*会员统计*/
+message userStatistics{
+	payTime=1;//开始结束的查询时间
+	todayTime=2;//今日时间
+	monthTime=3;//月初时间
+}
+message userReplay{
+	int32 user_today=1;//今日新增会员数
+	int32 user_month=2;//本月新增会员数
+	int32 user_total=3;//会员总数
+	int32 user_money=4;//会员余额总数
+	int32 user_hasorder=5;//有单会员数
+	string reg_time=6;//注册时间
+}
+/*运营概况*/
+message operation{
+	payTime=1;//查询开始结束时间
+}
+message operationReplay{
+	string  time=1;//查询的时间段
+	int32 total_money=2;//商品总额
+	int32 cost_price=3;//商品成本
+	int32 coupon_arr=4;//优惠金额
+	int32 shipping_arr=5;//物流总金额
+
+}
+message pushQuery{
+	payTime=1;
+	string now_time=2;//当前时间
+}
+message pushReplay{
+	int32 today_order=1;//今日成功订单数
+	int32 today_amount=2;//今日销售总额
+	int32 goods_price=3;//今日推送总额
+	int32 today_profit=4;//今日订单利润
+	int32 profit=9;//总订单利润
+	repeated string day=5;//时间
+	repeated int32  order_num=6;//订单数
+	repeated int32 amount=7;//推送总额不含运费
+	repeated int32 sign=8;//推送金额不含运费
+}
+/*查询开始和结束时间*/
+message payTime{
+	string begin_time=3;//查询开始时间
+	string end_time=4;//查询结束时间
+}

@@ -1,0 +1,158 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>经营类目管理</h3>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>经营类目申请后，需要平台审核，通过后才能在该类目下添加商品.</li>
+            <li>删除类目后，必须重新申请该类目，才可添加商品.</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>店铺列表</h3>
+                <h5></h5>
+            </div>
+            <form action="" id="search-form2" class="navbar-form form-inline" method="post" onSubmit="return false">
+                <div class="sDiv">
+                    <div class="sDiv2">
+
+                        <select name="category_state" id="category_state" class="select">
+                            <option value="4">审核状态</option>
+                            <option value="1">待审核</option>
+                            <option value="2">审核通过</option>
+                        </select>
+
+
+                        <!--排序规则-->
+
+                        <input type="text" size="30" name="shop_name" class="qsbox" placeholder="搜索词...">
+                        <input type="button" onClick="ajax_get_table('search-form2',1)" class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">
+                    <div class="navbar-form  margin">
+                        <a href="javascript:;" onclick="get_goods_class()" data-toggle="tooltip" title="" class="btn btn-success pull-right" data-original-title="返回">申请新的经营类目</a>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <!--ajax 返回 -->
+            <div id="ajax_return" cellpadding="0" cellspacing="0" border="0"></div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+
+        // 表格行点击选中切换
+        $('#ajax_return').on('click','table>tbody >tr',function(){
+            $(this).toggleClass('trSelected');
+
+            var checked = $(this).hasClass('trSelected');
+            $(this).find('input[type="checkbox"]').attr('checked',checked);
+            //alert('aaa');
+        });
+        // 刷选条件 鼠标 移动进去 移出 样式
+        $(".hDivBox > table > thead > tr > th").mousemove(function(){
+            $(this).addClass('thOver');
+        }).mouseout(function(){
+            $(this).removeClass('thOver');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // ajax 加载类目列表
+        ajax_get_table('search-form2', 1);
+
+    });
+
+    // ajax 抓取页面 form 为表单id  page 为当前第几页
+    function ajax_get_table(form,page) {
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=seller&c=store&a=ajaxStoreClassList&p=" + page,//+tab,
+            data: $('#' + form).serialize(),// 你的formid
+            success: function (data) {
+                $("#ajax_return").html('');
+                $("#ajax_return").append(data);
+            }
+        });
+    }
+
+    function get_goods_class(){
+        layer.open({
+            type: 2,
+            title: '申请经营新的类目',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['660px', '300px'],
+            content: "{:U('Store/store_class_info')}",
+        });
+    }
+    // 点击排序
+    //    function sort(field)
+    //    {
+    //        $("input[name='orderby1']").val(field);
+    //        var v = $("input[name='orderby2']").val() == 'desc' ? 'asc' : 'desc';
+    //        $("input[name='orderby2']").val(v);
+    //        ajax_get_table('search-form2',cur_page);
+    //    }
+
+    // 删除操作
+    //    function del_goods(goods_id,obj){
+    //        layer.confirm('确定要删除店铺吗？', {
+    //                btn: ['确定','取消'] //按钮
+    //            }, function(){
+    //                // 确定
+    //                $.ajax({
+    //                    type : 'post',
+    //                    dataType:'json',
+    //                    data:{id:goods_id},
+    //                    url: "/index.php?m=admin&c=goods&a=delGoods",
+    //                    success: function (v) {
+    //                        layer.closeAll();
+    //                        if (v.status == 1){
+    //                            $(obj).parent().parent().parent().parent().parent().parent().remove();
+    //                            layer.msg(v.msg, {icon: 1, time: 2000});
+    //                        }
+    //                        else{
+    //                            layer.msg(v.msg, {icon: 2, time: 2000}); //alert(v.msg);
+    //                        }
+    //                    }
+    //                });
+    //            }, function(index){
+    //                layer.close(index);
+    //            }
+    //        );
+    //    }
+
+
+</script>
+</body>
+</html>

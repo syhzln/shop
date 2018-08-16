@@ -1,0 +1,216 @@
+<include file="public/layout" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我要入驻-初始协议</title>
+<link href="__STATIC__/css/qt_style.css" rel="stylesheet" type="text/css" />
+<link href="__STATIC__/css/alone_index.css" rel="stylesheet" type="text/css" />
+<link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__STATIC__/js/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+<include file="public/sign-header" />
+<div class="gome-wrap bg">
+	<div style="position: relative;top: -40px;left: 190px;">
+    	<a href="/" target="_blank" class="item fl"><img src="__STATIC__/images/logo.png"></a>
+    </div>
+	<div class="gome-layout-area">
+        <ul class="gome-nav">
+            <li><a href="{:U('Newjoin/index')}" target="_blank">招商首页</a></li>
+
+            	<li><a href="{:U('Newjoin/question',array('cat_id'=>$v[cat_id]))}" target="_blank">{$v.cat_name}</a></li>
+
+        </ul>
+    </div>
+</div>
+
+<div class="gome-layout-area pb50 clearfix">
+    	<ul class="steps clearfix">
+        	<li class="first prev ok"><b>1</b><span class="going"></span><em class="f">入驻须知</em></li>
+        	<li class="prev ok"><b>2</b><span class="going"></span><em class="f">填写公司信息</em></li>
+        	<li class="prev ok"><b>3</b><span class="going"></span><em class="f">填写店铺信息</em></li>
+        	<li class="cur ok"><b>4</b><span class="going"></span><em class="f">资质上传</em></li>
+        	<li class="last"><b>5</b><em class="f">等待审核</em></li>
+        </ul>
+        <form id="remark_info" action=""  method="post" enctype="multipart/form-data">
+        <div class="settled-agreement-table pb50">
+        	<div class="agreement-title"><span>资质上传</span></div>
+            <div class="tips">
+            	<p><img src="__STATIC__/images/icon01.gif">所有资质必须清晰可辨并加盖贵司红章/彩章（即在资质复印件上加盖贵司自己的红章，再扫描或拍照上传）</p>
+                <p><img src="__STATIC__/images/icon01.gif">以下所需要上传电子版资质仅支持JPG、JPEG、GIF、PNG格式的图片，大小不超过2M，且必须加盖企业彩色公章。</p>
+            </div>
+            <div class="table-part pb50 clearfix">
+            	<div class="table-part-title">基本资质</div>
+				<div class="update-part clearfix width985">
+					<div class="update-til width985">
+						<p class="fl">企业营业执照副本复印件（需加盖红章）</p>
+						<a href="http://www.tp-shop.cn/Public/images/not_adv.jpg" target="_blank" class="blue fl mr10">查看范本</a>
+						<div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$apply.license_img_url}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$apply.license_img_url}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                </a>
+            </span>
+							<span class="type-file-box">
+                <input type="text" id="license_img_url" name="license_img_url" value="{$apply.license_img_url}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','license_img_url','img_call_back0')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span></div>
+					</div>
+					<ul class="update-con ml30 mt4 clearfix">
+
+					</ul>
+				</div>
+			</div>
+
+
+                <div class="update-part width985">
+                	<div class="update-til width985">
+                		<p class="fl">税务登记证复印件（国税、地税）（需加盖红章）</p>
+                		<a href="http://www.tp-shop.cn/Public/images/not_adv.jpg" target="_blank" class="blue fl mr10">查看范本</a>
+						<div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$apply.tax_img_url}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$apply.tax_img_url}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                </a>
+            </span>
+							<span class="type-file-box">
+                <input type="text" id="tax_img_url" name="tax_img_url" value="{$apply.tax_img_url}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','tax_img_url','img_call_back1')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span></div>
+
+                    	<ul class="update-con ml30 mt4 clearfix">
+
+	                    </ul>
+                    
+                </div>
+                <div class="update-part width985">
+                	<div class="update-til width985">
+                		<p class="fl">组织机构代码证复印件（需加盖红章）</p>
+                		<a href="http://www.tp-shop.cn/Public/images/not_adv.jpg" target="_blank" class="blue fl mr10">查看范本</a>
+						<div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$apply.org_img_url}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$apply.org_img_url}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                </a>
+            </span>
+							<span class="type-file-box">
+                <input type="text" id="org_img_url" name="org_img_url" value="{$apply.org_img_url}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','org_img_url','img_call_back2')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span></div>
+                    </div>
+                    
+                    	<ul class="update-con ml30 mt4 clearfix">
+	                    	
+	                    </ul>
+                    
+                </div>
+                <div class="update-part width985">
+                	<div class="update-til width985">
+                		<p class="fl">法人身份证正反面复印件或护照（需加盖红章）</p>
+                		<a href="http://www.tp-shop.cn/Public/images/not_adv.jpg" target="_blank" class="blue fl mr10">查看范本</a><p class="fl">身份证/护照号码：</p>
+                		<input type="text" maxlength="18" name="legal_identity" value="{$apply.present_front_img_url}" class="input145 fl mr10" />
+						<div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$apply.present_front_img_url}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$apply.present_front_img_url}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                </a>
+            </span>
+							<span class="type-file-box">
+                <input type="text" id="present_front_img_url" name="present_front_img_url" value="{$apply.present_front_img_url}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','present_front_img_url','img_call_back3')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span></div>
+                    </div>
+                    
+                    	<ul class="update-con ml30 mt4 clearfix">
+	                    	
+	                    </ul>
+                    
+                </div>
+                <div class="update-part width985">
+                	<div class="update-til width985">
+                		<p class="fl">店铺负责人身份证正反面复印件（需加盖红章）</p>
+                		<a href="http://www.tp-shop.cn/Public/images/not_adv.jpg" target="_blank" class="blue fl mr10 ">查看范本</a><p class="fl">身份证号码：</p>
+                		<input type="text" maxlength="18" id="store_person_identity" name="store_person_identity" value="{$apply.store_person_identity}" class="input145 fl mr10" />
+                		<div class="update-btn width-170 fl"><input type="file" name="store_person_cert" id="file_upload_5" data-val="{$apply.store_person_cert}"/></div>
+                    </div>
+                    
+                    	<ul class="update-con ml30 mt4 clearfix">
+	                    	
+	                    </ul>
+                    
+                </div>
+            </div>
+            <if condition="$apply['apply_state'] eq 2">
+                 <div class="tips">
+            		<p><img src="__STATIC__/images/icon01.gif">{$apply.review_msg}</p>
+            	</div>
+            </if>
+            <div class="gome-btn">
+                <a href="javascript:preStep();" class="gome-btn-gray">上一步</a>
+                <a href="javascript:nextStep();" class="gome-btn-red">保存资料</a>
+            </div>
+        </div></form>
+    </div>
+<include file="public/footer" />
+<script>
+function preStep(){
+	window.location.href = "{:U('Newjoin/seller_info')}";
+}
+
+function nextStep(){
+	if($('#store_person_identity').val().length != 18){
+		alert("请填写正确的身份证号");
+		$("#store_person_identity").focus();
+		return;
+	}
+	var flag = true
+	$('input[type="file"]').each(function(i,o){
+		if($(o).val() == '' && $(o).attr('data-val') == ''){
+			flag = false;
+		}
+	});
+	if(flag == false){
+		alert("请上传必要证件");
+		return;
+	}
+	document.getElementById('remark_info').submit();
+}
+
+/*
+ * 以下是图片上传方法
+ */
+
+
+function img_call_back0(fileurl_tmp)
+{
+    $("#license_img_url").val(fileurl_tmp);
+    $("#img_a").attr('href', fileurl_tmp);
+    $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+}
+function img_call_back1(fileurl_tmp)
+{
+    $("#tax_img_url").val(fileurl_tmp);
+    $("#img_a").attr('href', fileurl_tmp);
+    $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+}
+function img_call_back2(fileurl_tmp)
+{
+    $("#org_img_url").val(fileurl_tmp);
+    $("#img_a").attr('href', fileurl_tmp);
+    $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+}
+function img_call_back3(fileurl_tmp)
+{
+    $("#present_front_img_url").val(fileurl_tmp);
+    $("#img_a").attr('href', fileurl_tmp);
+    $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{$Think.lang.MyCollection}</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+		<link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+		<script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/js/layer/layer-min.js"></script>
+		<script src="__PUBLIC__/js/pc_common.js"></script>
+		<style>
+			.all_pluscar .addcar_plus .dele_p_shop:hover{
+				color:#e23435;
+			}
+		</style>
+	</head>
+	<body class="bg-f5">
+		<include file="user/header"/>
+		<div class="home-index-middle">
+			<div class="w1224">
+				<div class="g-crumbs">
+			       	<a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+			       	<i class="litt-xyb"></i>
+			       	<span>{$Think.lang.MyCollection}</span>
+			    </div>
+			    <div class="home-main">
+					<include file="user/menu"/>
+			    	<div class="ri-menu fr">
+						<div class="menumain p">
+							<div class="goodpiece">
+								<h1>{$Think.lang.MyCollection}</h1>
+								<!--<a href=""><span class="co_blue">账户余额说明</span></a>-->
+							</div>
+							<div class="time-sala ma-to-20">
+								<ul>
+									<li class="<if condition='$Thinl.get.type neq 2'>red<else/>mal-l</if>"><a href="{:U('Home/User/goods_collect')}">{$Think.lang.ProductCollection}</a></li>
+									<!--<li class="<if condition='$Thinl.get.type eq 2'>red<else/>mal-l</if>"><a href="{:U('Home/User/goods_collect',array('type'=>2))}">店铺收藏</a></li>-->
+								</ul>
+							</div>
+							<div class="he"></div>
+							<div class="collec_list">
+								<ul>
+									<li class="bg-dar"><a href="javascript:void(0);">{$Think.lang.ProductCollection}</a></li>
+									<li><a href="javascript:void(0);">{$Think.lang.All} ( {$count} )</a></li>
+									<!-- <li><a href="javascript:void(0);">女装配饰（2）</a></li> -->
+								</ul>
+								<!-- <ul>
+									<li class="bg-dar"><a href="javascript:void(0);">活动商品</a></li>
+									<li><a href="javascript:void(0);">全部（2）</a></li>
+								</ul> -->
+							</div>
+							<div class="orderbook-list sc_collect">
+				    			<div class="book-tit">
+				    				<ul>
+				    					<li class="sx2">&nbsp;</li>
+				    					<li class="sx1">{$Think.lang.ProductInformation}</li>
+				    					<li class="sx3">{$Think.lang.UnitPrice}</li>
+				    					<li class="sx4">{$Think.lang.Stock}</li>
+				    					<li class="sx5">{$Think.lang.Operating}</li>
+				    				</ul>
+				    			</div>
+				    		</div>
+				    		<div class="sc_collect book-tit shop-listanadd">
+								<volist name="lists" id="list">
+									<ul>
+										<li class="sx2"><input class="checkall_annt" type="checkbox" name="selected"  value="{$list['goods_id']}"/>&nbsp;&nbsp;</li>
+										<li class="sx1">
+											<div class="shop-if-dif texle">
+												<div class="shop-difimg">
+													<img src="{$list.item_img}" width="100" height="100">
+												</div>
+												<div class="shop_name"><a href="{:U('Home/Goods/goodsInfo',array('id'=>$list['goods_id']))}">{$list.goods_name}</a></div>
+											</div>
+										</li>
+										<li class="sx3"><span><em>{$Think.lang.Symbol}</em>{$list.shop_price}</span></li>
+										<li class="sx4">
+                                            <span>
+                                             <if condition="$list['is_on_sale'] eq -1">{$Think.lang.OffShelf}
+                                             <elseif condition="$list['item_stock'] eq 0">{$Think.lang.SoldOut}<else/>{$Think.lang.AdequateInventory}</if>
+                                            </span>
+                                        </li>
+										<li class="sx5">
+											<div class="adhscar">
+												<a class="add_p_shop"  href="{:U('Home/Goods/goodsInfo',array('id'=>$list['goods_id']))}" >{$Think.lang.ViewDetails}</a>
+												<a class="dele_g" onclick="del_one({$list[goods_id]})" href="javascript:">{$Think.lang.DeleteAddress}</a>
+											</div>
+										</li>
+									</ul>
+								</volist>
+								<empty name="lists">
+									<p class="ncyekjl">--{$Think.lang.NoRecords}--</p>
+								</empty>
+				    		</div>
+							<notempty name="lists">
+							<div class="all_pluscar p">
+			    				<div class="sx2"><input class="checkall_annt" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" type="checkbox" id="all2" /><label for="all2">{$Think.lang.SelectAll}</label></div>
+			    				<div class="addcar_plus">
+			    					<!--<a class="add_p_shop">加入购物车</a>-->
+			    					<a  style="cursor:pointer;" class="dele_p_shop" onclick="del_all();">{$Think.lang.DeleteAddress}</a>
+			    				</div>
+								<div class="operating fixed" id="bottom">
+									<div class="fn_page clearfix">
+										{$page}
+									</div>
+								</div>
+			    			</div>
+							</notempty>
+						</div>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+		<!--footer-s-->
+		<div class="footer p"><include file="public/footer_index" /> </div>
+		<!--footer-e-->
+		<script type="text/javascript">
+			$(function(){
+				$('.time-sala ul li').click(function(){
+					$(this).addClass('red').siblings().removeClass('red');
+				})
+			})
+			function del_one(del_id)
+			{
+                //询问框
+                layer.confirm('{$Think.lang.CancelCollection}', {
+                    btn: ['{$Think.lang.Confirm}','{$Think.lang.Cancel}'] //按钮
+                }, function(){
+                    window.location.href='/index.php?m=Home&c=User&a=del_goods_collect&id='+del_id;
+                });
+
+			}
+
+            function del_all()
+            {
+                var obj=document.getElementsByName('selected');
+                var ids='';
+                for(var i=0; i<obj.length; i++){
+                    if(obj[i].checked) ids+=obj[i].value+','; //如果选中，将value添加到变量ids中
+                }
+                var del_ids = ids.substr(0, ids.length - 1);
+                //询问框
+                layer.confirm('{$Think.lang.CancelCollection}', {
+                    btn: ['{$Think.lang.Confirm}','{$Think.lang.Cancel}'] //按钮
+                }, function(){
+                    window.location.href='/index.php?m=Home&c=User&a=del_goods_collect&id='+del_ids;
+                });
+
+            }
+		</script>
+	</body>
+</html>

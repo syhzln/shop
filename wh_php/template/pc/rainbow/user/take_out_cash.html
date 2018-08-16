@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>我的积分-{$walhao_config['shop_info_store_title']}</title>
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/theme.css" />
+        <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+        <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+        <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    </head>
+    <body class="bg-f5">
+    <include file="user/header"/>
+        <div class="home-index-middle" style="">
+            <div class="w1224">
+                <div class="g-crumbs">
+                    <a href="{:U('Home/User/index')}">奖金</a>
+                    <i class="litt-xyb"></i>
+                    <span>主控面板</span>
+                </div>
+                <div class="home-main">
+                    <include file="user/menu"/>
+                    <div class="ri-menu fr">
+                        <div class="container-fluid" id="UserCenterMaxContainer">
+
+                <div class="row-fluid">
+                    <div class="main">
+
+                <script>
+                    $(function(){
+                        var login_wohao_url = "";
+                        if (login_wohao_url.length >0) {
+                            $.ajax({
+                                type: "get",
+                                url: login_wohao_url,
+                                xhrFields: {
+                                    withCredentials: true
+                                },
+                                crossDomain: true,
+                                dataType: "jsonp",
+                                jsonp:"jsoncallback",
+                                success: function (res) {
+
+                                }
+                            });
+                        }
+                    })
+                </script>
+                <script>
+                        $(function(){
+                            var login_bbs_url = "";
+                            if (login_bbs_url.length >0) {
+                                $.ajax({
+                                    type: "get",
+                                    url: login_bbs_url,
+                                    xhrFields: {
+                                        withCredentials: true
+                                    },
+                                    crossDomain: true,
+                                    dataType: "jsonp",
+                                    jsonp:"jsoncallback",
+                                    success: function (res) {
+
+                                    }
+                                });
+                            }
+                        })
+                    </script>
+                        <div class="block upgrade">
+                            <p class="block-heading">账户余额 : $<span id="curAmount">0.00</span></p>
+                            <div class="block-body">
+                                <form id="take_out_form" class="form-inline" method="GET">
+                                    <input type="hidden" id="loadingTxt" value="处理中...">
+                                    <input type="hidden" id="confirm_bank_info" value="确认收款人信息：{0}{1}，卡号：{2}，持卡人：{3}">
+                                    <input type="hidden" value="确认 Maxie Mobile 信息: {0}" id="confirm_maxie_info">
+                                    <input type="hidden" value="确认支付宝信息，支付宝账号：{0}" id="confirm_alipay_info">
+                                    <input type="hidden" value="确认paypal信息，paypal账号：{0}" id="confirm_paypal_info">
+                                    <input type="hidden" value="确认银行卡提现 卡号{0}" id="confirm_banks_info">
+                                    <input type="text" name="" style="display: none">
+                                    <input type="password" name="" style="display: none">
+                                    <span style="color: #008200;margin-left:60px;">历史提现的总额：$0</span><table>
+                                        
+                                        <tbody><tr>
+                                            <td style="text-align:right"><span style="margin-left: 5px;">可提现最大金额</span>:</td>
+                                            <td>
+                                                <span style="color: #008200;">$<span id="curUserAmount">0.00</span></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:160px;text-align:right;text-align:right;"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">提现方式:</td>
+                                            <td style="width:175px;">
+                                                <select autocomplete="off" id="take_cash_type" name="take_cash_type" style="width:auto;min-width:190px;" onchange="/*sel_take_cash_type(this.value)*/">
+                                                    <!-- <option value="">请选择</option> -->
+                                                                                    <option value="6">银行卡提现</option>
+                                                                            </select>
+                                            </td>
+                                            <!--<td>                             <span>“环球通”银联预付卡  申领<a href="/ucenter/prepaid_card">点这里</a></span>
+                                                                    </td> -->
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:right;"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">提现金额:</td>
+                                            <td>
+                                                $<input id="take_out_amount" style="width:165px;display:inline" placeholder="100" autocomplete="off" type="text" name="take_out_amount">
+                                            </td>
+                                            <td class="alipay db hidden">
+                                                <span class="msg">支付宝限制，单笔提现金额最大不超过：$7000</span>
+                                            </td>
+                                            <td class="debit_card db">
+                                                <span class="msg">(单笔提现金额最大不超过：$12000)</span>
+                                            </td>
+                                            <td class="paypal hidden">
+                                                <span class="msg">单笔提现金额最大不超过：$60000</span>
+                                            </td>
+                                            <script>
+                                                $(function(){
+                                                    $("#take_out_amount").keyup(function () {
+                                                        //先把非数字的都替换掉，除了数字和.
+                                                        this.value = this.value.replace(/[^\d.]/g,"");
+                                                        //必须保证第一个为数字而不是.
+                                                        this.value = this.value.replace(/^\./g,"");
+                                                        //小數點保留2位
+                                                        this.value = this.value.replace(/^(\d+\.\d{2}).+/g,"$1");
+                                                        //保证只有出现一个.而没有多个.
+                                                        this.value = this.value.replace(/\.{2,}/g,".");
+                                                        //保证.只出现一次，而不能出现两次以上
+                                                        this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+                                                    })
+                                                    $('input[name="take_out_pwd"]').blur(function(){
+                                                        $.post("/ucenter/take_out_cash/validate_pwd", {pwd: $(this).val()}, function (msg) {
+                                                            if (msg !== '') {
+                                                                $('#cash_submit_msg').text(msg).removeClass('success');
+                                                            }else{
+                                                                $('#cash_submit_msg').text('');
+                                                            }
+                                                        });
+                                                    })
+
+                                                    $("#card_number,#c_card_number").keyup(function () {
+                                                        //如果输入非数字，则替换为''，如果输入数字，则在每4位之后添加一个空格分隔
+                                                        this.value = this.value.replace(/[^\d]/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
+                                                    })
+
+                                                });
+                                            </script>
+                                        </tr>
+
+                                        <tr class="alipay hidden">
+                                            <td style="text-align:right;"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">提现手续费:</td>
+                                            <td>
+                                                $<input type="text" style="width:165px;" class="withdrawal_fee_" value="0" disabled="disabled" autocomplete="off">
+                                            </td>
+                                            <td>
+                                                <span class="msg">支付宝提现手续费，单笔最大不超过：$5</span>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="debit_card">
+                                            <td style="text-align:right;"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">提现手续费:</td>
+                                            <td>
+                                                $<input type="text" style="width:165px;" class="withdrawal_fee_" value="0" disabled="disabled" autocomplete="off">
+                                            </td>
+                                            <td>
+                                                <span class="msg">(银行卡提现手续费，0.5% 单笔最大不超过：$5)</span>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="alipay hidden">
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">实际到帐金额:</td>
+                                            <td>
+                                                $<input type="text" style="width:165px;" class="withdrawal_actual_" value="0" disabled="disabled" autocomplete="off">
+                                            </td>
+                                        </tr>
+
+
+
+                                        <tr class="alipay hidden">
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">支付宝账号:</td>
+                                            <td>
+
+                                                <input type="text" style="width:175px;" autocomplete="off" class="alipay_cc" value="" disabled="disabled">
+
+                                            </td>
+
+                                            <td>                            <input type="button" value="绑定支付宝" onclick="location.href='/ucenter/alipay_binding_unbundling'" class="btn btn-white btn-weak" autocomplete="off">
+                                                                    </td>
+                                        </tr>
+
+                                        <tr class="alipay hidden">
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">支付宝真实姓名:</td>
+                                            <td>
+
+                                                <input type="text" style="width:175px;" autocomplete="off" class="alipay_cc" value="" disabled="disabled">
+
+                                            </td>
+                                        </tr>
+
+                                        <!-- 开户行名称-->
+                                        <tr class="debit_card">
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">开户行名称:</td>
+                                            <td>
+                                                <input type="text" style="width:175px;" name="bank_name" autocomplete="off" class="alipay_cc" value="" disabled="disabled">
+                                            </td>
+                                            <td>                            <input type="button" value="绑定银行卡" onclick="is_binding_card(this)" class="btn btn-white btn-weak" autocomplete="off" style="display: none;">
+                                                    <p style="color: rgb(240, 0, 0); font-weight: bold; margin-left: 10px;">您还没有通过身份认证，不能绑定银行卡</p>
+                                                                    </td>
+                                        </tr>
+
+                                        <!-- 开户行支行名称-->
+                                        <tr class="debit_card">
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">开户行支行名称:</td>
+                                            <td>
+                                                <input type="text" name="bank_branch_name" style="width:175px;" autocomplete="off" class="alipay_cc" value="" disabled="disabled">
+                                            </td>
+                                        </tr>
+
+                                        <!-- 银行账号-->
+                                        <tr class="debit_card">
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">银行账号:</td>
+                                            <td>
+                                                <input type="text" id="my_bank_number" data-bank_number="" name="bank_number" style="width:175px;" autocomplete="off" class="alipay_cc" value="" disabled="disabled">
+                                            </td>
+                                        </tr>
+
+                                        <!-- 开户人名称-->
+                                        <tr class="debit_card">
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">开户人名称:</td>
+                                            <td>
+                                                <input type="text" style="width:175px;" name="bank_user_name" autocomplete="off" class="alipay_cc" value="" disabled="disabled">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:right"><img src="https://1390393872.tps138.com/img/new/reg_icon.jpg">支付密码:</td>
+                                            <td style="width:auto">
+                                                <input style="width:auto;width:175px;" autocomplete="off" id="password" onfocus="this.type='password'" name="take_out_pwd">
+                                            </td>
+                                            <td>
+                                                <span class="msg success">若您尚未设置资金密码，请至<a href="/ucenter/account_info/index#modifyPIN" class="go_modify_PIN">账户信息</a>栏目进行设置。</span>
+                                                <a href="javascript:;">忘记了支付密码?</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:right"><span style="margin-left: 5px;">备注</span>:</td>
+                                            <td>
+                                                <textarea name="remark" placeholder="备注内容" style="width:auto;width:175px;" autocomplete="off"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:right">
+                                                <input id="take_cash_submit_button" autocomplete="off" name="submit" value="提现" class="btn btn-primary" type="button">
+                                            </td>
+                                            <td id="cash_submit_msg" class="msg success" colspan="2"></td>
+                                        </tr>
+                                        <tr style="color: red;font-weight:bold;">
+                                            <td colspan="3">
+                                                <span>注意：</span>
+                                                <p style="text-align:left;">1）每月我们有15日和30日两次处理提现。如果是在1日—15日之间提出申请的将会在本月的30日处理提现；如果是在16日—31日提出申请将会在下一个月的15日处理提现(附:提现资金预计在1-3个工作日到达用户的银行帐户)。
+                                                <br>2）每个店主在申请提现前必须上传有效身份证并通过审核。这是为了防止欺诈，为了保护每个会员的个人利益。<br>3）此提示中的日期均为工作日，如遇法定节假日则顺延至下一工作日。</p>
+                                                <a href="javascript:;">
+                                                    <span style="width: 200px;height: 70px; background-color:#ff0101;color: #ffffff;font-size: 14px;padding:5px 10px 5px 10px;">去认证身份信息&gt;</span>
+                                                </a>
+                                                <input type="hidden" value="卡号不一致" id="card_number_match">
+                                                <input type="hidden" value="未绑定paypal" id="paypal_email">
+                                                <input type="hidden" value="您还未设置支付宝账户。" id="not_fill_alipay_account">
+                                                <input type="hidden" value="请选择提现方式" id="pls_sel_take_out_type">
+                                                <input type="hidden" value="至少提现100美金" id="pls_input_correct_amount2">
+                                                <input type="hidden" value="请填写正确的提现金额" id="pls_input_correct_amount">
+                                                <input type="hidden" value="支付密码输入错误" id="pls_input_correct_take_out_pwd">
+                                                <input type="hidden" value="收款人的银行卡信息不完整" id="payee_info_incomplete">
+                                                <input type="hidden" value="未绑定银行卡" id="has_not_bind_bank">
+                                                <input type="hidden" value="银行卡绑定信息不完整" id="has_not_bind_bank_1">
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                        <div id="confirm_sponsor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-body" id="confirm_message" style="text-align: center;">
+                            </div>
+                            <div class="modal-footer">
+                                <button autocomplete="off" style="float:left;margin-left: 20%;" class="btn btn-primary" id="confirm_ok">确认</button>
+                                <button autocomplete="off" style="float:right;margin-right: 20%;" class="btn btn-primary" id="confirm_cancel">取消</button>
+                            </div>
+                        </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--footer-s-->
+        <div class="footer p">
+            <include file="public/footer_index" />
+        </div>
+        <!--footer-e-->
+        <script type="text/javascript">
+//          
+        </script>
+    </body>
+</html>

@@ -1,0 +1,71 @@
+<empty name="messages">
+    <p class="norecode" style="font-size: 0.512rem;color: #999999;padding:100px;text-align: center;">{$Think.lang.HaveNoNews}</p>
+    <else/>
+    <foreach name="messages" item="v" key="k">
+        <div class="news_list_fll message_line{$v['msg_id']}">
+            <div class="maleri30">
+                <div class="fl news_c_img">
+                </div>
+                <div class="fl  news_c_tit">
+                    <p>
+                        <span style="color:#9c9c9c; float:left; margin-right:0.512rem"><if condition="$v['flags'] eq 1">({$Think.lang.HaveRead})<else/><i class="icon-tishi iconfont message_tip{$v['msg_id']}"></i></if></span>
+                        <span class="news_h fl">{$Think.lang.PlatformAnnouncement} ：{$v['issue_date']|date='Y-m-d',###}</span>
+                    </p>
+                    <p>{$v['params']}</p>
+
+                    <p>
+                        <a class="set_readMessage read_message{$v['msg_id']}" data-id="{$v['msg_id']}" href="javascript:void(0);"><if condition="$v['flags'] eq 1"><else/><span style="color:#9c9c9c;">{$Think.lang.SetToRead}</span></if></a>&nbsp;&nbsp;
+                        <a  class="delete_message" data-id="{$v['msg_id']}" href="javascript:void(0);"><span style="color:#ff353a;">{$Think.lang.del}</span></a></p>
+
+                </div>
+            </div>
+        </div>
+    </foreach>
+</empty>
+
+
+<script type="text/javascript">
+    $('.set_readMessage').click(function(){
+        var message_id = $(this).attr('data-id');
+        if(message_id){
+            $.ajax({
+                type:'POST',
+                dataType:'JSON',
+                url:'/index.php?m=Mobile&c=User&a=set_read',
+                data:{message_id:message_id},
+                success:function(data){
+                    if(data.status ==1){
+                        showErrorMsg(data.msg);
+                        $(".read_message"+message_id).css('visibility', 'hidden');
+                        window.location.reload();
+//                        $(".message_tip"+message_id).css('visibility','hidden');
+                    }
+
+                }
+            });
+        }
+    });
+
+    $('.delete_message').click(function(){
+        var message_id = $(this).attr('data-id');
+        if(message_id){
+            $.ajax({
+                type:'POST',
+                dataType:'JSON',
+                url:'/index.php?m=Mobile&c=User&a=del_message',
+                data:{message_id:message_id},
+                success:function(data){
+                    if(data.status ==1){
+                        showErrorMsg(data.msg);
+                        $(".message_line"+message_id).hide();
+                    }
+                }
+            });
+        }
+    });
+
+    /*function showErrorMsg(msg){
+        layer.alert(msg,{icon:3});
+    }*/
+
+</script>

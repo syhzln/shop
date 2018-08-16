@@ -1,0 +1,153 @@
+<include file="public/header" title="我的团队" body="g4"/>
+<include file="public/header_nav" title="我的团队" href="{:U('/Mobile/User/index')}"/>
+<div class="pjiscion p after-set-li">
+    <div class="tuijian">我的推荐人ID：<span>{$user.parent_id}</span></div>
+    <ul class="my_tuijian">
+        <li>
+            <p>量子时空ID</p>
+        </li>
+        <li>
+            <p>手机号</p>
+        </li>
+        <li>
+            <p>加入时间</p>
+        </li>
+        <li>
+            <p>操作</p>
+        </li>
+    </ul>
+</div>
+<div class="tuijianList">
+    <if condition="count($list) eq 0">
+        <!--没有内容时-s--->
+        <ul>
+            <li>
+                <div class="comment_con p">
+                    <div class="none">
+                        <img src="__STATIC__/images/none2.png">
+                        <br><br>
+                        抱歉未查到数据！
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!--没有内容时-e--->
+    </if>
+        <ul>
+            <volist name="list" id="lists">
+            <li>
+                <span>{$lists.wh181_id}</span> <!--被推荐人ID-->
+                <span>{$lists.mobile|default='暂无'}</span> <!--被推荐人手机号-->
+                <span>{$lists.add_time|date='Y-m-d',###}</span>
+                <span onclick="view_detail({$lists.user_id})">查看</span>
+            </li>
+            </volist>
+        </ul>
+</div>
+<!--会员详情框 s-->
+<div class="m_detail">
+    <div class="m_detail_box">
+        <h3>会员详情</h3>
+        <ul>
+            <li>量子时空ID： <span id="yjp_id"></span></li>
+            <li>手机号：<span id="member_mobile"></span></li>
+            <li>姓名：<span id="member_name"></span></li>
+            <li>店铺等级：<span id="member_level"></span></li>
+            <li>会员职称：<span id="member_title"></span></li>
+            <li>加入时间：<span id="member_addtime"></span></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<!--会员详情框 e-->
+<script type="text/javascript">
+$(document).on("touchmove",function(){
+    $('.tuijian').css('display','none');
+});
+var page = 1;
+function ajax_sourch_submit(){
+    page++;
+    $.ajax({
+        type:'GET',
+        url:"/index.php?m=Mobile&c=User&a=myMembers&is_ajax=1&p="+page,
+        async:false,
+        success:function(data){
+            if($.trim(data)==''){
+                $('#getmore').hide();
+                return false;
+            }else{
+                $(".tuijianList>ul").append(data);
+            }
+        }
+    });
+}
+    function view_detail(user_id){
+        $.ajax({
+            type:'POST',
+            url:'/index.php?m=Mobile&c=User&a=myMemberInfo',
+            dataType:'json',
+            data:{user_id:user_id},
+            error: function(request) {
+                showErrorMsg('出错啦,请重试');
+            },
+            success:function(data){
+                var info = data;
+                var user_level = '普通会员'; //店铺等级 //默认值
+                var user_title = '乡镇代理 (LZ0)'; //会员职称
+                if(info.user_level ==1){
+                    user_level ='青铜会员';
+                }else if(info.user_level ==2){
+                    user_level ='白银会员';
+                }else if(info.user_level ==3){
+                    user_level ='铂金会员';
+                }else if(info.user_level ==4){
+                    user_level ='钻石会员';
+                }else{
+                    user_level ='普通会员';
+                }
+
+                if(info.user_title == 1){
+                    user_title = '县级代理 (LZ1)';
+                }else if(info.user_title == 2){
+                    user_title = '市级代理 (LZ2)';
+
+                }else if(info.user_title == 3){
+                    user_title = '省级代理 (LZ3)';
+
+                }else if(info.user_title == 4){
+                    user_title = '大区代理 (LZ4)';
+
+                }else if(info.user_title == 5){
+                    user_title = '全国代理 (LZ5)';
+
+                }else if(info.user_title == 6){
+                    user_title = '全球总代代理 (LZ6)';
+
+                }else{
+                    user_title = '乡镇代理 (LZ0)';
+                }
+                $('#yjp_id').html(info.wh181_id);
+                $('#member_mobile').html(info.mobile);
+                $('#member_name').html(info.real_name);
+                $('#member_level').html(user_level);
+                $('#member_title').html(user_title);
+                $('#member_addtime').html(info.add_time);
+
+            }
+        })
+
+        $('.m_detail').css('display','block');
+    }
+
+
+    $('.m_detail').click(function(){
+        $('.m_detail').css('display','none');
+    })
+    $(".m_detail_box").click(function(event){
+        event.stopPropagation();
+
+    });
+</script>
+</body>
+</html>

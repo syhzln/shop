@@ -1,0 +1,292 @@
+/**
+ * Author: fzq
+ * CareatTime: 2017/8/15
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 商家用户服务接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "Common.proto";
+import "PlatformUserModel.proto";
+import "UserModel.proto";
+
+service SellerUserService {//商家中心
+     rpc login(LoginRequest) returns (LoginReply); //执行登录  商户后台
+     rpc registerSeller(RegisterSeller)  returns (google.protobuf.Int32Value);//供应商注册
+     rpc getApplystate(ApplyState) returns (ReplyStateInfo);//获取申请状态信息
+     rpc getSellerInfo(GetSellerInfo) returns (UpdateSellerInfo);//获取供应商信息
+     rpc updateSeller(UpdateSellerInfo)  returns (google.protobuf.BoolValue);//修改供应商
+     rpc setApplyResult(SetApplyResult) returns (google.protobuf.Empty);//设置审核结果
+     rpc getSimpleSellerInfo(ApplyID) returns (SimpleSellerInfo);//商家简略信息
+
+
+     rpc getSystemMenu(Sid) returns (SystemMenuList);//系统菜单列表
+     rpc getRightList(Sid) returns (RightList);//权限资源列表
+     rpc getRightInfo(Rid) returns (RightInfo);//权限详情
+     rpc addRight(addRight) returns (google.protobuf.BoolValue);//添加权限
+     rpc updateRight(updateRight) returns (google.protobuf.BoolValue);//修改权限
+     rpc delRight(Rid) returns (google.protobuf.BoolValue);//删除权限
+     rpc getRoleList(Sid) returns (RoleList);//角色列表
+     rpc getDepList(Sid) returns (DepList);//部门列表
+     rpc getOrgList(Sid) returns (OrgList);//组织列表
+     rpc getDepInfo(DepId) returns (DepInfo);//部门详情
+     rpc addDep(AddDep) returns (google.protobuf.BoolValue); //添加部门
+     rpc updateDep(UpdateDep) returns (google.protobuf.BoolValue);//修改部门
+     rpc delDep(DepId) returns (google.protobuf.Boolvalue);//删除
+     rpc getOrginfo(OrgId) returns (OrgInfo);//组织详情
+     rpc addOrg(AddOrg) returns (google.protobuf.BoolValue);//添加组织
+     rpc updateOrg(UpdateOrg) returns (google.protobuf.BoolValue);//修改组织
+     rpc delOrd(OrgId) returns (google.protobuf.BoolValue);//删除组织
+     rpc addRole(AddRole) returns (google.protobuf.BoolValue);// 添加角色 绑定权限
+     rpc getRoleInfo(RolId)  returns (RoleInfo);//角色详情
+     rpc updateRole(UpdateRole) returns (google.protobuf.BoolValue);// 修改角色 包括角色绑定的权限
+     rpc delRole(RolId) returns (google.protobuf.BoolValue);//删除角色 包括角色绑定的权限
+     rpc getSellerList(Sid) returns (SellerList);//管理员子账户列表
+     rpc SearchSellerRequest(SellerKeywords) returns (SellerInfo);//管理员搜索
+     rpc addSeller(AddSeller) returns (google.protobuf.BoolValue);//添加管理员子账户
+     rpc getSellerAccount(SellerId) returns (SellerInfo);//管理员详情
+     rpc updateSellerAccount(UpdateSeller) returns (google.protobuf.BoolValue);//修改管理员
+     rpc delSeller(SellerId) returns (google.protobuf.Boolvalue);//删除管理员
+     rpc updateSellerPwd(UpdateSellerPwd) returns (google.protobuf.BoolValue);//修改管理员密码
+
+     rpc sendSms(Sid)  returns (google.protobuf.BoolValue);//发送短信
+
+}
+
+
+/*当前登录用户ID*/
+message Sid{
+    int32 sid =1;//当前用户id
+}
+
+/*商户登录*/
+message LoginRequest{
+    string username =1;//用户名
+    string password =2;//密码
+    string ip =3;//登录ip
+    google.protobuf.Timestamp loginTime =4;//登录时间
+}
+
+message LoginReply{
+    int32 status =1;//返回状态码 1账户不存在 2密码错误 3验证码错误 4登录成功
+    ProviderUser user_info =2;//用户基本信息
+    repeated  Privileges right_list=3; //权限信息
+}
+
+/*供应商id*/
+message AppllyID{
+    int32 apply_id =1;
+}
+
+
+/*供应商注册*/
+message RegisterSeller{
+    Provider base_prov =1;//基本信息
+    ProviderExtra extra_prov =2;//其他信息
+    business_licence _info =3;//营业执照相关信息
+    Contract contract_info =4;//合同相关信息
+}
+
+/*查看供应商申请状态*/
+message ApplyState{
+    AppllyID apply_id =1;
+}
+message ReplyStateInfo{
+    int32 isAudited =1;//是否已审核
+    int32 isPassed =2;//是否已通过
+    string failedReason =3;//审核失败原因
+}
+
+/*修改供应商信息*/
+message UpdateSellerInfo{
+    AppllyID apply_id =1;
+    int32 org_id =2; //组织id
+    Provider base_prov =3;
+    ProviderExtra extra_prov =4;
+
+}
+/*获取供应商信息*/
+message GetSellerInfo{
+    AppllyID apply_id =1;
+    int32 providerOrgId =2;//组织id
+
+}
+
+/*设置审核结果  日志*/
+message SetApplyResult{
+    int32 auditorId =1; //审核人id
+    int32 applyId =2; //被审核商家id
+    string auditResult =3;//审核结果
+    int32 passed =4; //是否通过
+    string failedReason =5; //失败原因
+}
+
+/*获取供应商简略信息*/
+message SimpleSellerInfo{
+    Provider pro_info =1;//简略信息
+}
+
+/*供应商管理账户注册*/
+message RegisterSellerAccount{
+    ProviderUser seller_account =1;
+}
+
+/*修改管理员账户密码*/
+message UpdateSellerPwd{
+    int32 user_id =1;
+    string oldPassword = 2; //原密码
+    string newPassword = 3;//新密码
+
+}
+
+
+
+/*根据用户身份获取对应栏目*/
+message SystemMenuList{
+    repeated string system_menulist =1;
+}
+
+/*权限资源列表*/
+message RightList{
+    repeated  Privileges right_list=1;
+    Pagination pagination = 2;
+}
+
+/*权限id*/
+message Rid{
+    int32 rid =1;
+}
+/*获取权限信息*/
+message RightInfo{
+    Privileges right_info =1;
+}
+/*添加权限*/
+message AddRight{
+    Privileges right =1;
+}
+
+/*修改权限*/
+message UpdateRight{
+    Rid rid =1;
+    Privileges right=2;
+}
+
+/*获取所有组织*/
+message OrgList{
+    repeated organizations org_list=1;
+}
+/*组织id*/
+message OrgId{
+    int32 org_id =1;
+}
+/*添加组织*/
+message AddOrg{
+    organizations org_info=1;
+}
+
+/*获取组织信息*/
+message OrgInfo{
+    organizations org_info =1;
+}
+/*修改组织信息*/
+message UpdateOrg{
+    OrgId org_id =1;
+    organizations org_info=2;
+}
+
+/*部门列表*/
+message DepList{
+    repeated Departments dep_list=1;
+}
+/*部门id*/
+message DepId{
+    int32 dep_id=1;
+}
+
+/*获取部门详情*/
+message DepInfo{
+    Departments dep_info =1;
+}
+/*添加部门*/
+message AddDep{
+    Departments dep_info =1;
+ }
+
+ /*修改部门*/
+message UpdateDep{
+    DepId dep_id =1;
+    Departments dep_info =2;
+
+}
+
+ /*角色列表*/
+ message RoleList{
+    repeated Roles role_list =1;
+    Pagination pagination = 2;
+}
+
+/*角色id*/
+message RolId{
+    int32 rol_id=1;
+}
+
+/*添加角色*/
+message AddRole{
+    Roles role_info =1;
+}
+
+/*获取角色详情*/
+message RoleInfo{
+    Roles rol_info =1;
+}
+/*修改角色*/
+message UpdateRole{
+    RolId rol_id=1;
+    Roles role_info=2;
+}
+
+/*管理员子账户列表*/
+message SellerList{
+   repeated ProviderUser seller_user =1;
+}
+
+/*管理员搜索*/
+message SellerKeywords{
+   string seller_name =1;//管理员账号
+}
+
+/*管理员id*/
+message SellerId{
+    int32 seller_id =1;
+}
+
+/*添加管理员子账户*/
+message AddSeller{
+    ProviderUser plro_seller=1;
+    RolId rol_id=2;//角色id
+}
+
+/*管理员子账户详情*/
+message SellerInfo{
+    ProviderUser seller_info =1;
+ }
+
+ /*修改管理员子账户*/
+ message UpdateSeller{
+    SellerId uid =1;//主键id
+    ProviderUser seller_user=2;
+
+}
+
+
+/*短信发送记录日志*/
+message SmsSendLog{
+    repeated SmsSendRecord sms_log =1;
+    Pagination pagination = 2;
+}
+
+
+/*商户中心登陆日志*/
+
+

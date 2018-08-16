@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts</title>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="height:4000px;width:4000px;"></div>
+<!-- ECharts单文件引入 -->
+<script src="__PUBLIC__/static/js/echart/echarts-all.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery.js"></script>
+<script type="text/javascript">
+
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.showLoading();
+        $.get('/index.php/Admin/user/relation2', function (data) {
+            myChart.hideLoading();
+
+            myChart.setOption(option = {
+                title: {
+                    show: true,
+                    text: '层级关系'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    triggerOn: 'mousemove'
+                },
+                series:[
+                    {
+                        type: 'tree',
+
+                        data: [data],
+
+                        left: '2%',
+                        right: '2%',
+                        top: '8%',
+                        bottom: '20%',
+
+                        //symbol: 'emptyCircle',
+
+                        orient: 'horizontal',
+
+                        expandAndCollapse: true,
+                        roam: true,
+
+                        label: {
+                            normal: {
+                                position: 'top',
+                                rotate: -90,
+                                verticalAlign: 'middle',
+                                align: 'right',
+                                fontSize: 11
+                            }
+                        },
+
+                        leaves: {
+                            label: {
+                                normal: {
+                                    position: 'bottom',
+                                    rotate: -90,
+                                    verticalAlign: 'middle',
+                                    align: 'left'
+                                }
+                            }
+                        },
+
+                        animationDurationUpdate: 750
+                    }
+                ]
+            });
+        });
+
+
+</script>
+
+</body>

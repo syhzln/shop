@@ -1,0 +1,90 @@
+<table>
+    <thead>
+        <tr>
+            <th class="sign" axis="col0"><i class="ico-check"></i></th>
+            <th align="center" abbr="apply_id" axis="col3" class="">经营类目</th>
+            <th align="center" abbr="shop_name" axis="col3" class="">店铺名称</th>
+            <th>状态</th>
+            <th align="center" abbr="article_time" axis="col6" class="">操作</th>
+            <div style="clear:both"></div>
+            <!--<th style="width:100%" axis="col10">-->
+            <!--<div></div>-->
+            <!--</th>-->
+        </tr>
+    </thead>
+    <tbody>
+    <volist name="act" id="list">
+        <tr>
+            <td class="sign" axis="col6"><i class="ico-check"></i></td>
+            <td align="left" axis="col6">
+                <span class="col-xs-3">{$list.class_1}</span>
+                <span class="col-xs-2"><i class="fa fa-angle-double-right"></i>{$list.class_2}</span>
+                <span class="col-xs-2"><i class="fa fa-angle-double-right"></i>{$list.class_3}</span>
+            </td>
+            <td align="left" axis="col6">{$list.store_name}</td>
+            <td align="center">
+                <if condition="$list.category_status eq 0">
+                    <a class="btn btn-info" data-url="{:U('Store/store_class_save')}" data-id="{$list.class_three}" data="{$list.apply_id}" href="javascript:void(0)" onclick="confirmCategory(this)">审核</a>
+                </if>
+            </td>
+            <td>
+                <a class="btn red" href="javascript:void(0)" data-url="{:U('Store/store_class_del')}" data-id="{$list.class_three}" data="{$list.apply_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<!--分页位置--> <!--{$page}-->
+<div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+         cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+
+    function delfun(obj){
+        if(confirm('确认删除')){
+            $.ajax({
+                type : 'post',
+                url : $(obj).attr('data-url'),
+                data : {act:'del',category_id:+$(obj).attr('data-id'),apply_id:$(obj).attr('data')},
+                dataType : 'json',
+                success : function(data){
+                    if(data.stat=='ok'){
+                        $(obj).parent().parent().remove();
+                    }else{
+                        layer.alert(data, {icon: 2});  //alert(data);
+                    }
+                }
+            })
+        }
+        return false;
+    }
+
+    function confirmCategory(obj){
+        if(confirm('是否通过 ？')){
+            $.ajax({
+                type : 'post',
+                url :  $(obj).attr('data-url'),
+                data : {status:'1',category_id:$(obj).attr('data-id'),apply_id:$(obj).attr('data')},
+                dataType : 'json',
+                success : function(data){
+//                    console.log(data);return;
+                    if(data == '1'){
+                        layer.alert('审核成功',{icon:1});
+                        window.location.reload();
+                    }else{
+                        layer.alert(data, {icon: 2});  //alert(data);
+                    }
+                }
+            })
+        }
+        return false;
+    }
+
+
+</script>

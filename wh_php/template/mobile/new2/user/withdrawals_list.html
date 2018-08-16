@@ -1,0 +1,66 @@
+<include file="public/header" title="提现申请记录" body=""/>
+<include file="public/header_nav" title="提现申请记录" href="javascript:history.back(-1)"/>
+<div class="application-record">
+    <div class="maleri30">
+        <ul class="re_tit">
+            <li class="li5"><span>编号</span></li>
+            <li class="li3"><span>申请日期</span></li>
+            <li class="li5"><span>金额</span></li>
+            <li class="li2"><span>提现类型</span></li>
+            <li class="li2"><span>状态</span></li>
+        </ul>
+        <foreach name="list" item="v">
+            <ul>
+                <li class="li5"><span>{$v[apply_id]}</span></li>
+                <li class="li3"><span>{:date('Y-m-d', $v[apply_time])}</span></li>
+                <li class="li5"><span>{$v[money]}</span></li>
+                <li class="li2"><span>
+                    <if condition="$v[withdraw_type] eq 1">
+                        收益提现
+                    <else />
+                        余额提现
+                    </if>
+                </span></li>
+                <li class="li2">
+                    <span>
+                        <if condition="$v[status] eq 0">申请中</if>
+                        <if condition="$v[status] eq 1">审核通过</if>
+                        <if condition="$v[status] eq 2">申请失败</if>
+                        <if condition="$v[status] eq 3">转账成功</if>
+                        <if condition="$v[status] eq 4">转账失败</if>
+                        <if condition="$v[status] eq 5">拒绝提现</if>
+                    </span>
+                </li>
+            </ul>
+        </foreach>
+    </div>
+    <!--加载更多S-->
+    <!--<notempty name="list">-->
+        <!--<div id="getmore" style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both">-->
+            <!--<a href="javascript:void(0)" onClick="ajax_sourch_submit()">点击加载更多</a>-->
+        <!--</div>-->
+    <!--</notempty>-->
+    <!--加载更多E-->
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    var page = 1;
+    function ajax_sourch_submit(){
+        page++;
+        $.ajax({
+            type:'GET',
+            url:'/index.php/Mobile/User/withdrawals_list/is_ajax/1/p/'+page,
+            async:false,//同步请求 返回成功之后 在进行下一次的请求
+            success:function(data){
+                if($.trim(data)==''){
+                    $('#getmore').hide();
+                    return false;
+                }else{
+                    $('.maleri30').append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

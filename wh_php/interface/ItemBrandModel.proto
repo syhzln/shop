@@ -1,0 +1,10 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "common.proto";

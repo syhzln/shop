@@ -1,0 +1,235 @@
+<if condition="$cartEmpty eq 1 && !empty($user['user_id'])">
+     <if condition="$goSee eq 1 ">
+        <!--专区购物车没有商品-s-->
+        <div class="nonenothing">
+            <img src="__STATIC__/images/nothing.png"/>
+            <p>购物车暂无商品</p>
+            <a href="{:U('Mobile/Goods/specialList',array('flags'=>1))}">去逛逛</a>
+        </div>
+        <!--专区购物车没有商品-e-->
+    <else/>
+        <!--普通购物车没有商品-s-->
+        <div class="nonenothing">
+            <img src="__STATIC__/images/nothing.png"/>
+            <p>购物车暂无商品</p>
+            <a href="{:U('Mobile/Index/index')}">去逛逛</a>
+        </div>
+        <!--购物车没有商品-e-->
+    </if>
+
+<else/>
+    <form id="item_list" method="post" action="{:U('Mobile/Cart/cart2')}">
+
+<foreach name="cartLists" item="v" key="k" >
+    <!--店铺列表-s-->
+    <!--<div class="allshoporder">-->
+        <!--<div class="maleri30">-->
+            <!--<div class="logoshopcar fl">-->
+                <!--<img src="__STATIC__/images/logo_shopcar.png"/>-->
+                <!--&lt;!&ndash;供货商名称&ndash;&gt;-->
+                <!--<span>供货商：{$walhao_config['shop_info_store_name']}</span>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--店铺列表-e-->
+    <div class="orderlistshpop p">
+        <div class="maleri30">
+            <!--商品列表-s-->
+            <div class="sc_list">
+                <div class="radio fl ">
+                    <!--商品勾选按钮-->
+
+                            <!--<input type="checkbox" autocomplete="off" id="good[{$v.id}]" name="cart_select[{$v.id}]" checked="checked">-->
+                            <input type="hidden" name="cart_id[]" value="{$v.cart_id}">
+                            <!--<input type="checkbox" autocomplete="off" id="$v.cart_id" name="item_id[{$v.item_id}]" value="{$v.item_id},{$v.sku_id}" checked="checked">-->
+                            <input id="{$v.cart_id}" type="checkbox"  name="item_id[{$k}]" value="{$v.item_id},{$v.sku_id}" onchange="getcart(this)" id="{$k}" checked="checked" class="select" />
+
+
+                            <!--<input type="checkbox" autocomplete="off" id="good[{$v.id}]" name="cart_select[{$v.id}]" <if condition="$v[selected] eq 1" >checked="checked"</if>  style="display:none;" value="1" onclick="ajax_cart_list();">-->
+
+                </div>
+                <div class="shopimg fl">
+                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[item_id]))}">
+                    <!--商品图片-->
+                        <img src="{$v.item_id|goods_thum_images=200,200}">
+                    </a>
+                </div>
+                <div class="deleshow fr">
+                    <div class="deletes">
+                        <!--商品名-->
+                            <span class="similar-product-text fl">
+                                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[item_id]))}">{$v[goods_name]}</a>
+                            </span>
+                        <!--删除按钮-->
+                        <a href="javascript:void(0);" onclick="ajax_del_cart({$v.cart_id})" class="delescj"><img src="__STATIC__/images/dele.png"/></a>
+                    </div>
+
+
+                    <!--商品属性，规格-->
+                    <p class="weight">{$v[spec_key_name]}</p>
+                    <div class="prices">
+                        <p class="sc_pri fl">
+                            <!--商品单价-->
+                            <span>￥</span><span price="{$v.cart_id}">{$v.shop_price}</span>
+                        </p>
+                        <!--加减数量-->
+                        <div class="plus fr get_mp">
+                            <span class="mp_minous" onClick="switch_num(-1,'{$v.item_id}','{$v.amount}','{$v.sku_id}','{$v.store_count}',this);" title="减">-</span>
+                            <span class="mp_mp">
+                            <input type="text" count="{$v.cart_id}" class="wi43 fl" value="{$v.amount}" name="amount[{$v.item_id}]" id="amount[{$v.item_id}]" readonly="" />
+                            </span>
+                            <span class="mp_plus" onClick="switch_num(1,'{$v.item_id}','{$v.amount}','{$v.sku_id}','{$v.store_count}',this);" title="加">+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--商品列表-e-->
+        </div>
+    </div>
+</foreach>
+
+
+    <!--提交栏-s-->
+    <div class="foohi foohiext">
+        <div class="payit ma-to-20 payallb">
+            <div class="fl alllef">
+                <div class="radio fl" onclick="chkAll_onclick()">
+                    <span class="che alltoggle">
+                        <i></i>
+                    </span>
+                    <span class="all">全选</span>
+                </div>
+                <div class="youbia">
+                    <p><span class="pmo">总计：</span><span>￥</span><span id="cartsum" class="small">{$total_price.totalizing}</span></p>
+                    <p class="lastime"><span>不含运费</span></p>
+                </div>
+            </div>
+            <div class="fr">
+                <a href="javascript:void(0);" onclick="return selcart_submit()">去结算</a>
+            </div>
+        </div>
+    </div>
+    </form>
+    <!--提交栏-e-->
+</if>
+
+<script>
+    //点击结算
+    function selcart_submit()
+    {
+        //获取选中的商品个数
+        var j=0;
+        $('input[name^="item_id"]:checked').each(function(){
+            j++;
+        });
+        //选择数大于0
+        if (j>0){
+            //跳转订单页面
+            $("#item_list").submit();
+            //window.location.href="{:U('Mobile/Cart/cart2')}"
+        }else {
+            layer.open({content:'请选择要结算的商品！',time:2});
+            return false;
+        }
+    }
+
+    //勾选商品
+    function checkgood(obj){
+        if($(obj).hasClass('check_t')){
+            //改变颜色
+            $(obj).removeClass('check_t');
+            //取消选中
+            $(obj).find('input').attr('checked',false);
+        }else {
+            //改变颜色
+            $(obj).addClass('check_t');
+            //勾选选中
+            $(obj).find('input').attr('checked',true);
+        }
+        getcart(obj);
+    }
+
+    //定义变量
+    var is_checked = true;
+    //判断商品是否选中，未选中返回false
+    $('.sc_list .che').each(function(){
+        if(!$(this).hasClass('check_t'))
+        {
+            //只要有没选中返回false
+            is_checked = false;
+            return false;
+        }
+    });
+
+    //判断所有商品选择状态，改变全选状态
+    if(is_checked){
+        $('.alllef .che').addClass('check_t');
+    }else
+    {
+        $('.alllef .che').removeClass('check_t');
+    }
+    //全选按钮
+    function chkAll_onclick(obj)
+    {
+        //取消全选
+        if($('.alllef .che').hasClass('check_t')){
+            $('.alllef .che').removeClass('check_t');
+            $('.inner .che').removeClass('check_t');
+            //全部商品取消checked
+            $("input[name^='item_id']").prop('checked',false);
+            is_checked = false;
+            $(".small").text(0)
+        }
+        //全选
+        else{
+            $('.alllef .che').addClass('check_t');
+            $('.inner .che').addClass('check_t');
+            //全部商品添加checked
+            $("input[name^='item_id']").prop('checked',true);
+            is_checked = true;
+            ajax_cart_list();
+        }
+
+
+    }
+
+    function getcart(e) {
+        var res = $(e).is(':checked');
+         if (res) {
+            var k = $(e).attr("id");
+            var price = $("span[price=" + k + "]").text().substring(0);
+            var count = $("input[count =" + k + "]").val();
+            var small_price = parseFloat($(".small").text().substring(0),2) + price * count;
+            $(".small").text(small_price.toFixed(2))
+        } else {
+            var k = $(e).attr("id");
+            var price = $("span[price=" + k + "]").text().substring(0);
+            var count = $("input[count =" + k + "]").val();
+            var small_price = parseFloat($(".small").text().substring(0),2) - price * count;
+            $(".small").text(small_price.toFixed(2))
+        }
+    }
+    var before = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+    function switch_num(num,item_id,amount,sku_id,store_count) {
+        var num2 = parseInt($("input[name='amount[" + item_id + "]']").val());
+        num2 += num;
+        if(num2<=0)return false;
+        if(before == 0) // 上一次请求没回来 不进行下一次请求
+            return false;
+        before = 0;
+        if (num2 < 1) num2 = 1; // 保证购买数量不能少于 1
+        $("input[name='amount[" + item_id + "]']").val(num2);
+        $.ajax({
+            type: "POST",//数据发送的方式（post 或者 get）
+            url: "{:U('Mobile/Cart/ajaxCartList',array('flag'=>$flag))}", //要发送的后台地址
+            data: {'num': num, 'item_id': item_id,'amount':amount,'sku_id':sku_id,'store_count':store_count},
+            success: function (data) {
+                $("#ajax_return").empty().append(data);
+                before = 1;
+                ajax_cart_list();
+            }
+        });
+    }
+
+
+</script>

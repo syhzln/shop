@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>我的积分-{$walhao_config['shop_info_store_title']}</title>
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/theme.css" />
+        <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+        <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+        <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    </head>
+    <body class="bg-f5">
+    <include file="user/header"/>
+        <div class="home-index-middle" style="">
+            <div class="w1224">
+                <div class="g-crumbs">
+                    <a href="{:U('Home/User/index')}">奖金</a>
+                    <i class="litt-xyb"></i>
+                    <span>分红点转账户余额记录</span>
+                </div>
+                <div class="home-main">
+                    <include file="user/menu"/>
+                    <div class="ri-menu fr">
+                        <div class="container-fluid" id="UserCenterMaxContainer">
+                            <div class="row-fluid">
+                                <div class="main">
+                        <script>
+                            $(function(){
+                                var login_wohao_url = "";
+                                if (login_wohao_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_wohao_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+                        <script>
+                            $(function(){
+                                var login_bbs_url = "";
+                                if (login_bbs_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_bbs_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+                        <!-- <script src="https://1390393872.tps138.com/ucenter_theme/lib/My97DatePicker/WdatePicker.js?v=1"></script> -->
+                        <div class="search-well">
+                            <form class="form-inline" method="GET">
+                                <input class="Wdate span2 time_input" type="text" name="start" value="" placeholder="点击选择时间">
+                                <!-- -
+                                <input class="Wdate span2 time_input" type="text" name="end" value="2018-01-13" onclick="WdatePicker({dateFmt: 'yyyy-MM-dd', lang: 'zh'})" placeholder="结束日期"> -->
+
+                                <button class="btn" type="submit"><i class="icon-search"></i> 搜索</button>
+                            </form>
+                        </div>
+
+                        <div class="well">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>时间</th>
+                                        <th>金额</th>
+                                        <th>提现手续费</th>
+                                        <th>实际到帐金额</th>
+                                        <th>提现方式</th>
+                                        <th>卡号/支付宝账号</th>
+                                        <th>开户行名称</th>
+                                        <th>开户人名称<br>/支付宝真实姓名</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                               <tbody>
+                                    <tr>
+                                       <th colspan="9" style="text-align: center;" class="text-success"> 无匹配的记录</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <style>
+                                .modal{
+                                    width:250px;
+                                    left:60%;
+                                }
+                            </style>
+                            <script>
+                                $(function(){
+                                    $('.process').click(function(){
+                                        var id = $(this).val();
+                                        $("#confirm_sponsor").modal();
+                                        $("#confirm_message").html('确定？');
+                                        pre_withdrawal(id);
+                                    });
+                                });
+                                function pre_withdrawal(id){
+                                    document.getElementById('confirm_ok').onclick = function(){
+                                        confirm_cancel_withdrawal(id);
+                                        $("#confirm_sponsor").modal('hide');
+                                    }
+                                    document.getElementById('confirm_cancel').onclick = function(){
+                                        $("#confirm_sponsor").modal('hide');
+                                    }
+                                }
+
+                                function confirm_cancel_withdrawal(id){
+                                    $.post("/ucenter/cash_take_out_logs/cancel", {id:id}, function (data) {
+                                        if(data.success){
+                                            location.reload();
+                                        }else{
+                                            layer.msg(data.msg);
+                                            setTimeout("location.reload();",3000);
+                                        }
+                                    },'json');
+                                }
+                            </script>
+                        </div>
+                        </div>
+
+                        <div id="confirm_sponsor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-body" id="confirm_message" style="text-align: center;">
+                            </div>
+                            <div class="modal-footer">
+                                <button autocomplete="off" style="float:left;margin-left: 20%;" class="btn btn-primary" id="confirm_ok">确认</button>
+                                <button autocomplete="off" style="float:right;margin-right: 20%;" class="btn btn-primary" id="confirm_cancel">取消</button>
+                            </div>
+                        </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--footer-s-->
+        <div class="footer p">
+            <include file="public/footer_index" />
+        </div>
+        <!--footer-e-->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.time_input').daterangepicker({
+                    format:"YYYY/MM/DD",
+                    singleDatePicker: false,
+                    showDropdowns: true,
+                    minDate:'2016/01/01',
+                    maxDate:'2030/01/01',
+                    startDate:'2016/01/01',
+                    locale : {
+                        applyLabel : '确定',
+                        cancelLabel : '取消',
+                        fromLabel : '起始时间',
+                        toLabel : '结束时间',
+                        customRangeLabel : '自定义',
+                        daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+                        monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                        firstDay : 1
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,246 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<style type="text/css">
+    html, body {
+        overflow: visible;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="微信公众号配置"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>商家结算设定</h3>
+            </div>
+        </div>
+    </div>
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>设定商家结算周期信息后,自动结算系统方可运行</li>
+            <li>所有 * 栏目必须设定,开户行栏提款方式为银联转账时必填</li>
+            <li>店铺基本信息禁止修改</li>
+        </ul>
+    </div>
+    <form class="form-horizontal" method="post" id="handlepost" action="">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>店铺名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" style="background-color: #d2d6de" readonly placeholder="店铺名称" value="{$data.store_name}" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>卖家账号</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" style="background-color: #d2d6de" readonly placeholder="卖家账号不能为空" value="{$data.seller_name}" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label><em>*</em>结算账户</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<input type="text" style="background-color: #d2d6de" readonly name = "account_id" value="{$data.account_id}" class="input-txt">-->
+                    <!--<span class="err"></span>-->
+                    <!--<p class="notic"></p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>店铺联系人</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" style="background-color: #d2d6de" readonly  value="{$data.name}" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>店铺联系电话</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" style="background-color: #d2d6de" readonly value="{$data.mobile}" class="input-txt">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>结算周期天数</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="input-txt" name="period" value="{$data.period}" />
+                </dd>
+            </dl>
+            <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label>是否以自然月</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<input type="radio" name="by_month" value="0" <if condition="$data['by_month'] eq 1">checked="checked"</if>/> 是-->
+                    <!--<input type="radio" name="by_month" value="1" <if condition="$data['by_month'] eq 0">checked="checked"</if>/> 否-->
+                <!--</dd>-->
+            <!--</dl>-->
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>结算开始时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" size="30" id="start_date" name="start_date" placeholder="起始时间" class="qsbox" <if condition="$data['start_date'] gt 0"> value="{$data['start_date']|date='Y-m-d H:i:s',###}" </if>>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>提款冻结周期</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="lock_periods" size="30" value="{$data.lock_periods}" class="input-txt">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>提款方式</label>
+                </dt>
+                <dd class="opt">
+                    <div class="sDiv2">
+                        <select name="transfer_method" class="small form-control">
+                            <option <if condition="$data['transfer_method'] eq 1">selected</if> value="1">支付宝</option>
+                            <option <if condition="$data['transfer_method'] eq 2">selected</if> value="2">微信</option>
+                            <option <if condition="$data['transfer_method'] eq 3">selected</if> value="3">银行卡</option>
+                        </select>
+                    </div>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>提现扣点</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="points" value="{$data.points}" class="input-txt">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>账户名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="ex_account_name" value="{$data.ex_account_name}" class="input-txt">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>账户</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="ex_account_id" value="{$data.ex_account_id}" class="input-txt">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>开户行</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="bank" value="{$data.bank}" class="input-txt">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>结算币种</label>
+                </dt>
+                <dd class="opt">
+                    <div class="sDiv2">
+                        <select name="currency" class="small form-control">
+                            <option <if condition="$data['currency'] eq 1">selected</if> value="1">人民币</option>
+                            <option <if condition="$data['currency'] eq 2">selected</if> value="2">美元</option>
+                            <option <if condition="$data['currency'] eq 3">selected</if> value="3">欧元</option>
+                            <option <if condition="$data['currency'] eq 4">selected</if> value="4">港币</option>
+                        </select>
+                    </div>
+                </dd>
+            </dl>
+
+            <input type="hidden" name="provider_id" value="{$data.provider_id}">
+            <div class="bot"><a href="JavaScript:void(0);" onClick="formSubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $('#start_date').layDate();
+
+        $("#handlepost").validate({
+            debug: false, //调试模式取消submit的默认提交功能
+            focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form
+                form.submit();   //提交表单
+            },
+            rules:{
+                period:{
+                    required:true
+                },
+                start_date:{
+                    required:true
+                },
+                ex_account_name:{
+                    required:true
+                },
+                ex_account_id:{
+                    required:true
+                }
+            },
+            messages:{
+                period:{
+                    required:"请填写周期天数"
+                },
+                start_date:{
+                    required:"请选择开始时间"
+                },
+                ex_account_name:{
+                    required:"请填写收款账户名"
+                },
+                ex_account_id:{
+                    required:"请填写收款账户"
+                }
+            }
+        });
+
+
+    });
+
+
+    function formSubmit(){
+        $("#handlepost").submit();
+    }
+
+</script>
+</body>
+</html>

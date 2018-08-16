@@ -1,0 +1,103 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>部门管理 - 编辑部门</h3>
+                <h5>平台系统部门管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="departHandle" action="{:U('Admin/departHandle')}" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="dep_id" value="{$info.dep_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="dep_name"><em>*</em>部门名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="dep_name" value="{$info.dep_name}" id="dep_name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">部门名称</p>
+                </dd>
+            </dl>
+            <!--<dl class="row">-->
+            <!--<dt class="tit">-->
+            <!--<label for="dep_contacts"><em>*</em>部门联系人</label>-->
+            <!--</dt>-->
+            <!--<dd class="opt">-->
+            <!--<input type="text" name="dep_contacts" value="{$info.dep_contacts}" id="dep_contacts" class="input-txt">-->
+            <!--<span class="err"></span>-->
+            <!--<p class="notic">部门联系人</p>-->
+            <!--</dd>-->
+            <!--</dl>-->
+            <dl class="row">
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="dep_level"><em>*</em>部门等级</label>
+                    </dt>
+                    <dd class="opt">
+                        <select name="dep_level" id="dep_level">
+                            <option value="1" <?php if($info['dep_level'] ==1)echo "selected=\"selected\"";?>>1 级</option>
+                            <option value="2" <?php if($info['dep_level'] ==2)echo "selected=\"selected\"";?>>2 级</option>
+                            <option value="3" <?php if($info['dep_level'] ==3)echo "selected=\"selected\"";?>>3 级</option>
+                        </select>
+                        <span class="err"></span>
+                        <p class="notic">部门等级 1级为最高,2级次之</p>
+                    </dd>
+                </dl>;
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="org_id"><em>*</em>所属组织</label>
+                    </dt>
+                    <dd class="opt">
+                        <select name="org_id" id="org_id">
+                            <!--<option value="0">-&#45;&#45;请选择-&#45;&#45;</option>-->
+                            <option value="1">量子时空商城</option>
+                            <!--<option value="2">TPS商城</option>-->
+                        </select>
+                        <span class="err"></span>
+                        <p class="notic">所属组织</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="dep_desc"><em>*</em>部门描述</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="dep_desc" value="{$info.dep_desc}" id="dep_desc" class="input-txt">
+                        <span class="err"></span>
+                        <p class="notic">部门描述,部门有哪些职能</p>
+                    </dd>
+                </dl>
+                <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function adsubmit(){
+        if($('input[name=depart_name]').val() == ''){
+            layer.msg('部门名称不能为空！', {icon: 2,time: 1000});   //alert('少年，用户名不能为空！');
+            return false;
+        }
+        if($('input[name=depart_desc]').val() == ''){
+            layer.msg('部门描述不能为空！', {icon: 2,time: 1000});//alert('少年，邮箱不能为空！');
+            return false;
+        }
+        if($('input[name=depart_contacts]').val() == ''){
+            layer.msg('部门联系人不能为空！', {icon: 2,time: 1000});//alert('少年，邮箱不能为空！');
+            return false;
+        }
+        if($('input[name=depart_phone]').val() == ''){
+            layer.msg('部门电话不能为空！', {icon: 2,time: 1000});//alert('少年，邮箱不能为空！');
+            return false;
+        }
+        $('#departHandle').submit();
+    }
+</script>
+</body>

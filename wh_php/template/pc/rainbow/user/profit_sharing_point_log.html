@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{$Think.lang.DividendRecord}-{$walhao_config['shop_info_store_title']}</title>
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/theme.css" />
+        <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+        <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+        <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    </head>
+    <body class="bg-f5">
+    <include file="user/header"/>
+        <div class="home-index-middle" style="">
+            <div class="w1224">
+                <div class="g-crumbs">
+                    <a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+                    <i class="litt-xyb"></i>
+                    <span>{$Think.lang.DividendRecord}</span>
+                </div>
+                <div class="home-main">
+                    <include file="user/menu"/>
+                    <div class="ri-menu fr">
+                        <div class="container-fluid" id="UserCenterMaxContainer">
+                            <div class="row-fluid">
+                                <div class="main">
+                         <script>
+                            $(function(){
+                                var login_wohao_url = "";
+                                if (login_wohao_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_wohao_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+                        <script>
+                            $(function(){
+                                var login_bbs_url = "";
+                                if (login_bbs_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_bbs_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+
+                        <!-- <script src="https://1390393872.tps138.com/ucenter_theme/lib/My97DatePicker/WdatePicker.js?v=1"></script> -->
+                        <div class="search-well">
+                            <form class="form-inline" method="GET">
+                                <select name="add_source" id="addSource" class="addSouceSelect">
+                                    <option value="">{$Think.lang.SelectBonusType}</option>
+                                                <option value="1">{$Think.lang.SalesBonusAutomatically}</option>
+                                                <option value="2">{$Think.lang.ShareBonus}</option>
+                                                <option value="3">{$Think.lang.DividendsAutomatically}</option>
+                                                <option value="4">{$Think.lang.AccountBalanceTurnRedPoint}</option>
+                                            </select>
+                                
+                                <input class="Wdate span2 time_input" type="text" name="start" value="" placeholder="{$Think.lang.ClickSelectDate}">
+                                <!-- -
+                                <input class="Wdate span2 time_input" type="text" name="end" value="" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',lang:'zh'})" placeholder="结束日期"> -->
+                                
+                                <button class="btn" type="submit"><i class="icon-search"></i> {$Think.lang.Search}</button>
+                            </form>
+                        </div>
+
+                        <div class="well">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{$Think.lang.Time}</th>
+                                        <th>{$Think.lang.Type}</th>
+                                        <th>{$Think.lang.Amount}</th>
+                                        <th>{$Think.lang.DividendPoint}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                            <tr>
+                                        <th colspan="6" style="text-align: center;" class="text-success"> {$Think.lang.NoMatchingRecords}</th>
+                                    </tr>
+                                        </tbody>
+                            </table>
+                        </div>
+                        </div>
+
+
+                        <div id="confirm_sponsor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-body" id="confirm_message" style="text-align: center;">
+                            </div>
+                            <div class="modal-footer">
+                                <button autocomplete="off" style="float:left;margin-left: 20%;" class="btn btn-primary" id="confirm_ok"> {$Think.lang.Confirm}</button>
+                                <button autocomplete="off" style="float:right;margin-right: 20%;" class="btn btn-primary" id="confirm_cancel">{$Think.lang.Cancel}</button>
+                            </div>
+                        </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--footer-s-->
+        <div class="footer p">
+            <include file="public/footer_index" />
+        </div>
+        <!--footer-e-->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.time_input').daterangepicker({
+                    format:"YYYY/MM/DD",
+                    singleDatePicker: false,
+                    showDropdowns: true,
+                    minDate:'2016/01/01',
+                    maxDate:'2030/01/01',
+                    startDate:'2016/01/01',
+                    locale : {
+                        applyLabel : '{$Think.lang.Confirm}',
+                        cancelLabel : '{$Think.lang.Cancel}',
+                        fromLabel : '{$Think.lang.StartTime}',
+                        toLabel : '{$Think.lang.EndTime}',
+                        customRangeLabel : '{$Think.lang.Customize}',
+                        daysOfWeek : [ '{$Think.lang.Sunday}', '{$Think.lang.Monday}', '{$Think.lang.Tuesday}', '{$Think.lang.Wednesday}', '{$Think.lang.Thursday}', '{$Think.lang.Friday}', '{$Think.lang.Saturday}' ],
+                        monthNames : [ '{$Think.lang.January}', '{$Think.lang.February}', '{$Think.lang.March}', '{$Think.lang.April}', '{$Think.lang.May}', '{$Think.lang.June}','{$Think.lang.July}', '{$Think.lang.August}', '{$Think.lang.September}', '{$Think.lang.October}', '{$Think.lang.November}', '{$Think.lang.December}' ],
+                        firstDay : 1
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

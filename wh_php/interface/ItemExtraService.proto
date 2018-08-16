@@ -1,0 +1,146 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+package psp;
+import "common.proto";
+import "ItemTypeModel.proto";
+
+
+service ItemExtraService{//商品模型（类型）,商品规格，商品属性
+    /*商品模型（类型）*/
+    rpc addItemType(AddItemType) returns(google.protobuf.Empty)//添加商品类型(模型)
+    rpc delItemType(ItemTypeId) returns(google.protobuf.Boolvalue)//删除商品类型
+    rpc updateItemType(ItemTypeId) returns(ItemTypeInfo)//删除商品类型
+    rpc getItemTypeList(GetItemTypeList)  returns(google.protobuf.Boolvalue) //获取类型列表数据
+    rpc getItemTypeSpecList(ItemTypeId) returns(ItemTypeSpecList) //  获取筛选模型下的规格列表
+
+   /*商品规格  */
+    rpc addSpec(AddSpec) returns(google.protobuf.Empty)//添加规格
+    rpc delSpec(SpecId) returns(google.protobuf.Boolvalue)//删除规格
+    rpc getSpecList(GetSpecList) returns(google.protobuf.Boolvalue);//获取规格列表数据
+    rpc getSearchSpecList(ItemTypeId) returns(SearchSpecList)//获取筛选搜素的类目规格列表
+
+    rpc setSpecSeach(SpecId) returns(SpecSeachIndex)//更改规格筛选
+    rpc setSpecOrder(SpecId)  returns(SpecOrder) //更改规格排序
+    rpc updateSpecInfo(SpecId)   returns(SpecInfoReply) //更改规格信息
+   /* 商品属性*/
+   rpc addItemAttribute(AddItemAttribute) returns(google.protobuf.Empty)//添加属性
+   rpc getItemAttributeList(GetItemAttributeList) returns(google.protobuf.Boolvalue)//获取属性列表数据
+   rpc delItemAttribute(ItemAttributeId)  returns(google.protobuf.Boolvalue) //删除属性值
+   rpc setItemAttributeSeach(ItemAttributeId) returns(ItemAttributeSeachIndex)//更改属性是否筛选
+   rpc setItemAttributeOrder(ItemAttributeId) returns(ItemAttributeOrder) //更改排序
+   rpc updateItemAttributeInfo(ItemAttributeId)  returns(updateItemAttributeInfoReply)//更改属性信息
+}
+
+/*商品模型（类型）*/
+message AddItemType{//添加商品类型(模型
+    string name =1;//类型名称
+}
+message ItemTypeId{//商品类型id
+    uint32 id =1;//type_id
+}
+message GetItemTypeList{
+    ItemTypeId item_type_id =1;//type_id
+    ItemTypeInfo item_type_info =2;//类型名称
+}
+message ItemTypeInfo{
+    string name =1;//类型名称
+}
+message ItemTypeSpecList{//一个模型下的规格信息
+    SpecInfo spec_info =1;//规格信息
+    ItemTypeInfo item_type_info =2;//类型名称
+    SpecItemInfo spec_item_info =4;//规格项名称
+}
+
+
+/*商品规格  */
+message AddSpec{//添加规格
+    ItemTypeId type_id =1;//type_id
+    SpecInfo spec_info =2;//规格信息
+    AddSpecItem add_spec_item =5;//每次添加规格，都添加规格表数据和规格项表数据
+
+}
+
+message AddSpecItem{//添加规格项，比如内存：8G 16G 32G 64G 128G
+    SpecId spec_id =1;//规格id
+    SpecItemInfo item =2;//规格项名称
+}
+message  SpecItemInfo{
+    string item =1;//规格项名称
+}
+
+/*获取规格列表*/
+message GetSpecList{//获取规格列表
+    SpecId id =1;// 规格id
+    SpecInfo spec_info =2;//规格信息
+    ItemTypeInfo item_type_info =3;//类型名称
+    SpecItemInfo spec_item_info =4;//规格项名称
+}
+message SpecInfo{//规格信息
+    string name =3;//规格名称
+    bool search_index =4;//是否筛选
+    int32 order =5;//排序
+}
+message SearchSpecList{//获取筛选的规格列表
+    SpecId id =1;// 规格id
+    SpecInfo spec_info =2;//规格信息
+    ItemTypeInfo item_type_info =3;//类型名称
+    SpecItemInfo spec_item_info =4;//规格项名称
+}
+
+/*删除规格*/
+message SpecId{//规格id
+   uint32 id =1;//规格id
+}
+
+/*更改规格信息*/
+message SpecSeachIndex{//筛选
+    bool search_index =1;//是否筛选
+}
+message SpecOrder{//排序
+    int32 order =1;//排序
+}
+message SpecInfoReply{//更改规格信息
+    SpecInfo spec_info =1;//
+    ItemTypeInfo item_type_info =2;//类型名称
+    SpecItemInfo spec_item_info =3;//规格项名称
+ }
+
+
+/* 商品属性*/
+message AddItemAttribute{//添加属性
+   ItemAttributeInfo item_attribute_info =1;//属性信息
+   ItemTypeId type_id =2;//类型id
+}
+message ItemAttributeInfo{//属性信息
+    string attr_name =1;//属性名称
+    bool search_index =6;//是否筛选 0否 1是 默认1
+    int32 attr_index =2;//能否进行检索:0不需要检索 1关键字检索 2范围检索
+    int32 attr_input_type =3;// 属性值的录入方式:0 手工录入 1从列表中选择 2多行文本框
+    string attr_values =4;//可选值列表
+    int32 order =5;//属性排序
+}
+message GetItemAttributeList{
+    uint32 attr_id =1;//属性id
+    ItemAttributeInfo item_attribute_info =2;//属性信息
+    ItemTypeId type_id =3;//类型id
+}
+//删除属性值
+message ItemAttributeId{
+    uint32 attr_id =1;//属性id
+}
+//更改属性信息
+message ItemAttributeSeachIndex{//筛选
+    bool search_index =1;//是否筛选
+}
+message ItemAttributeOrder{//排序
+    int32 order =1;//属性排序
+}
+message updateItemAttributeInfoReply{//更改属性信息
+    ItemAttributeInfo item_attribute_info =1;//属性信息
+    ItemTypeId type_id =2;//类型id
+}

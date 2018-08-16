@@ -1,0 +1,100 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>规格管理 </h3>
+                <h5>编辑添加与管理</h5>
+            </div>
+        </div>
+    </div>
+    <!--表单数据-->
+    <form method="post" id="addEditSpecForm" action="{:url('Goods/addEditSpec')}" onSubmit="return checkgoodsTypeName();">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="ac_name"><em>*</em>规格名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$spec.name}" name="name"   class="input-txt"/>
+                    <span id="err_name" class="err" style="color:#F00; display:none;">请填写规格名称</span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">商品分类</label>
+                </dt>
+                <dd class="opt">
+                    <select name="cat_id1" id="cat_id1" onChange="get_category2(this.value,'cat_id2','0');" class="small form-control">
+                        <option value="0">请选择商品分类</option>
+                        <foreach name="cat_list" item="v" key="k" >
+                            <option value="{$v['id']}" <if condition="$v['id'] eq $level_cat['1']">selected="selected"</if> >
+                            {$v['name']}
+                            </option>
+                        </foreach>
+                    </select>
+                    <select name="cat_id2" id="cat_id2" onChange="get_category2(this.value,'cat_id3','0');" class="small form-control">
+                        <option value="0">请选择商品分类</option>
+                    </select>
+                    <select name="cat_id3" id="cat_id3" class="small form-control">
+                        <option value="0">请选择商品分类</option>
+                    </select>
+                    <span class="err" id="err_cat_id" style="color:#F00; display:none;">请选择分类</span>
+                </dd>
+            </dl>
+
+            <div class="bot">
+                <input type="submit" name="" value="确认提交">
+            </div>
+        </div>
+
+    </form>
+</div>
+<script>
+    // 判断输入框是否为空
+    function checkgoodsTypeName(){
+        var name = $("#addEditSpecForm").find("input[name='name']").val();
+        var catId = $("#addEditSpecForm").find("select[name='cat_id3']").val();
+
+        if($.trim(name) == '')
+        {
+            $("#err_name").show();
+            return false;
+        }
+
+        if($.trim(catId) == 0)
+        {
+            $("#err_cat_id").show();
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * 获取多级联动的商品分类
+     */
+    function get_category2(id,next,select_id){
+
+        var url = '/index.php?m=Seller&c=Goods&a=get_category&parent_id='+ id + '&level=' + next;
+        $.ajax({
+            type : "GET",
+            url  : url,
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+                return;
+            },
+            success: function(v) {
+                v = "<option value='0'>请选择商品分类</option>" + v;
+                $('#'+next).empty().html(v);
+                (select_id > 0) && $('#'+next).val(select_id);//默认选中
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

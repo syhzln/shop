@@ -1,0 +1,36 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/5 0005上午 9:47
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description:
+ */
+syntax = "proto3";
+package psp;
+
+import "Common.proto";
+import "ItemModel.proto";
+
+service SearchService{
+    rpc search (Keywords) returns (SearchReply)//搜索接口
+}
+
+message Keywords{//搜索发送关键字
+
+    string keywords = 1;//关键词
+    int32 item_category = 2;//分类
+    int32 brand_id = 3;//品牌
+    float price_start = 4;//价格区间
+    float price_end = 5; //价格区间
+    string sort_by = 6;//排序
+
+}
+
+message SearchReply{
+    repeated ItemInfo Items = 1;//iteminfo整合为前端显示的iteminfo 分页显示20条    Pagination pagination = 9;//结果集分页
+    repeated ItemInfo item_category = 2;//与关键词关联的类目(取不大于20个/1优先取关键词类目/2关键词商品所在类目包含查询出商品总数倒序排列)
+    repeated ItemBander banderinfo = 3;//搜索关联品牌(关键词查询结果集内品牌包含倒序/取不多于15个)
+    string min_item_price  = 4;//符合查询条件商品最小值(做价格区间帅选)
+    string max_item_price = 5;//同上
+}
+
+

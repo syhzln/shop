@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>提交工单</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body class="bg-f5">
+<include file="user/header" />
+<div class="home-index-middle">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">{$Think.lang.PersonalCenter}</a>
+            <i class="litt-xyb"></i>
+            <span>新建工单</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu" />
+            <div class="ri-menu fr">
+                <div class="menumain">
+                    <div class="goodpiece">
+                        <h1>新建工单</h1>
+                    </div>
+                    
+                    <div class="write-message" >
+                        <div>
+                            <p>
+                                <span>工单类型：</span><br/>
+                                <select name="" id="message_type">
+                                    <option value="0">请选择工单问题类型</option>
+                                    <option value="1">佣金问题</option>
+                                    <option value="2">更改收货信息</option>
+                                    <option value="3">催货/物流问题</option>
+                                    <option value="4">支付问题</option>
+                                    <option value="5">其他问题</option>
+                                </select>
+                            </p>
+                            <p>
+                                <span>工单标题：</span><br/>
+                                <input id="mtitle" type="text" placeholder="标题示例：如何找回密码？"/>
+                            </p>
+                            <p>
+                                <span>工单问题描述：</span><br/>
+                                <textarea name="" id="text" cols="64" rows="7" placeholder="请在这里补充问题的详细信息，这样有助于我们更好更准确的帮您解答问题。"></textarea>
+                            </p>
+                            <p class="submit">
+                            
+                                <button onclick="sub_message()">提交</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<div class="footer p">
+    <include file="public/footer_index" />
+</div>
+<!--footer-e-->
+<script>
+
+    var id={$user['wh181_id']};
+    var nickname="{$user['nickname']}";
+    
+    var checkSubmit = false;
+    function sub_message(){
+       
+        if(checkSubmit == true){
+            return false; //当表单被提交过一次后checkSubmitFlg将变为true,根据判断将无法进行提交。
+        }
+        checkSubmit = true;
+        var text=$("#text").val();
+        var mtitle=$("#mtitle").val();
+        if(!$.trim(text)==""){
+            $.post("/index.php/home/User/leave_message",{'text':text,'wh181ID':id,'nickname':nickname,'mtitle':mtitle},function(data){
+//                $("#ospan").html(text)+"<br/>";
+                if(data=1){
+                    alert("添加成功");
+                    location.reload();
+                }
+               
+            })
+        }
+    }
+
+</script>
+</body>
+</html>

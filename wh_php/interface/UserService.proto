@@ -1,0 +1,335 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/2
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "Common.proto";
+import "UserModel.proto";
+
+service UserService {//用户中心
+	rpc import (Tps138User) returns (google.protobuf.Empty)
+	rpc register (RegisterInfo) returns (google.protobuf.Int32Value)
+	rpc login (LoginRequest) returns (LoginReply){} //执行用户登录动作
+	rpc getUserInfo (Uid) returns (GetUserInfoReply){}//发送用户id返回用户所有信息
+	rpc checkMobileRegistered (CheckPhoneInfo) returns (google.protobuf.BoolValue){}//验证
+	rpc checkEmailRegistered (CheckEmailInfo) returns (google.protobuf.BoolValue){}//获取邮箱号
+	rpc checkIdCard (CheckIdCardInfo) returns (google.protobuf.BoolValue) {}//验证身份证
+	rpc getIdCard(Uid) returns (GetIdCardReply){}//获取身份证号
+	rpc updateUserInfo (UpdateInfo) returns (google.protobuf.BoolValue) {}//修改用户信息
+	rpc updatePassword (NewPassword) returns (google.protobuf.BoolValue)
+	rpc validatePassword (UserPassword) returns (google.protobuf.BoolValue)
+	rpc getMessage(Uid) returns (MessagesReply)//获取用户消息
+
+    rpc addUserAddress(UserAddress) returns (google.protobuf.BoolValue)//用户添加收货地址
+    rpc updateUserAddress(UpdateAddress) returns (google.protobuf.BoolValue)//用户修改收货地址
+    rpc delUserAddress(AddressId) returns (google.protobuf.BoolValue)//用户修改收货地址
+    rpc getUserAddress(Uid) returns (UserAddressList)//用户获取收货地址
+    rpc setDefaultAddress(AddressId) returns (google.protobuf.BoolValue)//设置默认地址
+
+
+    rpc addFavoriteItem(FavoriteItem) returns (google.protobuf.Empty)//添加商品收藏
+    rpc getFavoriteItem(Uid) returns (FavoriteItems)//获取收藏商品
+    rpc getFavoriteItemNum(Uid) returns (FavoriteItemNum)//获取商品收藏数量
+    rpc delFavoriteItem(FavoriteItem) returns (google.protobuf.Empty)//取消商品收藏
+
+    rpc addFavoriteStore(FavoriteStore) returns (google.protobuf.Empty)//添加店铺收藏
+    rpc getFavoriteStore(Uid) returns (FavoriteStores)//获取店铺收藏列表
+    rpc getFavoriteStoreNum(Uid) returns (FavoriteStoreNum)//获取店铺收藏数量
+    rpc delFavoriteStore(FavoriteStore) returns (google.protobuf.Empty)//取消店铺收藏
+
+ /*************************************/
+
+	rpc getUserComment(Uid) returns (UserComment) //获取用户评论
+	rpc addComment(AddCommentInfo) returns (google.protobuf.BoolValue)  //添加评论
+	rpc addReply(AddReplyInfo) returns (google.protobuf.BoolValue)  //添加回复
+
+	rpc getOrder(Uid) returns (UserOrder) //获取订单列表
+	rpc getOrderDetail(Uid) returns (UserOrder) //获取订单详情
+	rpc cancelOrder(OrderId) returns (CancleOrderReplay) //取消订单
+
+	rpc confirmOrder(OrderId) returns (google.protobuf.BoolValue)//订单确认收货
+	rpc gertReturnOrder(OrderId) returns (ReturnOrderInfo)//获取退货订单信息
+	rpc rechangeOrder(OrderId) returns (ChangeOrderReply)//订单换货rpc getRechangeOrder(OrderId) returns (ChangeOrderInfo)//获取换货订单信息
+
+	rpc uploadAvotar(Uid) returns (google.protobuf.BoolValue) //上传头像
+	rpc delAvotar(Uid) returns (google.protobuf.Empty) //删除上传头像
+
+	rpc applyWithdraw(ApplyWithdraw) returns (google.protobuf.Empty) //申请提现
+	rpc getRecharge(Uid) returns (UserRecharge)  //获取充值记录
+
+	rpc getUserLevel(LevelId) returns (UserLevel) //获取会员等级列表
+	rpc addUserLevel(AddUserLevel) returns (google.protobuf.BoolValue) //会员等级添加
+	rpc updateLevel(UpdateLevel) returns (google.protobuf.BoolValue) //会员等级修改
+	rpc delLevel(LevelId) returns (google.protobuf.Empty) //会员等级删除
+
+	rpc getCoupon(Uid) returns(UserCoupon)//获取优惠券
+
+	rpc getAccount(Uid) returns (UserAccount)//获取用户钱包资金
+
+	rpc getUserUnreadMessageCount(Uid) returns (Count) //查询未读信息数量
+	rpc getUserMessageList(MsgId) returns (UserMessage) //读取信息列表
+	rpc getUserMessage(GetUserMessage) returns (Message) //读取单条信息
+	rpc setUserMessageRead(SetUserMessageRead) returns (google.protobuf.Empty) //批量标记信息已读
+	rpc deleteUserMessageRead(DeleteUserMessageRead) returns (google.protobuf.Empty) //批量删除信息
+
+
+
+
+     //用户评论模块待完善
+     //rpc addComment(AddCommentInfo) returns (google.protobuf.BoolValue)//用户添加评论
+     //用户评论点赞
+     //用户评论追加
+
+
+    /*订单,交易相关
+    rpc getCart(Uid) returns (UserCart)//获取用户购物车(为登录状态uid定义为phpsessionid,登录定义user主键)
+    rpc getCartNum(Uid) returns (UserCartNum)//获取用户购物车商品数量
+    rpc getOrder(Uid) returns (UserOrders)//用户获取所有订单
+    rpc confirmOrder(OrderId) returns (google.protobuf.BoolValue)//订单确认收货
+    rpc returnOrder(OrderId) returns (ReturnOrderReply)//订单退货
+    rpc gertReturnOrder(OrderId) returns (ReturnOrderInfo)//获取退货订单信息
+    rpc rechangeOrder(OrderId) returns (ChangeOrderReply)//订单换货
+    rpc getRechangeOrder(OrderId) returns (ChangeOrderInfo)//获取换货订单信息
+    rpc getAccount(Uid) returns (UserAccount)//获取用户钱包资金
+    rpc getCoupon(Uid) returns(UserCoupon)//获取优惠券
+    rpc getCoupon(Uid) returns(UserCoupon)//获取优惠券
+    rpc getUnpaidOrder(Uid) returns (UnpaidOrders)//未支付订单
+    rpc getNotReceivedOrder(Uid) returns (NotReceivedOrders)//待收获订单
+    rpc getCompletionOrder(Uid) returns (CompletionOrders)//已完成订单
+    rpc cancleOrder(OrderId) returns (cancleOrderReplay)//取消订单
+*/
+
+}
+
+/*获取店铺收藏列表*/
+message FavoriteStores{
+    repeated uint32 favorite_stores = 1;
+
+}
+message FavoriteStoreNum{
+    uint32 favorite_store_num = 1;
+}
+
+/*获取商品收藏列表*/
+message FavoriteItems {
+    repeated uint32 favorite_items = 1;
+}
+message FavoriteItemNum{
+    uint32 favorite_item_num = 1;
+    Pagination pagination = 2;
+}
+
+
+/*修改收货地址*/
+message UpdateAddress{
+    AddressId address_id = 1;
+    UserAddress addressinfo=2;
+}
+ message AddressId{
+     int32 address_id = 1;
+}
+
+
+message UserAddressList{
+    repeated UserAddress addresslist = 1;
+}
+
+
+/*用户主键*/
+message Uid{
+	string uid = 1;
+}
+
+
+/*注册*/
+message RegisterInfo {//用户注册
+                      UserBasicInfo tpsinfo = 1;//帐号基本信息
+                      UserPWDInfo pwd = 2;//密码信息
+}
+
+
+/*修改信息*/
+message UpdateInfo {
+	uint32 userId = 1;//uid
+	RegisterInfo regInfo = 2;//注册信息
+	UserExtraInfo UserExtraInfo = 3;//补充信息
+	UserIdCard  IDcard = 4;//身份证件
+
+}
+
+
+/*重置密码*/
+message NewPassword {
+	uint32 userId = 1;
+	string oldPassword = 2;
+	string newPassword = 3;
+}
+
+
+/*充值密码*/
+message UserPassword {
+	uint32 userId = 1;
+	string password = 2;
+}
+
+
+/*常用信息*/
+message UserCommonInfo{//不含密码,身份信息的用户信息,登录成功后返回
+                       UserBasicInfo userbasicinfo = 1;
+                       UserExtraInfo userextrainfo = 2;
+}
+
+
+/*登陆传参*/
+message LoginRequest{
+	string username = 1;//可为邮箱,138id,手机号码
+	string password = 2;
+	string ip = 3;
+	google.protobuf.Timestamp time = 4;
+}
+message LoginReply{
+	int32 status = 1; //比对状态,成功为1,密码错误2,用户不存在3,帐号冻结,帐号关闭
+	UserCommonInfo userinfo= 2;//返回用户id
+}
+
+
+/*获取用户信息传参*/
+message GetUserInfoReply{
+	int32 status = 1;//状态,找到返回100,找不到返回101
+	UserCommonInfo userinfo = 2;
+}
+
+
+/*验证用户手机*/
+message CheckPhoneInfo{
+	string mobile = 1;//发送查询手机号
+}
+
+
+/*验证邮箱*/
+message CheckEmailInfo{
+	string mobile = 1;//待验证邮箱
+}
+
+
+/*验证身份证*/
+message CheckIdCardInfo{
+	string IdCard = 1;//待验证身份证
+}
+
+
+/*获取身份信息*/
+message GetIdCardUid{
+	string uid = 1;//用户id
+}
+message GetIdCardReply{
+	UserIdCard idCard = 1;//返回的信息
+}
+
+/*用户获取站内信*/
+message MessagesReply{
+
+}
+/**************************************/
+
+
+/*添加评论*/
+message AddCommentInfo{
+	int32 comment_id = 1; //评论id
+	string uid = 2;
+	string content = 3; //评论
+	string comment_img = 4; //评论图片
+	float goods_rank = 5; //商品评价等级
+	int32 is_anonymous = 6; //是否匿名评论
+
+}
+
+/*添加回复*/
+message AddReplyInfo{
+	int32 reply_id = 1; //回复id
+	int32 comment_id = 2; //评论id
+	string content = 3; //评论
+}
+
+/*获去退货订单信息*/
+message ReturnOrderInfo{
+	int32 order_sn = 1;  //订单编号
+	string store_name = 2; //供应商名称
+	string goods_name = 3; //商品名称
+	float goods_price = 4;  //商品价格
+}
+
+/*订单换货*/
+message ChangeOrderReply{
+
+}
+
+/*获取订单换货列表*/
+message ChangeOrderInfo{
+	int32 order_sn = 1;  //订单编号
+	string store_name = 2; //供应商名称
+	string goods_name = 3; //商品名称
+	float goods_price = 4;  //商品价格
+}
+
+
+
+/*提现*/
+message ApplyWithdraw{
+	string uid = 1;
+	float money = 2; //提现金额
+	string bank_name = 3; //银行名称
+	string account_bank = 4; //银行账号
+	string account_name = 5; //银行账户名
+}
+
+/*会员等级id*/
+message LevelId{
+	int32 level_id = 1;
+}
+
+/*会员等级添加*/
+message AddUserLevel{
+	string level_name = 1; //等级名称
+	float amount = 2; //消费额度
+	string describe = 3; //等级描述
+}
+
+/*会员等级修改*/
+message UpdateLevel{
+	string level_name = 2; //等级名称
+	float amount = 3; //消费额度
+	string describe = 5; //等级描述
+}
+
+/*读取消息列表*/
+message MsgId{
+	int32 msg_id = 1;
+}
+
+/*读取单条信息*/
+message GetUserMessage {
+	string uid = 1;
+	int32 messageId =2;
+};
+
+/*批量标记信息已读*/
+message SetUserMessageRead{
+	string uid = 1;
+	repeated int32 messageId =2;
+}
+
+/*批量删除信息*/
+message DeleteUserMessageRead{
+	string uid = 1;
+	repeated int32 messageId =2;
+}
+
+
+
+
+

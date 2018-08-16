@@ -1,0 +1,103 @@
+<div class="m-top-bar editable" moduleid="1539923" style="position:relative;min-height:25px;">
+  <div class="container">
+    <ul class="fl">
+        <!--<if condition="$user[user_id] gt 0">-->
+            <!--<li class="fl J_login_status"><a href="{:U('Home/user/index')}" alt="" title="" target="_self">{$user['nickname']}</a>-->
+                <!--<a  href="{:U('Home/user/logout')}" style="margin:0 10px;" title="退出" target="_self">退出</a></li>-->
+            <!--</li>-->
+            <!--<else/>-->
+            <!--<li class="fl J_login_status"><a class="menu-item fl J_do_login J_chgurl" href="{:U('Home/user/login')}">-->
+                <!--<span>Hi，请登录</span> </a><a class="menu-item fl ht" href="{:U('Home/user/reg')}">免费注册</a>-->
+        <!--</if>-->
+        <div class="ls-dlzc fl nologin">
+            <a href="{:U('Home/user/login')}">{$Think.lang.LoginPrompt}</a>
+            <a class="red" href="{:U('Home/user/reg')}">{$Think.lang.Register}</a>
+        </div>
+        <div class="ls-dlzc fl islogin">
+            <a class="red userinfo" href="{:U('Home/user/index')}"></a>
+            <a href="{:U('Home/user/logout')}">{$Think.lang.Exit}</a>
+        </div>
+        <script>
+            $(function (){
+                    var uname = getCookie('uname');
+                    if (uname == '') {
+                        $('.islogin').remove();
+                        $('.nologin').show();
+                    } else {
+                        $('.nologin').remove();
+                        $('.islogin').show();
+                        $('.userinfo').html(decodeURIComponent(uname).substring(0,11));
+                    }
+            })
+
+        </script>
+      <li class="fl sep"></li>
+      <!--<li class="fl select-city dropdown">
+        <span class="menu-item">
+        <span>送货至：</span>
+        <a title="" alt="" href="" class="J_cur_place"></a><i class="dd"></i></span>
+      </li>-->
+    </ul>
+    <ul class="fr bar-right">
+      <li class="fl dropdown my-feiniu"><a class="menu-item" target="_blank" href="{:U('/Home/User/index')}">
+        <span>{$Think.lang.UserCenter}</span><i class="dd"></i></a>
+        <ul class="sub-panel">
+          <li><a class="J_chgurl" target="_blank" href="{:U('/Home/User/order_list')}">{$Think.lang.MyOrder}</a></li>
+          <li><a class="J_chgurl" target="_blank" href="{:U('/Home/User/comment')}">{$Think.lang.MyComment}</a></li>
+        </ul>
+      </li> 
+      <li class="fl sep"></li>
+      <!--<li class="fl dropdown mobile-feiniu"><a class="menu-item" href=""><i class="fl ico"></i>
+        <span class="fl"></span>
+        <i class="dd"></i></a>
+        <div class="sub-panel m-lst">
+          <p>{$Think.lang.Sweep}{$walhao_config['shop_info_store_name']|default='商城'}App</p>
+          <dl>
+            <dt class="fl mr10">
+              <a class="andrCode" href="javascript:;"><img height="80" width="80" src="__STATIC__/images/APP-android.png"></a>
+              <a class="iosCode" href="javascript:;"><img height="80" width="80" src="__STATIC__/images/APP-ios.jpg"></a>
+            </dt>
+            <dd class="fl mb10"><a class="andrA" href="javascript:;"><i class="andr"></i> Andiord</a></dd>
+            <dd class="fl"><a class="iosA" href="javascript:;"><i class="iph"></i> iPhone</a></dd>
+          </dl>
+        </div>
+      </li>
+      <li class="fl sep"></li>-->
+      <li class="fl">
+          <a class="menu-item" href="{:U('Home/Article/detail')}" target="_blank">
+        <span>{$Think.lang.HelpCenter}</span>
+        </a>
+      </li>
+      <li class="fl sep"></li>
+      
+    </ul>
+  </div>
+</div>
+<script>
+  $(".andrA").mouseover(function (){
+      $('.andrCode').css('display','block');
+      $('.iosCode').css('display','none');
+      $('.andr').css('backgroundPosition','-45px -52px');
+      $(".andrA").css('background','#da3a4c');
+      $(".andrA").css('color','#fff');
+      $(".iosA").css('background','#F7F7F7');
+      $(".iosA").css('color','#666');
+      $('.iph').css('backgroundPosition','-136px -44px');
+    }).mouseout(function (){
+      
+      
+    });
+  $(".iosA").mouseover(function (){
+      $('.iosCode').css('display','block');
+      $('.andrCode').css('display','none');
+      $(".iosA").css('background','#da3a4c');
+      $(".iosA").css('color','#fff');
+      $('.iph').css('backgroundPosition','-84px -52px');
+      $(".andrA").css('background','#F7F7F7');
+      $(".andrA").css('color','#666');
+      $('.andr').css('backgroundPosition','-118px -44px');
+    }).mouseout(function (){
+      
+      
+    });
+</script>

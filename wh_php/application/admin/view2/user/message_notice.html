@@ -1,0 +1,233 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>短信通告</h3>
+                <h5>网站系系统短信通告</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a href="javascript:;" <if condition="$Request.param.t neq 'mobile'">class="current"</if>><span>会员通告</span></a></li>
+                <li><a href="javascript:;" <if condition="$Request.param.t eq 'mobile'">class="current"</if>><span>商家通告</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>LV0为免费店铺,LV1-LV4为付费店铺</li>
+            <li>可选择店铺等级发送通告,也可选择会员职称发送通告</li>
+            <li>如果大批量(比如选择所有等级和职称)发送通告,可能会出现延迟,请谨慎使用</li>
+            <li>会员/商家 手机号必须可用,否则将会发送失败</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>会员通告编辑</h3>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <form action="" id="msgNotice" method="post">
+                <div cellpadding="0" cellspacing="0" border="0">
+                    <div class="ncap-form-default">
+                        <div class="ncap-account-container" style="border-top:none;">
+                            <h4>
+                                <input id="cls_full" onclick="choosebox(this)" type="checkbox">
+                                <label>全选</label>
+                            </h4>
+                        </div>
+                        <div class="ncap-account-container" style="border-top:none;">
+                            <h4>
+                                <label>会员职称</label>
+                                <input value="allTitle" cka="mod-1" type="checkbox">
+                                <label>全部</label>
+                            </h4>
+                            <ul class="ncap-account-container-list">
+                                <li><label><input class="checkbox" name="mtitle[]" value="0" ck="mod-1" type="checkbox">乡镇代理(LZ0)</label></li>
+                                <li><label><input class="checkbox" name="mtitle[]" value="1" ck="mod-1" type="checkbox">县级代理(LZ1)</label></li>
+                                <li><label><input class="checkbox" name="mtitle[]" value="2" ck="mod-1" type="checkbox">市级代理(LZ2)</label></li>
+                                <li><label><input class="checkbox" name="mtitle[]" value="3" ck="mod-1" type="checkbox">省级代理(LZ3)</label></li>
+                                <li><label><input class="checkbox" name="mtitle[]" value="4" ck="mod-1" type="checkbox">大区代理(LZ4)</label></li>
+                                <li><label><input class="checkbox" name="mtitle[]" value="5" ck="mod-1" type="checkbox">全国代理(LZ5)</label></li>
+                                <li><label><input class="checkbox" name="mtitle[]" value="6" ck="mod-1" type="checkbox">全球总代理(LZ6)</label></li>
+                            </ul>
+                        </div>
+                        <div class="ncap-account-container" style="border-top:none;">
+                            <h4>
+                                <label>店铺等级</label>
+                                <input value="allLevel" cka="mod-2" type="checkbox">
+                                <label>全部</label>
+                            </h4>
+                            <ul class="ncap-account-container-list">
+                                <li><label><input class="checkbox" name="mlevel[]" value="0" ck="mod-2" type="checkbox">免费店铺(LV0)</label></li>
+                                <li><label><input class="checkbox" name="mlevel[]" value="1" ck="mod-2" type="checkbox">青铜店铺(LV1)</label></li>
+                                <li><label><input class="checkbox" name="mlevel[]" value="2" ck="mod-2" type="checkbox">白银店铺(LV2)</label></li>
+                                <li><label><input class="checkbox" name="mlevel[]" value="3" ck="mod-2" type="checkbox">铂金店铺(LV3)</label></li>
+                                <li><label><input class="checkbox" name="mlevel[]" value="4" ck="mod-2" type="checkbox">钻石店铺(LV4)</label></li>
+
+                            </ul>
+                        </div>
+                        <dl class="row">
+                            <dt class="tit">
+                                <label for="msg_content"><em>*</em>通告内容</label>
+                            </dt>
+                            <dd class="opt">
+                                <textarea id="msg_content" name="msg_content" class="tarea" rows="2"></textarea>
+                                <span class="err" id="err_tpl_content" style="display:none;">通告内容不能为空</span>
+                                <p class="notic"></p>
+                            </dd>
+                        </dl>
+                        <input type="hidden" name="type" value="1">
+                        <div class="bot"><a href="JavaScript:void(0);" style="color:#fff;text-decoration: none;" onclick="msgNotice()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认发送</a></div>
+                    </div>
+                </div>
+         </form>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+    </div>
+    <div class="flexigrid" style="display: none;">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>商家通告编辑</h3>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div cellpadding="0" cellspacing="0" border="0">
+                <form action="" id="sellermsgNotice" method="post">
+                    <div class="ncap-form-default">
+                        <dl class="row">
+                            <dt class="tit">
+                                <label for="msg_content"><em>*</em>通告内容</label>
+                            </dt>
+                            <dd class="opt">
+                                <textarea id="seller_msg_content" name="seller_msg_desc" class="tarea" rows="2"></textarea>
+                                <span class="err" id="err_seller_content" style="display:none;">通告内容不能为空</span>
+                                <p class="notic"></p>
+                            </dd>
+                        </dl>
+                        <div class="bot"><a href="JavaScript:void(0);" style="color:#fff;text-decoration: none;" onclick="sellermsgNotice()" class="ncap-btn-big ncap-btn-green" id="submitBtns">确认发送</a></div>
+                    </div>
+                    <input type="hidden" name="type" value="2">
+                </form>
+            </div>
+
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+        //全选
+        $(":checkbox[cka]").click(function(){
+            var $cks = $(":checkbox[ck='"+$(this).attr("cka")+"']");
+            if($(this).is(':checked')){
+                $cks.each(function(){$(this).prop("checked",true);});
+            }else{
+                $cks.each(function(){$(this).removeAttr('checked');});
+            }
+        });
+    });
+    //全全选
+    function choosebox(o){
+        var vt = $(o).is(':checked');
+        if(vt){
+            $('input[type=checkbox]').prop('checked',vt);
+        }else{
+            $('input[type=checkbox]').removeAttr('checked');
+        }
+    }
+
+    //会员
+    function msgNotice(){
+        if($('#msg_content').val() == ''){
+            layer.alert('短信内容不能为空', {icon: 2});
+            return false;
+        }
+//        var all =$('#cls_full').is(':checked');
+//        if(all){
+//            layer.confirm('您选择了所有等级,确定要执行此操作吗', {
+//                btn: ['确定','取消'] //按钮
+//                ,title:'温馨提示:'
+//            }, function(){
+//
+//            }, function(){
+////                layer.close(index);
+//                return false;
+//            });
+//        }
+
+        $.ajax({
+            type:'POST',
+            dataType:'JSON',
+            data:$("#msgNotice").serialize(),
+            url:'/index.php?m=Admin&c=User&a=message_notice',
+            success:function(data){
+                if(data.status ==1){
+                    layer.msg('选中总人数 '+data.total_num+' 可发送人数 '+data.send_num,{icon: 1});
+
+                }
+            },
+            error:function(){
+              layer.alert('网络加载失败,请联系管理员');
+            }
+
+        });
+
+    }
+
+    //商家
+    function sellermsgNotice(){
+        if($('#seller_msg_desc').val() == '' ){
+            layer.alert('短信内容不能为空', {icon: 2});
+            return false;
+        }
+        $.ajax({
+            type:'POST',
+            dataType:'JSON',
+            data:$("#sellermsgNotice").serialize(),
+            url:'/index.php?m=Admin&c=User&a=message_notice',
+            success:function(data){
+                if(data.status ==1){
+                    layer.msg('选中总人数 '+data.total_num+' 可发送人数 '+data.send_num,{icon: 1});
+
+                }
+            },
+            error:function(){
+                layer.alert('网络加载失败,请联系管理员');
+            }
+
+        });
+
+    }
+
+    $('.tab-base li').each(function(i,o){
+        $(o).click(function(){
+            $(o).children().addClass('current');
+            $(o).siblings().children().removeClass('current');
+            $('.flexigrid').hide();
+            $('.flexigrid').eq(i).show();
+        })
+    });
+</script>
+</body>
+</html>

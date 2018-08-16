@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>&nbsp;{$Think.lang.DividePool}-{$walhao_config['shop_info_store_title']}</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/theme.css" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+</head>
+<body class="bg-f5">
+<include file="user/header"/>
+<div class="home-index-middle" style="">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+            <i class="litt-xyb"></i>
+            <span>{$Think.lang.MasterPanel}</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu"/>
+            <div class="ri-menu fr">
+                <div class="block ">
+                    <p class="block-heading">{$Think.lang.DividePool}</p>
+                    <div class="block-body">
+                        <div class="row-fluid">
+                            <p class="title">[ {$Think.lang.MyBonusPoint} ] <span class="msg_conversion_formula">(1 {$Think.lang.Point} = {$Think.lang.Symbol}1 )</span></p>
+                            <div class="point_formula">
+                                <div class="my-total-point"><span id="profitSharingPoint">{$Think.lang.Total} 0</span><span class="text">{$Think.lang.Point}</span></div>
+                                <div class="operators">=</div>
+
+                                <div class="my_sale_commissions">0.00<span class="text">{$Think.lang.Point}（{$Think.lang.MyBonusPoints}）</span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <hr>
+                        <table class="tb">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="row-fluid">
+                                        <p class="title">[ {$Think.lang.MyBonusPoints} ]</p>
+                                        <div class="proportion_input_div">
+                                            <div><input class="proportion_input" type="text" id="sale_commissions_proportion" value="0"></div>
+                                            <div class="percent">%</div>
+                                            <div class="msg"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <input onclick="saveSharingPointProportion('sale_commissions_proportion')" autocomplete="off" name="submit" value="{$Think.lang.Save}" class="btn btn-primary" type="button">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <div class="row-fluid">
+                            <p class="title">[ {$Think.lang.DividendTransferAccount} ]</p>
+                            <p class="cur_money">{$Think.lang.MayTransferPoints}：<span id="curSharingPoint">0</span>{$Think.lang.Point} <span id="losePointMsg"></span></p>
+                            <div class="proportion_input_div">
+                                <div class="percent">{$Think.lang.Turn}</div>
+                                <div><input class="proportion_input" type="text" id="pointNeedToMove" value="" autocomplete="off"></div>
+                                <div class="percent">{$Think.lang.Point}</div>
+                                <div class="percent">=</div>
+                                <div class="percent">{$Think.lang.Symbol}</div>
+                                <div><input class="proportion_input" type="text" id="moneyNeedToGet" value="" readonly="" autocomplete="off"></div>
+
+                                <div class="percent">{$Think.lang.TurnInto}</div>
+                                <div class="percent">{$Think.lang.AccountBalance}</div>
+                                <div id="pointToMoneyMsg" class="msg"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <input id="sharingPointToMoneyBtn" onclick="sharingPointToMoney()" autocomplete="off" name="submit" value="{$Think.lang.Submit}" class="btn btn-primary" type="button">
+                            <div style="margin-top: 15px;">
+                                {$Think.lang.TransferNote}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<div class="footer p">
+    <include file="public/footer_index" />
+</div>
+<!--footer-e-->
+<script type="text/javascript">
+    //
+</script>
+</body>
+</html>

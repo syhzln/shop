@@ -1,0 +1,169 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/4 0004上午 10:56
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update/edit 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 商品中心服务接口定义--Admin&&Seller
+ */
+syntax = "proto3";
+package psp;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service AdminStoreService{
+    /*店铺等级*/
+    rpc getStoreGradeList (StoreGradeInfo) returns (getStoreGradeListReply){}//获取店铺等级列表
+    rpc addStoreGrade (StoreGradeInfo) returns (google.protobuf.Empty){}//添加店铺等级
+    rpc updateStoreGrade (StoreGradeInfo) returns (google.protobuf.BoolValue){}//编辑店铺等级信息
+    rpc delStoreGrade (StoreGradeInfo) returns (google.protobuf.BoolValue){}//删除店铺等级
+
+    /*店铺分类*/
+    rpc getStoreClassList (StoreClassInfo) returns (getStoreClassListReply){}//获取店铺分类列表
+    rpc addStoreClass (StoreClassInfo) returns (google.protobuf.Empty){}//添加店铺分类
+    rpc updateStoreClass (StoreClassInfo) returns (google.protobuf.BoolValue){}//编辑店铺分类信息
+    rpc delStoreClass (StoreClassInfo) returns (google.protobuf.BoolValue){}//删除店铺分类
+    
+    /*店铺列表*/
+    rpc getStoreInfoList(StoreInfo) returns (StoreInfoReply){}//获取店铺列表
+    rpc addStoreInfoList(StoreInfo) returns (google.protobuf.Empty){}//添加店铺列表
+    rpc updateStoreInfoList(StoreInfo) returns (google.protobuf.BoolValue){}//编辑店铺列表
+    rpc delStoreInfoList(StoreInfo) returns (google.protobuf.BoolValue){}//删除店铺列表
+    rpc getCompanyInfo(CompanyInfo) returns (CompanyInfoReply){}//查看店铺所在的公司信息，以及经营项目等信息
+
+    /*自营店铺*/
+    rpc getStoreOwnList(StoreInfo) returns (StoreInfoReply){}//获取自营店铺列表信息
+    rpc addStoreOwnListInfo(StoreInfo) returns (google.protobuf.Empty){}//添加自营店铺
+    rpc updateStoreOwnListInfo(StoreInfo) returns (google.protobuf.BoolValue){}//编辑自营店铺
+    rpc delStoreOwnListInfo(StoreInfo) returns (google.protobuf.BoolValue){}//删除自营店铺
+
+    /*经营类目审核*/
+    rpc getBindClassList(BindClassInfo) returns (BindClassInfoReply){}//获取经营类目审核列表
+
+    /*商家样品展示*/
+    rpc getSellerSampleList(SellerSampleList) returns (SellerSampleListReply){}//获取商家展示列表
+    rpc addSellerSampleList(SellerSampleList) returns (google.protobuf.Empty){}//添加商家展示列表
+    rpc updateSellerSampleList(SellerSampleList) returns (google.protobuf.BoolValue){}//编辑商家展示列表
+    rpc delSellerSampleList(SellerSampleList) returns (google.protobuf.BoolValue){}//编辑商家展示列表
+
+    /*商家密码变更*/
+    rpc getSellerChangePwd(StoreInfo) returns (StoreInfoReply){}//获取商家列表
+    rpc updateSellerChangePwd(StoreId) returns (google.protobuf.BoolValue){}//变更商家密码 
+
+}
+
+
+/*店铺等级信息*/
+message StoreGradeInfo{
+    uint32 sg_id=1;//店铺等级id编号
+}
+message getStoreGradeListReply{
+    int32 grade_id=1;//店铺等级id
+    string sg_name=2;//等级名称
+    int32 sg_goods_limit=3;//允许发布商品数量
+    int32 sg_template_limit=4;//可选择店铺模板套数
+    int32 sg_price=5;//每年需要的价格
+}
+
+/*店铺分类信息*/
+message StoreClassInfo{
+    uint32 sc_id=1;//店铺分类id
+}
+message getStoreClassListReply{
+    int32 sc_sort=1;//排序
+    string sc_name=2;//分类名称
+    int32 sc_bail=3;//保障金额度
+}
+
+/*店铺信息*/
+message StoreInfo{
+    string store_id=1;//店铺id   
+}
+message StoreInfoReply{
+    string store_name=1;//店铺名称
+    string user_name=2;//店主账号（可以邮箱格式）
+    string seller_name=3;//卖家账号
+    uint32 sg_id=4;//所属店铺等级
+    uint32 sc_id=5;//所属店铺分类
+    google.protobuf.store_time=6;//开店时间
+    int32 store_status=7;//状态（0关闭，1开启，2审核中）
+    int32 store_recommend=8;//推荐（0为否，1为是，默认为0）
+}
+/*获取店铺公司详情*/
+message CompanyInfo{
+    StoreInfo store_info=1;//店铺基本信息
+    BindClass bind_class=2;//类目信息
+    int32 store_apply_id=3;//公司的详细信息
+}
+message CompanyInfoReply{
+    string company_name=1；//公司名称
+    string company_website=2;//公司网址
+    string company_address=3;//公司地址
+    int32 company_telephone=4;//公司电话
+    int32 company_zipcode=5;//邮政编码
+    string company_email=6;//电子邮箱
+    int32 company_fax=7;//传真
+    string contacts_name=8;//联系人姓名
+    int32 contacts_mobile=9;//联系人电话
+    string contacts_email=10;//联系人邮箱
+    int32 tuijian_id=11;//推荐人id
+    string tuijian_name=12;//推荐人姓名
+    string business_licence_number=13;//营业执照号
+    google.protobuf.business_date=14;//营业执照有效期
+    string business_scope=15;//法定经营范围
+    int32 reg_capital=16;//注册资金
+    int32 orgnization_code=17;//组织机构代码
+    string reg_capital=18;//一般纳税人证明
+    string legal_person=19;//法人代表姓名
+    int32 tax_rate=20;//纳税类型码
+    int32 attached_tax_number=21;//税务登记号码
+    string bank_account_name=22;//银行开户名
+    int32 bank_account_number=23;//公司银行账号
+    string bank_branch_name=24;//开户银行支行名称
+    int32 bank_province=25;//支行联行号
+    string bank_city=26;//开户银行所在地
+    string seller_name=27;//卖家账号
+    string store_name=28;//店铺名称
+    string store_person_name=29;//店铺负责人
+    int32 store_person_mobile=30;//负责人号码
+    int32 store_person_qq=31;//QQ
+    string sc_name=32;//店铺分类
+    string store_person_email=33;//负责人邮箱
+    Bindclassinfo bindcladd=34;//营业类目
+    int32 commis_rate=35;//比例
+    int32 electric_class=36;//其它店铺类型（天猫，淘宝）
+    int32 shop_id=37;//店铺ID
+    string shop_class=38;//主营类目
+    string shop_site=39;//网站连接
+    string business_licence_cert=40;//企业营业执照副本
+    string taxpayer_cert=42;//税务登记证复印件
+    string orgnization_cert=43;//织机构代码证复印件
+    int32 legal_identity_cert=44;//法人身份证
+    int32 store_person_cert=45;//店铺负责人身份证
+}
+
+/*获取经营类目信息*/
+message BindClassInfo{
+    uint32 store_id=1;//店铺id
+    BindClassOneInfo bind_class_one=1;//一级类目
+    BindClassTwoInfo bind_class_two=2;//二级
+    BindClassThreeInfo bind_class_three=3;//三级
+}
+message BindClassInfoReply{
+    int32 class1=1;//经营类目1
+    int32 class2=2;//经营类目2
+    int32 class3=3;//经营类目3
+    string store_name=4;//店铺名称
+    string seller_name=5;//商家账号
+    string commis_rate=6;//佣金比例
+}
+
+/*商家店铺样品展示*/
+message SellerSampleList{
+    uint32 id=1;//seller_sample商家店铺样品展示id
+}
+message SellerSampleListReply{
+    string company_name=1;//公司名称
+    string send_name=2;//寄送人姓名
+    int32 send_phone=3;//寄送人电话
+    google.protobuf.add_time=4;//创建时间
+}

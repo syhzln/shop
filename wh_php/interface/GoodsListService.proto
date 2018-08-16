@@ -1,0 +1,24 @@
+syntax = "proto3";
+package psp;
+
+import "Common.proto";
+
+service GoodsListService{
+        rpc getGoodsList(GetNavigationId)returns(ItemGoodsListInfo);//点击导航菜单获取商品列表
+        rpc getItemCategoryLevel1(GetItemCategoryLevel1) returns(ItemCategoryLevel1);//获取一级分类
+        rpc getItemCategoryLevel2(ItemCategoryLevel1) returns(ItemCategoryLevel2);//获取二级分类
+        rpc getItemCategoryLevel3(ItemCategoryLevel2) returns(ItemCategoryLevel3);//获取三级分类
+        rpc getItemBrand(ItemBrandId) returns(ItemGoodsInfo);//点击品牌筛选商品
+        rpc getItemSpec(ItemSpecId) returns(ItemGoodsInfo);//点击规格筛选商品
+        rpc getItemPrice(ItemPrice) returns(ItemGoodsInfo);//点击商品价格筛选商品
+        rpc getItemSort(ItemSort) returns (ItemGoodsInfo);//点击排序筛选商品
+        rpc getFirstList(GetItemCategoryLevel1) returns (ItemGoodsListInfo);//根据一级分类获取列表
+        rpc getSecondList(GetItemCategoryLevel2) returns (ItemGoodsListInfo);//根据二级分类获取列表
+        rpc getThirdList(GetItemCategoryLevel3) returns (ItemGoodsListInfo);//根据三级分类获取列表
+}
+
+
+
+
+
+

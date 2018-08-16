@@ -1,0 +1,194 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>经营类目列表</h3>
+        <h5>网站系统文章索引与管理</h5>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+    <ul>
+      <li>审核供应商申请的经营类目</li>
+
+    </ul>
+  </div>
+  <div class="flexigrid">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>供应商经营类目列表</h3>
+        <h5>(共{$pager->totalRows}条记录)</h5>
+      </div>
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+      <form id="search-form2" class="navbar-form form-inline"  method="post" action="{:U('/Admin/Goods/providerAllowList')}">
+
+        <div class="sDiv">
+
+          <div class="sDiv2">
+            <select name="cat_id" id="cat_id" class="select">
+              <option value="">所有分类</option>
+              <foreach name="cat_list1" item="v" key="k" >
+                <option value="{$v['cate_id']}"> {$v['cate_name']}</option>
+              </foreach>
+            </select>
+          </div>
+          <div class="sDiv2">
+            <input type="text" class="qsbox" id="input-order-id" placeholder="店铺名称" value="{$_POST['keyword']}" name="keyword">
+            <input type="submit" class="btn" value="搜索">
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+        <table>
+          <thead>
+          <tr>
+            <th class="sign" axis="col0"><i class="ico-check"></i></th>
+            <th align="left" abbr="article_title" axis="col3" class="">id</th>
+            <th align="left" abbr="ac_id" axis="col4" class="">分类名称</th>
+            <th align="center" abbr="article_show" axis="col5" class="">店铺名称</th>
+            <th align="center" abbr="article_time" axis="col6" class="">审核状态</th>
+            <th align="center" axis="col1" class="handle">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <volist name="cateList" id="list">
+            <tr>
+              <td class="sign"><i class="ico-check"></i></td>
+              <td align="left" class="">{$list.id}</td>
+              <td align="left" class="">
+                <if condition="$list.class_name_1 neq ''">
+                  {$list.class_name_1}
+                </if>
+                <if condition="$list.class_name_2 neq ''">
+                  >>>{$list.class_name_2}
+                </if>
+                <if condition="$list.class_name_3 neq ''">
+                  >>>{$list.class_name_3}
+                </if>
+              </td>
+              <td align="center" class=""><!-- {$cat_list[$list[parent_cat_id]]} {$cat_list[$list[cat_id]]} -->
+                {$list.provider_name}
+
+              </td>
+              <td align="center" class="">
+                <if condition="$list.state eq 0">
+                  待审核
+                </if>
+                <if condition="$list.state eq 1">
+                  审核通过
+                </if>
+                <if condition="$list.state eq 2">
+                  审核失败
+                </if>
+                <!--<if condition='$list[is_hot] eq 1'>-->
+                  <!--<span class="yes" onClick="changeTableVal('brand','id','{$list.id}','is_hot',this)" ><i class="fa fa-check-circle"></i>是</span>-->
+                  <!--<else />-->
+                  <!--<span class="no" onClick="changeTableVal('brand','id','{$list.id}','is_hot',this)" ><i class="fa fa-ban"></i>否</span>-->
+                <!--</if>-->
+              </td>
+              <td align="center" class="handle">
+                <select onChange="changeVal('{$list[id]}','state',this)">
+                  <option value="">操作</option>
+                  <option value="1">审核通过</option>
+                  <option value="2">审核失败</option>
+                </select>
+              </td>
+          </volist>
+          </tbody>
+        </table>
+        <!--分页位置-->
+        <if condition="$keyword eq '' " >{$page}</if>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    // 删除操作
+    function del(id)
+    {
+        //alert(id);return;
+        layer.confirm('确认删除？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                // 确定
+                $.ajax({
+                    url: "/index.php?m=Admin&c=goods&a=delBrand&id=" + id,
+                    success: function (v) {
+                        layer.closeAll();
+                        var v = eval('(' + v + ')');
+                        if (v.hasOwnProperty('status') && (v.status == 1))
+                            location.href = "{:U('Admin/goods/brandList')}";
+                        else
+                            layer.msg(v.msg, {icon: 2, time: 1000}); //alert(v.msg);
+                    }
+                });
+            }, function (index) {
+                layer.close(index);
+            }
+        );
+    }
+
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+    });
+
+    // 审核经营类目
+    function changeVal(id_value,field,obj)
+    {
+        var src = "";
+
+        if($(obj).hasClass('no')) // 图片点击是否操作
+        {
+            //src = '/public/images/yes.png';
+            $(obj).removeClass('no').addClass('yes');
+            $(obj).html("<i class='fa fa-check-circle'></i>是");
+            var value = 1;
+
+        }else if($(obj).hasClass('yes')){ // 图片点击是否操作
+            $(obj).removeClass('yes').addClass('no');
+            $(obj).html("<i class='fa fa-ban'></i>否");
+            var value = -1;
+        }else{ // 其他输入框操作
+            var value = $(obj).val();
+        }
+        $.ajax({
+            url:"/index.php?m=Admin&c=Goods&a=Check_allow&id="+id_value+"&code="+field+'&value='+value,
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function(data){
+                if(data=='true'){
+
+                    layer.msg('修改成功', {icon: 1});
+                }else{
+                    layer.msg('修改失败', {icon: 2});
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

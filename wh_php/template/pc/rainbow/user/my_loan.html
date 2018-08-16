@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的买呗-{$walhao_config['shop_info_store_title']}</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/jh.css" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body class="bg-f5">
+<include file="user/header"/>
+<div class="home-index-middle" style="">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+            <i class="litt-xyb"></i>
+            <span>我的买呗</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu"/>
+            <div class="ri-menu fr">
+                <!-- 我的买呗-->
+                <div class="menumain p loan_application">
+                    <div class="goodpiece">
+                        <h1>我的买呗</h1>
+                    </div>
+                    <div class="accbala">
+                        <div class="shopcard my_loan ma-to-20 p">
+                            <div class="cuschan">
+                                <span class="loan_balance"><i class="money"></i><em>{$Think.lang.Symbol}</em>{$can_use_money}</span><br /> <!--我的买呗可用额度-->
+                                <span class="co">可用额度</span>
+                            </div>
+                            <div class="cuschan tc-uic">
+                                <a class="debt" href="javascript:;">总额度<span><em>{$Think.lang.Symbol}</em>{$limit_money}</span>
+                                    <if condition="$is_upgrade eq 1"><font onclick="apply_loan()">升级额度</font></a></if>
+                                <a class="debt" href="javascript:;">应还金额 <span><em>{$Think.lang.Symbol}</em>{$repayment_money}</span></a>
+                                <if condition="$status eq 2"><a class="topup-mom" href="javascript:;" onclick="payback()">点击还款</a></if>
+                            </div>
+                            <if condition="$status eq 0">
+                            <!--暂无额度-->
+                                <div class="no_loan">
+                                    暂无额度
+                                    <a href="javascript:;" onclick="apply_loan()">点击申请额度</a>
+                                </div>
+
+                                <elseif condition="$status eq 1" />
+                                    <div class="no_loan">
+                                        申请中,请耐心等待
+                                    </div>
+
+                                <elseif condition="$status eq 3" />
+                                    <div class="no_loan">
+                                        已拒绝 原因: {$reason}<br/>
+                                        <a href="javascript:;" onclick="apply_loan()">编辑申请</a>
+
+                                    </div>
+                            </if>
+                        </div>
+                    </div>
+                    <div class="time-sala">
+                        <ul>
+                            <li <if condition="$Request.param.type eq 1 OR $Request.param.type eq ''">class="red"<else />class="mal-l"</if>><a href="{:U('Home/User/my_loan',array('type'=>'1'))}">支出明细</a></li>
+                            <li <if condition="$Request.param.type eq 2" >class="red"<else />class="mal-l"</if>><a href="{:U('Home/User/my_loan',array('type'=>'2'))}">还款明细</a></li>
+                        </ul>
+                    </div>
+                    <!--支出明细-s-->
+                    <if condition="$Request.param.type eq 1 or $Request.param.type eq 3 or $Request.param.type eq ''">
+                        <div class="he"></div>
+                        <div class="card-list accbala">
+                            <ul>
+                                <!--<li><a href="javascript:void(0);">商品名称</a></li>-->
+                                <li><a href="javascript:void(0);">支出金额</a></li>
+                                <li><a href="javascript:void(0);">单 号</a></li>
+                                <li><a href="javascript:void(0);">时 间</a></li>
+                            </ul>
+                        </div>
+                        <!--无记录时-s-->
+                        <empty name="lists">
+                            <p class="ncyekjl">--{$Think.lang.NoRecords}--</p>
+                        </empty>
+                        <!--无记录时-e-->
+                        <foreach name="lists" item="vv">
+                            <div class="card-list c_contan accbala-list">
+                                <ul>
+                                    <!--<li>{$vv.goods_name}</li>-->
+                                    <li>-{$vv.payout_money}</li>
+                                    <li>{$vv.goods_number}</li>
+                                    <li>{$vv.payout_time}</li>
+                                </ul>
+                            </div>
+                        </foreach>
+                    </if>
+                    <!--支出明细-e-->
+                    <!--还款明细-s-->
+                    <if condition="$Request.param.type eq 2">
+                        <div class="he"></div>
+                        <div class="card-list accbala">
+                            <ul>
+                                <li><a href="javascript:void(0);">编 号</a></li>
+                                <li><a href="javascript:void(0);">还款金额</a></li>
+                                <li><a href="javascript:void(0);">时 间</a></li>
+                                <li><a href="javascript:void(0);">类 型</a></li>
+                            </ul>
+                        </div>
+                        <!--无记录时-s-->
+                        <empty name="lists">
+                            <p class="ncyekjl">--{$Think.lang.NoRecords}--</p>
+                        </empty>
+                        <!--无记录时-e-->
+                        <foreach name="lists" item="vo">
+                            <div class="card-list c_contan accbala-list">
+                                <ul>
+                                    <li>{$vo.pay_number}</li>
+                                    <li>+{$vo.give_money}</li>
+                                    <li>{$vo.repay_time}</li>
+                                    <li>
+                                        <if condition="$vo.pay_type eq 1">
+                                            余额还款
+                                        <elseif condition="$vo.pay_type eq 2"/>
+                                            支付宝还款
+
+                                            <elseif condition="$vo.pay_type eq 3"/>
+                                            银联支付
+                                            <else/>
+                                            退 款
+                                        </if>
+                                    </li>
+                                </ul>
+                            </div>
+                        </foreach>
+                    </if>
+                    <!--还款明细-e-->
+                </div>
+                <!-- 申请开通买呗-->
+                <div class="menumain p apply_loan">
+                    <div class="goodpiece">
+                        <h1>申请开通买呗</h1>
+                    </div>
+                    <div class="apply_loan accbala">
+                        <form action="" id="apply_loan" method="post">
+                            <table>
+                                <tr>
+                                    <td>量子ID：</td>
+                                    <td><input class="reg_wh_id" type="text" name="wh_id" placeholder="请输入本人的量子ID" value="{$info.wh_id}" readonly/></td>
+                                </tr>
+                                <tr>
+                                    <td>姓名：</td>
+                                    <td><input class="reg_name" type="text" name="real_name" placeholder="输入姓名与身份证上的保持一致" value="{$info.real_name}"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td>身份证号：</td>
+                                    <td><input class="reg_idcard" type="text" name="cardnum"  placeholder="请输入本人身份证号码" value="{$info.card_num}"/></td>
+                                </tr>
+                                <tr>
+                                    <td>手机：</td>
+                                    <td><input class="reg_tel" type="text" name="tel" value="{$info.phone}"/></td>
+                                </tr>
+                                <tr>
+                                    <td>身份证正面：</td>
+                                    <td>
+                                        <div class="fl">
+                                            <div class="i-btns up_d_img" style="text-align: left;">
+                                                <a class="add_img" href="javascript:void(0);" onclick="GetUploadify2(1,'','idcard','img_call_back');"><img src="/public/images/add-button.jpg" width="80" height="80" /></a>
+                                                <img class="info_url" src="{$info.front_url}" alt=""/>
+                                            </div>
+                                            <span class="msg-text">请上传身份证正面照片，图片大小不超过5M，支持bmp,gif,jpg,png,jpeg格式文件</span>
+                                            <input type="hidden" name="idcard_pic" id="idcard_pic" value="{$info.front_url}">
+                                            <div name="mscolluploadImg-info" style="display:none"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>身份证反面：</td>
+                                    <td>
+                                        <div class="fl">
+                                            <div class="i-btns up_d_img_back" style="text-align: left;">
+                                                <a class="add_img" href="javascript:void(0);" onclick="GetUploadify2(1,'','idcard','img_call_back3');"><img src="/public/images/add-button.jpg" width="80" height="80" /></a>
+                                                <img class="info_url" src="{$info.back_url}" alt=""/>
+                                            </div>
+                                            <span class="msg-text">请上传身份证反面照片，图片大小不超过5M，支持bmp,gif,jpg,png,jpeg格式文件</span>
+                                            <input type="hidden" name="idcard_backpic" id="idcard_backpic" value="{$info.back_url}">
+                                            <div name="mscolluploadImg-info" style="display:none"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--<tr>-->
+                                    <!--<td>户口本照片：</td>-->
+                                    <!--<td>-->
+                                        <!--<div class="fl">-->
+                                            <!--<div class="i-btns up_h_img" style="text-align: left;">-->
+                                                <!--<a class="add_img" href="javascript:void(0);" onclick="GetUploadify2(5,'','housebook','img_call_back2');"><img src="/public/images/add-button.jpg" width="80" height="80" /></a>-->
+                                            <!--</div>-->
+                                            <!--<span class="msg-text">最多可上传5张图片，每张图片大小不超过5M，支持bmp,gif,jpg,png,jpeg格式文件</span>-->
+                                            <!--<input type="hidden" name="housebook_pic" id="housebook_pic" value="">-->
+                                            <!--<div name="mscolluploadImg-info" style="display:none"></div>-->
+                                        <!--</div>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <tr>
+                                    <td colspan="2"><a href="javascript:;" onclick="load_submit()">提交</a></td>
+                                </tr>
+                            </table>
+                            <input type="hidden" name="apply_id" value="{$info.apply_id}">
+                        </form>
+                    </div>
+                </div>
+                <!-- 还款-->
+                <div class="menumain p pay_back">
+                    <h3>我要还款<a href="javascript:;" class="back">返回</a></h3>
+                    <div class="pay_amount">
+                        选择还款时间段：
+                        <select name="repay_time" id="pay_back_time">
+                            <option value="-1">请选择还款时间段</option>
+                            <option value="{$last_month}">上月需还</option>
+                            <option value="{$now_month}">本月可还</option>
+                        </select>
+                        还款金额：<input type="text" placeholder="" name="repay_money" readonly/>
+                    </div>
+
+
+                    <form action="{:U('Home/Payment/getPay')}" method="post" name="cart4_form" id="cart4_form">
+                        <div class="orde-sjyy">
+                            <h3 class="titls">{$Think.lang.SelectPaymentMethod}</h3>
+                            <div class="bsjy-g">
+                                <dl>
+                                    <dd>
+                                        <div class="order-payment-area">
+                                            <div class="dsfzfpte">
+                                                <b>{$Think.lang.SelectPaymentMethod}</b>
+                                            </div>
+                                            <div class="po-re dsfzf-ee">
+                                                <ul>
+                                                    <li>
+                                                        <div class="payment-area">
+                                                            <input type="radio" value="pay_code=walletpay" class="radio vam" name="pay_radio" >
+                                                            <label for="">
+                                                                <img src="\plugins\payment\walletpay\logo.jpg" width="120" height="40" onClick="change_pay(this);" />
+                                                            </label>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="payment-area">
+                                                            <input type="radio" value="pay_code=alipay" class="radio vam" name="pay_radio" >
+                                                            <label for="">
+                                                                <img src="\plugins\payment\alipay\logo.jpg" width="120" height="40" onClick="change_pay(this);" />
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!--第三方网银支付 start-->
+
+                                        <!--第三方网银支付 end -->
+                                    </dd>
+                                </dl>
+                                <div class="order-payment-action-area">
+                                    <a class="button-style-5 button-confirm-payment" href="javascript:void(0);" id="confirm_payment">{$Think.lang.ConfirmThePaymentMethod}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="order_amount" value="" id="third_pay_money">
+                        <input type="hidden" name="repay_month" value="" id="third_pay_month">
+                    </form>
+                </div>
+                <!--分页-->
+                <div class="operating fixed consume_log" id="bottom">
+                    <div class="fn_page clearfix">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 余额支付弹出框 start -->
+<form action="" method="" name="balance_payment" id="balance_payments">
+    <div id="balance_pay">
+        <div class="balance_back"></div>
+        <div class="balance_pwd" style="margin-top: 340px;">
+            <p class="close" onclick="close_box()"></p>
+            <h3>还款金额：<span id="repay_to_money">￥ 0.00</span></h3>
+            <div class="order-info">
+                <p>订单名称：<span>买呗还款</span></p>
+            </div>
+            <div class="alieditContainer payPassword_container clearfix" data-busy="0">
+
+            </div>
+            <!--<p class="err_notice">* 余额不足，请充值后再购买！</p>-->
+            <p class="pwd_wrong"></p>
+            <div class="check"><a href="javascript:;" onclick="pwd_commit()">确认</a></div>
+        </div>
+    </div>
+</form>
+<!-- 余额支付弹出框 end -->
+
+<!--footer-s-->
+<div class="footer p">
+    <include file="public/footer_index" />
+</div>
+<!--footer-e-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input[name='pay_radio']").first().trigger('click');
+    });
+    $('.back').click(function(){
+        location.reload();
+    });
+
+    //获取待还金额
+    $('#pay_back_time').change(function(){
+        var repay_month = $(this).val();
+        $.ajax({
+            type:'POST',
+            data:{repay_month:repay_month},
+            url:'/index.php?m=home&c=User&a=member_not_repayment',
+            success:function(data){
+                var data = JSON.parse(data);
+                console.log(data);
+                if(data.status == 1){
+                    $('input[name="repay_money"]').val(data.money);
+                }
+            }
+        })
+    })
+
+
+
+    // 切换支付方式
+    function change_pay(obj) {
+        $(obj).parent().siblings('input[name="pay_radio"]').trigger('click');
+    }
+    function payback(){
+        $('.pay_back').css('display','block');
+        $('.loan_application').css('display','none');
+    }
+
+    function apply_loan(){
+        $('.loan_application').css('display','none');
+        $('.apply_loan').css('display','block');
+    }
+    function img_call_back2(fileurl_tmp) {
+        var h_img = fileurl_tmp;
+        for(var i=0;i<h_img.length;i++){
+            $('.up_h_img').append("<a href='" + h_img[i] + "' class='housebook_img' target='_blank'><img src='" + h_img[i] + "'></a>");
+        }
+        $('#housebook_pic').val(h_img);
+        if(h_img.length>=5){
+            $('.up_h_img .add_img').css('display','none');
+        }
+    }
+    //身份证 正面
+    function img_call_back(fileurl_tmp) {
+        var d_img = fileurl_tmp;
+
+            $('.up_d_img').append("<a href='" + d_img + "' class='idcard_img' target='_blank'><img src='" + d_img+ "'></a>");
+
+        $('#idcard_pic').val(d_img);
+        /*if(d_img.length>=2){
+            $('.up_d_img .add_img').css('display','none');
+        }*/
+    }
+
+    //身份证 反面
+    function img_call_back3(fileurl_tmp){
+        var d_img = fileurl_tmp;
+//        for(var i=0;i<d_img.length;i++){
+            $('.up_d_img_back').append("<a href='" + d_img + "' class='idcard_img2' target='_blank'><img src='" + d_img+ "'></a>");
+//        }
+        $('#idcard_backpic').val(d_img);
+//        if(d_img.length>=2){
+//            $('.up_d_img .add_img').css('display','none');
+//        }
+    }
+
+    $(".reg_name").blur(function(){
+        var username = /^[\u4E00-\u9FA5A-Za-z]+$/;
+        if(!username.test($(".reg_name").val())){
+            layer.alert("请输入中文或英文！",{icon:2});
+            return false;
+        }
+    })
+    $(".reg_tel").blur(function(){
+        var tel = /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/;
+        if(!tel.test($(".reg_tel").val())){
+            layer.alert("请输入正确的11位手机号码！",{icon:2});
+            return false;
+        }
+    })
+    $(".reg_idcard").blur(function(){
+        var idcard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; //身份证需为15为数字或18位数字加最后一个校验位
+        if(!idcard.test($(".reg_idcard").val())){
+            layer.alert("请输入正确的身份证号码！",{icon:2});
+            return false;
+        }
+    })
+    function load_submit(){
+        if($('input[name="wh_id"]').val() == ''){
+            layer.alert("请填写您的ID！",{icon:2});
+            return false;
+        }if($('input[name="real_name"]').val() == ''){
+            layer.alert("请填写真实姓名！",{icon:2});
+            return false;
+        }if($('input[name="tel"]').val() == ''){
+            layer.alert("请填写手机号码！",{icon:2});
+            return false;
+        }if($('input[name="cardnum"]').val() == ''){
+            layer.alert("请填写身份证号！",{icon:2});
+            return false;
+        }if($('input[name="idcard_pic"]').val() == ''){
+            layer.alert("请上传身份证正面照片！",{icon:2});
+            return false;
+        }if($('input[name="idcard_backpic"]').val() == ''){
+            layer.alert("请上传身份证反面照片！",{icon:2});
+            return false;
+        }
+       /* if($('input[name="housebook_pic"]').val() == ''){
+            layer.alert("请上传户口本照片！",{icon:2});
+            return false;
+        }*/
+
+        $.ajax({
+            type:'POST',
+            url:'/index.php?m=Home&c=User&a=applyMyBuy',
+            data:$("#apply_loan").serialize(),
+            dataType:'JSON',
+            success:function(data){
+                var data =JSON.parse(data);
+                if(data.status ==1){
+                    layer.msg(data.msg,{icon:1});
+                }else{
+                    layer.msg(data.msg,{icon:2});
+                }
+                window.location.reload();
+            },
+            error:function(){
+                layer.msg('网络加载失败,请重试',{icon:2});
+            }
+
+        });
+
+    }
+
+    //钱包支付提交数据
+    var checkSubmit = false;
+    var before_request =1;
+    function pwd_commit(){
+//        if(checkSubmit == true){
+//            return false; //当表单被提交过一次后checkSubmit将变为true,根据判断将无法进行提交。
+//        }
+//        checkSubmit = true;
+        var pay_pwd = $("input[name='payPassword_rsainput']").val();
+        var order_amount = $('input[name="repay_money"]').val();//还款金额
+        var repay_month = $("#pay_back_time").val();//还款时间
+        var payment_way = 'walletpay';//账户余额还款
+        if(pay_pwd.length != 6){
+            $('.pwd_wrong').css('display','block').html('* 支付密码错误!');
+            return;
+        }
+        $('#balance_pay').css('display','none');//隐藏表单
+        if(before_request == 0) // 上一次请求没回来 不进行下一次请求
+            return false;
+        before_request = 0;
+        $.ajax({
+            type:"POST",
+            url:"{:U('Home/User/member_buy_repayment')}",
+            data:{pay_pwd:pay_pwd,order_amount:order_amount,time:repay_month,payment_way:payment_way},
+            dataType:"JSON",
+            success:function(data){
+
+                if(data.status !=1){
+                    layer.msg(data.msg,{icon: 2});
+                }else{
+                    layer.msg(data.msg,{icon: 1});
+                    before_request = 1;
+                    window.location.href =data.url;//跳转成功页面
+                }
+            },
+            error:function(){
+                layer.msg('网络加载失败,请重试!', {icon: 2});
+
+            },
+
+        });
+
+    }
+
+    //提交支付方式
+    var payPassword = "";
+    $("#confirm_payment").click(function(){
+        var options=$("#pay_back_time option:selected");
+        if(options.val() == -1){
+            layer.alert("请选择还款时间段！",{icon:2});
+            return false;
+        }
+        var available_balance = "{$balance}"; //账户余额
+        var order_amount = $('input[name="repay_money"]').val();//还款金额
+        var repay_month = $("#pay_back_time").val();//还款时间
+        $('#repay_to_money').html('￥'+order_amount);
+        if(parseFloat(order_amount) <= 1 || order_amount.length == 0){
+            layer.alert("亲,还款金额太少了!",{icon:2});
+            return false;
+        }
+
+        var pay_code = $("input[name='pay_radio']:checked").val();
+        //余额支付 弹出支付框
+        if((pay_code=='pay_code=walletpay')){
+
+            $('#balance_pay').css('display','block');
+            $('.payPassword_container').empty();
+            $('#balance_pay .payPassword_container').append('<div class="pay-title">'+
+                    '<span class="pay_type">余额支付</span>'+
+                    '可用余额：<span id="">'+available_balance+'</span></div>'+
+                    '<label for="i_payPassword" class="i-block">支付密码：</label>'+
+                    '<div class="i-block" data-error="i_error">'+
+                    '<div class="i-block six-password">'+
+                    '<input class="i-text sixDigitPassword" id="payPassword_rsainput" type="password" autocomplete="off" required="required"  name="payPassword_rsainput" data-role="sixDigitPassword" tabindex="" maxlength="6" minlength="6" aria-required="true" autofocus>'+
+                    '<div tabindex="0" class="sixDigitPassword-box" style="width: 180px;">'+
+                    '<i style="width: 29px; border-color: transparent;" class="active"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 29px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 29px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 29px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 29px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 29px;"><b style="visibility: hidden;"></b></i>'+
+                    '<span style="width: 29px; left: 0px; visibility: hidden;" class="cardwrap" data-role="cardwrap"></span>'+
+                    '</div>'+
+                    '</div><span> 请输入6位支付密码( 数字！)</span></div>');
+            payPassword = $(".payPassword_container");
+            passwodbox();
+            return;
+        }else{
+            //第三方支付
+            $('#third_pay_money').val(order_amount);
+            $('#third_pay_month').val(repay_month);
+            $('#cart4_form').submit();
+
+        }
+
+    });
+    var _formPay = $('#balance_payments');
+    _formPay.validate({
+        rules : {
+            'payPassword_rsainput':{
+                'minlength':6,
+                'maxlength':6,
+                required:true,
+                digits : true
+            }
+        },
+        messages:{
+            'payPassword_rsainput':{
+                'required' : '&nbsp;* 请填写支付密码',
+                'maxlength' : '&nbsp;* 密码最多为{0}个字符',
+                'minlength' : '&nbsp;* 密码最少为{0}个字符',
+                'digits':'&nbsp;* 密码只能为数字'
+            }
+        },
+        errorPlacement : function(error, element) {
+            element.closest('div[data-error="i_error"]').append(error);
+        },
+        submitHandler : function(form){
+            var _form = $(form);
+            form.submit();
+
+        }
+    });
+
+    function close_box(){
+        $('#balance_pay').css('display','none');
+        $('#maibei_pay').css('display','none');
+    }
+
+    function notice(){
+        $('.notice').css('display','block');
+        $('.check>a').css('backgroundColor','#999');
+    }
+    function passwodbox() {
+
+        var _this = payPassword.find('i'),
+                k = 0, j = 0,
+                password = '',
+                _cardwrap = $('.cardwrap');
+        console.log(payPassword);
+        //点击隐藏的input密码框,在6个显示的密码框的第一个框显示光标
+        payPassword.on('focus', "input[name='payPassword_rsainput']", function () {
+
+            var _this = payPassword.find('i');
+            if (payPassword.attr('data-busy') === '0') {
+                //在第一个密码框中添加光标样式
+                _this.eq(k).addClass("active");
+                _cardwrap.css('visibility', 'visible');
+                payPassword.attr('data-busy', '1');
+            }
+
+        });
+        //change时去除输入框的高亮，用户再次输入密码时需再次点击
+        payPassword.on('change', "input[name='payPassword_rsainput']", function () {
+            _cardwrap.css('visibility', 'hidden');
+            _this.eq(k).removeClass("active");
+            payPassword.attr('data-busy', '0');
+        }).on('blur', "input[name='payPassword_rsainput']", function () {
+
+            _cardwrap.css('visibility', 'hidden');
+            _this.eq(k).removeClass("active");
+            payPassword.attr('data-busy', '0');
+
+        });
+
+        //使用keyup事件，绑定键盘上的数字按键和backspace按键
+        payPassword.on('keyup', "input[name='payPassword_rsainput']", function (e) {
+            var e = (e) ? e : window.event;
+
+            //键盘上的数字键按下才可以输入
+            if (e.keyCode == 8 || (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+                k = this.value.length;//输入框里面的密码长度
+                l = _this.size();//6
+                for (; l--;) {
+
+                    //输入到第几个密码框，第几个密码框就显示高亮和光标（在输入框内有2个数字密码，第三个密码框要显示高亮和光标，之前的显示黑点后面的显示空白，输入和删除都一样）
+                    if (l === k) {
+                        _this.eq(l).addClass("active");
+                        _this.eq(l).find('b').css('visibility', 'hidden');
+
+                    } else {
+                        _this.eq(l).removeClass("active");
+                        _this.eq(l).find('b').css('visibility', l < k ? 'visible' : 'hidden');
+
+                    }
+
+                    if (k === 6) {
+                        j = 5;
+                    } else {
+                        j = k;
+                    }
+                    $('.cardwrap').css('left', j * 30 + 'px');
+
+                }
+            } else {
+                //输入其他字符，直接清空
+                var _val = this.value;
+                this.value = _val.replace(/\D/g, '');
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<include file="public/header" title="资金管理" body="g4"/>
+<include file="public/header_nav" title="我的资金" href="{:U('/Mobile/User/index')}"/>
+    <div class="myhearder bankhearder">
+        <div class="hh">
+            <h2>可用余额</h2>
+            <h1>{$Think.lang.Symbol}{$user.balance}</h1>
+        </div>
+        <div class="scgz">
+            <ul>
+               <!-- <li>
+                    <a href="{:U('Mobile/User/recharge')}">
+                        <img src="__STATIC__/images/cz.png"/>
+                        <p>充值</p>
+                    </a>
+                </li>-->
+                <li>
+                    <a href="{:U('Mobile/User/commission_report')}">
+                        <i class="icon-forms iconfont"></i>
+                        <p>奖金报表</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/User/withdrawals')}">
+                        <i class="icon-tixian iconfont"></i>
+                        <p>提现</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/User/transfer')}">
+                        <i class="icon-weibiaoti5 iconfont"></i>
+                        <p>转账</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="floor my p">
+        <div class="content">
+            <div class="floor list7 ma-to-20">
+                <div class="myorder p">
+                    <div class="content30">
+                        <a href="{:U('Mobile/User/withdrawals_list')}">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>提现记录</span>
+                                </div>
+                                <div class="fr">
+                                    <i class="Mright"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="myorder p">
+                    <div class="content30">
+                        <a href="{:U('Mobile/User/transfer_list')}">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>转账记录</span>
+                                </div>
+                                <div class="fr">
+                                    <i class="Mright"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--底部导航-start-->
+    <include file="public/footer_nav" />
+    <!--底部导航-end-->
+</body>
+</html>

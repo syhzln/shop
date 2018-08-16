@@ -1,0 +1,44 @@
+<div class="le-menu fl">
+	<div class="menu-ul">
+		<ul>
+			<li class="ma"><i class="account-acc1"></i>{$Think.lang.TradingCenter}</li>
+			<li><a href="{:U('Home/User/order_list')}">{$Think.lang.MyOrder}</a></li>
+			<!--<li><a href="">我的预售</a></li>-->
+			<li><a href="{:U('Home/User/comment')}">{$Think.lang.MyComment}</a></li>
+		</ul>
+		<ul>
+			<li class="ma"><i class="account-acc3"></i>{$Think.lang.AssetCenter}</li>
+			<li><a href="{:U('Home/User/recharge')}">{$Think.lang.AccountFunds}</a></li>
+			<li><a href="{:U('Home/User/commission_report')}">{$Think.lang.BonusReport}</a></li>
+			<li><a href="{:U('Home/User/commission_order_repair')}">{$Think.lang.BonusBill}</a></li>
+			<li><a href="{:U('Home/User/my_loan')}">我的买呗</a></li>
+
+		</ul>
+		<ul>
+			<li class="ma"><i class="account-acc4"></i>{$Think.lang.AttentionCenter}</li>
+			<li><a href="{:U('Home/User/goods_collect')}">{$Think.lang.MyCollection}</a></li>
+			<!-- <li><a href="">曾经购买</a></li>
+			<li><a href="{:U('Home/User/visit_log')}">我的足迹</a></li> -->
+		</ul>
+		<ul>
+			<li class="ma"><i class="account-acc5"></i>{$Think.lang.PersonalCenter}</li>
+			<li><a href="{:U('Home/User/index')}">{$Think.lang.AccountCenter}</a></li>
+			<li><a href="{:U('Home/User/info')}">{$Think.lang.PersonalInformation}</a></li>
+			<!--<li><a href="{:U('Home/User/bind_auth')}">账号绑定</a></li>-->
+			<li><a href="{:U('Home/User/address_list')}">{$Think.lang.AddressManagement}</a></li>
+			<li><a href="{:U('Home/User/safety_settings')}">{$Think.lang.SecuritySettings}</a></li>
+			<li><a href="{:U('Home/User/leave_message')}">新建工单</a></li>
+			<li><a href="{:U('Home/User/my_message')}">我的工单</a></li>
+		</ul>
+		<ul>
+			<li class="ma"><i class="account-acc6"></i>{$Think.lang.ServiceCenter}</li>
+			<!--<li><a href="">我的发票</a></li>-->
+			<li><a href="{:U('Home/User/return_goods_list')}">{$Think.lang.ReturnManagement}</a></li>
+			<!--<li><a href="{:U('Home/User/message_notice')}">{$Think.lang.PlatformAnnouncement}</a></li>-->
+		</ul>
+		<ul>
+			<li class="ma"><i class="account-acc6"></i>{$Think.lang.AreaGoods}</li>
+			<li><a href="{:U('Home/Goods/specialList',array('flags'=>1))}">{$Think.lang.AreaGoods}</a></li>
+		</ul>
+	</div>
+</div>

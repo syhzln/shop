@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{$Think.lang.SecuritySettings}</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+		<link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+		<script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body class="bg-f5">
+		<include file="user/header"/>
+		<div class="home-index-middle">
+			<div class="w1224">
+				<div class="g-crumbs">
+			       	<a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+			       	<i class="litt-xyb"></i>
+			       	<span>{$Think.lang.ForgetPassword}</span>
+			    </div>
+			    <div class="home-main forgetpaw">
+		    		<div class="menumain">
+		    			<div class="goodpiece">
+							<h1>{$Think.lang.SecuritySettings}</h1>
+							<!--<a href=""><span class="co_blue">帮助</span></a>-->
+						</div>
+			    		<div class="accouun"></div>
+			    		<div class="thirset ma-to-20">
+			    			<div class="wshef yellc">1.{$Think.lang.FillInTheUsername}<i class="spassw"></i></div>
+			    			<div class="wshef">2.{$Think.lang.VerifyIdentity}<i class="spassw"></i></div>
+			    			<div class="wshef">3.{$Think.lang.SetNewPassword}<i class="spassw"></i></div>
+			    			<div class="wshef">4.{$Think.lang.CarryOut}</div>
+			    		</div>
+			    		<div class="personerinfro verifyi">
+			    			<form action="" method="post" id="forget_pwd">
+			    				<ul class="birth_jz">
+									<li class="infor_wi_le"><a>{$Think.lang.Username}：</a></li>
+									<li>
+										<a>
+											<input class="name_zjxs" type="text" name="username" id="username" value="" onblur="chkuser()"/>
+										</a>
+									</li>
+								</ul>
+								<ul class="name_jz checode">
+									<li class="infor_wi_le"><a>{$Think.lang.VerificationCode}：</a></li>
+									<li class="teaeu">
+										<a>
+											<input class="name_zjxs" type="text" name="verify_code" id="captcha" value="">
+										</a>
+										<a class="ycks" href="javascript:void(0);">
+											<img class="yck" style="width:120px" id="captchaImg" alt="captcha" src="{:U('User/verify')}"  onclick="verify()" />
+										</a>
+									</li>
+								</ul>
+								<ul class="hobby_jz">
+									<li class="infor_wi_le"></li>
+									<div class="save_s">
+										<input class="save" type="button"  value="{$Think.lang.NextStep}" onclick="chkcaptcha()">
+									</div>
+								</ul>
+			    			</form>
+			    		</div>
+		    		</div>
+			    </div>
+			</div>
+		</div>
+        <!--footer-s-->
+        <div class="footer p">
+            <include file="public/footer_index" />
+        </div>
+        <!--footer-e-->
+	</body>
+	<script type="text/javascript">
+	function verify(){
+		$('#captchaImg').attr('src','/index.php?m=Home&c=User&a=verify&r='+Math.random());
+	}
+
+	var uflag = false;
+	var cflag = false;
+
+	function chkuser(){
+		var username = $('#username').val();
+		if(username == ''){
+			show_error('username','{$Think.lang.UsernameNotEmpty}');
+			return false;
+		}else{
+			$.ajax({
+				url:'/index.php?m=Home&c=User&a=check_username&t='+Math.random(),
+				type:'post',
+				dataType:'json',
+				data:{username:username},
+				success:function(t){
+					if(t>=1){
+						uflag = true;
+					}else{
+						show_error('username','{$Think.lang.UsernameError}');
+					}
+				}
+			})
+		}
+	}
+
+	function chkcaptcha(){
+		var captcha = $('#captcha').val();
+		if(captcha == ''){
+			show_error('captcha','{$Think.lang.UsernameNotEmpty}');
+			return false;
+		}else if(captcha.length!=4){
+			show_error('captcha','{$Think.lang.VerificationCodeError}');
+			return false;
+		}else{
+			$.ajax({
+				url:'/index.php?m=Home&c=User&a=check_captcha&t='+Math.random(),
+				type:'post',
+				dataType:'json',
+				data:{verify_code:captcha},
+				success:function(t){
+					if(t==1){
+						cflag = true;
+						gonext();
+					}else{
+						show_error('captcha','{$Think.lang.IncorrectVerificationCode}');
+						return false;
+					}
+				}
+			})
+		}
+	}
+
+	function gonext(){
+        if($('#username').val() == ''){
+            show_error('username','{$Think.lang.UsernameNotEmpty}');
+            return;
+        }
+        if($('#captcha').val() == ''){
+            show_error('captcha','{$Think.lang.VerificationMustFilled}');
+            return;
+        }
+        if(!uflag){
+            show_error('username','{$Think.lang.UsernameVerificationIsIncorrect}');
+            return;
+        }else if(!cflag){
+            show_error('captcha','{$Think.lang.ImageVerificationCodeIsIncorrect}');
+            return;
+        }
+        if(uflag && cflag){
+            $('#forget_pwd').submit();
+        }
+	}
+
+	function show_error(type,msg){
+        verify()
+		layer.alert(msg, {icon: 2});
+		return false;
+	}
+	</script>
+</html>

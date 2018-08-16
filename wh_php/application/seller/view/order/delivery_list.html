@@ -1,0 +1,203 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>发货单列表</h3>
+        <h5>已发货订单列表</h5>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+     <ul>
+      <li>点击查看操作将显示订单（包括订单物品）的详细信息</li>
+      <li>已发货订单列表</li>
+    </ul>
+  </div>
+  <div class="flexigrid">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>发货单列表</h3>
+        <h5>(共{$page->totalRows}条记录)</h5>
+      </div>
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+	  <form class="navbar-form form-inline"  method="post" action="{:U('Order/delivery_list')}"  name="search-form2" id="search-form2">  
+	  		<input type="hidden" name="order_by" value="order_id">
+            <input type="hidden" name="sort" value="desc">
+            <input type="hidden" name="user_id" value="{$Request.param.user_id}">
+            <!--用于查看结算统计 包含了哪些订单-->
+            <input type="hidden" value="{$_GET['order_statis_id']}" name="order_statis_id" />
+                                    
+      <div class="sDiv">
+        <div class="sDiv2">
+        	<input type="text" size="30" id="consignee"  name="consignee"  value="" class="qsbox"  placeholder="收货人">
+        </div>
+        <div class="sDiv2">
+        	<input type="text" size="30" id="order_sn" name="order_sn" value="" class="qsbox"  placeholder="订单编号">
+        </div>
+        <div class="sDiv2">	 
+        	<select name="shipping_status" class="select" style="width:100px;margin-right:5px;margin-left:5px">
+                <option value="0">发货状态</option>
+                <option value="1">待发货</option>
+                <option value="2">已发货</option>
+            </select>
+        </div>
+        <div class="sDiv2">	 
+          <input type="submit"   class="btn" value="搜索">
+        </div>
+      </div>
+     </form>
+    </div>
+    <div class="hDiv">
+        <form action="{:U('Order/uploadxml')}" method="post" enctype="multipart/form-data" id = "laodtable">
+            <table>
+                <tr>
+                    <td><input type="file" name="import"/></td>
+                    <td> <input type="hidden" name="table" value="tablename"/></td>
+                </tr>
+                <tr><td> <input type="submit" value="导入"/></td><td></td><td></td></tr>
+            </table>
+        </form>
+      <div class="hDivBox" id="ajax_return">
+        <table cellspacing="0" cellpadding="0">
+          
+        </table>
+      </div>
+    </div>
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+  <table>
+
+  <thead>
+    <tr>
+      <th class="sign" axis="col0"><i class="ico-check"></i></th>
+      <th align="left" abbr="order_sn" axis="col3" class=""><a href="javascript:sort('order_sn');">订单编号</a></th>
+      <th align="left" abbr="add_time" axis="col4" class=""><a href="javascript:sort('add_time');">下单时间</a></th>
+      <th align="left" abbr="consignee" axis="col4" class="">收货人</th>
+      <th align="center" abbr="mobile" axis="col5" class=""><a href="javascript:sort('mobile');">联系电话</a></th>
+      <th align="center" abbr="article_time" axis="col6" class="">所选物流</th>
+      <th align="center" abbr="article_time" axis="col6" class="">物流费用</th>
+      <th align="center" abbr="article_time" axis="col6" class="">发货状态</th>
+      <th align="center" abbr="article_time" axis="col6" class="">支付时间</th>
+      <th align="center" abbr="article_time" axis="col6" class=""><a href="javascript:sort('total_amount');">订单总价</a></th>
+      <th align="center" axis="col1" class="handle">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  <if condition="empty($orderList) eq true">
+    <tr data-id="0">
+          <td class="no-data" align="center" axis="col0" colspan="50">
+            <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+          </td>
+       </tr>
+  <else/>
+  <volist name="orderList" id="list">
+      <tr>
+             <td class="sign" axis="col0"><i class="ico-check"></i></td>
+             <td align="left" abbr="order_sn" axis="col3" class="">{$list.order_sn}</td>
+             <td align="left" abbr="add_time" axis="col4" class="">{$list.add_time|date='Y-m-d H:i',###}</td>
+             <td align="left" abbr="consignee" axis="col4" class="">{$list.consignee}</td>
+             <td align="center" abbr="mobile" axis="col5" class="">{$list.mobile}</td>
+             <td align="center" abbr="article_time" axis="col6" class="">{$list.shipping_name}</td>
+             <td align="center" abbr="article_time" axis="col6" class="">{$list.shipping_price}</td>
+             <td align="center" abbr="article_time" axis="col6" class="">
+                <if condition="$list['shipping_status'] eq 1">未发货</if>
+                <if condition="$list['shipping_status'] eq 2">已发货</if>
+                <if condition="$list['shipping_status'] eq 4">已签收</if>
+             </td>
+
+             <td align="center" abbr="article_time" axis="col6" class="">
+
+                    {$list.pay_time|default=0|date='Y-m-d H:i',###}
+
+             </td>
+             <td align="center" abbr="article_time" axis="col6" class="">{$list.total_amount}</td>
+             <td align="center" axis="col1" class="handle">
+              <if condition="$list['shipping_status'] eq 1">
+                  <a class="btn green" href="{:U('Seller/order/delivery_info',array('order_id'=>$list['order_id']))}" data-toggle="tooltip" title="处理发货"><i class="fa fa-send-o"></i>去发货</a>
+              <else/>
+                  <a class="btn green" href="{:U('Seller/order/delivery_info',array('order_id'=>$list['order_id']))}" data-toggle="tooltip" title="" class="btn btn-info" data-original-title="查看详情"><i class="fa fa-list-alt"></i>详情</a>
+                  <!--<a class="btn green" href="{:U('Order/shipping_print',array('order_id'=>$list['order_id']))}" data-toggle="tooltip" class="btn btn-default" title="打印快递单"><i class="fa fa-print"></i>快递单</a>-->
+              </if> 
+              <a class="btn green" href="{:U('Order/order_print',array('order_id'=>$list['order_id']))}" data-toggle="tooltip" class="btn btn-default" title="打印配货单"><i class="fa fa-print"></i>配货单</a>
+             </td>
+           </tr>
+      </volist>
+      </if>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+      </div>
+      <div class="iDiv" style="display: none;"></div>
+    </div>
+    <!--分页位置--> 
+
+   	</div>
+</div>
+<script type="text/javascript">
+
+	 
+ //    $(document).ready(function(){	
+     	
+	// 	// 点击刷新数据
+	// 	$('.fa-refresh').click(function(){
+	// 		location.href = location.href;
+	// 	});
+		
+	// 	ajax_get_table('search-form2',1);
+		
+	// 	$('.ico-check ' , '.hDivBox').click(function(){
+	// 		$('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
+	//     		var hasClass = $(this).hasClass('trSelected');
+	//     		$('tr' , '#flexigrid').each(function(){
+	//     			if(hasClass){
+	//     				$(this).addClass('trSelected');
+	//     			}else{
+	//     				$(this).removeClass('trSelected');
+	//     			}
+	//     		});  
+	//     	});
+	// 	});
+		 
+	// });
+    
+    
+ // ajax 抓取页面
+    // function ajax_get_table(tab,page){
+    //     cur_page = page; //当前页面 保存为全局变量
+    //         $.ajax({
+    //             type : "POST",
+    //             url:"/index.php/Seller/order/ajaxdelivery/p/"+page,//+tab,
+    //             data : $('#'+tab).serialize(),// 你的formid
+    //             success: function(data){
+    //                 $("#flexigrid").html('');
+    //                 $("#flexigrid").append(data);
+    //             }
+    //         });
+    // }
+	
+ // 点击排序
+    // function sort(field)
+    // {
+    //     $("input[name='order_by']").val(field);
+    //     var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+    //     $("input[name='sort']").val(v);
+    //     ajax_get_table('search-form2',cur_page);
+    // }
+	 
+</script>
+</body>
+</html>

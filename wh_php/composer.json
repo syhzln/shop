@@ -1,0 +1,32 @@
+{
+    "require": {
+        "walhao/psp": "dev-master",
+	    "aliyuncs/oss-sdk-php": "v2.2.4",
+        "grpc/grpc": "^1.6",
+        "google/protobuf": "^3.4",
+        "topthink/framework": "5.1.x-dev",
+        "topthink/think-helper": "^1.0",
+        "phpunit/phpunit": "^4.8.26",
+        "phpspec/prophecy": "^1.7",
+        "phpdocumentor/reflection-docblock": "^3.2",
+        "doctrine/instantiator": "1.0.5",
+        "symfony/yaml": "v2.8.13",
+        "symfony/dom-crawler": "v2.8.13",
+        "symfony/polyfill-mbstring": "v1.2.0",
+        "topthink/think-image": "v1.0.7",
+        "topthink/think-captcha": "v1.0.7",
+        "royfj/aliyun-php-sdk-core": "^0.2.0",
+        "jjonline/aliyun-dysms-php-sdk": "^2.0"
+
+    },
+    "repositories": {
+        "0": {
+            "type": "git",
+            "url": "https://e.coding.net/walhao/grpc-php.git"
+        },
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}

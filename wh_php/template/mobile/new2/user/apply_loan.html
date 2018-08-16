@@ -1,0 +1,120 @@
+<include file="public/header" title="申请买呗" body="g4"/>
+<include file="public/header_nav" title="申请买呗" href="{:U('/Mobile/User/my_loan')}"/>
+<div class="p after-set-li">
+    <div class="apply_loan accbala">
+        <form action="{:U('Mobile/User/apply_loan')}" id="apply_loan" method="post" enctype="multipart/form-data">
+            <table>
+                <tr>
+                    <td><span>量子ID：</span></td>
+                    <td><input class="reg_wh_id" type="text" name="wh_id" value="{$info.wh_id}" readonly/></td>
+                </tr>
+                <tr>
+                    <td><span>姓名：</span></td>
+                    <td><input class="reg_name" type="text" name="real_name" placeholder="输入身份证上的姓名" value="{$info.real_name}"/></td>
+                </tr>
+                <tr>
+                    <td><span>手机：</span></td>
+                    <td><input class="reg_tel" type="text" name="tel" placeholder="输入正确的手机号码" value="{$info.phone}"/></td>
+                </tr>
+                <tr>
+                    <td><span>身份证号：</span></td>
+                    <td><input class="reg_idcard" type="text" name="cardnum"  placeholder="请输入本人身份证号码" value="{$info.card_num}"/></td>
+                </tr>
+                <tr>
+                    <td><span>身份证正面：</span></td>
+                    <td>
+                        <div class="fl">
+                            <input type="file" class="idcard1_file" name="idcard[]">
+                            <img src="" class="idcard1" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span>身份证反面：</span></td>
+                    <td>
+                        <div class="fl">
+                            <input type="file" class="idcard2_file" name="idcard[]">
+                            <img src="" class="idcard2" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><a href="javascript:;" class="load_submit" onclick="load_submit()">提交</a></td>
+                </tr>
+            </table>
+
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(".idcard1_file").change(function(){
+        var file = this.files[0];
+        if (window.FileReader) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            //监听文件读取结束后事件
+            reader.onloadend = function (e) {
+                $(".idcard1_file").css('display','none');
+                $(".idcard1").attr("src",e.target.result);    //e.target.result就是最后的路径地址
+            };
+        }
+    });
+    $(".idcard2_file").change(function(){
+        var file = this.files[0];
+        if (window.FileReader) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            //监听文件读取结束后事件
+            reader.onloadend = function (e) {
+                $(".idcard2_file").css('display','none');
+                $(".idcard2").attr("src",e.target.result);    //e.target.result就是最后的路径地址
+            };
+        }
+    });
+
+    $(".reg_name").blur(function(){
+        var username = /^[\u4E00-\u9FA5A-Za-z]+$/;
+        if(!username.test($(".reg_name").val())){
+            showErrorMsg("*请输入中文或英文！");
+            return false;
+        }
+    })
+    $(".reg_tel").blur(function(){
+        var tel = /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/;
+        if(!tel.test($(".reg_tel").val())){
+            showErrorMsg("*请输入正确的十一位手机号码");
+            return false;
+        }
+    })
+    $(".reg_idcard").blur(function(){
+        var idcard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; //身份证需为15为数字或18位数字加最后一个校验位
+        if(!idcard.test($(".reg_idcard").val())){
+            showErrorMsg("*请输入正确的身份证号码！");
+            return false;
+        }
+    })
+    function load_submit(){
+        if($('input[name="real_name"]').val() == ''){
+            showErrorMsg("*请填写真实姓名！");
+            return false;
+        }if($('input[name="tel"]').val() == ''){
+            showErrorMsg("*请填写手机号码！");
+            return false;
+        }if($('input[name="cardnum"]').val() == ''){
+            showErrorMsg("*请填写身份证号！");
+            return false;
+        }if($('.idcard1').attr('src') == ''){
+            showErrorMsg("*请上传身份证正面照片！");
+            return false;
+        }if($('.idcard2').attr('src') == ''){
+            showErrorMsg("*请上传身份证反面照片！");
+            return false;
+        }
+
+        $('#apply_loan').submit();
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+package psp;
+import "common.proto";
+import "ItemBrandModel.proto";
+
+service ItemBrandService{
+    /*获取分类id*/
+    rpc getItemCategoryLevel1(GetItemCategoryLevel1) returns(ItemCategoryLevel1);//获取一级分类
+    rpc getItemCategoryLevel2(ItemCategoryLevel1) returns(ItemCategoryLevel2)//获取二级分类
+    /*添加品牌信息*/
+    rpc addBrandInfo (BrandInfo) returns (google.protobuf.Empty);//添加品牌信息
+    rpc addBrandInfoFromSeller(StoreId) returns(BrandInfoFromSeller)//商家后台添加品牌信息
+    /*删除品牌*/
+    rpc delBrand (BrandId) returns (google.protobuf.Boolvalue);//删除品牌
+
+    /*获取品牌列表*/
+    rpc getBrandList (GetBrandList) returns (google.protobuf.Boolvalue);//显示商品品牌及各种操作按钮
+    rpc getSearchBrandList (BrandSearchCondition) returns (SearchBrandList);//获取搜素到的商品列表
+    /*更新品牌信息*/
+    rpc setBrandRecommend (BrandId) returns (BrandRecommendInfo);//设置/更新推荐信息
+    rpc setBrandSort (BrandId) returns (BrandSortInfo);//设置/更新排序
+    rpc updateBrandInfo(BrandId) returns(updateBrandInfoReply)//更新品牌信息
+}
+
+//获取分类信息
+message GetItemCategoryLevel1{
+    int32 parent_id =1;//父id=0为一级分类
+}
+message ItemCategoryLevel1{//返回一级分类id
+     uint32 id=1;
+}
+message ItemCategoryLevel2{//返回二级分类id
+    uint32 id =1;
+}
+
+
+/*添加品牌信息*/
+message BrandInfo{//品牌信息
+    BrandBasicInfo brand_basic_info =1;//基本信息
+    ItemCategoryInfo item_category_info =2;//分类信息
+}
+
+message BrandBasicInfo{//品牌基本信息
+    string name = 1;//名称
+    string logo = 2;//logo
+    string url = 3;//网址
+    string sort = 4;//排序
+    string desc = 5;//描述
+}
+
+message ItemCategoryInfo{//分类信息
+    ItemCategoryLevel1 cat_id1 =1;//一级分类
+    ItemCategoryLevel2 cat_id2 =2;//二级分类
+}
+message BrandInfoFromSeller{
+    BrandBasicInfo brand_basic_info =1;//基本信息
+    ItemCategoryInfo item_category_info =2;//分类信息
+}
+
+
+
+
+
+
+/*删除品牌*/
+message BrandId{
+    uint32 id =1;//品牌id
+}
+
+/*获取品牌信息*/
+message GetBrandList{//获取品牌列表
+    uint32 id =1;//品牌id
+    BrandBasicInfo brand_basic_info =2;//基本信息
+    bool is_recommend =3;//是否推荐
+    int32 status =4;//审核状态
+    int32 sort =5;//排序
+}
+message BrandSearchCondition{//筛选条件
+    string name = 1;//名称
+    int32 status =2;//审核状态,
+}
+message SearchBrandList{
+    uint32 id =1;//品牌id
+    BrandBasicInfo brand_basic_info =2;//基本信息
+    bool is_recommend =3;//是否推荐
+    int32 status =4;//审核状态
+    int32 sort =5;//排序
+}
+/*更新品牌信息*/
+message BrandRecommendInfo{//设置/更新推荐信息
+    bool is_recommend =3;//是否推荐
+}
+message BrandSortInfo{//设置/更新排序
+    int32 sort =1;//排序
+}
+message updateBrandInfoReply{//设置/更新品牌信息
+    BrandInfo brand_info =1;////品牌信息
+    int32 status =2;//审核状态:0正常 1审核中 2审核失败
+}

@@ -1,0 +1,117 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>店铺管理 - 修改密码</h3>
+                <h5>修改账户登录密码</h5>
+            </div>
+        </div>
+    </div>
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span>
+        </div>
+        <ul>
+            <li>1. 平台在此修改商家登录密码,操作需鉴权,做记录.记录修改人,修改原因,上传用户改密申请截图.</li>
+            <li>2. 禁止平台随意修改商家账号密码。</li>
+            <li>3. 修改密码后原密码失效，请谨慎操作！</li>
+            <li>4. 选择框为单选,请勿同时写店主账号,店铺名称2条信息,避免出现重复错误！</li>
+        </ul>
+    </div>
+    <form method="post" id="change_pwd">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_mane"><em>*</em>店铺名称</label>
+                </dt>
+                <dd class="opt">
+                  {$storeInfo.shop_name}
+                    <span class="err" id="err_shop_name" style="color:#F00; display:none;"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_open_time"><em>*</em>开店时间</label>
+                </dt>
+                <dd class="opt">
+                    {$storeInfo.open_time|date="Y-m-d H:i",###}
+                    <span class="err" style="color:#F00; display:none;" id="err_open_time"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_login_username"><em>*</em>店主卖家账号</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="t_login_username" name="login_username" readonly value="{$storeInfo.login_username}">
+                    <span class="err" style="color:#F00; display:none;" id="err_login_username"></span>
+                    <p class="notic">登录商家中心账号。</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_login_secret"><em>*</em>新密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="t_login_secret" name="login_secret">
+                    <span class="err" style="color:#F00; display:none;" id="err_login_secret"></span>
+                    <p class="notic">新密码不要使用admin,root,等简易密码。</p>
+                </dd>
+            </dl>
+            <div class="pull-right" style="margin-top:10px">
+                <!--<input type="hidden" name="apply_id" value="{$arr.apply_id}">-->
+                <a class="ncap-btn-big ncap-btn-green" data-url="{:U('Store/change_pwd')}" href="javascript:void(0)" onclick="confirmEdit(this)">保存</a>
+            </div>
+    </form>
+</div>
+<script>
+
+    function confirmEdit(obj){
+        var params = $("#change_pwd").serialize();
+        $.ajax({
+            type : 'post',
+            url :  $(obj).attr('data-url'),
+            data : params,
+            dataType : 'json',
+            success : function(data){
+                if(data.stat=='ok'){
+                    layer.alert('编辑成功',{icon:1});
+                }else{
+                    layer.alert(data, {icon: 2});  //alert(data);
+                }
+            }
+        })
+        return false;
+    }
+
+    // 将品牌滚动条里面的 对应分类移动到 最上面
+    //javascript:document.getElementById('category_id_3').scrollIntoView();
+    var typeScroll = 0;
+    function spec_scroll(o){
+        var id = $(o).val();
+        //if(!$('#type_id_'+id).is('dt')){
+        //return false;
+        //}
+        $('#ajax_brandList').scrollTop(-typeScroll);
+        var sp_top = $('#type_id_'+id).offset().top; // 标题自身往上的 top
+        var div_top = $('#ajax_brandList').offset().top; // div 自身往上的top
+        $('#ajax_brandList').scrollTop(sp_top-div_top); // div 移动
+        typeScroll = sp_top-div_top;
+    }
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#image").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

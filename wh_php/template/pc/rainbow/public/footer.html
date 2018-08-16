@@ -1,0 +1,87 @@
+<div class="footer p">
+    <div class="mod_service_inner">
+        <div class="w1224">
+            <ul>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_01.jpg" alt="">
+                        <b>{$Think.lang.Invoice}</b>
+                    </div>
+                </li>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_02.jpg" alt="">
+                        <b>{$Think.lang.CategoryComplete}</b>
+                    </div>
+                </li>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_03.jpg" alt="">
+                        <b>{$Think.lang.SaleWorryFree}</b>
+                    </div>
+                </li>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_04.jpg" alt="">
+                        <b>{$Think.lang.SampleCollection}</b>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="w1224">
+        <div class="footer-ewmcode">
+		    <div class="foot-list-fl">
+                <foreach name="GetArticleCat"  key="k" item='v'>
+                    <dl class="foot-con">
+                        <dt>{$v[name]}</dt>
+                        <foreach name="GetArticle"  key="k2" item='v2'>
+                            <if condition="$v['name'] eq $v2['category']">
+                                <dd>
+                                    <a target="_blank" href="{:U('Home/Article/detail',array('article_id'=>$v2[article_id]))}">{$v2[title]}</a>
+                                </dd>
+                            </if>
+
+                        </foreach>
+                    </dl>
+                </foreach>
+            </div>
+            <!--<a id="dlApp" href="javascript:;" onclick="dlApp()">{$Think.lang.DownloadApp}{$walhao_config['shop_info_store_name']|default='量子时空商城'}APP</a>-->
+		    <div class="QRcode-fr" style="display:none;">
+		        <ul>
+		            <li class="foot-th">{$Think.lang.AppleAPPDownload}</li>
+		            <li><img src="__STATIC__/images/APP-ios.jpg"/></li>
+		        </ul>
+		        <ul>
+		            <li class="foot-th">{$Think.lang.AndroidAPPDownload}</li>
+		            <li><img src="__STATIC__/images/APP-android.png"/></li>
+		        </ul>
+		    </div>
+		</div>
+		<div class="mod_copyright p">
+		    <p>Copyright © 2016-2025 {$walhao_config['shop_info_store_name']|default='量子时空商城'} 版权所有 保留一切权利 备案号:{$walhao_config['shop_info_record_no']} <br>
+            <a target="_blank" style="color:#5d5def" href="__STATIC__/images/yingyezhizhao.jpg">营业执照</a>
+            </p>
+            <p>
+                <script type="text/javascript">
+                    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                    document.write(unescape("%3Cspan id='cnzz_stat_icon_1255962454'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255962454%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+                </script>
+            </p>
+		
+		    <!--<p class="mod_copyright_auth">
+		        <a class="mod_copyright_auth_ico mod_copyright_auth_ico_1" href="" target="_blank">经营性网站备案中心</a>
+		        <a class="mod_copyright_auth_ico mod_copyright_auth_ico_2" href="" target="_blank">可信网站信用评估</a>
+		        <a class="mod_copyright_auth_ico mod_copyright_auth_ico_3" href="" target="_blank">网络警察提醒你</a>
+		        <a class="mod_copyright_auth_ico mod_copyright_auth_ico_4" href="" target="_blank">诚信网站</a>
+		        <a class="mod_copyright_auth_ico mod_copyright_auth_ico_5" href="" target="_blank">中国互联网举报中心</a>
+		        <a class="mod_copyright_auth_ico mod_copyright_auth_ico_6" href="" target="_blank">网络举报APP下载</a>
+		    </p>-->
+		</div>
+    </div>
+</div>
+<script>
+    function dlApp(){
+        $('.QRcode-fr').toggle();
+    }
+</script>

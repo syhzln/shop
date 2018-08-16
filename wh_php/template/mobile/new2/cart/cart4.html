@@ -1,0 +1,479 @@
+<include file="public/header" title="支付,提交订单" body=""/>
+<include file="public/header_nav" title="支付,提交订单" href="javascript:history.back(-1)"/>
+<form action="{:U('Mobile/Payment/getCode')}" method="post" name="cart4_form" id="cart4_form">
+    <input type="hidden" name="order_id" value="{$order_ids}"/>
+    <div class="ddmoney">
+        <div class="maleri30">
+            <span class="fl">订单号</span>
+            <span class="fr">{$order[order_sn]}</span>
+        </div>
+    </div>
+    <div class="ddmoney">
+        <div class="maleri30">
+            <span class="fl">订单金额</span>
+            <span class="fr">{$order[amount]}元</span>
+        </div>
+    </div>
+    <!--其他支付方式-s-->
+    <div class="paylist">
+        <div class="myorder debit otherpay p">
+            <div class="content30">
+                <a href="javascript:void(0);">
+                    <div class="order">
+                        <div class="fl">
+                            <span>支付方式</span>
+                        </div>
+                        <div class="fr">
+                            <!--<i class="Mright xjt"></i>-->
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="pay-list-4 p">
+        <div class="maleri30">
+            <ul>
+                <foreach name="paymentList" key="k" item="v">
+                    <li  onClick="changepay(this);">
+                        <label>
+                        <div class="radio fl">
+							<span class="che {$k}">
+								<i>
+                                    <input type="radio"   value="pay_code={$v['code']}" class="c_checkbox_t" name="pay_radio" style="display:none;"/>
+                                </i>
+							</span>
+                        </div>
+                            <div class="pay-list-img fl">
+                                <img src="/plugins/{$v['type']}/{$v['code']}/{$v['icon']}"/>
+                            </div>
+                            <!--<div class="pay-list-font fl">-->
+                                <!--{$v[name]}-->
+                            <!--</div>-->
+                        </label>
+                    </li>
+                </foreach>
+                <!-- 钱包支付 s-->
+                <li  onClick="changepay(this);">
+                    <label>
+                        <div class="radio fl">
+							<span class="che {$k}">
+								<i>
+                                    <input type="radio"   value="pay_code=walletpay" class="c_checkbox_t" name="pay_radio" style="display:none;"/>
+                                </i>
+							</span>
+                        </div>
+                        <div class="pay-list-img fl">
+                            <img src="\plugins\payment\walletpay\logo.jpg"/>
+                        </div>
+                        <!--<div class="pay-list-font fl">-->
+                        <!--{$v[name]}-->
+                        <!--</div>-->
+                    </label>
+                </li>
+                <!-- 钱包支付 e-->
+
+                <!-- 买呗支付 s-->
+                <li  onClick="changepay(this);">
+                    <label>
+                        <div class="radio fl">
+							<span class="che {$k}">
+								<i>
+                                    <input type="radio"   value="pay_code=buypay" class="c_checkbox_t" name="pay_radio" style="display:none;"/>
+                                </i>
+							</span>
+                        </div>
+                        <div class="pay-list-img fl">
+                            <img src="/plugins/payment/buypay/logo.jpg"/>
+                        </div>
+                    </label>
+                </li>
+                <!-- 买呗支付 e-->
+            </ul>
+        </div>
+    </div>
+    <!--其他支付方式-s-->
+    <!-- 余额支付弹出框 start -->
+    <form action="" method="" name="balance_payment" id="balance_payment">
+        <div id="balance_pay">
+            <div class="balance_back"></div>
+            <div class="balance_pwd">
+                <p class="close" onclick="close_box()"></p>
+                <div class="order-info">
+                    <p>商品名称：<span>{$walhao_config['shop_info_store_title']}</span></p>
+                    <p>订单总额：<span>￥{$order['amount']}</span></p>
+                    <p>订单编号：<span>{$order['order_sn']}</span></p>
+                </div>
+                <div style="clear: both"></div>
+                <div class="alieditContainer payPassword_container clearfix" data-busy="0">
+
+                </div>
+                <!--<p class="err_notice">* 余额不足，请充值后再购买！</p>-->
+                <p class="pwd_wrong"></p>
+                <div class="check"><a href="javascript:;" onclick="pwd_commit()">确认</a></div>
+            </div>
+        </div>
+    </form>
+    <!-- 余额支付弹出框 end -->
+
+    <!-- 买呗支付弹出框 start -->
+    <!--<form action="" method="post" name="maibei_payment" id="maibei_payment">-->
+        <!--<div id="maibei_pay">-->
+            <!--<div class="balance_back"></div>-->
+            <!--<div class="balance_pwd">-->
+                <!--<p class="close" onclick="close_box()"></p>-->
+                <!--<div class="order-info">-->
+                    <!--<p>商品名称：<span>{$walhao_config['shop_info_store_title']}</span></p>-->
+                    <!--<p>订单总额：<span>￥{$order['amount']}</span></p>-->
+                    <!--<p>订单编号：<span>{$order['order_sn']}</span></p>-->
+                <!--</div>-->
+                <!--<div style="clear: both"></div>-->
+                <!--<div class="alieditContainer payPassword_container clearfix" data-busy="0">-->
+
+                <!--</div>-->
+                <!--&lt;!&ndash;<p class="err_notice">* 余额不足，请充值后再购买！</p>&ndash;&gt;-->
+                <!--<p class="pwd_wrong"></p>-->
+                <!--<div class="check"><a href="javascript:;" onclick="pwd_commit1()">确认</a></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</form>-->
+    <form action="" method="post" name="maibei_payment" id="maibei_payment">
+        <div id="maibei_pay">
+            <div class="balance_back"></div>
+            <div class="balance_pwd">
+                <p class="close" onclick="close_box()"></p>
+                <div class="order-info">
+                    <p>温馨提示：<span></span></p>
+                </div>
+                <div style="clear: both"></div>
+                <div class="alieditContainer">
+                    <span style="font-size:50px;color: #ff1a10;">您好,根据上级要求,买呗支付暂时关闭,敬请谅解!!!</span>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- 买呗支付弹出框 end -->
+
+    <div class="paiton">
+        <div class="maleri30">
+            <input type="hidden" name="order_id" value="{$order['order_id']}" />
+            <a class="soon" href="javascript:void(0);" id="confirm_payment"><span>立即支付</span></a>
+            <!--<p class="fr"><a href="javascript:void(0);" class="lossbq">支付失败？</a></p>-->
+        </div>
+    </div>
+
+<div class="mask-filter-div" style="display: none;"></div>
+    <input type="hidden" name="order_id" value="{$order_ids}"/>
+</form>
+<script src="__STATIC__/js/jquery-validate.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var ua = navigator.userAgent.toLowerCase();
+        if (/iphone|ipad|ipod/.test(ua)) {
+            $('.sixDigitPassword-box i').css("margin","0.2rem 0");
+        }
+        //默认选中第一个
+        $('.pay-list-4 div ul li:first').find('.che').addClass('check_t')
+                .end().find(':radio').attr('checked',true);
+    })
+    //切换支付方式
+    function changepay(obj){
+        $(obj).find('.che').addClass('check_t').parents('li').siblings('li').find('.che').removeClass('check_t');
+        //改变中状态
+        if($(obj).find('.che').hasClass('check_t')){
+            //选中
+            $(obj).find(':radio').attr('checked',true);
+            $(obj).siblings('li').find(':radio').removeAttr('checked');
+        }else{
+            //取消选中
+            $(obj).find(':radio').removeAttr('checked');
+        }
+
+    }
+
+    //提交支付方式
+    var payPassword = "";
+    $("#confirm_payment").click(function(){
+        var pay_code = $("input[name='pay_radio']:checked").val();
+        //余额支付 弹出支付框
+        if((pay_code=='pay_code=walletpay')){
+            var available_balance = "{$order['available_balance']}";
+            $('#balance_pay').css('display','block');
+            $('.payPassword_container').empty();
+            $('#balance_pay .payPassword_container').append('<div class="pay-title">'+
+                    '<span class="pay_type">余额支付</span>'+
+                    '可用余额：<span id="">'+available_balance+'</span></div>'+
+                    '<label for="i_payPassword" class="i-block">支付密码：</label>'+
+                    '<div class="i-block" data-error="i_error">'+
+                    '<div class="i-block six-password">'+
+                    '<input class="i-text sixDigitPassword" id="payPassword_rsainput" type="password" autocomplete="off" required="required"  name="payPassword_rsainput" data-role="sixDigitPassword" tabindex="" maxlength="6" minlength="6" aria-required="true" autofocus>'+
+                    '<div tabindex="0" class="sixDigitPassword-box" style="width: 9.18rem;">'+
+                    '<i style="width: 1.5rem; border-color: transparent; margin: 0.2rem 0px;" class="active"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<span style="width: 1.5rem; left: 0px; visibility: hidden;" class="cardwrap" data-role="cardwrap"></span>'+
+                    '</div>'+
+                    '</div><p> 请输入6位支付密码( 数字！)</p></div>');
+            payPassword = $(".payPassword_container");
+            passwodbox();
+            return;
+        }
+        if(pay_code=='pay_code=buypay'){
+            var buypay_balance = "{$order['buy_available_balance']}";
+
+            $('#maibei_pay').css('display','block');
+            $('.payPassword_container').empty();
+            $('#maibei_pay .payPassword_container').append('<div class="pay-title">'+
+                    '<span class="pay_type">买呗支付</span>'+
+                    '买呗可用余额：<span id="">'+buypay_balance+'</span></div>'+
+                    '<label for="i_payPassword" class="i-block">支付密码：</label>'+
+                    '<div class="i-block" data-error="i_error">'+
+                    '<div class="i-block six-password">'+
+                    '<input class="i-text sixDigitPassword" id="payPassword_rsainput" type="password" autocomplete="off" required="required"  name="payPassword_rsainput" data-role="sixDigitPassword" tabindex="" maxlength="6" minlength="6" aria-required="true" autofocus>'+
+                    '<div tabindex="0" class="sixDigitPassword-box" style="width: 9.18rem;">'+
+                    '<i style="width: 1.5rem; border-color: transparent; margin: 0.2rem 0px;" class="active"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<i style="width: 1.5rem; margin: 0.2rem 0px;"><b style="visibility: hidden;"></b></i>'+
+                    '<span style="width: 1.5rem; left: 0px; visibility: hidden;" class="cardwrap" data-role="cardwrap"></span>'+
+                    '</div>'+
+                    '</div><p> 请输入6位支付密码( 数字！)</p></div>');
+            payPassword = $(".payPassword_container");
+            passwodbox();
+            return;
+        }
+        //此处跳转支付类
+        $('#cart4_form').submit();
+    });
+
+    var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+    //钱包支付提交数据
+    var checkSubmit = false;
+    function pwd_commit(){
+        /* if(checkSubmit == true){
+         return false; //当表单被提交过一次后checkSubmit将变为true,根据判断将无法进行提交。
+         }
+         checkSubmit = true;*/
+        var pay_pwd = $("input[name='payPassword_rsainput']").val();
+        var order_amount = "{$order['amount']}";//订单金额
+        var order_ids ="{$order_ids}";//订单id
+        if(pay_pwd.length != 6){
+            $('.pwd_wrong').css('display','block').html('* 支付密码错误!');
+            return;
+        }
+        $('#balance_pay').css('display','none');
+//        if(before_request == 0) // 上一次请求没回来 不进行下一次请求
+//            return false;
+//        before_request = 0;
+        $.ajax({
+            type:"POST",
+            url:"{:U('Mobile/User/balance_pay')}",
+            data:{pay_pwd:pay_pwd,order_amount:order_amount,order_id:order_ids},
+            dataType:"JSON",
+            success:function(data){
+
+                if(data.status !=1){
+                    showErrorMsg(data.msg);
+                }else{
+                    showErrorMsg(data.msg);
+                    before_request = 1;
+                    window.location.href =data.url;//跳转成功页面
+                }
+            },
+            error:function(){
+                showErrorMsg("网络加载失败，请重试！");
+
+            },
+
+        });
+
+
+//        $('.pwd_wrong').css('display','block').html('* 账户余额不足!')
+//            $('#balance_payment').submit();
+    }
+
+    //买呗支付提交数据
+    var checkSubmit1 = false;
+    function pwd_commit1(){
+
+        /*if(checkSubmit1 == true){
+         return false; //当表单被提交过一次后checkSubmit将变为true,根据判断将无法进行提交。
+         }
+         checkSubmit1 = true;*/
+        var pay_pwd = $("input[name='payPassword_rsainput']").val();
+        var order_amount = "{$order['amount']}";//订单金额
+        var order_ids ="{$order_ids}";//订单id
+        if(pay_pwd.length != 6){
+            $('.pwd_wrong').css('display','block').html('* 支付密码错误!');
+            return;
+        }
+        $('#maibei_pay').css('display','none');
+//        if(before_request == 0) // 上一次请求没回来 不进行下一次请求
+//            return false;
+//        before_request = 0;
+
+        $.ajax({
+            type:"POST",
+            url:"{:U('Mobile/User/buy_pay')}",
+            data:{pay_pwd:pay_pwd,order_amount:order_amount,order_id:order_ids},
+            dataType:"JSON",
+            success:function(data){
+
+                if(data.status !=1){
+                    showErrorMsg(data.msg);
+                }else{
+                    showErrorMsg(data.msg);
+                    before_request = 1;
+                    window.location.href =data.url;//跳转成功页面
+                }
+            },
+            error:function(){
+                showErrorMsg("网络加载失败，请重试！");
+            },
+        });
+    }
+
+    var _formPay = $('#balance_payment');
+    _formPay.validate({
+        rules : {
+            'payPassword_rsainput':{
+                'minlength':6,
+                'maxlength':6,
+                required:true,
+                digits : true
+            }
+        },
+        messages:{
+            'payPassword_rsainput':{
+                'required' : '&nbsp;* 请填写支付密码',
+                'maxlength' : '&nbsp;* 密码最多为{0}个字符',
+                'minlength' : '&nbsp;* 密码最少为{0}个字符',
+                'digits':'&nbsp;* 密码只能为数字'
+            }
+        },
+        errorPlacement : function(error, element) {
+            element.closest('div[data-error="i_error"]').append(error);
+        },
+        submitHandler : function(form){
+            var _form = $(form);
+            form.submit();
+
+        }
+    });
+    var _formPay1 = $('#maibei_payment');
+    _formPay1.validate({
+        rules : {
+            'payPassword_rsainput':{
+                'minlength':6,
+                'maxlength':6,
+                required:true,
+                digits : true
+            }
+        },
+        messages:{
+            'payPassword_rsainput':{
+                'required' : '&nbsp;* 请填写支付密码',
+                'maxlength' : '&nbsp;* 密码最多为{0}个字符',
+                'minlength' : '&nbsp;* 密码最少为{0}个字符',
+                'digits':'&nbsp;* 密码只能为数字'
+            }
+        },
+        errorPlacement : function(error, element) {
+            element.closest('div[data-error="i_error"]').append(error);
+        },
+        submitHandler : function(form){
+            var _form = $(form);
+            form.submit();
+
+        }
+    });
+
+
+
+
+    function close_box(){
+        $('#balance_pay').css('display','none');
+        $('#maibei_pay').css('display','none');
+    }
+
+    function notice(){
+        $('.notice').css('display','block');
+        $('.check>a').css('backgroundColor','#999');
+    }
+    function passwodbox(){
+
+        var _this = payPassword.find('i'),
+                k=0,j=0,
+                password = '' ,
+                _cardwrap = $('.cardwrap');
+        console.log(payPassword);
+        //点击隐藏的input密码框,在6个显示的密码框的第一个框显示光标
+        payPassword.on('focus',"input[name='payPassword_rsainput']",function(){
+
+            var _this = payPassword.find('i');
+            if(payPassword.attr('data-busy') === '0'){
+                //在第一个密码框中添加光标样式
+                _this.eq(k).addClass("active");
+                _cardwrap.css('visibility','visible');
+                payPassword.attr('data-busy','1');
+            }
+
+        });
+        //change时去除输入框的高亮，用户再次输入密码时需再次点击
+        payPassword.on('change',"input[name='payPassword_rsainput']",function(){
+            _cardwrap.css('visibility','hidden');
+            _this.eq(k).removeClass("active");
+            payPassword.attr('data-busy','0');
+        }).on('blur',"input[name='payPassword_rsainput']",function(){
+
+            _cardwrap.css('visibility','hidden');
+            _this.eq(k).removeClass("active");
+            payPassword.attr('data-busy','0');
+
+        });
+
+        //使用keyup事件，绑定键盘上的数字按键和backspace按键
+        payPassword.on('keyup',"input[name='payPassword_rsainput']",function(e){
+            var  e = (e) ? e : window.event;
+            //键盘上的数字键按下才可以输入
+            if(e.keyCode == 8 || (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)){
+                k = this.value.length;//输入框里面的密码长度
+                l = _this.length;//6
+                for(;l--;){
+
+                    //输入到第几个密码框，第几个密码框就显示高亮和光标（在输入框内有2个数字密码，第三个密码框要显示高亮和光标，之前的显示黑点后面的显示空白，输入和删除都一样）
+                    if(l === k){
+                        _this.eq(l).addClass("active");
+                        _this.eq(l).find('b').css('visibility','hidden');
+
+                    }else{
+                        _this.eq(l).removeClass("active");
+                        _this.eq(l).find('b').css('visibility', l < k ? 'visible' : 'hidden');
+
+                    }
+
+                    if(k === 6){
+                        j = 5;
+                    }else{
+                        j = k;
+                    }
+                    $('.cardwrap').css('left',j*1.5+'rem');
+
+                }
+            }else{
+                //输入其他字符，直接清空
+                var _val = this.value;
+                this.value = _val.replace(/\D/g,'');
+            }
+        });
+    }
+
+</script>
+	</body>
+</html>

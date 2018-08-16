@@ -1,0 +1,56 @@
+<include file="public/header" title="查看工单" body="g4"/>
+<include file="public/header_nav" title="查看工单" href="{:U('/Mobile/User/my_message')}"/>
+<div class="pjiscion p after-set-li message_record">
+    <div>
+        <div class="message_list">
+            <input id='wh181' value="{$whid}" style="display:none">
+            <input id='mnu' value="{$number}" style="display:none">
+            <foreach name='talks' item="val">
+                <p class="my_message">
+                    <span>：我</span><br/>
+                    <font>{$val['u_message']}</font>
+                </p>
+                <p class="kefu_message">
+                    <span>客服：</span><br/>
+                    <font>{$val['k_message']}</font>
+                </p>
+            </foreach>
+            <div style="clear:both;"></div>
+        </div>
+        <div class="reply_message">
+            <textarea name="" id="texts" cols="60" rows="3"></textarea>
+            <a href="javascript:;" onclick='subst()'>提交</a>
+        </div>
+    </div>
+</div>
+<script>
+    $('.message_record').click(function(){
+        $('.message_record').css('display','none');
+    })
+    $(".message_record>div").click(function(event){
+        event.stopPropagation();
+    });
+    var checkSubmit = false;
+    function subst(){
+        var a={$is_talk};
+        if(a=='1'){
+            alert('工单已完结请重新建立工单');
+        }
+        if(checkSubmit == true){
+            return false; //当表单被提交过一次后checkSubmit将变为true,根据判断将无法进行提交。
+        }
+        checkSubmit = true;
+        var texts=$("#texts").val();
+        var whid=$("#wh181").val();
+        var message_number=$("#mnu").val();
+        $.post("/index.php/home/User/ajax_my_message",{'texts':texts,'whid':whid,'message_number':message_number},function(data){
+            var  texts= $('#texts').val();
+            $('.message_record .message_list').append(
+                    "<p class='my_message'>"+
+                    "<span>：我</span><br/>"+
+                    "<font>" + texts + "</font>"+
+                    "</p>");
+            $('#texts').val('');
+        });
+    }
+</script>

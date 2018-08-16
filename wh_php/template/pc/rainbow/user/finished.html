@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{$Think.lang.SecuritySettings}-{$walhao_config['shop_info_store_title']}</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+		<link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+		<script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body class="bg-f5">
+		<include file="user/header"/>
+		<div class="home-index-middle">
+			<div class="w1224">
+				<div class="g-crumbs">
+			       	<a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+			       	<i class="litt-xyb"></i>
+			       	<span>{$Think.lang.ForgetPassword}</span>
+			    </div>
+			    <div class="home-main forgetpaw">
+		    		<div class="menumain">
+		    			<div class="goodpiece">
+							<h1>{$Think.lang.SecuritySettings}</h1>
+							<!--<a href=""><span class="co_blue">帮助</span></a>-->
+						</div>
+			    		<div class="accouun"></div>
+			    		<div class="thirset ma-to-20">
+			    			<div class="wshef">1.{$Think.lang.FillInTheUsername}<i class="spassw"></i></div>
+			    			<div class="wshef">2.{$Think.lang.VerifyIdentity}<i class="spassw"></i></div>
+			    			<div class="wshef">3.{$Think.lang.SetNewPassword}<i class="spassw"></i></div>
+			    			<div class="wshef yellc">4.{$Think.lang.CarryOut}</div>
+			    		</div>
+			    		<div class="oversuccen">
+			    			<div class="zaiebox">
+			    				<div class="fljair">
+			    					<img src="__STATIC__/images/flj.png"/>
+			    				</div>
+			    				<div class="fljfon">
+			    					<p>{$Think.lang.PasswordSetSuccessfully}</p>
+			    					<p>{$Think.lang.RememberNewPassword}<a href="{:U('User/safety_settings')}">{$Think.lang.CheckSecuritySettings}</a></p>
+			    				</div>
+			    				<div class="diboback">
+			    					<a href="/">{$Think.lang.GoHome}</a>
+			    					<a href="{:U('Home/User/login')}">{$Think.lang.BackToLogin}</a>
+			    				</div>
+			    			</div>
+			    		</div>
+		    		</div>
+			    </div>
+			</div>
+		</div>
+		<!--footer-s-->
+		<include file="user/footer" />
+		<!--footer-e-->
+	</body>
+	<script type="text/javascript">
+
+	</script>
+</html>

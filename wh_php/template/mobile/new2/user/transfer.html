@@ -1,0 +1,133 @@
+<include file="public/header" title="申请转账" body=""/>
+<include file="public/header_nav" title="申请转账" href="javascript:history.back(-1)"/>
+<div class="loginsingup-input ma-to-20">
+    <form  method="post"  id="returnform">
+        <div class="content30">
+            <div class="lsu">
+                <span>转账类型：</span>
+                <div class="withType">
+                    <i class="icon-sanjiao iconfont"></i>
+                    <select name="with_type" id="with_type" required>
+                        <option value="0">请选择转账类型</option>
+                        <option value="1">余额转账</option>
+                        <option value="3">收益转账</option>
+                    </select>
+                </div>
+            </div>
+            <div class="lsu">
+                <span>转账金额：</span><span>￥</span>
+                <input type="text" name="money" id="money" value=""  placeholder=""  onKeyUp="this.value=this.value.replace(/[^\d]/g,'')">
+                <p class="keyj">{$Think.lang.AccountAvailableBalance}：{$Think.lang.Symbol}<em>{$user.user_money}</em>; 收益余额：{$Think.lang.Symbol}<em>{$user.shouyi}</em></p>
+            </div>
+            <div class="lsu">
+                <span>转入账号：</span>
+                <input type="text" name="account_id" id="account_id" value=""  placeholder="" >
+                <p class="adviceql account_info" style="color:red"><span style="color: red;">*</span>{$Think.lang.PleaseEnterOtherWhID}</p>
+            </div>
+            <div class="lsu test">
+                <span>验证码：</span>
+                <input type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码">
+                <img  id="verify_code_img" src="{:U('Mobile/User/verify',array('type'=>'withdrawals'))}" onClick="verify()" style=""/>
+            </div>
+            <div class="lsu lsu-recharge">
+                <span>支付密码：</span>
+                <input type="password" name="paypwd" id="paypwd" placeholder="支付密码">
+                <if condition="empty($user['paypwd'])">
+                    <p class="haiew">{$Think.lang.NoPaymentPassword}</p>
+                    <a class="ha-re" style="cursor:pointer" href="{:U('User/set_paypwd')}">{$Think.lang.SetRightAway}</a>
+                </if>
+            </div>
+            <div class="lsu submit">
+                <input type="hidden" name="__token__" value="{$Request.token}" />
+                <input type="button" onclick="checkSubmit()" value="提交申请">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $('#account_id').blur(function(){
+            var account_id = $.trim($('#account_id').val());
+            if(account_id.length == 0){
+                return;
+            }
+            $.ajax({
+                type:'POST',
+                dataType:'json',
+                url:'/index.php?m=Home&c=User&a=getMemberInfo',
+                data:{wh_id:account_id},
+                success:function (data) {
+                    console.log(data);
+                    if(data.status == 1){
+                        $('.account_info').html('转入账户名: '+data.name);
+                    }else{
+                        $('.account_info').html(data.name);
+
+                    }
+
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+    // 验证码切换
+    function verify(){
+        $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&type=withdrawals&r='+Math.random());
+    }
+
+    /**
+     * 提交表单
+     * */
+    function checkSubmit(){
+        var with_type = $('#with_type').val();//1余额转余额    3收益转余额(扣除3%手续费)
+        var account_id = $.trim($('#account_id').val());//对方用户id
+        var account_name = $.trim($('#account_name').val());//姓名
+        var money = parseFloat($.trim($('#money').val()));
+        var usermoney = parseFloat({$user.user_money});  //用户余额
+    var verify_code = $.trim($('#verify_code').val());
+    if(with_type == 0){
+        showErrorMsg('请选择转账类型')
+        return false;
+    }
+    if(account_id == '' || money == ''){
+        showErrorMsg("所有信息为必填")
+        return false;
+    }
+    if(money > usermoney){
+        showErrorMsg("转账金额大于您的账户余额")
+        return false;
+    }
+    if(paypwd == ''){
+        showErrorMsg("请输入支付密码")
+        return false;
+    }
+    $.ajax({
+        type: "post",
+        url :"{:U('Mobile/User/transfer')}",
+        dataType:'json',
+        data:$('#returnform').serialize(),
+        success: function(data)
+        {
+            showErrorMsg(data.msg);
+            if(data.status == 1){
+                window.location.href=data.url;
+            } else {
+//                    window.location.reload();
+                showErrorMsg(data.msg);
+                verify();
+
+            }
+        }
+    });
+    }
+
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:3});
+    }
+</script>
+</body>
+</html>

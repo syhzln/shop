@@ -1,0 +1,79 @@
+syntax = "proto3";
+package psp;
+
+import "Common.proto";
+
+
+message ItemCategoryInfo{//封装分类
+    ItemCategoryLevel1 item_category_level1 =1;//一级分类
+    ItemCategoryLevel2 item_category_level2 =2;//二级分类
+    ItemCateGoryLevel3 item_category_level3 =3;//三级分类
+}
+
+//获取一级分类
+message GetItemCategoryLevel1{
+    parent_id =1;//父id=0为一级分类
+}
+message ItemCategoryLevel1{//返回一级分类id
+                           uint32 id=1;
+                           string name = 2;//分类名称
+}
+message ItemCategoryLevel2{//返回二级分类id
+                           uint32 id =1;
+                           string name = 2;//分类名称
+}
+message ItemCategoryLevel3{//返回三级分类id
+                           uint32 id = 1;
+                           string name = 2;//分类名称
+}
+
+
+message GetNavigationId{
+    uint32 id = 1;//导航菜单id
+}
+
+message ItemGoodsListInfo{
+    ItemCategoryInfo item_cate_gory = 1;
+    ItemAttrCategory item_attr_category = 2;
+    ItemGoodsInfo item_goods_info = 3;
+    ItemSort item_sort = 4;
+    ItemHot item_hot = 5;
+}
+
+
+message ItemBrandId{
+    uint32 brand_id = 1;//品牌id
+}
+
+message ItemSpecId{
+    uint32 spec_id = 1;//规格id
+}
+
+message ItemPrice{
+    float start_price = 1;//输入框开始价格
+    float end_price = 2;//输入框结束接个
+}
+
+message ItemAttrCategory{//封装属性
+                         ItemBrandID item_brand_id = 1;
+                         ItemSpecID item_spec_id = 2;
+                         ItemPrice item_price = 3;
+}
+
+message ItemGoodsInfo{
+    string image = 1;//商品图片
+    float price = 2;//商品价格
+    string name = 3;//商品名称
+}
+
+message ItemSort{
+    string sale_sum = 1;//根据销量排序
+    string shop_price = 2;//根据商品价格排序
+    string comment_count = 3;//根据评论数量排序
+    string is_new = 4;//根据是否新品排序
+}
+
+message ItemHot{
+    ItemGoodsInfo item_goods_info = 3;
+    string is_hot = 4;//是否热卖
+}

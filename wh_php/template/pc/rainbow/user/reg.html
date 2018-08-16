@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">   
+    <title>{$Think.lang.Registration}-{$walhao_config['shop_info_store_title']}</title>
+    <meta name="keywords" content="{$walhao_config['shop_info_store_keyword']}" />
+    <meta name="description" content="{$walhao_config['shop_info_store_desc']}" />
+   
+    <link href="__STATIC__/css/reg3.css" rel="stylesheet" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <script src="__PUBLIC__/js/layer/layer.js"></script><!--弹窗js 参考文档 http://layer.layui.com/-->    
+    <script src="__PUBLIC__/js/global.js"></script>
+</head>
+<body>
+    <div class="regcon">
+        <a class="m-fnlogoa fn-fl" href=""><img src="__PUBLIC__/static/images/logo.png"/></a><span class="m-fntit">{$Think.lang.WelcomeToRegister}</span>
+        <div class="ui_tab">
+            <ul class="ui_tab_nav regnav">
+                <!--<li class="uli <if condition="I('get.t') eq ''">active</if> "><a href="{:U('Home/User/reg')}" >手机注册</a></li>-->
+                <!--<li class="uli <if condition="I('get.t') eq 'email'">active</if> "><a href="{:U('Home/User/reg',array('t'=>'email'))}">邮箱注册</a></li>-->
+                <li class="no fn-fr loginbtn">{$Think.lang.HaveRegistered}<a href="{:U('Home/User/login')}">{$Think.lang.Login}></a></li>
+            </ul>
+        <form id="reg_form2"  method="post" action="">
+            <input type="hidden" name="scene" value="1">    
+            <div class="ui_tab_content">
+                <div class="m-fnbox ui_panel" style="display: block;">
+                    <div class="fnlogin clearfix">
+                        <div class="line">
+                            <label class="linel"><span class="dt">{$Think.lang.RefereeID}：</span></label>
+                            <div class="liner">
+                                <input type="text" class="inp fmobile J_cellphone" placeholder="{$Think.lang.EnterReferrerID}"  name="recommondId" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" id="recommondId" onblur="checkRecommondId(this.value)" required="required"/>
+                                <span class="recommond_right"><img src="__STATIC__/images/srzq.png" alt=""></span>
+                                <span class="recommond_error"> *{$Think.lang.RefereeIDMust}</span>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <label class="linel"><span class="dt">{$Think.lang.CellphoneNumber}：</span></label>
+                            <div class="liner">
+                                <input type="text" class="inp fmobile J_cellphone" placeholder="{$Think.lang.EnterPhoneNumber}"  name="mobile" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" id="mobile" onblur="checkMobile(this.value)" required="required"/>
+                                <span class="mobile_right"><img src="__STATIC__/images/srzq.png" alt=""></span>
+                                <span class="mobile_error"> *{$Think.lang.EnterCorrectPhoneNumberFormat}</span>
+                            </div>
+                        </div>
+                        <!--<div class="line">
+                            <label class="linel"><span class="dt">{$Think.lang.Email} ：</span></label>
+                            <div class="liner">
+                                <input type="text" class="inp J_cellphone" placeholder="{$Think.lang.InputEmail}"  name="email" id="email" onblur="checkEmail(this.value)" required="required"/>
+                                <span class="email_right"><img src="__STATIC__/images/srzq.png" alt=""></span>
+                                <span class="email_error"> *{$Think.lang.EnterCorrectEmailFormat}</span>
+                            </div>
+                        </div>-->
+
+                        <div class="line">
+                            <label class="linel"><span class="dt">{$Think.lang.ActualName}：</span></label>
+                            <div class="liner">
+                                <input type="text" class="inp J_realName" placeholder="{$Think.lang.RealNameRemind}" onblur="checkName(this.value)" name="realName" id="realName"  required="required"/>
+                                <span class="rname_right"><img src="__STATIC__/images/srzq.png" alt=""></span>
+                                <span class="rname_error"> *{$Think.lang.EnterCorrectName}！</span>
+                            </div>
+                        </div>
+
+                        <!--<div class="line">-->
+                            <!--<label class="linel"><span class="dt">{$Think.lang.IDNumber}：</span></label>-->
+                            <!--<div class="liner">-->
+                                <!--<input type="text" class="inp J_realName" placeholder="{$Think.lang.IDNumberRemind}" onblur="checkIdCard(this.value)" name="id_card" id="id_card"  required="required"/>-->
+                                <!--<span class="card_right"><img src="__STATIC__/images/srzq.png" alt=""></span>-->
+                                <!--<span class="card_error"> *{$Think.lang.IDNumberError}</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="line" style="height:auto;">-->
+                            <!--<label class="linel"><span class="dt">{$Think.lang.IDCardFrontal}：</span></label>-->
+                            <!--<div class="liner">-->
+                                <!--<a class="addimg" href="javascript:;" onClick="GetUploadify2(1,'head_pic','head_pic','add_img')"/>-->
+                                <!--<img src="__STATIC__/images/addImg.jpg" alt="">-->
+                                <!--</a>-->
+                                <!--<div class="idcard">-->
+                                    <!--<img class="idImg" src="" alt="" width="220">-->
+                                    <!--<p onclick="delImg()">{$Think.lang.DeleteAddress}</p>-->
+                                <!--</div>-->
+                                <!--<input type="hidden" name="face_url" value="" />-->
+                                <!--<input type="hidden" name="is_ok" value="" />-->
+                                <!--<a class="recognition" href="javascript:;" onclick="authentication()">{$Think.lang.StartCertification}</a>-->
+                                <!--<span class="img_right"><img src="__STATIC__/images/srzq.png" alt=""></span>-->
+                                <!--<span class="img_error"></span>-->
+                            <!--</div>-->
+                            <!--<div style="clear:both;"></div>-->
+                        <!--</div>-->
+
+                        <!--<div class="line">-->
+                            <!--<label class="linel"><span class="dt">{$Think.lang.BankNameReg}：</span></label>-->
+                            <!--<div class="liner">-->
+                                <!--<select name="bank" id="bank" onchange="checkBankName()">-->
+                                    <!--<option value="0">-&#45;&#45;{$Think.lang.SelectBankName}-&#45;&#45;</option>-->
+                                    <!--<?php foreach ($bank_list as $k=>$v):?>-->
+                                    <!--<option value="{$k}">{$k}</option>-->
+                                    <!--<?php endforeach;?>-->
+                                <!--</select>-->
+
+                                <!--<span class="bank_right"><img src="__STATIC__/images/srzq.png" alt=""></span>-->
+                                <!--<span class="bank_error"> *{$Think.lang.SelectBankName}！</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="line">-->
+                            <!--<label class="linel"><span class="dt">{$Think.lang.BankCardNumber}：</span></label>-->
+                            <!--<div class="liner">-->
+                                <!--<input type="text" class="inp fmobile J_cellphone" placeholder="{$Think.lang.EnterBankCardNumber}"  name="card_num" onkeyup="this.value = this.value.replace(/\D/g, '').replace(/....(?!$)/g, '$& ')" onblur="checkCard(this.value)" id="card_num"  required="required"/>-->
+                                <!--<span class="num_right"><img src="__STATIC__/images/srzq.png" alt=""></span>-->
+                                <!--<span class="num_error"> *{$Think.lang.EnterCorrectBankCardNumber}</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="line">-->
+                            <!--<label class="linel"><span class="dt">*{$Think.lang.AlipayNumber}：</span></label>-->
+                            <!--<div class="liner">-->
+                                <!--<input type="text" class="inp J_alipay" placeholder="{$Think.lang.EnterAlipayNumber}"  name="alipay" id="alipay"  required="required" onblur="checkalipayNum(this.value)"/>-->
+                                <!--<span class="alipay_right"><img src="__STATIC__/images/srzq.png" alt=""></span>-->
+                                <!--<span class="alipay_error"> *{$Think.lang.EnterAlipayNumber}！</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <div class="line">
+                            <label class="linel"><span class="dt">{$Think.lang.SetPassword}：</span></label>
+                            <div class="liner">
+                                <input type="password" class="inp fpass J_password" placeholder="{$Think.lang.LettersNumbersSymbol}" autocomplete="off" maxlength="16"  id="password" name="password" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <label class="linel"><span class="dt">{$Think.lang.ConfirmPassword}：</span></label>
+                            <div class="liner">
+                                <input type="password" class="inp fsecpass J_password2" placeholder="{$Think.lang.EnterPasswordAgain}" autocomplete="off" maxlength="16" id="password2" name="password2" required="" onblur="checkPwd()" value=""/>
+                                <span class="pwd_right"><img src="__STATIC__/images/srzq.png" alt=""></span>
+                                <span class="pwd_error"> </span>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <label class="linel"><span class="dt">{$Think.lang.VerificationCode}：</span></label>
+                            <div class="liner">
+                                <input type="text" class="inp imgcode J_imgcode" placeholder="{$Think.lang.ConfirmPassword}"  name="verify_code" required="" onblur="checkverify(this.value)"/>
+                                <img width="100" height="35" src="/index.php/Home/User/verify/type/user_reg.html" id="reflsh_code2" class="po-ab to0" style="cursor:pointer;" onclick="verify('reflsh_code2')">
+                                <a><img onclick="verify('reflsh_code2')" src="__STATIC__/images/chg_image.png" class="ma-le-210"></a>
+                                <span class="code_right"><img src="__STATIC__/images/srzq.png" alt=""></span>
+                                <span class="code_error"> *{$Think.lang.PleaseEnterVerificationCode}！</span>
+                            </div>
+                            <div id="show-voice" class="show-voice"></div>
+                        </div>
+                        <div class="line liney clearfix">
+                            <label class="linel">&nbsp;</label>
+                            <div class="liner">
+                                <div class="clearfix checkcon">
+                                    <p class="fn-fl checktxt"><input type="checkbox" class="iyes fn-fl J_protocal" checked />
+                                    <span class="fn-fl">{$Think.lang.ReadAndAgree}</span><a class="itxt fn-fl" href="{:U('Home/Article/detail',['article_id'=>1415])}" target="_blank">《量子时空商城服务协议》</a>
+                                    </p>
+                                      <p class="fn-fl errorbox v-txt" id="protocalBox"></p>
+                                </div>
+                                <a class="regbtn J_btn_agree" href="javascript:void(0);" onClick="check_submit();">{$Think.lang.ReadAndAgree}</a>
+                                <p class="v-txt" id="err_check_code">
+                                    <span class="fnred">{$Think.lang.PleaseCheck}</span>{$Think.lang.ReadAndAgree}<a class="itxt" href="{:U('Home/Article/detail',['article_id'=>1415])}" target="_blank">《{$walhao_config['shop_info_store_title']}服务协议》</a>
+                                </p>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>    
+</div>
+    <!--footer-s-->
+    <div class="footer p">
+        <include file="public/footer_index" />
+    </div>
+    <!--footer-e-->
+<script>
+
+    $(document).ready(function(){
+         $('input').click(function(){
+              $(this).siblings('p').hide();
+         });
+        
+    });
+ 
+    // 普通 图形验证码 
+    function verify(id){
+        $('#'+id).attr('src','/index.php?m=Home&c=User&a=verify&type=user_reg&r='+Math.random());
+    }
+    function check_submit(){
+        var Rid = $('input[name="recommondId"]').val();
+        var mobile = $('input[name="mobile"]').val();
+        var email = $('input[name="email"]').val();
+        var rname = $('input[name="realName"]').val(); //真实姓名
+        var id_card = $('input[name="id_card"]').val();//身份证号
+        var bank_name =$("#bank option:selected").val();//银行名称
+        var bank_card = $('input[name="card_num"]').val();//银行卡号
+        var alipay_code = $('input[name="alipay"]').val(); //支付宝账号
+        var pwd = $('input[name="password"]').val();  //密码
+        var pwd2 = $('input[name="password2"]').val();
+        var verify_code = $('input[name="verify_code"]').val(); //验证码
+        var img_url = $('img[class="idImg"]').attr('src'); //图片地址
+        var face_url = $('input[name="face_url"]').val(img_url);
+        var is_ok = $('input[name="is_ok"]').val();  // 1 认证成功
+        if(!checkRecommondId(Rid)){
+            return false;
+        }
+        if(!checkMobile(mobile)){
+
+            return false;
+        }
+//        if(!checkEmail(email)){
+//            return false;
+//        }
+        if(!checkName(rname)){
+            return false;
+        }
+        //银行名称
+       /* if(bank_name =='0'){
+            return false;
+        }
+
+        if(!checkIdCard(id_card)){
+            return false;
+        }
+
+        if(!checkalipayNum(alipay_code)){
+            return false;
+        }
+        //sfz
+        if(is_ok != '1'){
+            return false;
+        }*/
+
+        if(pwd != pwd2 || pwd.length <6 || pwd.length >16){
+            return false;
+        }
+
+        $.ajax({
+            type : "POST",
+            url:"{:U('Home/User/reg')}",
+            dataType: "json",
+            data: $('#reg_form2').serialize(),
+            success: function(data){
+                if(data.status == 1){
+                    var info = data.msg.split('-');
+                    var msg = info[0];
+                    var wh_id =info[1];
+                    console.log(info);
+                    layer.msg(msg, {icon: 1},function(){
+
+                        layer.confirm('请牢记您的登录ID: '+wh_id, {
+                            btn: ['确定','取消'] //按钮
+                            ,title:'温馨提示:'
+                        }, function(){
+                            window.location.href = "{:U('Home/User/login')}";
+                        }, function(index){
+                            layer.close(index);
+                        });
+
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2},function(index){
+                        $('.verifyImg').trigger('click');
+                        layer.close(index);
+                    });
+                }
+            }
+        });
+
+    }
+
+    //推荐人id
+    function checkRecommondId(id){
+        var reg = /^18[0-9]{8}$/;
+        if(reg.test(id)){
+            $('.recommond_error').css("display","none");
+            $('.recommond_right').css("display","inline-block");
+            return true;
+        }else{
+            $('.recommond_right').css("display","none");
+            $('.recommond_error').css("display","inline-block");
+            return false;
+        }
+    }
+    //手机号格式
+    function checkMobile(tel) {
+        var reg = /(^1[3|4|5|7|8][0-9]{9}$)/;
+        if (reg.test(tel)) {
+            $('.mobile_error').css("display","none");
+            $('.mobile_right').css("display","inline-block");
+            return true;
+        }else{
+            $('.mobile_right').css("display","none");
+            $('.mobile_error').css("display","inline-block")
+            return false;
+        };
+    }
+
+    function checkEmail(str){
+        var reg = /^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(reg.test(str)){
+            $('.email_error').css("display","none");
+            $('.email_right').css("display","inline-block");
+            return true;
+        }else{
+            $('.email_right').css("display","none");
+            $('.email_error').css("display","inline-block")
+            return false;
+        }
+    }
+
+    //真实姓名
+    function checkName(name){
+        var reg = /^([a-zA-Z0-9\u4e00-\u9fa5\·]{2,10})$/;
+        if(reg.test(name)){
+            $('.rname_error').css("display","none");
+            $('.rname_right').css("display","inline-block");
+            return true;
+        }else{
+            $('.rname_right').css("display","none");
+            $('.rname_error').css("display","inline-block");
+            return false;
+        }
+    }
+
+    //银行名称
+    function checkBankName(bank){
+        var bank_name =$("#bank option:selected").val();
+        if(bank_name =='0'){
+            $('.bank_right').css("display","none");
+            $('.bank_error').css("display","inline-block");
+            return false;
+        }else{
+            $('.bank_error').css("display","none");
+            $('.bank_right').css("display","inline-block");
+            return true;
+        }
+    }
+
+    //银行卡号
+    function checkCard(card_num){
+//        var card_num = $(this).val();
+        var reg = /^[\d\s]{19,23}$/;
+            if (reg.test(card_num)) {
+                $('.num_error').css("display","none");
+                $('.num_right').css("display","inline-block");
+                return true;
+            }else{
+                $('.num_right').css("display","none");
+                $('.num_error').css("display","inline-block");
+                return false;
+            }
+    }
+
+    //身份证号
+    function checkIdCard(idcard){
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(reg.test(idcard)){
+            $('.card_error').css("display","none");
+            $('.card_right').css("display","inline-block");
+            return true;
+        }else{
+            $('.card_right').css("display","none");
+            $('.card_error').css("display","inline-block");
+            return false;
+        }
+
+    }
+
+    //支付宝号
+    function checkalipayNum(alipayNum){
+        var reg = /^[0-9a-zA-Z_.@]{10,30}$/;
+        if(reg.test(alipayNum)){
+            $('.alipay_error').css("display","none");
+            $('.alipay_right').css("display","inline-block");
+            return true;
+        }else{
+            $('.alipay_right').css("display","none");
+            $('.alipay_error').css("display","inline-block");
+            return false;
+        }
+    }
+
+    //两次密码是否一致
+    function checkPwd() {
+        var pwd = $('input[name="password"]').val();
+        var pwd2 = $('input[name="password2"]').val();
+
+        if(pwd != pwd2 || pwd.length ==0){
+            $('.pwd_right').css("display","none");
+            $('.pwd_error').css("display","inline-block").html('{$Think.lang.PasswordIsInconsistentTwice}');
+            return false;
+        }else if(pwd.length <6 || pwd.length>20){
+            $('.pwd_right').css("display","none");
+            $('.pwd_error').css("display","inline-block").html('{$Think.lang.LettersNumbersSymbol}!');
+            return false;
+        }else{
+            $('.pwd_error').css("display","none");
+            $('.pwd_right').css("display","inline-block");
+            return true;
+        }
+
+    }
+
+    //验证码
+    function checkverify(code){
+//        console.log(code);return;
+        if(code.length !=4){
+            $('.code_right').css("display","none");
+            $('.code_error').css("display","inline-block");
+            return false;
+        }else{
+            $('.code_error').css("display","none");
+//            $('.code_right').css("display","inline-block");
+            return true;
+        }
+    }
+
+    //实名认证  比对 姓名 身份证号
+    var before_request = 1;
+    function authentication(){
+        var rname = $('input[name="realName"]').val(); //真实姓名
+        var id_card = $('input[name="id_card"]').val();//身份证号
+        if(before_request == 0){
+            $('.img_right').css("display","none");
+            $('.img_error').css("display","inline-block").html(' *{$Think.lang.OperationTooFrequent}!');
+            return false;
+        }
+
+        before_request = 0;
+
+        console.log(rname);
+        console.log(id_card);
+        var img_url = $('img[class="idImg"]').attr('src'); //图片地址
+        if(img_url.length > 0){
+            var url = '/index.php?m=Home&c=api&a=authentication&path_url='+img_url;
+            $.ajax({
+                type:'GET',
+                dataType:'JSON',
+                url:url,
+                success:function(data){
+                    console.log(data);
+                    if(data.code =='400'){
+                        $('.img_right').css("display","none");
+                        $('.img_error').css("display","inline-block").html(' *{$Think.lang.IDPhotoIllegal}!');
+                    }else{
+                        if(rname != data.name || id_card != data.num){
+                            $('.img_right').css("display","none");
+                            $('.img_error').css("display","inline-block").html(' *{$Think.lang.RealNameOrIDNumberError}!');
+                        }else{
+                            //成功 设置 is_ok =1
+                            $('input[name="is_ok"]').val('1');
+                            $('.recognition').css('display','none');
+                            $('.img_error').css("display","none");
+                            $('.img_right').css("display","inline-block");
+                        }
+                    }
+                    before_request = 1;
+                },
+                error:function(data){
+                    $('.img_right').css("display","none");
+                    $('.img_error').css("display","inline-block").html(' *{$Think.lang.NetworkFailedLoad}!');
+                }
+            });
+        }else{
+            $('.img_right').css("display","none");
+            $('.img_error').css("display","inline-block").html('{$Think.lang.UploadFacePhotoID}!');
+        }
+    }
+
+
+    function add_img(str){
+        $('.addimg').css('display','none');
+        $('.idcard').css('display','block');
+        $('img[class="idImg"]').attr('src',str);
+        $('.recognition').css('display','inline-block');
+    }
+
+    function delImg(file){
+        //删除图片 设置is_ok 0
+        $('input[name="is_ok"]').val('0');
+
+        $.get(
+            "/index.php?m=Admin&c=Uploadify&a=delupload",{action:"del", filename:file},function(){}
+        );
+        $('img[class="idImg"]').attr('src','');
+        $('.addimg').css('display','inline-block');
+        $('.idcard').css('display','none');
+        $('.recognition').css('display','none');
+    }
+</script>
+</body> 
+</html>

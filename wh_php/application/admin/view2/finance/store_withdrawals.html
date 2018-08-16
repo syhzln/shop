@@ -1,0 +1,228 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>提现申请管理</h3>
+                <h5>网站系统提现申请索引与管理</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>店铺列表</h3>
+
+                <h5>(共{$list|count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form" method="post" action="{:U('store_withdrawals')}" onsubmit="return check_form();">
+                <input type="hidden" name="create_time" id="create_time" value="{$create_time}">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time"name="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+                        <input type="button" class="btn" value="起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="end_time"name="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+                        <input type="button" class="btn" value="截止时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="status" name="status" class="form-control">
+                            <option value="-1">状态</option>
+                            <option value="0"<if condition="$_REQUEST['status'] heq '0'">selected</if>>申请中</option>
+                            <option value="1"<if condition="$_REQUEST['status'] eq 1">selected</if>>审核成功</option>
+                            <option value="2"<if condition="$_REQUEST['status'] eq 2">selected</if>>审核失败</option>
+                            <option value="3"<if condition="$_REQUEST['status'] eq 3">selected</if>>转账成功</option>
+                            <option value="4"<if condition="$_REQUEST['status'] eq 4">selected</if>>转账失败</option>
+                            <option value="5"<if condition="$_REQUEST['status'] eq 5">selected</if>>拒绝提现</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input size="30" id="store_name" name="store_name" value="{$Think.request.store_name}" placeholder="店铺名称" class="qsbox" type="text">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input size="30" placeholder="收款账户名" value="{$Think.request.ex_account_name}" name="ex_account_name" class="qsbox" type="text">
+                    </div>
+                    <div class="sDiv2">
+                        <input size="30" value="{$Think.request.ex_account_info}" name="ex_account_info" placeholder="收款账号" class="qsbox" type="text">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">
+                    <a href="javascript:;" onclick="exportReport()">
+                        <div class="add" title="导出excel">
+                            <span><i class="fa fa-plus"></i>导出excel</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="fbutton">
+                    <a onclick="pay_out('online')">
+                        <div class="add" title="在线转账">
+                            <span><i class="fa fa-hand-o-right"></i>转账</span>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sign" axis="col0"><i class="ico-check"></i></th>
+                            <th align="center" abbr="article_title" axis="col3" class="">申请ID</th>
+                            <th align="center" abbr="ac_id" axis="col4" class="">店铺id</th>
+                            <th align="center" abbr="article_show" axis="col5" class="">店铺名称</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">申请时间</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">申请金额</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">提现方式</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">接收信息</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">收款人</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">提现周期</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">审核员</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">审核时间</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">转账时间</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">状态</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">其他</th>
+                            <th align="center" axis="col1" class="handle">操作</th>
+                            <th axis="col7"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="vo">
+                        <tr  data-withdraw_id="{$vo.withdraw_id}">
+                            <td class="sign"><i class="ico-check"></i></td>
+                            <td align="center" class="">{$vo.withdraw_id}</td>
+                            <td align="center" class="">{$vo.receiptor_id}</td>
+                            <td align="center" class="">{$vo.store_name}</td>
+                            <td align="center" class="">{$vo.issue_date|date="Y-m-d",###}</td>
+                            <td align="center" class="">{$vo.WithdrawMoney}</td>
+                            <td align="center" class="">支付宝</td>
+                            <td align="center" class="">{$vo.ex_account_info}</td>
+                            <td align="center" class="">{$vo.ex_account_name}</td>
+                             <td align="center" class="">
+                                <a href="{:U('checkWithdrawals',array('provider_id'=>$vo['receiptor_id'],'period_id'=>$vo['period_id'],withdraw_id=>$vo[withdraw_id]))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>审核</a>
+                            </td>
+                            <td align="center" class="">{$vo.auditor_id}</div></td>
+                            <td align="center" class="">{$vo.transfer_date|date="Y-m-d",###}</td>
+                            <td align="center" class="">{$vo.finish_date|date="Y-m-d",###}</td>
+                            <td align="center" class="">
+                                <if condition="$vo[status] eq 0">申请中</if>
+                                <if condition="$vo[status] eq 1">审核通过</if>
+                                <if condition="$vo[status] eq 2">审核失败</if>
+                                <if condition="$vo[status] eq 3">转账成功</if>
+                                <if condition="$vo[status] eq 4">转账失败</if>
+                            </td>
+                            <td align="center" class="">{$vo.failure_reason}//{$vo.audit_failure_reason}</td>
+                            <td align="center" class="handle">
+                                <a href="{:U('editStoreWithdrawals',array('id'=>$vo['withdraw_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                <!--<if condition="in_array($vo[status],array(0,2))">-->
+                                    <!--<a class="btn red"  href="javascript:void(0)" onclick="del('{$vo[id]}')"><i class="fa fa-trash-o"></i>删除</a>-->
+                                <!--</if>-->
+                            </td>
+                            <td align="" class=""></td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+<form action="{:U('pay_out')}" method="post" id="pay_out">
+    <input type="hidden" name="withdrawids" value="">
+</form>
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+
+        $('.ico-check ' , '.hDivBox').click(function(){
+            $('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
+                var hasClass = $(this).hasClass('trSelected');
+                $('tr' , '#flexigrid').each(function(){
+                    if(hasClass){
+                        $(this).addClass('trSelected');
+                    }else{
+                        $(this).removeClass('trSelected');
+                    }
+                });
+            });
+        });
+    });
+
+
+
+    function exportReport(){
+
+    }
+
+    function pay_out(){
+        var selected_ids = getIds();
+        if(!selected_ids){
+            alert("请选择需要转账的记录");
+            return;
+        }
+        $('input[name="withdrawids"]').val(selected_ids);
+        $('#pay_out').submit();
+    }
+
+    function getIds(){
+        var selected_ids = '';
+        $('.trSelected' , '#flexigrid').each(function(i){
+            selected_ids += $(this).data('withdraw_id')+',';
+        });
+        return selected_ids.substring(0,selected_ids.length-1);
+    }
+
+
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#create_time').val(start_time+" - "+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#create_time').val('');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

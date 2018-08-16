@@ -1,0 +1,226 @@
+<include file="public/layout" />
+<!--物流配置 css -start-->
+<style>
+    ul.group-list {
+        width: 96%;min-width: 1000px; margin: auto 5px;list-style: disc outside none;
+    }
+    ul.group-list li {
+        white-space: nowrap;float: left;
+        width: 150px; height: 25px;
+        padding: 3px 5px;list-style-type: none;
+        list-style-position: outside;border: 0px;margin: 0px;
+    }
+    .row .table-bordered td .btn,.row .table-bordered td img{
+        vertical-align: middle;
+    }
+    .row .table-bordered td{
+        padding: 8px;
+        line-height: 1.42857143;
+    }
+    .table-bordered{
+        width: 100%
+    }
+    .table-bordered tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .btn-success {
+        color: #fff;
+        background-color: #449d44;
+        border-color: #398439 solid 1px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .col-xs-8 {
+        width: 66.66666667%;
+    }
+    .col-xs-4 {
+        width: 33.33333333%;
+    }
+    .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+        float: left;
+    }
+    .row .tab-pane h4{
+        padding: 10px 0;
+    }
+    .row .tab-pane h4 input{
+        vertical-align: middle;
+    }
+    .table-striped>tbody>tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+    .ncap-form-default .title{
+        border-bottom: 0
+    }
+    .ncap-form-default dl.row, .ncap-form-all dd.opt{
+        /*border-color: #F0F0F0;*/
+        border: none;
+    }
+    .ncap-form-default dl.row:hover, .ncap-form-all dd.opt:hover{
+        border: none;
+        box-shadow: inherit;
+    }
+</style>
+<!--物流配置 css -end-->
+<!--以下是在线编辑器 代码 -->
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<!--以上是在线编辑器 代码  end-->
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>添加商品类目</h3>
+                <h5>商品类目设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a href="javascript:void(0);" data-index='1' class="tab current"><span>类目信息</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>请按照自己的商品添加相应的类目</li>
+        </ul>
+    </div>
+    <div class="box-body">
+        <button class="btn btn-default btn-block"><p class="pull-left">店铺ID：{$apply}</p></button>
+    </div>
+    <div class="box-body">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="list-table" class="table table-bordered table-striped dataTable">
+                    <thead>
+                    <tr role="row">
+                        <th align="center" abbr="article_show" axis="col6" class="">
+                            <div style="text-align: center; width: 50px;" class="" onClick="sort('class_1');">分类1</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col6" class="">
+                            <div style="text-align: center; width: 50px;" class="" onClick="sort('class_2');">分类2</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col6" class="">
+                            <div style="text-align: center; width: 50px;" class="" onClick="sort('class_3');">分类3</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col6" class="">
+                            <div style="text-align: center; width: 50px;" class="" onClick="sort('');">操作</div>
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <foreach name="act" item="v" key="k" >
+                        <tr role="row">
+                            <td>{$v.class_1}</td>
+                            <td>{$v.class_2}</td>
+                            <td>{$v.class_3}</td>
+                            <td class="handle">
+                                <a class="btn red" href="javascript:void(0)" data-url="{:U('Store/store_class_del')}" data-id="{$v.category_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    <!--表单数据-->
+    <form method="post" id="store_class_info" action="{:U('Store/store_class_add',array('apply_id'=>$apply))}">
+        <input type="hidden" value="{$apply}" name="apply">
+        <input type="hidden" value="{$Request.param.is_distribut}" name="is_distribut" class="input-txt"/>
+        <!--通用信息-->
+        <div class="ncap-form-default tab_div_1">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="classOne">商品分类</label>
+                </dt>
+                <dd class="opt">
+                    <select name="classOne" id="classOne" onchange="get_storeCategory(this.value,'classTwo','0');" class="form-control">
+                        <option value="0">选择分类</option>
+                        <foreach name="cat_list" item="v" key="k" >
+                            <option value="{$v['category_id']}" <if condition="$v['category_id'] eq $level_cat['1']">selected="selected"</if> >
+                            {$v['category_name']}
+                            </option>
+                        </foreach>
+                    </select>
+                    <select name="classTwo" id="classTwo" onchange="get_storeCategoryThree(this.value,'classThree','0');" class="form-control">
+                        <option value="0">选择分类</option>
+                    </select>
+                    <select name="classThree" id="classThree" onchange="push_commis_rate(this)" class="form-control">
+                        <option value="0">选择分类</option>
+                    </select>
+
+                    <span class="err" id="err_cat_id" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+        </div>
+        <div class="ncap-form-default">
+            <div class="bot">
+                    <input type="hidden" name="apply_id" value="{$apply}">
+                <input class="btn btn-primary" type="button" onclick="actsubmit()" value="确认添加">
+            </div>
+        </div>
+    </form>
+    <!--表单数据-->
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+
+    /** 以下是编辑时默认选中某个商品分类*/
+    function push_commis_rate(obj){
+        //$('input[name="commis_rate"]').val($(obj).val());
+    }
+
+    function actsubmit(){
+        $('#store_class_info').submit();
+    }
+
+    function delfun(obj){
+        if(confirm('确认删除')){
+            $.ajax({
+                type : 'post',
+                url : $(obj).attr('data-url'),
+                data : {act:'del',category_id:$(obj).attr('data-id')},
+                dataType : 'json',
+                success : function(data){
+                    if(data.stat=='ok'){
+                        $(obj).parent().parent().remove();
+                    }else{
+                        layer.alert(data, {icon: 2});  //alert(data);
+                    }
+                }
+            })
+        }
+        return false;
+    }
+
+</script>
+</body>
+</html>

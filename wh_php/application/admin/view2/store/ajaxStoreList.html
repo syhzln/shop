@@ -1,0 +1,127 @@
+<table>
+    <thead>
+        <tr>
+            <th class="sign" axis="col0"><i class="ico-check"></i></th>
+            <th align="center" abbr="apply_id" axis="col3" class="">店铺ID</th>
+            <th align="center" abbr="shop_name" axis="col3" class="">店铺名称</th>
+            <th align="center" abbr="prov_name" axis="col3" class="">供应商全名</th>
+            <th align="center" abbr="login_username" axis="col4" class="">店主账号</th>
+            <th align="center" abbr="phone" axis="col4" class="">供应商电话</th>
+            <th align="center" abbr="phone" axis="col4" class="">供应商QQ</th>
+            <th align="center" abbr="open_time" axis="col6" class="">进驻日期</th>
+            <th align="center" abbr="apply_state" axis="col6" class="" onClick="sort('is_closed');">是否开启</th>
+            <!--<th align="center" abbr="open_state" axis="col6" class="">申请状态</th>-->
+            <th align="center" abbr="article_time" axis="col6" class="">操作</th>
+            <div style="clear:both"></div>
+            <!--<th style="width:100%" axis="col10">-->
+                <!--<div></div>-->
+            <!--</th>-->
+        </tr>
+    </thead>
+    <tbody>
+    <volist name="storeInfo" id="list">
+        <tr>
+            <td class="sign" axis="col6"><i class="ico-check"></i></td>
+            <td align="left" axis="col6">{$list.apply_id}</td>
+            <td align="left" axis="col6">{$list.shop_name}</td>
+            <td align="left" axis="col6">{$list.prov_name}</td>
+            <td align="left" axis="col6">{$list.login_username}</td>
+            <td align="left" axis="col6">{$list.phone}</td>
+            <td align="left" axis="col6">{$list.qq}</td>
+            <td align="left" axis="col6">{$list.open_time|date="Y-m-d H:i",###}</td>
+            <td align="left" axis="col6">
+                <if condition='$list[is_closed] eq 2'>
+                    <span class="no" onClick="changeTableVal('store','apply_id','{$list.apply_id}','is_closed',this)" ><i class="fa fa-ban"></i>否</span>
+                    <elseif condition='$list[is_closed] eq 1' />
+                    <span class="yes" onClick="changeTableVal('store','apply_id','{$list.apply_id}','is_closed',this)" ><i class="fa fa-check-circle"></i>是</span>
+                    <else />
+                    <span class="no" onClick="changeTableVal('store','apply_id','{$list.apply_id}','is_closed',this)" ><i class="fa fa-ban"></i>否</span>
+                </if>
+            </td>
+            <!--<td align="left" axis="col6">-->
+                <!--<if condition="$list[apply_state] eq 1">-->
+                    <!--<span style="color:greenyellow"> 新申请</span>-->
+                    <!--<elseif condition="$list[apply_state] eq 2" />-->
+                    <!--<span style="color:green">已通过</span>-->
+                    <!--<elseif condition="$list[apply_state] eq 3" />-->
+                    <!--<span style="color:red">已拒绝</span>-->
+                    <!--<else />-->
+                    <!--<span style="color:darkblue">未通过</span>-->
+
+                <!--</if>-->
+            <!--</td>-->
+            <td align="center" class="handle">
+                <a href="{:U('Store/store_info',array('apply_id'=>$list['apply_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>查看</a>
+                <a href="{:U('Store/store_info_edit',array('apply_id'=>$list['apply_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                <a href="{:U('Store/store_class_info',array('apply_id'=>$list['apply_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>经营类目</a>
+                <a href="{:U('Finance/providerPeriodic',array('apply_id'=>$list['apply_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>结算设定</a>
+                <a href="{:U('Store/pwd',array('apply_id'=>$list['apply_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>密码变更</a>
+                <!--<a class="btn red" href="javascript:void(0)" data-url="{:U('Store/store_del')}" data-id="{$list.apply_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>-->
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+<!--分页位置--> <!--{$page}-->
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        var cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+
+    /*
+     * 清除静态页面缓存
+     */
+    function ClearGoodsHtml(goods_id)
+    {
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/System/ClearGoodsHtml')}",
+            data:{goods_id:goods_id},
+            dataType:'json',
+            success:function(data){
+                layer.alert(data.msg, {icon: 2});
+            }
+        });
+    }
+
+    function delfun(obj){
+        if(confirm('确认删除')){
+            $.ajax({
+                type : 'post',
+                url : $(obj).attr('data-url'),
+                data : {act:'del',apply_id:$(obj).attr('data-id')},
+                dataType : 'json',
+                success : function(data){
+                    if(data.stat=='ok'){
+                        $(obj).parent().parent().parent().remove();
+                    }else{
+                        layer.alert(data, {icon: 2});  //alert(data);
+                    }
+                }
+            })
+        }
+        return false;
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function ClearGoodsThumb(goods_id)
+    {
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/System/ClearGoodsThumb')}",
+            data:{goods_id:goods_id},
+            dataType:'json',
+            success:function(data){
+                layer.alert(data.msg, {icon: 2});
+            }
+        });
+    }
+
+</script>

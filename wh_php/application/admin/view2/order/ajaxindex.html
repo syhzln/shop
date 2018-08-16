@@ -1,0 +1,115 @@
+
+    <table>
+    <thead>
+        <tr >
+            <th class="sign" axis="col0" width="80"><i class="ico-check selected_all"></i></th>
+            <th align="left" abbr="order_sn" axis="col3" class="" width="320">订单编号</th>
+            <th align="left" abbr="order_sn" axis="col3" class="" width="320">量子ID</th>
+            <!--<th align="left" abbr="order_sn" axis="col3" class="" width="320">walhao_id</th>-->
+            <th align="left" abbr="order_sn" axis="col3" class="" width="320">支付号</th>
+            <th align="left" abbr="consignee" axis="col4" class="" width="250">收货人</th>
+            <th align="center" abbr="article_show" axis="col5" class="" width="150">总金额</th>
+            <th align="center" abbr="article_time" axis="col6" class="" width="160">应付金额</th>
+            <th align="center" abbr="article_time" axis="col6" class="" width="160">订单状态</th>
+            <th align="center" abbr="article_time" axis="col6" class="" width="160">支付状态</th>
+            <th align="center" abbr="article_time" axis="col6" class="" width="140">发货状态</th>
+            <th align="center" abbr="article_time" axis="col6" class="" width="170">支付方式</th>
+            <th align="center" abbr="article_time" axis="col6" class="" width="160">配送方式</th>
+            <th align="center" abbr="article_time" axis="col6" class="" width="270">下单时间</th>
+            <th align="left" abbr="order_sn" axis="col3" class="" width="320">店铺</th>
+            <th align="left" abbr="order_sn" axis="col3" class="" width="320">是否专区</th>
+            <th align="left" axis="col1" class="handle" width="">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+    <if condition="empty($orderList) eq true">
+        <tr data-id="0">
+            <td class="no-data" align="center" axis="col0" colspan="50">
+                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+            </td>
+        </tr>
+        <else/>
+        <volist name="orderList" id="list">
+            <tr data-order-id="{$list.order_id}">
+                <td class="sign" axis="col0"><i class="ico-check"></i></td>
+                <td align="left" abbr="order_sn" axis="col3" class="">{$list.order_sn}</td>
+                <!--<td align="left" abbr="consignee" axis="col4" class="">{$list.tp138_user_id}</td>-->
+                <td align="left" abbr="consignee" axis="col4" class="">{$list.walhao_id}</td>
+                <td align="left" abbr="consignee" axis="col4" class="">{$list.code}</td>
+                <td align="left" abbr="consignee" axis="col4" class="">{$list.consignee}</td>
+                <td align="center" abbr="article_show" axis="col5" class="">{$list.order_amount}</td>
+                <td align="center" abbr="article_time" axis="col6" class="">{$list.order_amount}</td>
+                <td align="center" abbr="article_time" axis="col6" class="">{$order_status[$list[order_status]]}<if condition="$list['is_cod'] eq '1'"><span style="color: red">(货到付款)</span></if></td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                        <if condition="$list['pay_status'] eq 1">
+                            未支付
+                        </if>
+                        <if condition="$list['pay_status'] eq 2">
+                            已支付
+                        </if>
+                        <!--{$pay_status[$list[pay_status]]}-->
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="">{$shipping_status[$list[shipping_status]]}</td>
+                <td align="center" abbr="article_time" axis="col6" class="">{$payType[$list[pay_code]]|default='其他方式'}</td>
+                <td align="center" abbr="article_time" axis="col6" class="">普通快递</td>
+                <td align="center" abbr="article_time" axis="col6" class="">{$list.create_time|date='Y-m-d H:i',###}</td>
+                <td align="center" abbr="article_time" axis="col6" class="">{$list.store_name}</td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <if condition="$list['type'] eq 1">
+                        普通商品
+                    </if>
+                    <if condition="$list['type'] eq 4">
+                        专区商品
+                    </if>
+                </td>
+                <td align="left" axis="col1" class="handle" align="center">
+                        <a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
+                        <if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 0) or ($list['order_status'] eq 5)">
+                            <a class="btn red" href="javascript:void(0);" data-href="{:U('Admin/order/delete_order',array('order_id'=>$list['order_id']))}" onclick="del(this)"><i class="fa fa-trash-o"></i>删除</a>
+                        </if>
+                        <!--<if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 1)">-->
+                        <!--<a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>-->
+                        <!--</if>-->
+                </td>
+            </tr>
+        </volist>
+    </if>
+    </tbody>
+</table>
+    <div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+
+    // 删除操作
+    function del(obj) {
+        confirm('确定要删除吗?', function(){
+            location.href = $(obj).data('href');
+        });
+    }
+
+
+    //选中全部
+    $('.selected_all').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+        if($(this).parent().hasClass('trSelected')){
+            sign.each(function(){
+                $(this).removeClass('trSelected');
+            });
+            $(this).parent().removeClass('trSelected');
+        }else{
+            sign.each(function(){
+                $(this).addClass('trSelected');
+            });
+            $(this).parent().addClass('trSelected');
+        }
+    })
+
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+</script>

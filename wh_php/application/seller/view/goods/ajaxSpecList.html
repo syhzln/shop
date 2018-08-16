@@ -1,0 +1,48 @@
+<table>
+      <thead>
+        <tr>
+          <th class="sign" axis="col6"><i class="ico-check"></i></th>
+          <th align="left" abbr="article_title" axis="col6" class="">id</th>
+          <th align="left" abbr="ac_id" axis="col4" class="">规格名称</th>
+          <th align="center" abbr="article_show" axis="col6" class="">所属分类</th>
+          <th align="center" abbr="article_time" axis="col6" class="">规格项</th>
+          <th align="center" abbr="article_time" axis="col6" class="">筛选</th>
+          <th align="center" abbr="article_time" axis="col6" class="">排序</th>
+          <th align="center" abbr="article_time" axis="col6" class="">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+			<volist name="specList" id="list">
+              <tr>
+                <td class="sign" axis="col6"><i class="ico-check"></i></td>			 
+                <td align="center" axis="col0">{$list.bid}</td>
+                <td align="center" axis="col0">{$list.name}</td>
+                <td align="center" axis="col0">{$goodsTypeList[$list[type_id]][name]}</td>
+                <td align="center" axis="col0">{$list.spec_item}</td>               
+                <td align="center" axis="col0">
+                    <if condition='$list[search_index] eq 1'>
+                      <span class="yes" onClick="changeTableVal('spec','id','{$list.id}','search_index',this)" ><i class="fa fa-check-circle"></i>是</span>
+                      <else />
+                      <span class="no" onClick="changeTableVal('spec','id','{$list.id}','search_index',this)" ><i class="fa fa-ban"></i>否</span>
+                    </if>
+                </td>                                
+                <td align="center" axis="col0">
+                  <input type="text" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onChange="changeTableVal('spec','id','{$list.id}','order',this)" size="4" value="{$list.order}" />                
+                </td>  
+                <td align="center" class="handle">                  
+                    <a class="btn red"  href="javascript:del_fun('{:U('Goods/delGoodsSpec',array('id'=>$list['id']))}');"><i class="fa fa-trash-o"></i>删除</a>
+                    <a href="{:U('Admin/goods/addEditSpec',array('id'=>$list['id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a> 
+                </td>
+              </tr>
+            </volist>             
+          </tbody>
+        </table>
+        <!--分页位置--> <!--{$page}  -->
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+ 
+</script>        

@@ -1,0 +1,192 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>物流插件管理 - {$plugin.name}配送区域配置</h3>
+                <h5>网站系统物流插件管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="editForm" method="post">
+        <input type="hidden" name="id" value="{$id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>模板名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$temp.name}" name="shipping_name" class="input-txt" disabled>
+                    <span class="err"></span>
+                    <p class="notic">模板名称</p>
+                </dd>
+            </dl>
+            <!--<dl class="row">-->
+            <!--<dt class="tit">-->
+            <!--<label><em>*</em>费用</label>-->
+            <!--</dt>-->
+            <!--<dd class="opt">-->
+            <!--<input type="text" value="{$temp.cost}" name="shipping_price" class="input-txt">-->
+            <!--<span class="err"></span>-->
+            <!--<p class="notic">物流费用</p>-->
+            <!--</dd>-->
+            <!--</dl>-->
+            <dl class="row">
+                <dt class="tit">
+                    <label>
+                        首&nbsp;&nbsp;重
+                        <select name="config[first_weight]">
+                            <for start="500" end="8000" step="500" name="v">
+                                <option value="{$v}" <if condition="$temp[config][first_weight] eq $v">selected="selected"</if> >{$v}</option>
+                            </for>
+                        </select>
+                        克以内费用：
+                    </label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$temp.config.money}" name="config[money]" class="input-txt"/>
+                    <span class="err"></span>
+                    <p class="notic">单位：元</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>
+                        续重每
+                        <select name="config[second_weight]">
+                            <for start="500" end="8000" step="500" name="v">
+                                <option value="{$v}" <if condition="$temp[config][second_weight] eq $v">selected="selected"</if> >{$v}</option>
+                            </for>
+                        </select>
+                        克或其零数的费用：
+                    </label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$temp.config.add_money}" name="config[add_money]" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">单位：元</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <input <if condition="$temp.areas neq ''">checked</if> type="radio" name="type" value="part" onclick="choose()">
+                    <label>配送区域</label>
+                </dt>
+                <dd class="opt" id="area_list">
+                    <foreach name="areas" item="area" key="k">
+                        <input
+                        <in name="$k" value='$temp.areas'>
+                            checked
+                        </in>
+                        class="area_list" type="checkbox" name="area_list[]" value="{$k}">{$area}
+
+                    </foreach>
+                </dd>
+            </dl>
+            <dl class="row">
+
+                <dt class="tit">
+                    <input <if condition="$temp.areas eq ''">checked</if> type="radio" name="type" value="all" onclick="choose()">
+                    <label>全国通用</label>
+                </dt>
+
+            </dl>
+            <dl class="row">
+
+                <dt class="tit">
+
+                    <label>是否默认</label>
+                </dt>
+                <dd class="opt" >
+                    是<input type="radio" name="is_default" value="1" <if condition="$temp.is_default eq 1">checked</if>>
+                    否<input type="radio" name="is_default" value="0" <if condition="$temp.is_default eq 0">checked</if>>
+                </dd>
+
+            </dl>
+            <dl class="row">
+
+                <dt class="tit">
+                    <label>是否关闭</label>
+                </dt>
+                <dd class="opt" >
+                    开启<input type="radio" name="is_close" value="1" <if condition="$temp.is_close eq 1">checked</if>>
+                    关闭<input type="radio" name="is_close" value="0" <if condition="$temp.is_close eq 0">checked</if>>
+                </dd>
+
+            </dl>
+
+            <div class="bot"><a href="JavaScript:void(0);" onclick="check_form();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script>
+    function choose(){
+        if($("input[name='type']:checked").val()=='all'){
+            $('.area_list').prop('disabled', true);
+            $('.area_list').prop('checked', false)
+        }else{
+            $('.area_list').prop('disabled', false)
+        }
+    }
+
+    function check_form(){
+        if ($('input[name="config\[money\]"]').val()==''||$('input[name="config\[add_money\]"]').val()==''){
+            layer.msg('首重续重都必须要填写！', {icon: 2,time: 1000});
+            return false;
+        }
+        if ($("input[name='type']:checked").val()=='part'&&$('input[name="area_list\[\]"]:checked').length == 0){
+            layer.msg('请至少选择一个区域！', {icon: 2,time: 1000});
+            return false;
+        }
+        $('#editForm').submit();
+    }
+
+    //  添加配送区域
+    function addArea(){
+        //
+        var province = $("#province").val(); // 省份
+        var city = $("#city").val();        // 城市
+        var district = $("#district").val(); // 县镇
+        var text = '';  // 中文文本
+        var tpl = ''; // 输入框 html
+        var is_set = 0; // 是否已经设置了
+
+        // 设置 县镇
+        if(district > 0){
+            text = $("#district").find('option:selected').text();
+            tpl = '<input class="area_list" type="checkbox" checked name="area_list[]" value="'+district+'">'+text;
+            is_set = district; // 街道设置了不再设置市
+        }
+        // 如果县镇没设置 就获取城市
+        if(is_set == 0 && city > 0){
+            text = $("#city").find('option:selected').text();
+            tpl = '<input class="area_list" type="checkbox" checked name="area_list[]" value="'+city+'">'+text;
+            is_set = city;  // 市区设置了不再设省份
+
+        }
+        // 如果城市没设置  就获取省份
+        if(is_set == 0 && province > 0){
+            text = $("#province").find('option:selected').text();
+            tpl = '<input class="area_list" type="checkbox" checked name="area_list[]" value="'+province+'">'+text;
+            is_set = province;
+
+        }
+
+        var obj = $("input[class='area_list']"); // 已经设置好的复选框拿出来
+        var exist = 0;  // 表示下拉框选择的 是否已经存在于复选框中
+        $(obj).each(function(){
+            if($(this).val() == is_set){  //当前下拉框的如果已经存在于 复选框 中
+                layer.alert('已经存在该区域', {icon: 2});  // alert("已经存在该区域");
+                exist = 1; // 标识已经存在
+            }
+        })
+        if(!exist)
+            $('#area_list').append(tpl); // 不存在就追加进 去
+    }
+</script>
+</body>
+</html>

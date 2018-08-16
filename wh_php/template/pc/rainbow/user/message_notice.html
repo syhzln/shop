@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$Think.lang.MyMessage} </title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css"/>
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        .wddd-li ul li {
+            float: left;
+            margin: 10px 20px;
+            font-size: 14px;
+        }
+
+        .tp_message {
+            padding: 40px 26px;
+            background: #fff;
+            margin-top: 0px
+        }
+
+        .tp_message h3 {
+            border-bottom: 1px solid #dedede;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            word-wrap: break-word;
+        }
+
+        .tp_message .tpcontent {
+            text-indent: 2em;
+            word-wrap: break-word;
+        }
+        .tp_message .flags{
+            font-size: 10px;
+            color: #999;
+        }
+        .tp_message .flags span{
+            color: #e63547;
+        }
+
+
+        .tp_message .checknoti {
+            text-align: right;
+            margin-top: 4px
+        }
+
+        .tp_message a {
+            cursor: pointer;
+            color: #e63547;
+            text-decoration: blink
+        }
+    </style>
+</head>
+<body class="bg-f5">
+<include file="user/header"/>
+<div class="home-index-middle">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+            <i class="litt-xyb"></i>
+            <span>{$Think.lang.MyMessage}</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu"/>
+            <div class="ri-menu fr" style="background-color: #fff">
+                <div class="wddd-li">
+                    <ul>
+                        <li id="ALL" onclick="ajax_message(0);"><a href="javascript:" class="red">{$Think.lang.AllNews}</a></li>
+                    </ul>
+                </div>
+                <div class="ui_tab">
+                    <div style="border-top: 0;" class="ui_tab_content">
+                        <div class="wddd-js ov-in">
+                            <div class="tp_message">
+                                <h3><span style="margin-left:-70px;">平台公告</span></h3>
+                                <div style="padding:0 20px;" class="tpcontent">
+                                    <h4 style="font-size:17px;text-align: center;">2018年5月22日通知</h4>
+                                    一、消费标准通知<br>
+                                    量子时空店主每月消费标准如下：<br>
+                                    LZ1每月最低消费330元<br>
+                                    LZ2每月最低消费660元<br>
+                                    LZ3每月最低消费660元<br>
+                                    LZ4每月最低消费1000元<br>
+                                    LZ5每月最低消费1300元<br>
+                                    LZ6每月最低消费2000元<br>
+                                    二、业绩截止日期调整通知：<br>
+                                    5月份消费业绩截止时间为6月2日晚12:00止。<br>
+                                    三、整体架构复制通知：<br>
+                                    5月5日起暂时停止原有架构整体复制。<br>
+                                    四、升级钻石店铺须知<br>
+                                    1、铜级店铺升级区消费1000元，钻石店铺升级区消费3320元。优惠铜级店铺升钻石店铺需补差额至3320元，和新升级店铺享受同等待遇，截止到2018年6月30日止。<br>
+                                    五、关于退货通知<br>
+                                    每月奖金发放以后不再接受上月消费商品退货，只接受等价换货。<br>
+                                    六、官方公众号上线通知<br><br>
+
+                                    量子时空商城公众号上线，名称为“量子时空商城”。<br>
+                                    公众号有量子实况，量子学堂，量子文化，量子广告四大板块。<br>
+                                    <p style="text-align: right;">杭州量子时空网络科技有限公司<br>2018年5月22日星期二</p>
+                                </div>
+                            </div>
+                            <div class="tp_notice p">
+                            </div>
+                        </div>
+                        <!-- page next star -->
+                        <div class="operating fixed" id="bottom">
+                            <div class="fn_page clearfix">
+                                {$page}
+                            </div>
+                        </div>
+                        <!-- page next end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<div class="footer p">
+    <include file="public/footer_index" />
+</div>
+<!--footer-e-->
+<script type="text/javascript">
+    $(function () {
+        ajax_message(0);
+        $('.wddd-li ul li a').click(function () {
+            $(this).addClass('red').parent().siblings('li').find('a').removeClass('red');
+        });
+    });
+    /**
+     * @author dyr
+     * 消息ajax请求
+     * @param type
+     */
+    function ajax_message(type) {
+        $.ajax({
+            type: "POST",
+            url: "{:U('Home/User/ajax_message_notice')}",
+            data: {type: type},
+//            dataType: 'html',
+            success: function (data) {
+                if (data) {
+                    $(".tp_notice").html('');
+                    $(".tp_notice").append(data);
+                } else {
+                    $(".tp_notice").html('');
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

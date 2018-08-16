@@ -1,0 +1,287 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/4 0004上午 10:56
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description:
+ */
+syntax = "proto3";
+package psp;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+/*订单主表*/
+message Order{
+      uint32 order_id=1;   	//订单id
+      string order_sn=2;		//订单编号
+      uint32 grounp_id=3;		//订单组id
+      uint32 type=4;			//订单类型
+      uint32 platform_id=5;	//平台id
+      uint32 user_id=6;		//用户id(包括会员用户和商家用户)
+      uint32 provider_id=7;	//商家id(如果是平台订单，则为0)
+      string pay_code=8;		//支付码
+      uint32 order_status=9;	//订单状态
+      uint32 delivery_status=10;//物流状态
+      uint32 pay_status=11;	//支付状态
+      uint32 returning_status=12;//退货状态
+      uint32 returning_delivery_status=13;//退货物流状态
+      uint32 delivery_id=14;	//物流id
+      uint32 returning_delivery_id=15;//退货物流id
+      uint32 currency=16;		//订单货币类型
+      float order_amount=17;	//订单金额
+      float delivery_amount=18;//运费金额
+      float promo_amount=19;	//优惠金额
+      float total_amount=20;	//订单总金额
+      string receiver=21;		//收件人名称
+      uint32 receiver_location=22;//收件人地区id
+      string receiver_address=23;//收件人详细地址
+      string receiver_phone=24;//收件人电话
+      uint32 sms_notify=25;	//是否短信通知收件人
+      google.protobuf.Timestamp oder_date=26;//下单时间
+      google.protobuf.Timestamp pay_date=27;//支付时间
+      google.protobuf.Timestamp shipping_date=28;//发货时间
+      google.protobuf.Timestamp receipted_date=29;//签收时间
+      string invoice_title=30;//发票抬头
+}
+
+/*订单商品项表*/
+message OrderItem{
+    uint32 order_id=1;		//订单id
+    uint32 item_id=2;		//商品id
+    string thumb_image_url=3;//缩略图url
+    string title=4;			//商品标题
+    uint32 sku_id=5;		//sku_id
+    uint32 amount=6;		//数量
+    string unit=7;			//计件单位
+    float price=8;			//商品单价
+    float cost=9;			//商品成本价
+    uint32 currency=10;		//币种
+}
+
+/*订单促销信息表*/
+message OrderPromotions{
+     uint32 order_id=1;		//订单id
+     uint32 promo_id=2;		//促销活动id
+     uint32 type=3;			//活动类型
+     uint32 platform_id=4;	//平台id
+     uint32 is_platform=5;	//是否是平台活动
+     string name=6;			//活动名称
+     float reduce=7;			//促销减免费用
+     Order_item currency=8;		//币种
+}
+
+/*订单物流信息*/
+message OrderLogisitics{
+     DeliveryInfo deliveryInfo = 1; //物流信息
+     google.protobuf.Timestamp receipted_date=2;//签收时间
+}
+
+
+message Address{
+    uint32 member_id=1;		//会员id
+    string name=2;			//会员名字
+    uint32 location=3;		//收货地址id
+    string address=4;		//收货详细地址
+    string phone=5;			//收件人手机
+    uint32 is_deleted=6;	//是否已失效
+}
+
+
+/*购物车表*/
+message Cart{
+     uint32 member_id=1;		//会员id
+     uint32 item_id=2;		//商品id
+     uint32 sku_id=3;		//SKU ID
+     uint32 amount=4;		//商品数量
+     google.protobuf.Timestamp add_date=5;//商品被添加到购物车的日期
+}
+
+/*优惠券表*/
+message Coupon{
+    uint32 couponId = 1; //优惠券id
+    string couponName = 2; //优惠券名字
+    uint32 type = 3; //发放类型 0面额模板1 按用户发放 2 注册 3 邀请 4 线下发放',
+    double money = 4; //优惠券金额
+    double condition = 5; //使用条件
+    uint32 createNum = 6; //发放数量
+    uint32 sendNum =7; //已领取数量
+    uint32 useNum = 8 ; //已使用数量
+    google.protobuf.Timestamp sendStartTime = 9; //发放开始时间
+    google.protobuf.Timestamp sendEndTime = 10; //发放结束时间
+    google.protobuf.Timestamp useStartTime = 11; //使用开始时间
+    google.protobuf.Timestamp useEndTime = 12; //使用结束时间
+    google.protobuf.Timestamp addTime = 13; //添加时间
+    uint32 storeId = 14; //商家店铺id
+}
+
+/*生成购物订单*/
+message OrderInfo{
+    uint32 memberId = 1; //会员id
+    uint32 providerId = 2; //商家id
+    uint32 platformId = 3; //平台id
+    OrderItem orderItems = 4; //订单项
+    uint32 addressId = 5; //地址id
+}
+
+
+/*订单操作*/
+message OrderId{
+    uint32 orderId = 1; //订单id
+    uint32 itemId = 2; //订单商品id
+    uint32 skuId = 3; //商品sku
+}
+
+message Count{
+    uint32 count = 1; //修改的商品数量
+    OrderId orderIds = 2; //订单id信息
+}
+
+
+/*修改订单收货地址id*/
+message AddressId{
+    uint32 orderId = 1; //订单id
+    uint32 addressId = 2; //地址id
+}
+
+/*修改地址*/
+message updateOrderAddress{
+    uint32 orderId = 1; //订单id
+    string receiverName = 2; //收件人姓名
+    string receiverPhone = 3; //收件人电话
+    string address = 4; //收件人地址
+    uint32 location = 5; //地址编码
+}
+
+message CartId{
+    uint cartId = 1; //购物车id
+}
+
+/*添加购物车*/
+message ShoppingItems{
+    uint32 memberId = 1; //用户id
+    ShoppingItem shopingItems = 2; //购物车项
+}
+
+/*获取钱包和优惠券*/
+message UserAccountAndCoupon{
+    double userMoney = 1; //用户钱包余额
+    Coupon coupons = 2; //优惠券信息
+}
+
+/*优惠券详情*/
+message CouponInfo{
+    uint32 couponId = 1; //优惠券id
+}
+
+message PayNumber{
+    string payNumber = 1; //支付号
+}
+
+
+/*生成发货单*/
+message DeliveryInfo{
+    uint32 order_id=1;		//订单id
+    uint32 provider_id=2;	//商家id
+    uint32 status=3;		//物流状态
+    uint32 origin_location=4;//发货所在地
+    string origin_address=5;//发货详细地址
+    uint32 logistic_provider_id=6;//快递供应商id
+    string logistic_provider_name=7;//快递供应商名称
+    float logistic_cost=8;	//快递费用
+    uint32 currency=9;		//币种
+    string delivery_sn=10;	//快递单号
+    google.protobuf.Timestamp shipping_date=11;//发货时间
+    string remark=12;		//备注信息
+
+}
+
+/*支付成功修改支付状态*/
+message OrderPayInfo{
+    uint32 order_id = 1; //订单号
+    string trade_no = 2; //支付宝交易号
+}
+
+/*订单操作*/
+message OrderAction{
+    uint32 order_id = 1; //订单号
+    uint32 store_id = 2; //店铺id
+    string action = 3; //订单操作 pay_cancel:取消付款pay_status=0  confirm:确认订单order_status=1 cancel:取消确认order_status=0 invalid:作废 remove:移除 delivery_confirm:确认收货
+}
+
+/*添加订单项*/
+message OrderItems{
+    uint32 orderId = 1; //订单id
+    OrderItem orderItems = 2; //订单项
+}
+
+/*订单列表*/
+message OrderCondition{
+    uint32 memberId = 1; //用户id
+    string condition = 2; //订单筛选条件
+}
+
+/*生成退货单*/
+message Return_Info{
+    uint32 order_id = 1; //订单id
+    string order_sn = 2; //订单号
+    uint32 item_id = 3; //商品id
+    string spec_key = 4; //商品规格
+    google.protobuf.Timestamp add_time = 5; //申请时间
+    uint32 user_id = 10; //用户id
+    uint32 type = 6; //服务类型 退换货
+    string reason = 7; //问题描述
+    string imgs = 8; //用户上传图片的路径
+    uint32 state = 9; //退货性质  无理由退货还是质量问题退货
+}
+
+/*退货操作*/
+message ReturnInfo{
+    uint32 return_id = 1; //退换货id
+    uint32 status = 2; //处理状态
+    string remark = 3; //后台管理员操作备注
+}
+
+/*订单推送*/
+message SendOrderInfo{
+    string orderSn = 1; //订单单号
+    string payTime = 2; //订单支付时间
+    uint32 tp138UserId = 3; //138id
+    double goodsPrice = 4; //商品总价
+    double costPrice = 5; //成本价
+    double shippingPrice = 6; //邮费
+}
+
+/*订单列表搜索条件*/
+message OrderList{
+    string store_name = 1; //店铺名称
+    string consignee = 2; //收货人
+    uint32 tp138_user_id = 3; //138id
+    string order_sn = 4; //订单编号
+    google.protobuf.Timestamp create_time = 5; //下单日期
+    uint32 pay_status = 6; //支付状态
+    string pay_code = 7; //支付方式
+    uint32 shipping_status = 8; //发货状态
+    uint32 order_status = 9; //订单状态
+}
+
+/*订单列表*/
+message SearchInfo{
+    string store_name = 1; //店铺名称
+    string consignee = 2; //收货人
+    uint32 tp138_user_id = 3; //138id
+    string order_sn = 4; //订单编号
+    google.protobuf.Timestamp create_time = 5; //下单日期
+    uint32 pay_status = 6; //支付状态
+    string pay_code = 7; //支付方式
+    uint32 shipping_status = 8; //发货状态
+    uint32 order_status = 9; //订单状态
+    string shipping_name = 10; //配送方式
+    double order_amount = 11; //订单总金额
+    double pay_money = 12; //应付金额
+}
+
+/*按时间清理购物车*/
+message orderThan{
+    uint32 member_id = 1; //用户id
+    google.protobuf.Timestamp than_time = 2; //超时时间
+}

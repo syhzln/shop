@@ -1,0 +1,610 @@
+<include file="public/layout" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我要入驻-初始协议</title>
+<link href="__STATIC__/css/qt_style.css" rel="stylesheet" type="text/css" />
+<link href="__STATIC__/css/alone_index.css" rel="stylesheet" type="text/css" />
+<link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__STATIC__/js/jquery-1.11.3.min.js"></script>
+<style>
+.btn_select_category {
+    font: normal 12px/20px "microsoft yahei";
+    color: #777;background-color: #DCDCDC;text-align: center;vertical-align: middle;
+    display: inline-block;height: 20px;padding: 4px 12px;border: solid 1px;
+    border-color: #DCDCDC #DCDCDC #B3B3B3 #DCDCDC;cursor: pointer;
+}
+.catable{width:640px; margin: 0 auto;border: solid 1px #DDD;}
+.catable th{
+	color: #777;text-align: center;background-color: #F7F7F7; vertical-align: top;
+    text-align: right;height: 22px;padding: 8px 4px;border-color: #EEE;
+}
+.w120 {width: 120px !important;}
+.tc {text-align: center !important;}
+.catable td{
+	text-align: center; border-style: solid;
+    border-width: 1px 1px 0 0;border-color: #DDD #DDD transparent transparent;
+}
+.w50 {width: 50px !important;}
+.hide{display:none;}
+.cate3{margin:8px 0;font-size:14px;}
+.cate3 input{margin-left:5px;}
+</style>
+</head>
+<body>
+<include file="public/sign-header" />
+<div class="gome-wrap bg">
+	<div style="position: relative;top: -40px;left: 190px;">
+    	<a href="/" target="_blank" class="item fl"><img src="__STATIC__/images/logo.png"></a>
+    </div>
+	<div class="gome-layout-area">
+        <ul class="gome-nav">
+            <li><a href="{:U('Newjoin/index')}" target="_blank">招商首页</a></li>
+
+            	<li><a href="{:U('Newjoin/question',array('cat_id'=>$v[cat_id]))}" target="_blank">{$v.cat_name}</a></li>
+
+        </ul>
+    </div>
+</div>
+<input type="hidden" id="mobileRegex" value="^(13[0-9]{9})|(14[57][0-9]{8})|(15[012356789][0-9]{8})|(170[0-9]{8})|(18[0-9]{9})$"/>
+<div class="gome-layout-area pb50 clearfix">
+    	<ul class="steps clearfix">
+        	<li class="first prev ok"><b>1</b><span class="going"></span><em class="f">入驻须知</em></li>
+        	<li class="prev ok"><b>2</b><span class="going"></span><em class="f">填写公司信息</em></li>
+        	<li class="cur ok"><b>3</b><span class="going"></span><em class="f">填写店铺信息</em></li>
+        	<li><b>4</b><span></span><em class="f">资质上传</em></li>
+        	<li class="last"><b>5</b><em class="f">等待审核</em></li>
+        </ul>
+        <div class="settled-agreement-table pb50">
+        	<div class="agreement-title"><span>填写店铺信息</span></div>
+        	<form action="" id="seller_info" method="post">
+            <div class="table-part clearfix">
+            	<div class="table-part-title">店铺信息</div>
+                <table cellpadding="0" cellspacing="0" border="0" class="information-table1">
+                    <tbody>
+                    <!--<tr>-->
+                        <!--<th>推荐人姓名：</th>-->
+                        <!--<td><input type="text" maxlength="40"  name="tuijian_name" value="{$apply.tuijian_name}" class="input260" placeholder="若无可不填">-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<th>推荐人ID：</th>-->
+                        <!--<td><input type="number" maxlength="10"  name="tuijian_id" value="{$apply.tuijian_id}" class="input260" placeholder="若无可不填">&nbsp;<span></span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <th><em class="em-red">*</em>店铺名称：</th>
+                        <td><input type="text" maxlength="40"  id="shopName" name="store_name" value="{$apply.shop_name}" class="input260" err_msg="0" onchange="checkStore(this)">
+                        <!-- <span id="shopNameSpan">点击查看店铺命名规则</span> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>供应商登录主账号：</th>
+                        <td>
+                            <input type="text" maxlength="20" id="sellerName" name="sellerName" autocomplete="off" value="{$apply.login_username}"  class="input260"  err_msg="0" onblur="checkEmpty(this.value,'sellerName','账号','sellerName');">
+                            <span id="sellerNameSpan" style="display:none"></span>
+							<span id="mainAccountSpan" class="" style="color:red;">账号6-18位,不能使用中文</span>
+							<span>商家后台网址 <a href="{$url}">{$url}</a></span>
+						</td>
+                    </tr>
+					<tr>
+                        <th><em class="em-red">*</em>供应商登录密码：</th>
+                        <td><input type="text" maxlength="20"  name="seller_pwd" autocomplete="off" value="" class="input260"  err_msg="0"><span id="" class="" style="display: none;"></span>
+							 <span id="shopNameSpan" style="color:red;">此密码用于商家后台登陆，请牢记！</span>
+						</td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>店铺性质：</th>
+                        <td>
+                        	<select id="shopType" name="store_type" value="" class="input200">
+                        		<option value="0">请选择</option>
+                        		<option value="1">旗舰店</option>
+                        		<option value="2">专卖店</option>
+                        		<option value="3">专营店</option>
+                        	</select>
+                        </td>
+                    </tr>
+
+
+                    <tr class="row">
+                        <th class="tit">
+                            <label><em class="em-red">*</em>店铺Logo：</label>
+                        </th>
+                        <td class="opt">
+                            <div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$apply.store_logo}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$apply.store_logo}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                </a>
+            </span>
+                                <span class="type-file-box">
+                <input type="text" id="imagetext" name="store_logo" value="{$apply.store_logo}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','goods','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                            </div>
+                            <span class="err"></span>
+                            <p class="notic">请上传图片格式文件</p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th><em class="em-red">*</em>店铺负责人姓名：</th>
+                        <td><input type="text" maxlength="64" id="contactPersonName" name="store_person_name" value="{$apply.store_person_name}" class="input260" onblur="checkEmpty(this.value,'contactPersonName','店铺负责人姓名','');"><span id="contactPersonNameSpan" style="display:none"></span></td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>负责人手机号码：</th>
+                        <td><input type="text" maxlength="11" id="contactPersonPhone" name="store_person_mobile" value="{$apply.store_person_mobile}" class="input260" onblur="checkEmpty(this.value,'contactPersonPhone','手机号码','mobile');"><span id="contactPersonPhoneSpan" style="display:none"></span></td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>负责人QQ号码：</th>
+                        <td><input type="text" maxlength="11" id="contactPersonQq" name="store_person_qq" value="{$apply.qq}" class="input260" onblur="checkEmpty(this.value,'contactPersonQq','qq号码','qq');"><span id="contactPersonQqSpan" style="display:none"></span></td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>电子邮箱：</th>
+                        <td><input type="text" maxlength="32" id="shop_email" name="store_person_email" value="{$apply.store_person_email}" class="input260" onblur="checkEmpty(this.value,'email','电子邮箱','email');"><span id="emailSpan" style="display:none"></span></td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>店铺详细地址：</th>
+                        <td><input type="text" maxlength="100" id="storeAddress" name="store_address" class="input453" value="{$apply.location_full}" onblur="checkEmpty(this.value,'storeAddress','店铺详细地址','');"><span id="storeAddressSpan" style="display:none"></span></td>
+                    </tr>
+                    <tr><th><em class="em-red">*</em>经营类目:</th>
+                        <td>
+                        <a href="###" id="btn_select_category" onclick="javascript:$(this).hide();$('.bind_cat').show();" class="btn_select_category">+选择添加类目</a>&nbsp;<span style="font-size: 12px;color:#B5B5B5">* 本商城经营类目</span>
+			              <div class="bind_cat hide">
+			              <select id="class_1" name="class_1" class="input128" onchange="get_sub_cat(this,'class_2')">
+			                <option value="0">请选择</option>
+			                <foreach name="cat_list" item="vo" key="k">
+			                	<option value="{$vo['category_id']}" data-explain="5">{$vo['category_name']}</option>
+			                </foreach>
+			              </select>
+			              <select id="class_2" name="class_2" class="input128 hide" onchange="select_sub_cat(this,'class_3')">
+			              </select>
+			              <a class="gome-btn-gray" href="javascript:;" onclick="bind_store_class()">确定</a>
+			              <a class="gome-btn-gray" href="javascript:;" onclick="showbtn()">取消</a>
+			              <div id="class_3" name="class_3" class="hide cate3"></div>
+
+			              </div>
+                        </td>
+                    </tr>
+                    <tr><td></td>
+                    	<td>
+                    	<table cellpadding="0" cellspacing="0" class="catable">
+			              <thead>
+			                <tr>
+			                  <th class="w120 tc">一级类目</th>
+			                  <th class="w120 tc">二级类目</th>
+			                  <th class="tc">三级类目</th>
+			                  <th class="w50 tc">操作</th>
+			                </tr>
+			              </thead>
+            			<tbody id="new_cat">
+            			<foreach name="act" item="vo">
+	            			<tr>
+		            			<td>{$vo.class_1}</td>
+		            			<td>{$vo.class_2}</td>
+		            			<td>{$vo.class_3}</td>
+	            				<td>
+                                    <a class="btn red" href="javascript:void(0)" data-id="{$vo.class_three}" data="{$vo.apply_id}" onclick="delfun(this)">删除</a>
+                                </td>
+
+	            				<input name="store_class_ids[]" type="hidden" value="{$vo.value}">
+	            			</tr>
+            			</foreach>
+            			</tbody>
+            			</table>
+                    	</td>
+                    </tr>
+                </tbody></table>
+            </div>
+                <!-- 银行账户 -->
+            <div class="table-part clearfix">
+            	<div class="table-part-title bt pt30">运营信息</div>
+                <table cellpadding="0" cellspacing="0" border="0" class="information-table1">
+                    <tbody>
+                    <tr>
+                        <th><em class="em-red">*</em>近一年主营渠道：</th>
+                        <td width="700">
+                        	<select id="main_channel" name="main_channel" value="" class="input200 mr10">
+                        		<option value="0">请选择</option>
+                        		<option value="1" <if condition="$apply[main_channel] eq 1">selected</if>>商场/卖场</option>
+                        		<option value="2" <if condition="$apply[main_channel] eq 2">selected</if>>批发市场</option>
+                        		<option value="3" <if condition="$apply[main_channel] eq 3">selected</if>>超市/连锁店/商业中心</option>
+                        		<option value="4" <if condition="$apply[main_channel] eq 4">selected</if>>电商网站</option>
+                        		<option value="5" <if condition="$apply[main_channel] eq 5">selected</if>>其他</option>
+                        	</select>
+                            <!-- start -->
+                            <select id="main_channel2" name="electric_class" value="" class="input128" style="display: none">
+                                <option value="0" >请选择</option>
+                                <option value="1" <if condition="$apply[electric_class] eq 1">selected</if>>天猫店铺</option>
+                                <option value="2" <if condition="$apply[electric_class] eq 2">selected</if>>京东店铺</option>
+                                <option value="3" <if condition="$apply[electric_class] eq 3">selected</if>>淘宝店铺</option>
+                                <option value="4" <if condition="$apply[electric_class] eq 4">selected</if>>其他网络平台</option>
+                            </select>
+                            <div style="display:none;" id="sale_port">
+                                店铺ID:<input type="text" name="shop_id" class="input145 input_port" value="{$apply.shop_id}" maxlength="30"/> 
+                                主营类目:<input type="text" name="shop_class" class="input145 input_port" value="{$apply.shop_class}" maxlength="30" /> 
+                                网址链接: <input type="text" name="shop_site" class="input200 input_port"  value="{$apply.shop_site}" maxlength="120"/>
+                               <!--  经营概况:<textarea name="shop_desc" cols="20" rows="5" maxlength="50" class="input145">
+                                </textarea>  -->
+                            </div>
+                            <!--end-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>近一年销售额：</th>
+                        <td><input type="text" maxlength="17" id="sales" name="sales_volume" value="{$apply.sales_volume}" class="input260" onblur="checkEmpty(this.value,'sales','近一年销售额','money');"><span id="salesSpan" style="display:none"></span><span class="pl7 pt5">万元</span></td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>同类电子商务网站经验：</th>
+                        <td>
+                        	<label class="nLabel mr5" for="Y"><input type="radio" name="ec_experience" value="Y" checked="true" class="inputradio" hidefocus="true">有</label>
+                        	<label class="nLabel" for="N"><input type="radio" name="ec_experience" value="N" class="inputradio" hidefocus="true">无</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>可网售商品数量：</th>
+                        <td><input type="text" maxlength="10" id="skuNum" name="sku_num" value="{$apply.sku_num}" class="input260" onblur="checkEmpty(this.value,'skuNum','可网售商品数量','positiveInteger');"><span id="skuNumSpan" style="display:none"></span></td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>预计平均客单价：</th>
+                        <td><input type="text" maxlength="15" id="avgPrice" name="avg_price" value="{$apply.avg_price}" class="input260" onblur="checkEmpty(this.value,'avgPrice','预计平均客单价','money');"><span id="avgPriceSpan" style="display:none"></span></td>
+                    </tr>
+                    <tr>
+                        <th><em class="em-red">*</em>仓库情况：</th>
+                        <td>
+                        	<select id="warehouse" name="ware_house" value="" class="input145">
+                        		<option value="">请选择</option>
+								<option <if condition="$apply[ware_house] eq 1">selected</if> value="1">自有仓库</option>
+                        		<option <if condition="$apply[ware_house] eq 2">selected</if> value="2">第三方仓库</option>
+                        		<option <if condition="$apply[ware_house] eq 3">selected</if> value="3">无仓库</option>
+                        	</select>
+                        </td>
+                    </tr>
+                    <tr>
+					<th><em class="em-red">*</em>是否有实体店：</th>
+					<td><input type="radio" name="entity_shop" value="1" <if condition="$apply[entity_shop] eq 1">checked</if>/>有
+						<input type="radio" name="entity_shop" value="0" <if condition="$apply[entity_shop] eq 0">checked</if>/>无
+					</td>
+	            	</tr>
+                </tbody></table>
+            </div>
+            </form>
+            <div class="gome-btn pt30">
+                <a href="javascript:preStep();" class="gome-btn-gray">上一步</a>
+                <a href="javascript:nextStep();" class="gome-btn-red">下一步,上传基本资质</a>
+            </div>
+    	</div>
+    </div>
+<input type="hidden" id="mobileRegex" value="^(13[0-9]{9})|(14[57][0-9]{8})|(15[012356789][0-9]{8})|(170[0-9]{8})|(18[0-9]{9})$"/>
+<include file="public/footer" />
+<script>
+function preStep(){
+	window.location.href = "{:U('Newjoin/basic_info')}";
+}
+
+function img_call_back(fileurl_tmp)
+{
+    $("#imagetext").val(fileurl_tmp);
+    $("#img_a").attr('href', fileurl_tmp);
+    $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+}
+
+function showEntityShopInfo(){
+	var v = document.getElementById("3");
+	if (v.checked==true) {
+		document.getElementById("3").value="Y";
+		if(document.getElementById("hiddenDiv").style.display="none"){
+    		document.getElementById("hiddenDiv").style.display="block";
+		}
+	} else {
+		document.getElementById("3").value="N";
+		document.getElementById("hiddenDiv").style.display="none";
+	}
+}
+/**
+* 检测非空
+*/
+function checkEmpty(value, id, msg, type) {
+	var _email = /^([a-zA-Z0-9]+[_|\_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+	var _phone= /^((\+?[0-9]{2,4}\-[0-9]{3,4}\-)|([0-9]{3,4}\-))?([0-9]{7,8})(\-[0-9]+)?$/;
+	var _mobile = new RegExp(document.getElementById("mobileRegex").value);
+	var _zip= /^[0-9][0-9]{5}$/;
+	var _positiveInteger = /^[0-9]*[1-9][0-9]*$/;
+	var _money = /^[1-9]{1}\d*(\.\d{1,2})?$/;
+	var _sellerName= /^[_0-9a-z]{6,18}$/;
+	var ret = 0;
+	if(value == "" || ($.trim(value)).length == 0){
+		var v = document.getElementById(id+"Span");
+		v.innerHTML = "请填写" + msg;
+		v.className="warning-text1";
+		v.style.display="block";
+		//输入框样式添加warning
+		$("#"+id).addClass("warning");
+	} else {
+		if ((type == "sellerName" && !(_sellerName.test(value))) || (type == "email" && !(_email.test(value))) || (type == "phone" && !(_phone.test(value))) || (type == "mobile" && !(_mobile.test(value))) || (type == "zip" && !(_zip.test(value))) || (type == "positiveInteger" && !(_positiveInteger.test(value))) || (type == "money" && !(_money.test(value)))){
+			var v = document.getElementById(id+"Span");
+			if (type == "positiveInteger") {
+				msg = msg + "(正整数)";
+			} else if (type == "money") {
+				msg = msg + "(金额)";
+			}
+			v.innerHTML = "格式错误，请正确填写" + msg;
+			v.className="warning-text2";
+			v.style.display="block";
+			$("#"+id).addClass("warning");
+		} else {
+			document.getElementById(id+"Span").className="";
+			document.getElementById(id+"Span").innerHTML="";
+			document.getElementById(id+"Span").style.display="none";
+			$("#"+id).removeClass("warning");
+			ret = 1;
+		}
+	}
+	return ret;
+}
+
+function delfun(obj){
+    var url = "{:U('Newjoin/store_class_del')}";
+    if(confirm('确认删除')){
+        $.ajax({
+            type : 'post',
+            url : url,
+            data : {act:'del',category_id:$(obj).attr('data-id'),apply_id:$(obj).attr('data')},
+            dataType : 'json',
+            async:true,
+            success : function(data){
+                if(data.stat=='ok'){
+                    $(obj).parent().parent().remove();
+                }else{
+                    layer.alert(data, {icon: 2});  //alert(data);
+                }
+            }
+        })
+    }
+    return false;
+}
+
+function checkStore(obj){
+    var url = "{:U('Newjoin/check_store')}";
+    $.ajax({
+        type : "POST",
+        url  : url,
+        data :{'store_name':$(obj).val()},
+        error: function(request) {
+            alert("服务器繁忙, 请联系管理员!");
+            return false;
+        },
+        success: function(res) {
+			if(res == 'success'){
+				$(obj).attr('err_msg',0);
+			}else{
+				$(obj).attr('err_msg',1);
+			}
+        }
+    });
+}
+
+function checkSeller(obj){
+    var url = "{:U('Newjoin/check_seller')}";
+    $.ajax({
+        type : "POST",
+        url  : url,
+        data :{'sellerName':$(obj).val()},
+        success: function(res) {
+            if(res == 'success'){
+                $(obj).attr('err_msg',0);
+            }else{
+                $(obj).attr('err_msg',1);
+            }
+        },
+        error: function(request) {
+            alert("服务器繁忙, 请联系管理员!");
+            return false;
+        }
+    });
+}
+
+/**
+* 下一步
+*/
+function nextStep() {
+	if ($("#shopName").attr('err_msg') == 1) {
+		alert("店铺名称被注册，请更换其他名称");
+		$("#shopName").focus();
+		return;
+	}
+
+	if($("#shopName").val() == ''){
+		alert("请填写店铺名称");
+		$("#shopName").focus();
+		return;
+	}
+	if ($("#sellerName").attr('err_msg') == 1) {
+		alert("抱歉，此账号已被使用");
+		$("#sellerName").focus();
+		return;
+	}
+	if($("#sellerName").val() == ''){
+        alert("请填写店铺登陆账号");
+        $("#sellerName").focus();
+        return;
+    }
+    if($("#seller_pwd").val() == ''){
+        alert("必须填写店铺登陆密码");
+        $("#seller_pwd").focus();
+        return;
+    }
+    
+	if (checkEmpty($("#contactPersonName").val(),'contactPersonName','店铺负责人姓名','') != 1) {
+		alert("店铺负责人姓名，填写有误");
+		$("#contactPersonName").focus();
+		return;
+	}
+	if (checkEmpty($("#contactPersonPhone").val(),'contactPersonPhone','手机号码','mobile') != 1) {
+        alert("手机号码，填写有误");
+        $("#contactPersonPhone").focus();
+        return;
+    }
+    if (checkEmpty($("#sellerName").val(),'sellerName','账号','sellerName') != 1) {
+        alert("账号，填写有误");
+        $("#sellerName").focus();
+        return;
+    }
+	if (checkEmpty($("#contactPersonQq").val(),'contactPersonQq','qq','qq') != 1) {
+		alert("店铺负责人QQ");
+		$("#contactPersonQq").focus();
+		return;
+	}
+	if (checkEmpty($("#shop_email").val(),'email','电子邮箱','email') != 1) {
+		alert("电子邮箱，填写有误");
+		$("#shop_email").focus();
+		return;
+	}
+	if (checkEmpty($("#sales").val(),'sales','近一年销售额','money') != 1) {
+		alert("近一年销售额，填写有误");
+		$("#sales").focus();
+		return;
+	}
+	if (checkEmpty($("#skuNum").val(),'skuNum','可网售商品数量','positiveInteger') != 1) {
+		alert("可网售商品数量，填写有误");
+		$("#skuNum").focus();
+		return;
+	}
+	if (checkEmpty($("#avgPrice").val(),'avgPrice','预计平均客单价','money') != 1) {
+		alert("预计平均客单价，填写有误");
+		$("#avgPrice").focus();
+		return;
+	}
+	// 验证下拉框
+	if ($("#shopType").val()=="") {
+		alert("请选择 店铺性质");
+		$("#shopType").focus();
+		return;
+	}
+	if ($("#main_channel").val()=="") {
+		alert("请选择 近一年主营渠道");
+		$("#main_channel").focus();
+		return;
+	}
+
+	if ($("#warehouse").val()=="") {
+		alert("请选择 仓库情况");
+		$("#warehouse").focus();
+		return;
+	}
+
+	document.getElementById('seller_info').submit();
+}
+
+function get_province(){
+    var url = '/index.php?m=Home&c=Api&a=getRegion&level=1&parent_id=0';
+    $.ajax({
+        type : "GET",
+        url  : url,
+        error: function(request) {
+            alert("服务器繁忙, 请联系管理员!");
+            return;
+        },
+        success: function(v) {
+            v = '<option value="0">选择省份</option>'+ v;          
+            $('#province').empty().html(v);
+        }
+    });
+}
+
+function get_sub_cat(obj,element){
+    var parent_id = $(obj).val();
+    if(!parent_id > 0){
+        return;
+    }
+    $.ajax({
+        type : "GET",
+        url  : "{:U('Home/Api/get_storeCategory')}",
+        data : {'parent_id':parent_id},
+        error: function(request) {
+            alert("服务器繁忙, 请联系管理员!");return;
+        },
+        success: function(v) {
+            v = '<option value="">选择分类</option>'+ v;
+            $('#'+element).empty().html(v).show();
+        }
+    });
+}
+
+function select_sub_cat(obj,element){
+    var parent_id = $(obj).val();
+    if(!parent_id > 0){
+        return;
+    }
+    $.ajax({
+        type : "GET",
+        url  : "{:U('Home/Api/get_cates')}",
+        data : {'parent_id':parent_id},
+        error: function(request) {
+            alert("服务器繁忙, 请联系管理员!");return;
+        },
+        success: function(v){
+            $('#'+element).empty().html(v).show();
+        }
+    });
+}
+
+var aa = [];
+function bind_store_class(){
+   if($("input[type='checkbox']:checked").length == 0)
+   {
+	   alert('请在三级分类里至少选择一个经营类目');
+	   return false;
+   }
+   var cattr = '';
+   $("input[type='checkbox']:checked").each(function(i,o){
+	    if($.inArray($(o).val(), aa) == -1){
+			var conmmis = $(o).attr('rel');
+			var cat_str = $('#class_1').val()+','+$('#class_2').val()+','+$(o).val();
+			cattr += '<tr><td>'+$('#class_1').find("option:selected").text()+'</td>';
+			cattr += '<td>'+$('#class_2').find("option:selected").text()+'</td>';
+			cattr += '<td>'+$(o).attr('data-name')+'</td>';
+			cattr += '<td><a href="javascript:;" onclick="javascript:$(this).parent().parent().remove();">删除</a></td>';
+			cattr += '<input name="store_class_ids[]" type="hidden" value="'+cat_str+'"></tr>';
+			aa.push($(o).val());
+	    }
+   });
+   $('#new_cat').append(cattr);
+   showbtn();
+}
+
+function showbtn(){
+	$('.bind_cat').hide();
+	$('#class_2').empty().hide();
+	$('#class_3').empty().hide();
+	$('#btn_select_category').show()
+}
+//获取其他渠道
+$(function(){
+  var v=$('#main_channel').val();
+    if(v ==4){
+        $('#main_channel2').show();
+        $('#sale_port').show().css('margin-top','6px');    
+    }
+});
+
+$('#main_channel').change(function(){
+    var value =$(this).val();
+    if(value ==4){
+        $('#main_channel2').show(); 
+    }else{
+         $('#main_channel2').hide();
+         $('#sale_port').hide();
+         $('#main_channel2').val('0');
+    }
+})
+$('#main_channel2').change(function(){
+    $('#sale_port').show().css('margin-top','6px');
+    $('.input_port').val('');
+})
+
+</script>
+</body>
+</html>

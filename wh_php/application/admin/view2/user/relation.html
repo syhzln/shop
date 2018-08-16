@@ -1,0 +1,153 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default;">
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>会员层级关系</h3>
+        <h5>网站会员关系列表</h5>
+      </div>
+    </div>
+  </div>
+  <div id="explanation" class="explanation">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom"></span>
+    </div>
+    <ul>
+      <li>温馨提示：顶级会员会显示在列表中</li>
+      <li>点击顶级会员可以显示下级会员</li>
+    </ul>
+  </div>
+  <form method="post">
+    <input type="hidden" value="ok" name="form_submit">
+    <div class="flexigrid">
+      <div class="mDiv">
+        <div class="ftitle">
+          <h3>会员列表</h3>
+          <h5></h5>
+        </div>
+        <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+        <form class="navbar-form form-inline"  id="search-form2" onsubmit="return false">
+          <!--<input type="hidden" name="order_by" value="user_id">-->
+          <!--<input type="hidden" name="sort" value="desc">-->
+          <input type="hidden" name="mobile" value="" id="input-mobile" />
+          <input type="hidden" name="email" value="" id="input-email" />
+          <input type="hidden" name="tps138_id" value="" id="input-138id" />
+          <div class="sDiv">
+            <div class="sDiv2">
+              <input type="text" id="search_key" size="40" class="qsbox" placeholder="walhao_id">
+              <input type="submit" class="btn" onclick="ajax_get_table('search-form2',1)" value="搜索">
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+      <div style="height: auto;" class="bDiv">
+        <table cellspacing="0" cellpadding="0" border="0" id="article_cat_table" class="flex-table autoht">
+          <thead>
+          <tr>
+            <th style="text-align: left;" axis="col0" class="sign"><i class="ico-check"></i></th>
+            <th axis="col2">用户id</th>
+            <th axis="col2">用户wh_id</th>
+            <th axis="col3">用户名称</th>
+            <th axis="col4">会员等级</th>
+            <th axis="col4">会员职称</th>
+          </tr>
+          </thead>
+          <tbody id="treet1">
+            <tr data-level="{$user_info[grade]}" parent_id_path ="{$user_info.user_id}" class="{$user_info.parent_user_id}" nctype="0" <if condition="$user_info[grade] gt 1"> style="display:none;"</if>>
+            <td style="text-align: left;">
+              <if condition="$user_info[grade] lt 3">
+                <img onClick="treeClicked(this,{$user_info.user_id},{$user_info.user_id})" nc_type="flex" status="open" fieldid="2" src="/public/static/images/tv-expandable.gif">
+              </if>
+            </td>
+            <td class="sort">
+              {$user_info.user_id}
+            </td>
+            <td class="name">
+              {$user_info.wh_id}
+            </td>
+            <td class="name">
+              {$user_info.name}
+            </td>
+            <td align="center" class="">
+              {$user_info.level}
+            </td>
+            <td align="center" class="">
+              {$user_info.title}
+            </td>
+
+            </tr>
+          <?php
+function level($next){
+    if($next){
+        foreach($next as $k=>$v){
+            echo <<<AAA
+            <tr data-level="$v[grade]" parent_id_path ="$v[parent_id_path]" class="$v[parent_user_id]" nctype="0" style="display:none;">
+            <td style="text-align: left;">
+              <if condition="$v[grade] lt 3">
+                $v[mark]<img onClick="treeClicked(this,$v[user_id],'$v[parent_id_path]')" nc_type="flex" status="open" fieldid="2" src="/public/static/images/tv-expandable.gif">
+              </if>
+            </td>
+              <td class="sort">
+                $v[user_id]
+              </td>
+              <td class="name">
+                $v[wh_id]
+              </td>
+              <td class="name">
+                $v[name]
+              </td>
+              <td align="center" class="">
+                $v[level]
+              </td>
+              <td align="center" class="">
+                $v[title]
+              </td>
+
+            </tr>
+AAA;
+            level($v[next]);
+            }
+            }else{
+            return;
+            }
+            }
+level($user_info[next]);
+
+           ?>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('.bDiv > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+    });
+
+    // 点击展开 收缩节点
+    function treeClicked(obj,cat_id,parent_id_path){
+
+        var src = $(obj).attr('src');
+        if(src == '/public/static/images/tv-expandable.gif')
+        {
+            $("."+cat_id).show();
+            $(obj).attr('src','/public/static/images/tv-collapsable-last.gif');
+        }else{
+            $("tr[parent_id_path^='"+parent_id_path+"_']").hide().find('img').attr('src','/public/static/images/tv-expandable.gif');
+            $(obj).attr('src','/public/static/images/tv-expandable.gif');
+
+        }
+    }
+
+
+</script>
+</body>
+</html>

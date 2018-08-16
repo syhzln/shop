@@ -1,0 +1,174 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table>
+        <thead>
+            <tr>
+                <th class="sign selected_all" axis="col0"><i class="ico-check"></i></th>
+                <th abbr="user_id" axis="col3" class="">编 号</th>
+                <th abbr="user_id" axis="col3" class="">量子ID</th>
+                <th abbr="nickname" axis="col4" class="">会员姓名</th>
+                <th abbr="level" axis="col5" class="">店铺等级</th>
+                <th abbr="email" axis="col6" class="">会员职称</th>
+                <th abbr="total_amount" axis="col6" class="">累计消费</th>
+                <th abbr="mobile" axis="col6" class="">手机号码</th>
+                <th abbr="mobile" axis="col6" class="">QQ号</th>
+                <th axis="col6" class="">下线人数</th>
+                <th abbr="user_money" axis="col6" class="">余 额</th>
+                <th abbr="pay_points" axis="col6" class="">会员状态</th>
+                <th abbr="reg_time" axis="col6" class="">注册日期</th>
+                <th axis="col1" class="handle">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        <volist name="userList" id="list">
+            <tr data-id="{$list['user_id']}">
+                <td class="sign"><i class="ico-check"></i></td>
+                <td class="" >{$list.user_id}</td>
+                <td class="" onclick="login_usercenter(this)" data-whid="{$list.wh_id}">{$list.wh_id}</td>
+                <td class="">{$list.nick_name}</td>
+                <td class="">
+                    <if condition="$list.user_level eq 0 ">普通会员 (LV0)
+                        <elseif condition="$list.user_level eq 1"/>青铜会员 (LV1)
+                        <elseif condition="$list.user_level eq 2" /> 白银会员 (LV2)
+                        <elseif condition="$list.user_level eq 3" /> 铂金会员 (LV3)
+                        <elseif condition="$list.user_level eq 4" /> 钻石会员 (LV4)
+                        <else />普通会员 (LV0)
+                    </if>
+                </td>
+                <td class="">
+
+                    <if condition="$list.user_title eq 0">
+                        乡镇代理 (LZ0)
+                        <elseif condition="$list.user_title eq 1" />
+                        县级代理 (LZ1)
+                        <elseif condition="$list.user_title eq 2" />
+                        市级代理 (LZ2)
+                        <elseif condition="$list.user_title eq 3" />
+                        省级代理 (LZ3)
+                        <elseif condition="$list.user_title eq 4" />
+                        大区代理 (LZ4)
+                        <elseif condition="$list.user_title eq 5" />
+                        全国代理 (LZ5)
+                        <elseif condition="$list.user_title eq 6" />
+                        全球总代理 (LZ6)
+                        <else />
+                        乡镇代理 (LZ0)
+                    </if>
+                </td>
+                <td class="">{$list.total_amount|default="0" }</td>
+                <td class="">
+                    {$list.mobile}
+                        <if condition="($list['mobile_validated'] eq 0) AND ($list['mobile'])">
+                            (未验证)
+                        </if>
+                </td>
+                <td>{$list.qq}</td>
+                <td class="">{$list.children_nums|default="0"}</td>
+                <td class="">{$list.user_money}</td>
+                <td class="">
+                        <if condition="$list.status eq 1 "><sapn style="color:green;">启用</sapn>
+                            <else /><span  style="color:red;">冻结</span>
+                        </if>
+                </td>
+                <td class="">{$list.create_time|date='Y-m-d H:i:s',###}</td>
+                <td class="handle">
+                        <a class="btn blue" href="{:U('Admin/user/detail',array('id'=>$list['user_id'],'org_id'=>$list['org_id']))}"><i class="fa fa-pencil-square-o"></i>详情</a>
+                        <a class="btn blue" href="{:U('Admin/user/account_log',array('id'=>$list['user_id']))}"><i class="fa fa-search"></i>资金</a>
+                        <a class="btn blue" href="{:U('Admin/user/address',array('id'=>$list['user_id']))}"><i class="fa fa-steam"></i>收货地址</a>
+                        <a class="btn red"  href="{:U('Admin/user/delete',array('id'=>$list['user_id'],'org_id'=>$list['org_id']))}"><i class="fa fa-trash-o"></i>删除</a>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<!--分页位置-->
+{$page}
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid >table>tbody>tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        $('#user_count').empty().html("{$pager->totalRows}");
+    });
+    function delfun(obj) {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: 'post',
+                url: $(obj).attr('data-url'),
+                data: {id : $(obj).attr('data-id')},
+                dataType: 'json',
+                success: function (data) {
+                    layer.closeAll();
+                    if (data.status == 1) {
+                        $(obj).parent().parent().remove();
+                    } else {
+                        layer.alert(data.msg, {icon: 2});
+                    }
+                }
+            })
+        }, function () {
+        });
+    }
+
+    //选中全部
+    $('.selected_all').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+        if($(this).parent().hasClass('trSelected')){
+            sign.each(function(){
+                $(this).removeClass('trSelected');
+            });
+            $(this).parent().removeClass('trSelected');
+        }else{
+            sign.each(function(){
+                $(this).addClass('trSelected');
+            });
+            $(this).parent().addClass('trSelected');
+        }
+    })
+    
+    
+    function login_usercenter(obj) {
+        var username = $(obj).attr('data-whid');
+
+        if(username){
+            var res_url ="";
+            $.ajax({
+                type:'POST',
+                dataType:'JSON',
+                data:{username:username},
+                url:'/index.php?m=Admin&c=User&a=login_to_usercenter',
+                async: false,
+                success:function (data) {
+                    if(data.status == 1){
+                        layer.msg('正在跳转个人中心,请稍后',{icon:1,time:3000});
+                        res_url = data.url;
+                    }else{
+                        layer.msg(data.msg,{icon:2,time:3000});
+                    }
+                },
+                error:function(){
+                    layer.msg('网络加载失败,请重试',{icon:2,time:3000});
+                }
+
+            });
+
+            if(res_url.length >0){
+                console.log(res_url);
+                window.open(res_url,'_blank');
+            }
+
+        }
+
+    }
+
+
+
+</script>

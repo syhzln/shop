@@ -1,0 +1,130 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+package psp;
+import "common.proto";
+import "UserService.proto";
+
+service HomeIndexService{//前台首页
+    rpc getQrCode(QrCode) returns(google.protobuf.BoolValue) //获取二维码
+    rpc getMyCartFromIndex(Uid)  returns(MyCartFromIndex)  //获取首页购物车列表
+    rpc getNavigation(IsShow) returns(NavigationList)//获取导航列表
+    rpc getItemCategoryTree(GetItemCategoryTree)  returns(ItemCategoryTree)//获取分类列表
+    rpc getAdlist(AdPid) returns(Adlist)//获取轮播商品/精品推荐商品信息
+    rpc getFloorItem(GetFloorItem) returns(FloorCateList)//获取楼层商品
+    rpc getFloorAd(AdPid) returns(FloorAd)//获取楼层商品广告
+    rpc getNewItem(GetNewItem) returns(NewItem)//获取新品推荐商品
+    rpc getArticleCat(ArticlePid) returns(IndexArticleCat)//首页底部文章类别：售后服务，常见问题，入住流程，联系方式，关于我们，招商标准
+    rpc getArticle(GetArticle) returns(IndexArticle)//首页底部 文章链接
+
+
+}
+/*获取二维码*/
+message QrCode{
+    string url =1;//二维码路径
+}
+/*获取首页购物车列表*/
+message MyCartFromIndex{
+    uint32 id =1;//购物车id
+    int32 goods_id =2;//商品id
+    string goods_name =3;//商品名称
+    float goods_price =4;//商品价
+    float member_goods_price =5;//会员价
+    int32 goods_num =6;//购买数量
+    string spec_key =7;//商品规格key
+    int32 type_id =8;//商品类型id
+    int32 store_id =9;//商家ID
+    string url =10;//图片路径
+}
+/*获取导航列表*/
+message IsShow{
+    bool is_show =1;//是否显示，1显示，0否
+}
+message NavigationList{
+    string name =1;//导航名称
+    string url =2;//链接地址
+    int32 sort =3;//排序
+}
+/*获取分类列表*/
+message ItemCategoryTree{
+    uint32 id =1;//分类id
+    string name =2;//分类名称
+}
+/*获取轮播商品/精品推荐商品信息*/
+message AdPid{
+    int32 pid =1;//广告位置ID,pid=10;精品推荐商品，pid=50,51.../wap端，微信端幻灯片pid=2
+}
+message Adlist{
+    int32 ad_id =1;//广告id
+    string ad_link =2;//链接地址
+    string ad_code =3;//图片地址
+    google.protobuf.Timestamp start_time =4;//投放时间
+    google.protobuf.Timestamp end_time_time =5;//结束时间
+    int32 orderby =6;//排序
+}
+
+/*获取楼层商品*/
+message GetFloorItem{
+    bool is_hot =1;//热卖
+    bool is_on_sale =2;//上架
+    int32 goods_state =3;//审核状态
+    int32 sort =4;//商品排序
+
+    int32 level =5;//level=3,三级分类商品
+    bool is_show =6;//是否展示
+    bool is_recommend =7;//是否推荐
+}
+message FloorCateList{
+    int32 goods_id =1;//商品id
+    string goods_name =2;//商品名称
+    string mobile_name =3;//手机名称
+    float shop_price =4;//商品价格
+    float market_price =5;//市场价格
+    int32 cat_id1 =6;//一级分类
+    string original_img =12;//商品图片
+
+    int32 id =7;//商品分类id
+    string parent_id_path =8;//家族图谱
+    string name =9;//商品分类名称
+
+    string hot_goods =10;//热卖商品
+    string hot_cate =11;//热卖分类
+}
+//楼层商品广告
+message FloorAd{
+    int32 ad_id =1;//广告id
+    string ad_code =2;//图片地址
+}
+
+/*新品推荐*/
+message GetNewItem{
+    bool is_new =1;//是否新品
+    int32 sort =2;//排序
+}
+message NewItem{
+    int32 goods_id =1;//商品id
+    string goods_name =2;//商品名称
+    float shop_price =3;//商品价格
+    string original_img =4;//商品图片
+}
+/*首页底部文章类别*/
+message ArticlePid{
+    int32 parent_id =1;//parent_id =2的文章
+}
+message IndexArticleCat{
+    uint32 cat_id =1;//文章类目id
+    string cat_name =2;//文章类目名称
+}
+/*首页底部文章*/
+message GetArticle{
+    bool is_open =1;//是否开放
+    int32 cat_id =2;//类别ID
+}
+message IndexArticle{
+    uint32 article_id =1;//文章id
+    string title =2;//文章标题
+}

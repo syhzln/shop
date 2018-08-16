@@ -1,0 +1,331 @@
+/**
+ * Author: fzq
+ * CareatTime: 2017/8/15
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 平台用户服务接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "Common.proto";
+import "PlatformUserModel.proto";
+import "UserModel.proto";
+
+service PlatfromUserService {//平台用户
+     rpc login(LoginRequest) returns (LoginReply); //执行登录
+     rpc getSystemMenu(Aid) returns (SystemMenuList);//系统菜单列表
+     rpc getRightList(Aid) returns (RightList);//权限资源列表
+     rpc getRightInfo(Rid) returns (RightInfo);//权限详情
+     rpc addRight(addRight) returns (google.protobuf.Int32Value);//添加权限
+     rpc updateRight(updateRight) returns (google.protobuf.BoolValue);//修改权限
+     rpc delRight(Rid) returns (google.protobuf.BoolValue);//删除权限
+     rpc getRoleList(Aid) returns (RoleList);//角色列表
+     rpc getDepList(Aid) returns (DepList);//部门列表
+     rpc getOrgList(Aid) returns (OrgList);//组织列表
+     rpc getDepInfo(DepId) returns (DepInfo);//部门详情
+     rpc addDep(AddDep) returns (google.protobuf.Int32Value); //添加部门
+     rpc updateDep(UpdateDep) returns (google.protobuf.BoolValue);//修改部门
+     rpc delDep(DepId) returns (google.protobuf.Boolvalue);//删除
+     rpc getOrginfo(OrgId) returns (OrgInfo);//组织详情
+     rpc addOrg(AddOrg) returns (google.protobuf.BoolValue);//添加组织
+     rpc updateOrg(UpdateOrg) returns (google.protobuf.BoolValue);//修改组织
+     rpc delOrd(OrgId) returns (google.protobuf.BoolValue);//删除组织
+     rpc addRole(AddRole) returns (google.protobuf.Int32Value);// 添加角色 绑定权限
+     rpc getRoleInfo(RolId)  returns (RoleInfo);//角色详情
+     rpc updateRole(UpdateRole) returns (google.protobuf.BoolValue);// 修改角色 包括角色绑定的权限
+     rpc delRole(RolId) returns (google.protobuf.BoolValue);//删除角色 包括角色绑定的权限
+     rpc getAdminList(Aid) returns (AdminList);//管理员列表
+     rpc SearchAdminRequest(AdminKeywords) returns (AdminInfo);//管理员搜索
+     rpc addAdmin(AddAdmin) returns (google.protobuf.Int32Value);//添加管理员
+     rpc getAdminInfo(AdminId) returns (AdminInfo);//管理员详情
+     rpc updateAdmin(UpdateAdmin) returns (google.protobuf.BoolValue);//修改管理员
+     rpc delAdmin(AdminId) returns (google.protobuf.Boolvalue);//删除管理员
+     rpc addGrantRecord(AddGrantRecord)  returns (google.protobuf.BoolValue);//添加鉴权记录
+     rpc getGrantRecordList(Aid) returns (grantRecordsList);//鉴权记录列表
+
+     rpc getMemberList(Aid) returns (MemberList);//会员列表
+     rpc SearchMemberRequest(MemberKeywords) returns (MemberInfo); //会员搜索
+     rpc getMemberInfo(Mid) returns (MemberInfo);//会员详情
+     rpc addMember(AddMember) returns (google.protobuf.Int32Value);//添加会员
+     rpc updateMember(UpdateMember) returns (google.protobuf.BoolValue);//编辑会员
+     rpc updateMemberState(SetUserLockState) returns (google.proto.Empty);//设置会员状态   java 编辑会员可否直接设置会员状态
+     rpc delMember(Mid) returns (google.protobuf.BoolValue);//删除会员  软删除
+     rpc sendSms(SendSms)  returns (google.protobuf.BoolValue);//发送短信操作
+     rpc GetSmsLogList(Aid) returns (SmsSendLogList);//短信日志列表
+     rpc addMemberStatus(Aid) returns (google.protobuf.Empty);//会员状态操作
+     rpc getMemberStatusChangeList(Aid) returns (MemberStatusChangeList);//会员状态变更列表
+     rpc sendSmsInbox(SendSmsToInbox) returns (google.protobuf.Empty); //发送信息到收件箱
+     rpc SetInboxQuota(SetInboxSize) returns (google.protobuf.BoolVlaue);//设置收件箱容量
+     rpc setUserMessageEarning(SetUserMessageForwarding)   returns (google.protobuf.BoolVlaue); //设置信息告警选项
+
+}
+
+
+/*当前登录用户ID*/
+message Aid{
+    int32 aid =1;//当前用户id
+}
+
+/*登录传参*/
+message LoginRequest{
+    string username =1;//用户名
+    string password =2;//密码
+    string ip =3;//登录ip
+    google.protobuf.Timestamp login_time =4;//登录时间
+}
+
+message LoginReply{
+    int32 status =1;//返回状态码 1账户不存在 2密码错误 3验证码错误 4登录成功
+    repeated  Privileges right_list=2; //权限信息
+    platformUser user_info =3;//用户基本信息
+}
+
+/*根据用户身份获取对应栏目*/
+message SystemMenuList{
+    repeated string system_menulist =2;
+}
+
+/*权限资源列表*/
+message RightList{
+    repeated  Privileges right_list=1;
+    Pagination pagination = 2;
+}
+
+/*权限id*/
+message Rid{
+    int32 rid =1;
+}
+/*获取权限信息*/
+message RightInfo{
+    Privileges right_info =1;
+}
+/*添加权限*/
+message AddRight{
+    Privileges right =1;
+}
+
+/*修改权限*/
+message UpdateRight{
+    Rid rid =1;
+    Privileges right=2;
+}
+
+/*获取所有组织*/
+message OrgList{
+    repeated organizations org_list=1;
+}
+/*组织id*/
+message OrgId{
+    int32 org_id =1;
+}
+/*添加组织*/
+message AddOrg{
+    organizations org_info=1;
+}
+
+/*获取组织信息*/
+message OrgInfo{
+    organizations org_info =1;
+}
+/*修改组织信息*/
+message UpdateOrg{
+    OrgId org_id =1;
+    organizations org_info=2;
+}
+
+/*部门列表*/
+message DepList{
+    repeated Departments dep_list=1;
+}
+/*部门id*/
+message DepId{
+    int32 dep_id=1;
+}
+
+/*获取部门详情*/
+message DepInfo{
+    Departments dep_info =1;
+}
+/*添加部门*/
+message AddDep{
+    Departments dep_info =1;
+ }
+
+ /*修改部门*/
+message UpdateDep{
+    DepId dep_id =1;
+    Departments dep_info =2;
+
+}
+
+ /*角色列表*/
+ message RoleList{
+    repeated Roles role_list =1;
+    Pagination pagination = 2;
+}
+
+/*角色id*/
+message RolId{
+    int32 rol_id=1;
+}
+
+/*添加角色*/
+message AddRole{
+    Roles role_info =1;
+}
+
+/*获取角色详情*/
+message RoleInfo{
+    Roles rol_info =1;
+}
+/*修改角色*/
+message UpdateRole{
+    RolId rol_id=1;
+    Roles role_info=2;
+}
+
+/*管理员列表*/
+message AdminList{
+    repeated PlatformUser platform_user =1;
+}
+
+/*管理员搜索*/
+message AdminKeywords{
+   string admin_name =1;//管理员账号
+}
+
+/*管理员id*/
+message AdminId{
+    int32 admin_id =1;
+}
+
+/*添加管理员*/
+message AddAdmin{
+    PlatformUser platfrom_user=1;
+    RolId rol_id=2;//角色id
+}
+
+/*管理员详情*/
+message AdminInfo{
+    PlatformUser admin_info =1;
+ }
+
+ /*修改管理员*/
+ message UpdateAdmin{
+    AdminId uid =1;//主键id
+    PlatformUser platfrom_user=2;
+    platformPwd platform_pwd =3;//密码信息
+
+}
+
+/*添加鉴权记录*/
+message AddGrantRecord{
+    grantRecords grant_info =1;
+}
+
+/*鉴权记录日志*/
+message grantRecordsList{
+    repeated grantRecords grant_list =1;
+    Pagination pagination = 2;
+}
+
+/*会员列表*/
+message MemberList{
+    repeated UserBasicInfo member_basic_info =1;
+    repeated UserExtraInfo member_extra_info =2;
+    Pagination pagination = 3;
+
+}
+/*会员id*/
+message Mid{
+    int32 member_id =1;
+}
+
+/*会员详情*/
+message MemberInfo{
+    UserBasicInfo member_info =1;
+    UserExtraInfo extra_info =2;
+}
+/*添加会员*/
+message AddMember{
+    UserBasicInfo member_info =1;
+    UserExtraInfo extra_info =2;
+    UserPWDInfo pwd_info =3;
+}
+
+/*编辑会员*/
+message UpdateMember{
+    int32 member_id =1;//会员id
+    UserBasicInfo member_info =2;
+    UserExtraInfo extra_info =3;
+    UserPWDInfo pwd_info =4;
+    //插入会员状态变更表
+}
+
+/*设置用户锁定状态*/
+message SetUserLockState{
+    Mid member_id =1;
+    int32 member_status =2;//会员状态
+}
+
+/*会员搜索*/
+message MemberKeywords{
+    string username =1;//账户名
+    string phone =2;//手机号
+    string email =3;//邮箱
+}
+
+/*会员状态变更操作*/
+message MemberStatus{
+    Mid member_id=1;
+    UserStatus member_status =2;
+}
+
+/*会员状态变更列表*/  //会员操作日志
+message MemberStatusChangeList{
+    UserStatus member_status =1;
+    Pagination pagination = 2;
+}
+
+/*发送短信操作*/
+message SendSms{
+    string mobile =1;//手机号
+    string content =2;//内容
+    string sms_type =3;//类型
+    int32 send_status =4;//发送状态
+    string device_number =5;//设备识别号
+    google.protobuf.Timestamp send_time =6;//发送时间
+}
+
+/*短信发送记录日志*/
+message SmsSendLogList{
+    repeated SmsSendRecord sms_log =1;
+    Pagination pagination = 2;
+}
+
+/*发送信息到收件箱*/
+message SendSmsToInbox{
+    Mid member_id=1;
+    string member_name =2;//会员姓名
+    int32 piority =3;//优先级
+    int32 templateId =4;//模板id
+    string params =5;//json参数  信息内容
+
+}
+
+/*设置收件箱容量*/
+message SetInboxSize{
+   Mid member_id =1;
+   int32 messageKeepDays =2;//消息保留天数
+   int32 maxMessagesKeep =3;//消息最大数量
+   bool keepUrgentMessages =4;//保留紧急消息（不受上述两条件约束）
+}
+
+/*设置信息告警选项*/
+message SetUserMessageForwarding{
+    Mid member_id =1;
+    int32 levelToSms =2;//需要发送到短信的消息优先级
+    int32 levelToEmail =3;//需要发送到邮箱的消息优先级
+}
+
+

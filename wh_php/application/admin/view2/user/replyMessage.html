@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>回复工单-{$tpshop_config['shop_info_store_title']}</title>
+    <meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+    <meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+    <script src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+    <script src="__PUBLIC__/js/layer/layer-min.js"></script><!--弹窗js 参考文档 http://layer.layui.com/-->
+</head>
+<style type="text/css">
+    .wi80-BFB{width:80%}
+    .wi40-BFB{width:40%}
+    .seauii{ padding:7px 10px; margin-right:10px}
+    .he110{ height:110px}
+    .di-bl{ display:inherit}
+    .message_record{height: 315px; padding: 15px; overflow: auto;}
+    .my_message{width: 100%;float: left;text-align: left;margin-bottom: 10px;}
+    .kefu_message{width: 100%;float: right;text-align: right;margin-bottom: 10px;}
+    .message_record p font{display: inline-block; background: #eee; padding: 5px; border-radius: 5px; font-size: 14px; text-align: left; margin: 5px 20px; color: #333; font-family: sans-serif; }
+    .message_record .my_message font{ background: #95dcd2; }
+    .reply_message>textarea{ padding: 10px; width: 80%; vertical-align: middle;}
+    .reply_message>button { display: inline-block; padding: 5px 10px; background: #e23435; color: #fff; border-radius: 4px; margin: 0 10px; text-decoration: none;border: none;}
+</style>
+<body>
+<div class="adderss-add">
+    <div class="ner-reac ol_box_4" style="visibility: visible; z-index: 500; width: 100%; height:100%">
+        <div class="box-ct">
+            <div class="box-header">
+                <!-- <a href="" class="box-close"></a> -->
+            </div>
+                <div class="message_record">
+                    <if condition="$talks eq null">
+                        <p>客户没有留言</p>
+                    <else/>
+                    <foreach name="talks" item="val">
+                        <p class="my_message">
+                            <span>客户：</span><br/>
+                            <font>{$val['u_message']}</font>
+                        </p>
+                        <p class="kefu_message" mID="{$val['uid']}">
+                            <span>：客服</span><br/>
+                            <font>{$val['k_message']}</font>
+                        </p>
+                    </foreach>
+                </div>
+                <div style="clear:both;"></div>
+                <div class="reply_message">
+                    <textarea name="" id="texts" cols="60" rows="3"></textarea>
+                    <button onclick="send_message()"><span>发送</span></button>
+                </div>
+                </if>
+                <!--<table width="90%" border="0" cellspacing="0" cellpadding="0">-->
+                <!--<input name="call_back" type="hidden" value="call_back" />-->
+                <!--<tr>-->
+                <!--<td align="right" valign="top">会员工单：</td>-->
+                <!--<td style="width:75%;">-->
+                <!--<div class="wi80-BFB re-no viplist" >-->
+                <!--<p style="line-height:20px;font-size:14px;"></p>-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td><div>&nbsp;</div></td>-->
+                <!--<td><div>&nbsp;</div></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td align="right" valign="top">回复内容：</td>-->
+                <!--<td><textarea class="he110 wi80-BFB re-no" name="text" id="text" placeholder="发送内容" maxlength="100"></textarea></td>-->
+                <!--</tr>-->
+                <!--<input style="display:none" name="id" value="{$uid}">-->
+                <!--<tr style="height:60px">-->
+                <!--<td class="pa-50-0">&nbsp;</td>-->
+                <!--<td align="right">-->
+                <!--<button class="send_message" type="submit" style="padding: 4px 16px;cursor: pointer;"><span>发送</span></button>-->
+                <!--</td>-->
+                <!--</tr>-->
+                <!--</table>-->
+            
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__PUBLIC__/js/pc_common.js"></script>
+
+<script>
+    $('.send_message').click(function(){
+        window.location.reload();
+    })
+    function checkForm(){
+        var text = $('#text').val();
+        var error = '';
+        if(text == ''){
+            error += '回复内容不能为空 <br/>';
+        }
+        if(error){
+            layer.alert(error, {icon: 2});
+            return false;
+        }
+        layer.close(layer.index);
+        window.parent.location.reload();
+        return true;
+
+    }
+    $(document).ready(function(){
+        var u_message = $('.trSelected .u_message>div', parent.document).html();//获取父页面上u_message的值
+        $('.viplist>p').html(u_message);
+
+        var last_num = $('.kefu_message:last').attr('mID');
+        $('.message_record').before('<input id="mnu" type="text" value="'+last_num+'" style="display: none;"/>');
+
+        var kefu_message = $('.kefu_message font');
+        for(var i=0;i<kefu_message.length;i++){
+            if(kefu_message[i].innerHTML == ""){
+                kefu_message[i].style.padding = "0";
+                kefu_message[i].parentNode.style.display = "none";
+            }
+        }
+    })
+    function send_message(){
+        var mID = $('.kefu_message:last').attr('mID');
+        var texts = $('#texts').val();
+        $.post("/index.php?m=admin&c=User&a=replyMessage",{'mID':mID,'texts':texts},
+            function(data){
+                $('.kefu_message:last').html(
+                "<p class='kefu_message'>"+
+                "<span>：客服</span><br/>"+
+                "<font>" + texts + "</font></p>");
+                $('#texts').val("");
+            });
+    }
+</script>
+</body>
+</html>

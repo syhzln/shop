@@ -1,0 +1,326 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+package psp;
+import "common.proto";
+import "ItemModel.proto";
+import "ItemExtraService.proto";
+
+service ItemService{//商品中心
+    /*获取商品分类信息*/
+    rpc getItemCategory1(StoreId) returns(ItemCategory1)//由商家ID获取 一级分类信息
+    rpc getItemCategory2(ItemCategory1) returns(ItemCategory2)//获取 二级分类信息
+    rpc getItemCategory3(ItemCategory2) returns(ItemCategory3)//获取 二级分类信息
+    rpc getItemCategoryInfo(GetItemCategoryInfo) returns(ItemCategoryInfoReply) //获取一级二级三级分类信息
+   /*获取商家自定义的分类信息*/
+    rpc getItemStoreCategory1(StoreId) returns(ItemStoreCategory1)//由商家ID获取 商家自定义的一级分类信息
+    rpc getItemStoreCategory2(ItemStoreCategory1) returns(ItemStoreCategory2)//由商家ID获取 商家自定义的二级分类信息
+    rpc getItemStoreCategoryInfo(GetItemStoreCategoryInfo) returns(ItemStoreCategoryInfoReply) //获取 商家自定义的 一级二级三级分类信息
+    /*获取品牌信息*/
+    rpc getTtemBrand(ItemCategory1) returns(TtemBrandReply);//获取品牌信息
+    /*获取供应商信息*/
+    rpc getItemProvider(StoreId) returns(ItemProviderReply)//获取供应商信息
+    /*获取模板/类型id*/
+    rpc chooseItemTypeList(GetItemTypeList) returns(ItemTypeId) //选择商品模型（类型）
+    rpc getItemTypeSpecInfo(ItemTypeId) returns(ItemTypeSpecId)//获取规格信息
+    /*选择规格id，规格项id，之后添加*/
+    rpc chooseItemTypeSpecId(ItemTypeSpecId) returns(SpecGoodsPrice)//规格项组合后的库存，价格
+    rpc uploadItemTypeSpecId(ItemTypeSpecId) returns(SpecImage)//向spec_images表添加图片
+    /*选择物流*/
+    rpc chooseShipping(PluginType) returns(ShippingAreaIds)
+     /* 添加商品信息*/
+    rpc addItem (ItemInfo) returns (ItemId)//添加商品信息
+
+    /*删除商品信息  */
+    rpc delTtem(ItemId) returns(google.protobuf.BoolValue)//删除商品
+
+    /*商家后台修改/设置商品信息*/
+    rpc setItemOnsale(ItemId) returns(ItemOnsale)//设置 是否上架
+    rpc setItemStoreCount(ItemId)   returns(ItemStoreCount)//设置库存
+    rpc setItemSort(ItemId) returns(ItemSort)//设置排序
+    rpc updateItemInfo(ItemId)  returns(ItemInfo)  //更新商品信息
+    /*商城后台设置/修改商品信息  */
+    rpc setItemIsRecommend(ItemId) returns(ItemIsRecommend)//设置是否推荐
+    rpc setItemIsNew(ItemId) returns(ItemIsNew)  //设置是否新品
+    rpc setItemIsHot(ItemId)   returns(ItemIsHot)  //设置是否热卖
+    rpc setItemState(ItemId) returns(ItemState)//设置审核状态
+    rpc updateItemInfoFromAdmin(ItemId)  returns(ItemInfoFromAdmin) // 商城后台编辑商品
+
+   /*获取商品信息 */
+    /*商家  */
+    rpc getItemListOnStateFromSeller(OnStateCondition) returns(ItemListFromSeller)//获取商家后台已出售商品
+    rpc getSearchItemListOnStateFromSeller(SearchItemConditionFromSeller) returns(ItemListFromSeller)//获取筛选条件下的商家后台已出售商品
+
+    rpc getItemListFromSeller(StoreId) returns(ItemListFromSeller)//获取商家后台库存商品
+    rpc getSearchItemListFromSeller(SearchItemConditionFromSeller) returns(ItemListFromSeller)//获取筛选条件下的商家后台库存商品
+    /*商城 */
+    rpc getItemListFromAdmin(ItemListFromAdmin) returns(google.protobuf.BoolValue) //商城admin后台获取商品列表
+    rpc getSearchItemListFromAdmin(SearchItemConditionFromAdmin) returns(ItemListFromAdmin)//获取筛选条件下的商城商品列表
+
+
+    /*获取库存日志信息*/
+   rpc getStockLogFromAdmin(StockLog)   returns(google.protobuf.BoolValue) //获取商城后台库存日志
+   rpc getSearchStockLogFromAdmin(SearchStockLogCondition)  returns(StockLog) //获取搜素条件下的 商城后台库存日志
+   rpc getStockLogFromSeller(StoreId)   returns(StockLogFromSeller) //获取商城后台库存日志
+   rpc getSearchStockLogFromSeller(SearchStockLogConditionFromSeller)  returns(StockLogFromSeller) //获取搜素条件下的 商城后台库存日志
+}
+
+
+/*商品信息*/
+
+/*获取商品分类信息*/
+message ItemCategory1{//获取商品所属一级分类信息  由商家经营类目而定
+     int32 store_id =1;//商家ID
+     int32 cat_id1 =5;//一级分类ID
+}
+message ItemCategory2{//获取 二级分类信息
+     int32 store_id =1;//商家ID
+     int32 cat_id2 =5;//二级分类ID
+}
+message ItemCategory3{//获取 三级分类信息
+    int32 store_id =1;//商家ID
+    int32 cat_id3 =5;//三级分类ID
+}
+message GetItemCategoryInfo{
+    ItemCategory1 item_category1 =1;//一级分类
+    ItemCategory2 item_category2 =2;//二级分类
+    ItemCategory3 item_category3 =3;//三级分类
+}
+message ItemCategoryInfoReply{//获取商品 一级二级三级分类信息
+    int32 cat_id1 =1;//一级分类ID
+    int32 cat_id2 =2;//二级分类ID
+    int32 cat_id3 =3;//三级分类ID
+}
+
+/*获取商家自定义的分类信息*/
+message ItemStoreCategory1{//获取商家自定义的 一级分类信息
+    int32 store_id =1;//商家ID
+    int32 store_cat_id1 =2;//本店一级分类ID
+}
+message ItemStoreCategory2{//获取自定义的二级分类信息
+   int32 store_id =1;//商家ID
+   int32 store_cat_id2 =2;//本店二级分类ID
+}
+message GetItemStoreCategoryInfo {
+    ItemmStoreCategory1 item_store_category1 = 1; //一级分类
+    ItemmStoreCategory2 item_store_category2 = 2; //二级分类
+}
+message ItemStoreCategoryInfoReply { //获取商家自定义的 一级二级分类信息
+   int32 store_cat_id1 = 1; //本店一级分类
+   int32 store_cat_id2 = 2; //本店二级分类
+}
+/*获取品牌信息*/
+message TtemBrandReply{//获取品牌ID
+    int32 brand_id =1;//品牌id
+}
+/*获取供应商信息*/
+message ItemProviderReply{//获取供应商信息
+    int32 provider_id =1;//供应商ID
+}
+/*获取商品类型信息*/
+message ItemTypeSpecId{
+    SpecId spec_id =1;//规格id
+    uint32 id =2;//规格项id
+}
+/**********向spec_goods_price表添加数据*********/
+message SpecGoodsPrice{
+    ItemId goods_id =1;//商品id
+    string key =2;//规格键名
+    string key_name =3;//规格键名中文
+    bool price =4;//价格
+    int32 store_count =5;//库存数量
+}
+/********向spec_images表添加图片 *********/
+message SpecImage{
+    ItemId goods_id =1;//商品id
+    SpecItemId spec_image_id =2;//规格项id
+    string src =3;//商品规格图片路径
+}
+
+/*获取物流信息并 添加*/
+message PluginType{
+    string type =1;//type=shipping,物流模板
+}
+message ShippingAreaIds{
+    uint32 shipping_area_id =1;
+    string shipping_area_name =2;
+    string shipping_code =3;
+    string config =4;
+    google.protobuf.Timestamp update_time = 5;//帐号创建时间
+    int32 is_default =6;
+    bool is_close =7;
+    StoreId store_id =8;
+}
+
+
+
+
+/*添加商品信息*/
+message ItemInfo{//商品信息
+    ItemBasicInfo item_basic_info1 =1;//商品基本信息
+    ItemCategoryInfoReply item_category_info_reply =2;//商品所属  的三级分类信息
+    ItemStoreCategoryInfoReply item_store_category_info_reply =3;//商品所属店铺 自定义的分类信息
+    TtemBrandReply item_brand_reply = 4;//商品所属品牌信息
+    ItemProviderReply item_provider_reply =5;//供应商信息
+    ItemImages item_images =6; /**********向相册表添加相册*********/
+    ItemTypeId item_type_id =7;//商品类型id
+    SpecGoodsPrice spec_goods_price =8;/**********向spec_goods_price表添加数据*********/
+    SpecImage spec_image =10;/********向spec_images表添加图片 *********/
+    ShippingAreaIds  shipping_area_ids =9;/*向shipping_area表添加数据*/
+}
+message ItemImages{
+    ItemId goods_id =1;//商品id
+    string image_url =2;//图片地址
+}
+
+/*添加基本信息*/
+message ItemBascicInfo{//商品基本信息
+    StoreId store_id =1;//商家id
+    string goods_name =2;//商品名称
+    string goods_remark =3;//商品简介
+    int32 goods_sn =4;//商品货号
+    string upc =5;//商品的条形码
+    int32 weight =6;//商品重量克为单位
+    int32 store_count =7;//商品总库存
+    string original_img =8;//商品上传原始图
+    float market_price =9;//市场价
+    float shop_price =10;//本店价
+    float cost_price =11;//成本价
+    float commission =12;//佣金
+    int32 give_integral =13;//赠送积分
+    int32 exchange_integral =14;//积分兑换
+    string producer =15;//生产厂家
+    string original =16;//原产地
+    string keywords =17;//关键字
+    bool is_free_shipping =18;//是否包邮
+    string goods_content =19;//商品详细描述
+
+
+}
+
+/*设置/更新商品信息*/
+message ItemOnSale{//设置上架信息
+    bool is_on_sale =1;//是否上架
+}
+message ItemStoreCount{//设置库存数
+   int32 store_count =1;//库存总数目
+}
+message Sort{
+    int32 sort =1;//排序
+}
+
+
+message ItemIsRecommend{//是否推荐
+    bool is_recommend =1;
+}
+message ItemIsNew{//是否新品
+    bool is_new =1;
+}
+message ItemIsHot{//是否热卖
+    bool is_hot =1;
+}
+message ItemState{//审核状态
+    int32 goods_state =1;
+}
+
+message ItemInfoFromAdmin{//商城后台设置商品信息
+    Item_id goods_id =1;
+    string goods_name =2;
+    string goods_sn =3;
+    float cost_price =4;//成本价
+    float shop_price =5;//本店价，商城价
+    float market_price =6;//市场价
+    float tb_price =7;//淘宝价
+    float jd_price =8;//京东价
+}
+
+
+/*获取商品信息*/
+/*商家*/
+message OnStateCondition{
+    StoreId store_id =1;//商家id
+    int32 goods_state =2;//审核状态
+}
+message ItemListFromSeller{//商家后台已出售的商品
+   uint32 goods_id =1;
+   string goods_name =2;
+   string goods_sn =3;
+   int32 cat_id1 =4;//商品一级分类
+   float shop_price =5;//商城价
+   bool is_on_sale =6;//是否上架
+   int32 store_count =7;//总库存
+   int32 sort =8;//排序
+   int32 goods_state =9;//审核状态
+}
+message SearchItemConditionFromSeller{//商家后台筛选条件
+    int32 store_cat_id1 =1;//所有分类，不管一级二级分类
+    int32 store_cat_id2 =2;//
+    bool is_on_sale =3;//是否上架
+    string keywords =4;//关键词
+}
+
+/*商城后台*/
+message ItemListFromAdmin{//商城后台获取商品列表
+    uint32 goods_id =1;
+    string goods_name =2;
+    int32 store_id =3;
+    int32 cat_id1 =4;//商品一级分类
+    float shop_price =5;//商城价
+    float cost_price =6;//成本价
+    bool is_recommend =7;//是否推荐
+    bool is_new =8;//新品
+    bool is_hot =9;//热卖
+    int32 store_count =10;//库存
+    bool is_on_sale =11;//是否上架
+    google.protobuf.Timestamp on_time =12;//上架时间
+    google.protobuf.Timestamp update_time =13;//修改时间
+    int32 goods_state =14;//审核状态
+}
+message SearchItemConditionFromAdmin{
+    int32 cat_id1 =1;//所有商品分类，一级二级三级全包括
+    int32 cat_id2 =2;
+    int32 cat_id3 =3;
+    int32 brand_id =4;//所有品牌id
+    int32 goods_state =5;//审核状态
+    bool is_on_sale =6;//是否上架
+    string keywords =7;//关键词
+}
+
+/*获取库存日志*/
+/*商城*/
+message StockLog{//商城后台获取库存日志
+    uint32 id =1;
+    int32 good_id =2;//商品id
+    string goods_name =3;//商品名称
+    string goods_spec =4;//商品规格
+    string order_sn =5;//订单编号
+    int32 store_id =6;//商家ID
+    int32 muid =7;//操作用户ID
+    int32 stock =8;//更改库存
+    google.protobuf.Timestamp ctime =9;//操作时间
+}
+message SearchStockLogCondition{//搜素条件
+    int32  stock =1;//更改库存:> 0入库，< 0出库
+    string goods_name =2;//商品名称
+    google.protobuf.Timestamp ctime =3;//操作时间
+}
+
+/*商家*/
+message StockLogFromSeller{//商家后台获取库存日志
+     uint32 id =1;
+     int32 good_id =2;//商品id
+     string goods_name =3;//商品名称
+     string goods_spec =4;//商品规格
+     string order_sn =5;//订单编号
+     int32 muid =6;//操作用户ID
+     int32 stock =7;//更改库存
+     google.protobuf.Timestamp ctime =8;//操作时间
+ }
+message SearchStockLogConditionFromSeller{
+    StoreId store_id =1;//商家id
+    SearchStockLogCondition search_stock_log_condition =2;
+}

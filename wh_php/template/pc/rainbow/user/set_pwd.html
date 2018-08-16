@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{$Think.lang.SecuritySettings}</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+		<link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+		<script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body class="bg-f5">
+		<include file="user/header"/>
+		<div class="home-index-middle">
+			<div class="w1224">
+				<div class="g-crumbs">
+			       	<a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+			       	<i class="litt-xyb"></i>
+			       	<span>{$Think.lang.ForgetPassword}</span>
+			    </div>
+			    <div class="home-main forgetpaw">
+		    		<div class="menumain">
+		    			<div class="goodpiece">
+							<h1>{$Think.lang.SecuritySettings}</h1>
+							<!--<a href=""><span class="co_blue">帮助</span></a>-->
+						</div>
+			    		<div class="accouun"></div>
+			    		<div class="thirset ma-to-20">
+			    			<div class="wshef">1.{$Think.lang.FillInTheUsername}<i class="spassw"></i></div>
+			    			<div class="wshef">2.{$Think.lang.VerifyIdentity}<i class="spassw"></i></div>
+			    			<div class="wshef yellc">3.{$Think.lang.SetNewPassword}<i class="spassw"></i></div>
+			    			<div class="wshef">4.{$Think.lang.CarryOut}</div>
+			    		</div>
+			    		<div class="personerinfro verifyi-next">
+			    			<form action="" method="post" id="pwdform">
+			    				<ul class="name_jz">
+									<li class="infor_wi_le"><a>{$Think.lang.SetNewPassword}：</a></li>
+									<li class="teaeu">
+										<a>
+											<input class="name_zjxs" type="password" name="password" id="new_password"  placeholder="{$Think.lang.LettersNumbersSymbol}" onkeyup="securityLevel(this.value)">
+											<i class="qrzf" style="display: none"></i>
+										</a>
+										<a class="safebil">
+											<span>{$Think.lang.SafetyLevel}：</span>
+											<span class="lowzg red">{$Think.lang.Lower}</span>
+											<span class="lowzg ">{$Think.lang.General}</span>
+											<span class="lowzg">{$Think.lang.Higher}</span>
+										</a>
+									</li>
+								</ul>
+								<ul class="name_jz">
+									<li class="infor_wi_le"><a>{$Think.lang.ConfirmPassword}：</a></li>
+									<li class="teaeu">
+										<a>
+											<input class="name_zjxs" type="password" name="password2" id="confirm_password" value="" placeholder="{$Think.lang.LettersNumbersSymbol}">
+											<i class="qrzf" style="display: none"></i>
+										</a>
+									</li>
+								</ul>
+								<ul class="hobby_jz">
+									<li class="infor_wi_le"></li>
+									<div class="save_s">
+										<input class="save" type="button" onclick="checkSubmit()" value="{$Think.lang.NextStep}">
+									</div>
+								</ul>
+			    			</form>
+			    			<!--<p class="las-nex ma-to-20">1.支付宝密码是购物卡或账户余额的支付凭证，建议不要与其他网站密码相同</p>
+			    			<p class="las-nex">2.定期修改支付密码能让账户资金更安全。</p>-->
+			    		</div>
+		    		</div>
+			    </div>
+			</div>
+		</div>
+		<!--footer-s-->
+        <div class="footer p">
+            <include file="public/footer_index" />
+        </div>
+		<!--footer-e-->
+	</body>
+	<script type="text/javascript">
+        //显示密码安全等级
+        function securityLevel(sValue) {
+            var modes = 0;
+            //正则表达式验证符合要求的
+            if (sValue.length < 6 ) return modes;
+            if (/\d/.test(sValue)) modes++; //数字
+            if (/[a-z]/.test(sValue)) modes++; //小写
+            if (/[A-Z]/.test(sValue)) modes++; //大写
+            if (/\W/.test(sValue)) modes++; //特殊字符
+            $('.lowzg').eq(modes-1).addClass('red').siblings('.lowzg').removeClass('red');
+        };
+	function checkSubmit(){
+		var new_password = $('#new_password').val();
+		var confirm_password = $('#confirm_password').val();
+		if(new_password == ''){
+			layer.alert('{$Think.lang.NewPasswordCanNotBeBlank}', {icon: 2});
+			return false;
+		}
+		if(new_password.length<6 || new_password.length>18){
+			layer.alert('{$Think.lang.PasswordLengthError}', {icon: 2});
+			return false;
+		}
+		if(new_password != confirm_password){
+			layer.alert('{$Think.lang.PasswordIsInconsistentTwice}', {icon: 2});
+			return false;
+		}
+		$('#pwdform').submit();
+	}
+	</script>
+</html>

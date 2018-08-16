@@ -1,0 +1,180 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>转账记录</h3>
+                <h5>网站系统内部资金管理</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>平台账户转账流水列表</h3>
+                <h5>(共{$pager->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form" method="post" action="{:U('transfer')}" onsubmit="return check_form();">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+
+                        <input type="text" size="30" id="start_time" name = "start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+                        <input type="button" class="btn" value="起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="end_time" name = "end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+                        <input type="button" class="btn" value="截止时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="state" name="state" class="form-control">
+                            <option value="-1">转账状态</option>
+                            <option value="1" >成功</option>
+                            <option value="2">失败</option>
+                            <option value="0">处理中</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="type" name="type" class="form-control">
+                            <option value="0">类型</option>
+                            <option value="1" <if condition="$_REQUEST['type'] heq '1'">selected</if>>会员->会员</option>
+                            <option value="2" <if condition="$_REQUEST['type'] eq 2">selected</if>>平台->商家</option>
+                            <option value="3" <if condition="$_REQUEST['type'] eq 3">selected</if>>平台->会员</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="plantform_id" name="plantform_id" class="form-control">
+                            <!--<option value="-1">归属平台</option>-->
+                            <option value="1" <if condition="$_REQUEST['plantform_id'] heq '1'">selected</if>>量子时空平台</option>
+                            <option value="2" <if condition="$_REQUEST['plantform_id'] eq 2">selected</if>>2号平台</option>
+                            <option value="3" <if condition="$_REQUEST['plantform_id'] eq 3">selected</if>>N号平台</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input size="30" id="TransfereeId" name="TransfereeId" value="{$Think.request.TransfereeId}" placeholder="转出方" class="qsbox" type="text">
+                    </div>
+                    <div class="sDiv2">
+                        <input size="30" value="{$Think.request.TransferorId}" name="TransferorId" placeholder="转入方" class="qsbox" type="text">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sign" axis="col0"><i class="ico-check"></i></th>
+                            <th align="center" abbr="article_title" axis="col3" class="">记录ID</th>
+                            <th align="center" abbr="ac_id" axis="col4" class="">转出方ID</th>
+                            <th align="center" abbr="article_show" axis="col5" class="">转入方ID</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">转账类型</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">金额</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">货币对</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">汇率</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">状态</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">创建时间</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">完成时间</th>
+                            <th style="" axis="7">备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="v">
+                        <tr>
+                            <td class="sign"><i class="ico-check"></i></td>
+                            <td align="center" class="">{$v.transfer_id}</td>
+                            <td align="center" class="">
+                                <a class="open" href="{:U('getAccount',array('primary_account'=>$v[primary_account]))}" >
+                                    {$v.transferee_id}<i class="fa fa-external-link "></i>
+                                </a>
+                            </td>
+                            <td align="center" class="">
+                                <a class="open" href="#" target="blank">
+                                    {$v.transferor_id}<i class="fa fa-external-link " title="新窗口打开"></i>
+                                </a>
+                            </td>
+                            <td align="center" class="">{$v.type}</td>
+                            <td align="center" class="">{$v.amount}</td>
+                            <td align="center" class="">
+                                {$v.currency_pair}
+                                <if condition="$v['currency'] eq 1">
+                                    CNY/人民币
+                                <elseif condition="$v['currency'] eq 2" />
+                                    USD/美元
+                                <elseif condition="$v['currency'] eq 3" />
+                                    HK/港币
+                                </if>
+                            </td>
+                            <td align="center" class="">{$v.exchange_rate}</td>
+                            <td align="center" class="">
+                                <if condition="$v['state'] eq 1">
+                                    成功
+                                    <elseif condition="$v['state'] eq 2" />
+                                    失败
+                                    <elseif condition="$v['state'] eq 0" />
+                                    处理中
+                                </if>
+                            </td>
+                            <td align="center" class="">{$v.begin_date|date="Y-m-d H:i",###}
+                            </td>
+                            <td align="center" class="">{$v.end_date|date="Y-m-d H:i",###}</td>
+                            <td align="center" class="">{$v.reject_reason}</td>
+                            <td align="" class=""></td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    });
+
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#create_time').val(start_time+" - "+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#create_time').val('');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

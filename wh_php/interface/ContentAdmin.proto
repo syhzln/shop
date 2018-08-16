@@ -1,0 +1,175 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/4
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 文章管理数据接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service ArticleService{
+	rpc getArticleList (AritcleListRequest) returns (ArticleReply) ; // 文章列表
+	rpc getArticleInfo (ArticleId) returns (ArticleInfo) ; // 文章编辑/详情 
+	rpc addArticle (ArticleInfo) returns (google.protobuf.BoolValue); // 新增文章
+	rpc updateArticle (ArticleInfo) returns (google.protobuf.BoolValue) ; //修改文章
+	rpc delArticle (ArticleId) returns (google.protobuf.BoolValue) ;//删除文章
+	rpc setArticleIsOpen (ArticleId) returns (google.protobuf.BoolValue) ; // 文章是否显示设置  ajax
+
+	rpc getArticleCategoryName (ArticleId) returns (ArticleCatName)//获取当前文章的分类名
+
+	rpc getArticleCategoryInfo(ArticleCatId) returns (ArticleCategoryInfo); //文章分类编辑
+	rpc addArticleCateGory(ArticleCategoryInfo)  returns (google.protobuf.BoolValue) ;//新增分类
+	rpc updateArticleCateGory(ArticleCategoryInfo）returns (google.protobuf.BoolValue)  ;//修改分类
+	rpc delArticleCateGory(ArticleCatId) returns (google.protobuf.BoolValue) ;// 删除分类
+	rpc updateArticleCateGorySort(ArticleCatId) returns (ArticleCategorySort) // 文章分类排序 ajax
+
+	rpc getLinkList(LinkListRequest) returns (LinkListReply) ;// 返回友情链接列表
+	rpc getLinkInfo(LinkId) returns (LinkInfo) ;// 友情链接 编辑
+	rpc addLink(LinkInfo) returns  (google.protobuf.BoolValue);  // 新增友情链接
+	rpc updateLink(LinkInfo) returns  (google.protobuf.BoolValue);  // 修改友情链接
+	rpc delLink(LinkId) returns  (google.protobuf.BoolValue);  // 删除友情链接
+
+	rpc getTopicList(TopicListRequest) returns (TopicListReply) ; // 专题列表
+	rpc getTopicInfo(TopicId) returns (TopicInfo) ; // 专题信息
+	rpc addTopic(TopicInfo) returns (google.protobuf.BoolValue); // 新增专题
+	rpc updateTopic(TopicInfo) returns (google.protobuf.BoolValue) ; //修改专题
+	rpc delTopic(TopicId) returns  (google.protobuf.BoolValue) ;//删除专题
+
+ }
+
+/* 文章 开始*/
+message AritcleListRequest{
+	required string title = 1; //文章标题
+	optional ArticleCatId  article_cat_id = 2; //文章当前类别id
+}
+
+ 
+message ArticleReply{
+	repeated string  title = 1 ;// 文章标题
+	repeated string  description = 2;  //文章描述
+	repeated uint32  is_open = 3; //是否显示
+	repeated uint32  publish_time = 4; //发布时间
+	repeated uint32  article_id = 5; // 文章id
+	repeated string  cat_id = 6;//文章类别id
+
+}
+
+
+
+message ArticleId{
+	required uint32 article_id = 1;// 文章id
+}
+
+message ArticleInfo{ // 新增修改文章参数
+	required string  title = 1 ;// 文章标题
+	optional string  description = 2;  //文章描述
+	required uint32  is_open = 3; //是否显示
+	required uint32  publish_time = 4; //发布时间
+	optional uint32  article_id = 5; // 文章id
+	optional string file_url = 6; //banner图的路径
+	optional string keywords = 7 ; //seo关键字
+	optional string link = 8; //外部链接 
+	required string  content = 9; //文章内容
+
+}
+
+message ArticleCatName{
+	required string cat_name = 1;//文章分类名
+}
+
+/* 文章结束 */
+
+
+
+
+/* 文章分类开始 */
+
+message ArticleCatId{ // 文章分类id
+	required uint32 article_cat_id = 1; //文章分类id
+}
+
+message ArticleCategoryInfo{ 
+	optional uint32 article_cat_id = 1; //文章当前类别id
+	required string  cat_name = 2;// 类别名称
+	optional string cat_desc = 3; //分类描述
+	required uint32 show_in_nav = 4; //导航显示
+	required uint32 sort_order = 5; //显示排序
+	optional string keywords = 6; // 搜索关键词
+	optional string parent_id = 7; //父级id
+
+}
+
+/*  文章分来结束  */
+
+
+
+
+/*  友情链接开始  */
+
+message LinkId{
+	required uint32 link_id = 1; //链接id
+}
+
+message LinkListRequest{
+	required string link_keywords = 1; // 关键字搜索
+}
+
+message LinkListReply{
+	repeated uint32  link_id = 1; //链接id
+	repeated string  link_name = 2;// 链接名称
+	repeated string  link_url = 3; // 链接地址
+	repeated uint32  target = 4 ; //是否新窗口打开
+	repeated uint32  orderby = 5; //排序
+}
+
+
+message LinkInfo{
+	optional uint32  is_show = 1; //是否显示
+	optional string  link_logo = 2; //logo路径
+	optional uint32  link_id = 3; //链接id
+	required string  link_name = 4;// 链接名称
+	required string  link_url = 5; // 链接地址
+	required uint32  target = 6 ; //是否新窗口打开
+	required uint32  orderby = 7; //排序
+}
+
+message ArticleCategorySort{
+	required string article_category_sort = 1;//修改后新的排序值
+}
+
+/* 友情链接结束 */
+
+
+
+
+/* 专题开始*/
+message TopicId{
+	required uint32 topic_id = 1; // 专题id
+}
+
+message TopicListRequest{
+	required string topic_title = 1;// 专题标题
+}
+
+message TopicListReply{
+	repeated uint32 topic_id = 1; //专题id
+	repeated string topic_title = 2;//专题标题
+	repeated uint32 topic_state = 3; //专题状态
+	repeated uint32 ctime = 4 ; // 创建时间
+	repeated string topic_image = 5;// 专题封面	
+}
+
+message TopicInfo{
+	required uint32 topic_id = 1; //专题id
+	required string topic_title = 2;//专题标题
+	required uint32 topic_state = 3; //专题状态
+	required uint32 ctime = 4 ; // 创建时间
+	required string topic_image = 5;// 专题封面	
+	optional uint32 topic_margin_top = 6; //正文距顶部距离
+}
+
+/* 专题结束 */

@@ -1,0 +1,170 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>店铺管理 - 添加店铺</h3>
+                <h5>网站系统添加店铺</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" method="post" id="add_form">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="shop_name"><em>*</em>店铺名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="shop_name" id="shop_name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>店铺持有人姓名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="name" id="name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>店铺联系人电话</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="phone" id="phone" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">请填写可用的手机号</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>店铺联系人邮箱</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="email" id="email" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>店铺联系人QQ</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="user_qq" id="user_qq" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="login_username"><em>*</em>店主卖家账号</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="login_username" id="login_username" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">用于登录商家中心，可与店主账号不同</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="login_secret"><em>*</em>登录密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="password" name="login_secret" id="login_secret" class="input-txt" placeholder="6-16位字母数字符号组合">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="login_secret"><em>*</em>确认密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="password" name="repeat_pwd" id="repeat_pwd" class="input-txt" placeholder="请再次输入密码">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+
+            <div class="bot"><a href="JavaScript:void(0);" onclick="checkUserUpdate();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function checkUserUpdate(){
+        var name = $('input[name="name"]').val();
+        var login_username = $('input[name="login_username"]').val();//登录账户名
+        var login_secret = $('input[name="login_secret"]').val();//登录密码
+        var shop_name = $.trim($('input[name="shop_name"]').val());
+        var repeat_pwd =  $('input[name="repeat_pwd"]').val();
+        var qq = $('input[name="user_qq"]').val();
+        var mobile = $('input[name="phone"]').val();
+        var email = $('input[name="email"]').val();
+        var error ='';
+        if(shop_name == ''){
+            error += "店铺名称不能为空\n";
+        }
+        if(name == ''){
+            error += "店铺持有人不能为空\n";
+        }
+
+        if(!checkMobile(mobile) || mobile == ''){
+            error += "手机号码填写有误\n";
+        }
+
+        if(!checkEmail(email) || email == ''){
+            error += "邮箱地址有误\n";
+        }
+
+        if(!isNumber(qq) || qq == '' || qq.length <5){
+            error += "qq账号格式有误\n";
+        }
+
+        if(login_username.lenth <= 2){
+            error +="登录账户名太简单了\n";
+        }
+
+        if(login_secret == ''){
+            error += "密码不能为空\n";
+        }
+        if(login_secret.length<6 || login_secret.length>16){
+            error += "密码长度不正确\n";
+        }
+
+        if(login_secret != repeat_pwd){
+            error += "两次密码输入不一致\n";
+        }
+
+        if(error){
+            layer.alert(error, {icon: 2});  //alert(error);
+            return false;
+        }
+
+        $('#add_form').submit();
+    }
+
+    function isNumber(value) {         //验证是否为数字
+        var patrn = /^(-)?\d+(\.\d+)?$/;
+        if (patrn.exec(value) == null || value == "") {
+            return false
+        } else {
+            return true
+        }
+    }
+
+
+</script>
+</body>
+</html>

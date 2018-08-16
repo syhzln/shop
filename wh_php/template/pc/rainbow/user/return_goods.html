@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$Think.lang.ExchangeOfGoods}</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/return.sprite.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/return.add.css" />
+    <style>
+        .col_main {
+            width: 1000px;huan
+            float: right;
+            background: #fff;
+        }
+    </style>
+</head>
+<body class="bg-f5">
+<include file="user/header"/>
+<div class="home-index-middle">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">{$Think.lang.UserCenter}</a>
+            <i class="litt-xyb"></i>
+            <span>{$Think.lang.ExchangeOfGoods}</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu"/>
+            <div class="ri-menu fr">
+                <div class="col_main noHidden">
+                    <!--下面内内容自己添加 -->
+                    <div class="return_area">
+                        <div class="user-head clearfix">
+                            <h3>{$Think.lang.ExchangeOfGoods}</h3>
+                            <!--<a class="" href="">
+                                        查看退货规则
+                                    </a>-->
+                        </div>
+                        <!-- tab -->
+                        <div class="ui_tab">
+                            <div class="ui_tab_content J_order_list">
+
+                                <!--退货记录-->
+                                <div class="wi940">
+                                    <form name="return_form" id="return_form" autocomplete="off" method="post">
+                                        <input type="hidden" name="order_id" value="{$order_id}" />
+                                        <input type="hidden" name="order_sn" value="{$order_sn}" />
+                                        <input type="hidden" name="goods_id" value="{$goods_id}" />
+                                        <input type="hidden" name="spec_key" value="{$_GET[spec_key]}" />
+                                        <input type="hidden" name="type" value="2"  id="tvalue" >
+                                        <div class="mod-main mod-comm" id="air03">
+
+                                            <div class="mc">
+                                                <table class="tb-void mb10">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>{$Think.lang.goods}</th>
+                                                        <th>{$Think.lang.BuyUnitPrice}</th>
+                                                        <th>{$Think.lang.PurchaseQuantity}</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <ul class="list-proinfo" id="removeTheSingleGife">
+                                                                <li class="fore1">
+                                                                    <a href="{:U('Home/Goods/goodsInfo',array('id'=>$goods['item_id']))}" target="_blank">
+                                                                        <img height="50" width="50" title="{$goods['goods_name']}" src="{$goods.thumb_img_url}" data-img="1" alt="">
+                                                                        {$goods['name']}
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                        <td>{$Think.lang.Symbol}{$goods['price']}</td>
+                                                        <td id="buynum">{$goods['count']}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div name="productInfo_zp-info" style="display:none"></div>
+                                            </div>
+                                            <div class="form">
+                                                <div class="item kfarea" id="sellerPrompt">
+                                                    <div class="ml20"> <span><em>*</em><span style="color: red; "> {$Think.lang.WarmPrompt}：</span></span>
+                                                        <label>{$Think.lang.AfterSaleServiceProvided} <span id="sellerNamePrompt" style="color: red; ">{$walhao_config['shop_info_store_name']}</span> {$Think.lang.ProvideForYou} </label>
+                                                    </div>
+                                                    <div class="clr"></div>
+                                                </div>
+                                                <div class="repair-steps" id="repairSteps">
+                                                    <div class="repair-step repair-step-curr pt10 mb10" id="firstRepairStep">
+
+                                                        <!-- 服务类型 -->
+                                                        <div class="item"> <span class="label"> <em> * </em> {$Think.lang.ServiceType}： </span>
+                                                            <div class="fl">
+                                                                <ul class="list-type list-type-new">
+                                                                    <li tvalue="2" class="selected" onclick="reason()">
+                                                                        <a href="javascript:void(0);">{$Think.lang.ReturnGoods}<b></b> </a>
+                                                                    </li>
+
+                                                                        <li tvalue="3" class="" onclick="reason()">
+                                                                            <a href="javascript:void(0);">{$Think.lang.ExchangeGoods}<b></b> </a>
+                                                                        </li>
+
+                                                                </ul>
+                                                            </div>
+                                                            <div class="clr"> </div>
+                                                        </div>
+
+                                                        <div class="item" id="rs"> <span class="label"> <em> * </em> {$Think.lang.ReasonsForReturn}： </span>
+                                                            <div class="fl">
+                                                                <select name="reason" class="return_reason">
+                                                                    <option value="1">{$Think.lang.NoReasonSevenDays}</option>
+                                                                    <option value="2">{$Think.lang.QualityIssues}</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="clr"> </div>
+                                                        </div>
+
+
+                                                        <div class="item"> <span class="label"> <em> * </em> {$Think.lang.TheNumberOf}： </span>
+                                                            <div class="fl">
+                                                              <input type="text" id="count" name="count" value="{$goods['count']}" align="center" readonly>
+                                                            </div>
+                                                            <div class="clr"> </div>
+                                                        </div>
+                                                        <!-- 问题描述 外层div-->
+                                                        <div id="miaoShuDiv" style="">
+                                                            <!-- 大家电服务地址 -->
+
+
+                                                            <!-- 问题描述 -->
+                                                            <!--<div class="item"> <span class="label"> <em> * </em> 问题描述： </span>-->
+                                                                <!--<div class="fl">-->
+                                                                    <!--<textarea name="reason" id="reason" cols="" rows="" class="area"></textarea>-->
+                                                                    <!--<div class="ar ftx-03">10-500字</div>-->
+                                                                    <!--<div class="msg-text-01"> 请您如实填写申请原因及商品情况，字数在500字内。 </div>-->
+                                                                <!--</div>-->
+                                                                <!--<div class="clr"> </div>-->
+                                                            <!--</div>-->
+
+                                                            <!-- 图片信息 -->
+                                                         <!--   <div class="item item01"> <span class="label">图片信息：</span>
+                                                                <div class="fl">
+                                                                    <div class="i-btns" style="text-align: left;">
+                                                                        <input type="button" value="上传照片" onclick="GetUploadify(5,'return_imgs','return_goods','return_imgs');">
+                                                                        <input type="text" name="imgs" id="return_imgs" readonly="" style="border:none">
+                                                                    </div>
+                                                                    <span id="uploadImgLoading" class="fl"></span> <span id="img_des" class="fl">为了帮助我们更好的解决问题，请您上传图片</span>
+                                                                    <div class="clr"></div>
+                                                                    <span class="msg-text">最多可上传5张图片，每张图片大小不超过5M，支持bmp,gif,jpg,png,jpeg格式文件</span>
+                                                                    <div class="clr"></div>
+                                                                    <div name="mscolluploadImg-info" style="display:none"></div>
+                                                                </div>
+                                                                <div class="clr"></div>
+                                                            </div>-->
+                                                            <!-- 问题描述 外层div-->
+                                                        </div>
+                                                    </div>
+                                                    <div id="defaultQueRenDiv" style="" class="repair-step">
+                                                        <!-- 确认信息 -->
+                                                        <div class="mt-10"> <strong>{$Think.lang.ReturnAddress}</strong></div>
+
+                                                        <!-- 取货地址 -->
+                                                        <div class="item" id="pickWareAddress_defaultShow" style="display: block;"> <span class="label"><em>*</em>{$Think.lang.ReturnAddress}：</span>
+                                                            <div class="fl">{$goods['address']}</div>
+                                                            <div class="clr"></div>
+                                                        </div>
+                                                        <!-- 上班时间 -->
+                                                        <div class="item" id="reserveDate_small_div_defaultShow" style="display: block;"> <span class="label"><em>*</em>{$Think.lang.WorkTime}：</span>
+                                                            <div class="fl" id="reserveDate_small_div_defaultShow_fl">{$Think.lang.WorkingTime}</div>
+                                                            <div class="clr"></div>
+                                                        </div>
+                                                        <!-- 客服电话 -->
+                                                        <div class="item" id="reserveDate_small_div_defaultShow" style="display: block;"> <span class="label"><em>*</em>{$Think.lang.TelService}：</span>
+                                                            <div class="fl" id="reserveDate_small_div_defaultShow_fl">{$walhao_config['shop_info_phone']}</div>
+                                                            <div class="clr"></div>
+                                                        </div>
+
+                                                        <!-- now -->
+                                                        <!-- 确认信息 外层div 结束 -->
+                                                    </div>
+
+                                                    <!-- 提交按钮 -->
+                                                    <div class="item" id="submitDiv" style=""><span class="label">&nbsp;</span>
+                                                        <div class="fl" name="divSubmit">
+                                                            <div name="submitTips" style="display:none"></div>
+                                                            <a href="javascript:void(0)" onclick="submit_form();" class="return_submit" name="btnSubmit"><s></s>{$Think.lang.Submit}</a> </div>
+                                                        <div class="clr"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="order_item_id" value="{$goods.order_item_id}">
+                                        <input type="hidden" name="order_id" value="{$goods.order_id}">
+                                        <input type="hidden" name="shipping_status" value="{$goods.shipping_status}">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- tab end-->
+                    </div>
+
+                    <!-- 以上为中间内容区域 注释自己2删除-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<div class="footer p">
+    <include file="public/footer_index" />
+</div>
+<!--footer-e-->
+<script type="text/javascript">
+    $(function(){
+        $('.time-sala ul li').click(function(){
+            $(this).addClass('red').siblings().removeClass('red');
+        })
+        $('.searc_sx a').click(function(){
+            $(this).addClass('red').siblings('a').removeClass('red');
+        })
+    })
+    function submit_form()
+    {
+        var reason = $.trim($('#reason').val());
+        var return_imgs= $.trim($('#return_imgs').val());
+        var count = $('#count').val();
+        if(count>$("#buynum").text()||count<1)
+        {
+            layer.alert('数量不符!', {icon: 2});
+            return false;
+        }
+//        if(reason == '')
+//        {
+//            layer.alert('请输入退换货原因!', {icon: 2});// alert('请输入退换货原因!');
+//            return false;
+//        }
+
+      /*  if(return_imgs == '')
+        {
+            if(!confirm('确定不传照片吗?'))
+            {
+                return false;
+            }
+        }*/
+        $('#return_form').submit();
+    }
+
+    // 上传退货拍照图片
+    function return_imgs(img)
+    {
+        $('#return_imgs').val(img);
+    }
+
+    //  退换货颜色切换
+    $(document).ready(function(){
+        $("ul.list-type-new li").click(function(){
+            $(this).addClass('selected').siblings().removeClass('selected');
+            $('#tvalue').val($(this).attr('tvalue'));
+        });
+
+    });
+
+    function reason(){
+        if($('.selected').attr("tvalue")=='2'){
+            $("#rs").hide();
+        }else{
+            $("#rs").show();
+        }
+    }
+</script>
+</body>
+</html>

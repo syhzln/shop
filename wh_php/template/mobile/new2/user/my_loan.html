@@ -1,0 +1,118 @@
+<include file="public/header" title="我的买呗" body="g4"/>
+<include file="public/header_nav" title="我的买呗" href="{:U('/Mobile/User/index')}"/>
+<div class="p after-set-li">
+    <div class="shopcard my_loan p">
+        <div class="loan_1">
+            <span class="co">可用额度(元)</span>
+            <span class="loan_balance">{$can_use_money}</span> <!--我的买呗可用额度-->
+            <a class="topup-mom" href="{:U('/Mobile/User/loan_payback')}">点击还款</a>
+            <if condition="$is_upgrade eq 1">
+                <a class="update_loan" href="{:U('/Mobile/User/apply_loan')}">升级额度</a>
+            </if>
+        </div>
+        <div class="loan_2">
+            <a class="debt" href="javascript:;"><span><em>{$Think.lang.Symbol}</em>{$repayment_money}</span>应还金额</a>
+            <a class="debt" href="javascript:;"><span><em>{$Think.lang.Symbol}</em>{$limit_money}</span>总额度</a>
+        </div>
+        <if condition="$status eq 0">
+            <!--暂无额度-->
+            <div class="no_loan">
+                暂无额度
+                <a href="{:U('/Mobile/User/apply_loan')}">点击申请额度</a>
+            </div>
+
+            <elseif condition="$status eq 1" />
+            <div class="no_loan">
+                申请中,请耐心等待
+            </div>
+
+            <elseif condition="$status eq 3" />
+            <div class="no_loan">
+                已拒绝 原因: {$reason}<br/>
+                <a href="{:U('/Mobile/User/apply_loan')}">修改申请</a>
+            </div>
+        </if>
+    </div>
+    <div class="loan_record">
+        <ul>
+            <li <if condition="$Request.param.type eq 1 OR $Request.param.type eq ''">class="red"<else />class="mal-l"</if>><a href="{:U('/Mobile/User/my_loan',array('type'=>'1'))}">支出明细</a></li>
+            <li <if condition="$Request.param.type eq 2" >class="red"<else />class="mal-l"</if>><a href="{:U('/Mobile/User/my_loan',array('type'=>'2'))}">还款明细</a></li>
+        </ul>
+    </div>
+    <!--支出明细-s-->
+    <if condition="$Request.param.type eq 1 or $Request.param.type eq 3 or $Request.param.type eq ''">
+        <div class="he"></div>
+        <div class="loan-list accbala">
+            <ul>
+                <!--<li><a href="javascript:void(0);">商品名称</a></li>-->
+                <li><a href="javascript:void(0);">支出金额</a></li>
+                <li><a href="javascript:void(0);">单 号</a></li>
+                <li><a href="javascript:void(0);">时 间</a></li>
+            </ul>
+        </div>
+        <!--无记录时-s-->
+        <empty name="lists">
+            <p class="ncyekjl">--{$Think.lang.NoRecords}--</p>
+        </empty>
+        <!--无记录时-e-->
+        <foreach name="lists" item="vv">
+            <div class="loan-list c_contan accbala-list">
+                <ul>
+                    <!--<li>{$vv.goods_name}</li>-->
+                    <li>-{$vv.payout_money}</li>
+                    <li>{$vv.goods_number}</li>
+                    <li>
+                        {$vv.payout_time|substr=###,0,10}
+                    </li>
+                </ul>
+            </div>
+        </foreach>
+    </if>
+    <!--支出明细-e-->
+    <!--还款明细-s-->
+    <if condition="$Request.param.type eq 2">
+        <div class="he"></div>
+        <div class="loan-list accbala">
+            <ul>
+                <!--<li><a href="javascript:void(0);">编 号</a></li>-->
+                <li><a href="javascript:void(0);">还款金额</a></li>
+                <li><a href="javascript:void(0);">时 间</a></li>
+                <li><a href="javascript:void(0);">类 型</a></li>
+            </ul>
+        </div>
+        <!--无记录时-s-->
+        <empty name="lists">
+            <p class="ncyekjl">--{$Think.lang.NoRecords}--</p>
+        </empty>
+        <!--无记录时-e-->
+        <foreach name="lists" item="vo">
+            <div class="loan-list c_contan accbala-list">
+                <ul>
+                    <!--<li>{$vo.pay_number}</li>-->
+                    <li>+{$vo.give_money}</li>
+                    <li>{$vo.repay_time|substr=###,0,10}</li>
+                    <li>
+                        <if condition="$vo.pay_type eq 1">
+                            余额还款
+                            <elseif condition="$vo.pay_type eq 2"/>
+                            支付宝还款
+
+                            <elseif condition="$vo.pay_type eq 3"/>
+                            银联支付
+                            <else/>
+                            退 款
+                        </if>
+                    </li>
+                </ul>
+            </div>
+        </foreach>
+    </if>
+    <!--还款明细-e-->
+</div>
+
+<script type="text/javascript">
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="content-language" content="zh-cn"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+    <meta http-equiv="Cache-control" content="public" max-age="no-cache"/>
+    <title>{$Think.lang.details}-{$walhao_config['shop_info_store_title']}</title>
+    <meta name="keywords" content="{$walhao_config['shop_info_store_keyword']}"/>
+    <meta name="description" content="{$walhao_config['shop_info_store_desc']}"/>
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/help.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css"/>
+</head>
+<body>
+<!--header-s-->
+<include file="public/header" w='w1224'/>
+    <!--header-e-->
+<!--E头部-->
+<!-- <div style="clear: both; height:45px"></div> -->
+<div id="pageContent" class="pageContent">
+    <div class="hc-warp" id="page">
+        <div class="hc-crumbs"><a class="p-fb" href="" target="_blank">{$Think.lang.HelpCenter}</div>
+        <div class="hc-column">
+            <volist name='par' id='v'>
+                <div class="hc-column-box">
+                    <h2><a href="" target="_self">{$v[name]}</a></h2>
+                     <ul> 
+                        <volist name='article1' id='v1'>
+                            
+                                <if condition="$v1[category] == $v[name]" >
+                                    <li><a href="{:U('Home/Article/detail',array('article_id'=>$v1[article_id]))}">{$v1[title]}</a></li>
+                                </if>
+                           
+                        </volist>
+                    </ul>
+                </div>
+            </volist>
+        </div>
+        <!--可编辑区域开始-->
+        <div id="content"> <!--可编辑区域开始-->
+            <div style="width: 1050px; overflow: hidden; font-family: Verdana,Helvetica; float: right;">
+                <div style="border: 1px solid rgb(233, 234, 236); margin-bottom: 25px;">
+                    <h2 style="height: 34px; line-height: 34px; border-bottom-color: rgb(233, 234, 236); border-bottom-width: 1px; border-bottom-style: solid;"><span style="color: rgb(60, 60, 60); padding-top: 4px; padding-bottom: 4px; padding-left: 10px; font-size: 14px; font-weight: bold; border-left-color: rgb(242, 46, 0); border-left-width: 3px; border-left-style: solid;">{$article.title}</span>
+                    </h2>
+                    <div style="padding: 20px 30px 0px; color: rgb(60, 60, 60); font-size: 12px;">
+                        <if condition="$article.title eq '宣传视频'">
+                            <video  width="900" height="600" controls="controls" >
+                                <source src="https://walhao-img.oss-cn-hangzhou.aliyuncs.com/public/lzsk1.mp4" type="video/mp4">
+                                您的浏览器不支持 video 标签。
+                            <video>
+                        <else/>
+                                {$article.content|htmlspecialchars_decode}
+                        </if>
+
+                    </div>
+                </div>
+            </div>
+            <!--可编辑区域结束--> </div>
+        <!--可编辑区域结束-->
+    </div>
+</div>
+<div class="footer p">
+    <include file="public/footer_index" />
+    <include file="public/sidebar_cart" />
+</div>
+<script src="__STATIC__/js/lazyload.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/js/headerfooter.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

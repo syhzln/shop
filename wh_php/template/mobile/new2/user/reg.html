@@ -1,0 +1,388 @@
+<include file="public/header" title="注册" body="g4"/>
+<include file="public/header_nav" title="注册" href="javascript:history.back(-1)"/>
+<style>
+    #verify_code_img{
+        padding: .55467rem .21333rem;
+        width: 4.6rem;
+        height: 2.9rem;
+        color: white;
+        border-radius: .128rem;s
+    }
+    .IDtip{
+        width: 80%;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.3rem;
+        margin: 0 auto;
+        margin-top: 60%;
+        background: #fff;
+        text-align: center;
+        font-size: 0.6rem;
+        display:none;
+    }
+    .IDtip button{
+        width: 2rem;
+        font-size: 0.5rem;
+        background: #fff;
+        border: 1px solid #333;
+        border-radius: 0.1rem;
+        margin: 1rem;
+        padding: 0.1rem;
+    }
+    .zhezhao{
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.3);
+        position: fixed;
+        top: 0;
+        display: none;
+    }
+</style>
+<!--注册表单-s-->
+<div class="loginsingup-input singupphone">
+    <form action="" method="post" id="regFrom" >
+        <div class="content30">
+            <div class="lsu boo wicheck">
+                <input type="text" name="recommend" id="recommend" value="" placeholder="请输入推荐人ID" onblur="checkRecommondId()" class="c-form-txt-normal">
+                <!--<span id="recommend_notice">* 请输入正确的推荐人ID</span>-->
+            </div>
+            <div class="lsu boo wicheck">
+                <input type="text" name="mobile" id="mobile" value="" placeholder="请输入手机号" onblur="checkMobile()" class="c-form-txt-normal">
+                <!--<span id="mobile_phone_notice">* 请输入正确的手机号</span>-->
+            </div>
+            <!--<div class="lsu boo wicheck">-->
+                <!--<input type="text" name="email" id="email" value="" placeholder="请输入邮箱号" onblur="checkEmail()" class="c-form-txt-normal">-->
+                <!--&lt;!&ndash;<span id="email_notice">* 请输入正确的邮箱</span>&ndash;&gt;-->
+            <!--</div>-->
+            <div class="lsu boo wicheck">
+                <input type="text" name="realName" id="realName" value="" placeholder="请输入真实姓名" onblur="checkName()" class="c-form-txt-normal">
+                <!--<span id="realName_notice">* 请输入您的真实姓名</span>-->
+            </div>
+            <!--<div class="lsu boo wicheck">-->
+                <!--&lt;!&ndash;<input type="text" name="IDcard" id="IDcard" value="" placeholder="请输入身份证号" onblur="checkID()" class="c-form-txt-normal">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span id="IDcard_notice">* 请输入正确的身份证号码</span>&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div class="lsu boo wicheck">-->
+                <!--<select name="bank" id="sel_bank">-->
+                    <!--<option value="0">请选择银行</option>-->
+                    <!--<option value="1">中国银行</option>-->
+                    <!--<option value="2">中国工商银行</option>-->
+                    <!--<option value="3">中国建设银行</option>-->
+                    <!--<option value="4">中国农业银行</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="lsu boo wicheck">&ndash;&gt;-->
+                <!--<input type="text" name="bank" id="bank" value="" placeholder="请输入银行卡号" onblur="checkBank()" onkeyup="this.value = this.value.replace(/\D/g, '').replace(/....(?!$)/g, '$& ')" class="c-form-txt-normal">-->
+                <!--<span id="bank_notice">* 请输入正确的银行卡号</span>-->
+            <!--</div>-->
+            <!--<div class="lsu boo wicheck">-->
+                <!--<input type="text" name="alipay" id="alipay" value="" placeholder="请输入支付宝号" onblur="checkZfb()" class="c-form-txt-normal">-->
+                <!--<span id="alipay_notice">* 请输入支付宝账号</span>-->
+            <!--</div>-->
+            <!--<div class="lsu boo wicheck">-->
+                <!--<div class="hendicon">-->
+                    <!--<form id="head_pic" method="post" enctype="multipart/form-data">-->
+                        <!--<label class="file" style="cursor:pointer;">-->
+                            <!--<div class="around" id="fileList">-->
+                                <!--<div class="upImg">点击认证身份证正面照片</div>-->
+                                <!--<input  type="file" accept="image/*" name="head_pic"  onchange="handleFiles(this)" style="display:none">-->
+                                <!--<a class="delImg" href="javascript:;" onclick="delImg()">删除</a>-->
+                            <!--</div>-->
+                        <!--</label>-->
+                    <!--</form>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="lsu boo wicheck">
+                <input type="password" name="password" id="password" value="" placeholder="请设置6-20位登录密码" class="c-form-txt-normal" onBlur="check_password(this.value);">
+                <span id="password_notice"></span>
+            </div>
+            <div class="lsu boo wicheck">
+                <input type="password" id="password2" name="password2" value="" placeholder="确认密码" onBlur="check_confirm_password(this.value);">
+                <span id="confirm_password_notice"></span>
+            </div>
+            <div class="lsu boo zc_se">
+                <input type="text"  value="" name="verify_code" placeholder="请输入验证码" >
+                <img src="/index.php?m=Home&c=User&a=verify" id="verify_code_img" onclick="verify('verify_code_img')">
+            </div>
+            <div class="lsu submit">
+                <input type="button" name="" id="" onclick="checkSubmit()" value="注册"/>
+            </div>
+            <div class="signup-find">
+                <p class="recept">注册即视为同意<a href="{:U('Mobile/Article/article',['article_id'=>1415])}">《{$walhao_config['shop_info_store_title']}注册协议》</a></p>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="zhezhao">
+    <div class="IDtip">
+        <span class=""></span>
+        <p>
+            <button onclick="turn_login()">确定</button>
+        </p>
+    </div>
+</div>
+
+<!--注册表单-s-->
+<script type="text/javascript">
+    // 普通 图形验证码
+    function verify(id){
+        $('#'+id).attr('src','/index.php?m=Mobile&c=User&a=verify&type=user_reg&r='+Math.random());
+    }
+    //提交表单
+    function checkSubmit()
+    {
+        var recommondId = $('input[name="recommend"]').val();
+        var mobile = $('input[name="mobile"]').val();
+//        var email = $('input[name="email"]').val();
+        var real_name = $('input[name="realName"]').val();
+//        var id_card = $('input[name="IDcard"]').val();//身份证
+        var pwd = $('input[name="password"]').val();
+        var pwd2 = $('input[name="password2"]').val();//确认密码
+        var verify_code = $('input[name="verify_code"]').val();
+
+        if(!checkRecommondId(recommondId)){
+            showErrorMsg('*请输入正确的推荐人ID');
+            return;
+        };
+        if(!checkMobile(mobile)){
+            showErrorMsg('*请输入正确的手机号码');
+            return;
+        }
+//        if(!checkEmail(email)){
+//            showErrorMsg('*请输入正确的邮箱格式');
+//            return;
+//        }
+
+        if(!checkName(real_name)){
+            showErrorMsg('*请输入正确的姓名');
+            return;
+        }
+        if(!check_confirm_password(pwd2)){
+            return;
+        }
+
+        if(verify_code.length != 4){
+            showErrorMsg('*验证码错误');
+            return;
+        }
+        $.ajax({
+            type:'POST',
+            url:"/index.php?m=Mobile&c=User&a=reg",
+            dataType:'JSON',
+            data:$('#regFrom').serialize(),
+            success:function(data){
+                if(data.status == 1){
+
+                    var info = data.msg.split('-');
+                    var msg = info[0];
+                    var wh_id =info[1];
+                    $('.IDtip').css("display","block");
+                    $('.IDtip span').html('请牢记您的登录ID: '+wh_id);
+                    $('.zhezhao').css("display","block");
+
+//                    layer.confirm('请牢记您的登录ID: '+wh_id, {
+//                        btn: ['确 定','取消'] //按钮
+//                        ,title:'温馨提示:'
+//                    }, function(){
+//                        window.location.href = "/index.php/Mobile/User/login";
+//                    }, function(index){
+//                        layer.close(index);
+//                    });
+
+//                    location.href='/index.php/Mobile/User/login';
+                }else{
+                    showErrorMsg(data.msg);
+                }
+            }
+        })
+    }
+    function turn_login(){
+        location.href='/index.php/Mobile/User/login';
+    }
+    //验证推荐人ID
+    function checkRecommondId(){
+        var id = $('#recommend').val()
+        var reg = /^18[0-9]{8}$/;
+        if(reg.test(id)){
+//            $('#recommend_notice').css('display','none');
+            return true;
+        }else{
+//            $('#recommend_notice').css('display','block');
+            return false;
+        }
+    }
+    //手机验证
+    function checkMobile() {
+        var tel = $('#mobile').val();
+        var reg = /(^1[3|4|5|7|8][0-9]{9}$)/;
+        if (reg.test(tel)) {
+//            $('#mobile_phone_notice').css('display','none');
+            return true;
+        }else{
+//            $('#mobile_phone_notice').css('display','block');
+            return false;
+        };
+    }
+    //邮箱验证
+    function checkEmail(){
+        var str = $('#email').val();
+        var reg = /^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(reg.test(str)){
+//            $('#email_notice').css('display','none');
+            return true;
+        }else{
+//            $('#email_notice').css('display','block');
+            return false;
+        }
+    }
+    //姓名验证
+    function checkName() {
+        var name = $('#realName').val();
+        var reg = /^([a-zA-Z0-9\u4e00-\u9fa5\·]{2,10})$/;
+        if (reg.test(name)) {
+//            $('#realName_notice').css('display','none');
+            return true;
+        }else{
+//            $('#realName_notice').css('display','block');
+            return false;
+        };
+    }
+    //身份证验证
+    function checkID() {
+        var idcard = $('#IDcard').val();
+        var reg = /(^\d{15}$)|(^\d{17}([0-9]|X)$)/;
+        if (reg.test(idcard)) {
+//            $('#IDcard_notice').css('display','none');
+            return true;
+        }else{
+//            $('#IDcard_notice').css('display','block');
+            return false;
+        };
+    }
+    //验证银行卡号
+    function checkBank() {
+        var bank = $('#bank').val();
+        var reg = /^[\d\s]{19,23}$/;
+        if (reg.test(bank)) {
+            $('#bank_notice').css('display','none');
+            return true;
+        }else{
+            $('#bank_notice').css('display','block');
+            return false;
+        };
+    }
+    //验证支付宝
+    function checkZfb() {
+        var zfb = $('#alipay').val();
+        if (zfb == "") {
+            $('#alipay_notice').css('display','block');
+            return true;
+        }else{
+            $('#alipay_notice').css('display','none');
+            return false;
+        };
+    }
+    //密码
+    function check_password(password) {
+        var password = $.trim(password);
+        if(password == ''){
+            showErrorMsg("*登录密码不能包含空格");
+            flag = false;
+        }else if (password.length < 6) {
+            showErrorMsg('*登录密码不能少于 6 个字符。');
+           flag = false;
+        }
+    }
+
+    //验证确认密码
+    function check_confirm_password(confirm_password) {
+        var password1 = $.trim($('#password').val());
+        var password2 = $.trim(confirm_password);
+        if (password1 == '') {
+            showErrorMsg("*确认密码不能包含空格");
+           return false;
+        }
+        if (password2.length < 6) {
+            showErrorMsg('*登录密码不能少于 6 个字符。');
+            return false;
+        }
+        if (password2 != password1) {
+            showErrorMsg('*两次密码不一致');
+            return false;
+        }else{
+            return true;
+
+        }
+    }
+
+    //显示上传照片
+window.URL = window.URL || window.webkitURL;
+function handleFiles(obj) {
+    fileList = document.getElementById("fileList");
+    var files = obj.files;
+    img = new Image();
+    if(window.URL){
+        img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+        // img.width = 60;
+        // img.height = 60;
+        img.onload = function(e) {
+            window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+        }
+        // if(fileList.firstElementChild){
+        //     fileList.removeChild(fileList.firstElementChild);
+        // }
+        $('#fileList').find('img').remove();
+        fileList.appendChild(img);
+        console.log(img);
+    }else if(window.FileReader){
+        //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+        var reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onload = function(e){
+            img.src = this.result;
+            // img.width = 60;
+            // img.height = 60;
+            $('#fileList').find('img').remove();
+            fileList.appendChild(img);
+        }
+    }else
+    {
+        //ie
+        obj.select();
+        obj.blur();
+        var nfile = document.selection.createRange().text;
+        document.selection.empty();
+        img.src = nfile;
+        // img.width = 60;
+        // img.height = 60;
+        img.onload=function(){
+
+        }
+        $('#fileList').find('img').remove();
+        fileList.appendChild(img);
+    }
+    $('#fileList .upImg').css('display','none');
+    $('#fileList .delImg').css('display','inline-block');
+}
+
+function delImg(){
+    $('#fileList .upImg').css('display','block');
+    $('#fileList .delImg').css('display','none');
+    $('#fileList').find('img').remove();
+}
+
+$(function(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+        $('#logout').hide();
+    }
+});
+
+    // 普通 图形验证码
+//    function verify(){
+//        $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=user_reg&r='+Math.random());
+//    }
+
+</script>
+	</body>
+</html>

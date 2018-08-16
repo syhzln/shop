@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{$Think.lang.ApplyWithdrawals}</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+		<link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+		<script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body class="bg-f5">
+		<include file="user/header"/>
+		<div class="home-index-middle">
+			<div class="w1224">
+				<div class="g-crumbs">
+			       	<a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+			       	<i class="litt-xyb"></i>
+			       	<span>会员提现</span>
+			    </div>
+			    <div class="home-main">
+					<include file="user/menu"/>
+			    	<div class="ri-menu fr">
+						<div class="menumain balanceW p">
+							<div class="personerinfro tixbox">
+								<!--<p>{$Think.lang.MaximumAmount}：<span>{$user.user_money}</span></p>-->
+								<form action="" method="post" id="distribut_form">
+									<ul class="hend_jz">
+										<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>提现类型：</a></li>
+										<li class="infor_img">
+											<select name="with_type" id="with_type" required onchange="checkWithType(this)">
+												<option value="0">请选择提现类型</option>
+												<option value="1">余额提现</option>
+												<option value="2">收益提现</option>
+											</select>
+											<p class="adviceql withType" style="display: none;"> </p>
+										</li>
+
+									</ul>
+									<ul class="hend_jz">
+										<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.WithdrawalMethod}：</a></li>
+										<li class="infor_img">
+												<select name="with_way" id="with_way" onchange="withWay(this)">
+													<!--<option value="0">请选择提现方式</option>-->
+													<option value="1">{$Think.lang.AlipayWithdrawal}</option>
+													<!--<option value="2">{$Think.lang.BankCardWithdrawal}</option>-->
+												</select>
+											<p class="adviceql">温馨提示: 目前只支持支付宝提现</p>
+
+										</li>
+									</ul>
+									<ul class="hend_jz">
+										<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.WithdrawalAmount}：</a></li>
+										<li class="infor_img">
+											<div class="duleyuan">
+												<input type="text" name="money" id="money" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')"/>
+												<span>{$Think.lang.Symbol}</span>
+											</div>
+											<a title="点击查看帮助" class="help" href="/Home/Article/detail/article_id/268.html"><img src="__STATIC__/images/ques.png" alt=""/></a>
+											<!--<span class="keyj">(最低提现额度 ￥100 ) </span>-->
+											<p class="adviceql"> 最低提现额度 ￥100 ,提现将扣除 1%手续费 及 2%店铺管理费</p>
+										</li>
+									</ul>
+									<!--<ul class="hend_jz">-->
+										<!--<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.WithdrawalFee}：</a></li>-->
+										<!--<li class="infor_img">-->
+											<!--<div class="duleyuan">-->
+												<!--<input type="text" name="money" value=""/>-->
+												<!--<span>{$Think.lang.Symbol}</span>-->
+											<!--</div>-->
+											<!--<span class="keyj">({$Think.lang.WithdrawalFee}，0.5%)</span>-->
+										<!--</li>-->
+									<!--</ul>-->
+									<!--目前只有支付宝提现 故注释-->
+									<ul class="name_jz bankName" style="display: none">
+										<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.BankName}：</a></li>
+										<li>
+											<!--<a href="javascript:void(0);">-->
+											<!--<input class="name_zjxs" type="text" name="bank_name" id="bank_name" value="{$user.bank_name}" placeholder="{$Think.lang.SuchAsBank}" /></a>-->
+											<!--<p class="adviceql">{$Think.lang.PleaseFillInTheDetails}</p>-->
+											<select name="bank_name" id="bank_name">
+												<option value="0">请选择开户行</option>
+												<option value="1">中国农业银行</option>
+												<option value="2">中国建设银行</option>
+											</select>
+										</li>
+									</ul>
+									<!--<ul class="name_jz bankBranch">-->
+										<!--<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.BankNameBranch}：</a></li>-->
+										<!--<li>-->
+											<!--<a href="javascript:void(0);">-->
+											<!--<input class="name_zjxs" type="text" name="bank_name" id="bank_name_branch" value="{$user.bank_name}" placeholder="{$Think.lang.PleaseFillOutTheSpecific}" /></a>-->
+										<!--</li>-->
+									<!--</ul>-->
+									<ul class="name_jz">
+										<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.CollectionAccount}：</a></li>
+										<li>
+											<a href="javascript:void(0);"><input class="name_zjxs" type="text" name="account_bank" id="account_bank" value="" /></a>
+											<p class="adviceql">{$Think.lang.BankAccountOrVirtual}</p>
+										</li>
+									</ul>
+									<ul class="name_jz">
+										<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.AccountName}：</a></li>
+										<li>
+											<a href="javascript:void(0);"><input class="name_zjxs wisd" type="text" name="account_name" id="account_name" value="" /></a>
+											<p class="adviceql">支付宝账号实名认证的姓名</p>
+										</li>
+									</ul>
+									<!--<ul class="name_jz">
+                                        <li class="infor_wi_le"><a href="javascript:void(0);">{$Think.lang.Remarks}：</a></li>
+                                        <li>
+                                            <textarea style="height:60px;" name="remark" id="" cols="30" rows="10" autocomplete="off" placeholder="{$Think.lang.RemarkContent}"></textarea>
+                                        </li>
+                                    </ul>-->
+									<ul class="name_jz">
+										<li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.VerificationCode}：</a></li>
+										<li class="name_jz">
+											<a href="javascript:void(0);">
+                                                <input class="name_zjxs wisd" type="text" name="verify_code" id="verify_code" value="" placeholder="{$Think.lang.PleaseEnterVerificationCode}"/>
+                                            </a>
+										</li>
+                                        <li>
+                                            <a href="javascript:void(0);"><img src="{:U('User/verify',array('type'=>'withdrawals'))}" id="verify_code_img" width="120" heigth="38" onclick="verify(this)" style="cursor:pointer;"/></a>
+                                        </li>
+									</ul>
+                                    <ul class="name_jz">
+                                        <li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.PayPassword}：</a></li>
+                                        <li>
+                                            <a href="javascript:void(0);"><input class="name_zjxs wisd" type="password" name="paypwd" id="paypwd" value="" /></a>
+                                            <if condition="empty($user['paypwd'])">
+                                                <p class="haiew">{$Think.lang.NoPaymentPassword}</p>
+                                                <a class="ha-re" style="cursor:pointer" href="{:U('User/set_paypwd')}">{$Think.lang.SetRightAway}</a>
+                                            </if>
+                                        </li>
+                                    </ul>
+									<ul class="hobby_jz">
+										<li class="infor_wi_le"><a href="javascript:void(0);"></a></li>
+										<li class="infor_wi_ri">
+											<div class="save_s">
+												<input class="save" type="button" onclick="checkSubmit()" value="{$Think.lang.ConfirmCashWithdrawal}" />
+												<input class="save closoff" type="reset" onclick="location.href='{:U('User/recharge')}'" value="{$Think.lang.CancelAndReturn}" />
+											</div>
+										</li>
+									</ul>
+								</form>
+							</div>
+						</div>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+		<!--footer-s-->
+		<div class="footer p"><include file="public/footer_index" /> </div>
+		<!--footer-e-->
+		<script type="text/javascript">
+			function withWay(obj){
+				var way = obj.value;
+				if(way == 1){
+					$('.bankName').css('display','none');
+				}else{
+					$('.bankName').css('display','block');
+				}
+			}
+
+			function checkWithType(obj){
+			    var type = obj.value;
+			    var money = '{$user.user_money}';
+                var money1 = '{$user.user_money1}';
+			    if(type == 1){
+					$('.withType').css('display','block').html("最多可提现金额 <span style='color:green'>￥"+money1+"</span>");
+				}else{
+                    $('.withType').css('display','block').html("最多可提现金额 <span style='color:green'>￥"+money+"</span>");
+                }
+			}
+            function verify(){
+                $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=withdrawals&r='+Math.random());
+            }
+
+            //检测手机号格式
+            function checkMobile(tel) {
+                var reg = /(^1[3|4|5|7|8][0-9]{9}$)/;
+                if (reg.test(tel)) {
+                    return true;
+                }else{
+                    return false;
+                };
+            }
+
+            //检测邮箱格式
+            function checkEmail(str){
+                var reg = /^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+                if(reg.test(str)){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+
+			$(function(){
+				$('.paydegs span').click(function(){
+					if($(this).find('label').html()=='{$Think.lang.WeChat}'){
+						if($('#openid').val() == ''){
+							layer.alert('{$Think.lang.BindWeChatAccount}',{icon:2});
+							return false;
+						}else{
+							$('.paydegs span').find('i').removeClass('chek');
+							$('#bank_name').val($('#openid').val());
+							$(this).find('i').addClass('chek');
+						}
+					}else{
+						$('.paydegs span').find('i').removeClass('chek');
+						$('#bank_name').val($(this).find('label').html());
+						$(this).find('i').addClass('chek');
+					}
+				})
+			})
+			// 表单验证提交
+			function checkSubmit(){
+				var money = $.trim($('#money').val());
+				var bank_name = $('#bank_name').val();
+				var bank_name_branch = $.trim($('#bank_name_name').val());
+				var account_bank = $.trim($('#account_bank').val());
+				var account_name = $.trim($('#account_name').val());
+				var verify_code = $.trim($('#verify_code').val());
+				var with_type = $('#with_type').val(); //提现类型
+				var with_way = $('#with_way').val(); //提现方式
+
+				if(with_type == 0)
+				{
+					layer.alert('请选择提现类型',{icon:2});
+					return false;
+				}
+				if(with_way == 0)
+				{
+					layer.alert('请选择提现方式',{icon:2});
+					return false;
+				}
+				if(money == '')
+				{
+					layer.alert('{$Think.lang.AmountCashRequired}',{icon:2});
+					return false;
+				}
+
+//				if(bank_name == 0 && with_way != 1)
+//				{
+//
+//					layer.alert('请选择银行名称',{icon:2});
+//					return false;
+//				}
+
+				if(account_bank == '')
+				{
+					layer.alert('请输入收款账号',{icon:2});
+					return false;
+				}
+
+				if(!checkMobile(account_bank) && !checkEmail(account_bank)){
+                    layer.alert('收款账号格式有误',{icon:2});
+					return false;
+                }
+
+
+				if(account_name == '')
+				{
+					layer.alert('请输入开户人姓名',{icon:2});
+					return false;
+				}
+				if(verify_code == '')
+				{
+					layer.alert('{$Think.lang.VerificationCodeRequired}',{icon:2});
+					return false;
+				}
+
+                $.ajax({
+                    type: "post",
+                    url :"{:U('User/withdrawals')}",
+                    dataType:'json',
+                    data:$('#distribut_form').serialize(),
+                    success: function(data)
+                    {
+                        if(data.status == 1){
+                            layer.alert(data.msg,{icon:1});
+                            window.location.href=data.url;
+                        } else {
+                            layer.alert(data.msg,{icon:2});
+                            verify();
+                        }
+                    }
+                });
+
+			}
+		</script>
+	</body>
+</html>

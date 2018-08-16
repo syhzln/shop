@@ -1,0 +1,134 @@
+<include file="public/header" title="奖金报表" body=""/>
+<include file="public/header_nav" title="奖金报表" href="javascript:history.back(-1)"/>
+<div class="loginsingup-input ma-to-20">
+    <div class="content30 commission">
+        <div class="lsu">
+            <p>{$Think.lang.DayBonus}：<font>{$Think.lang.Symbol} {$bonus.today_bonus}</font></p>
+            <p>{$Think.lang.MonthBonus}：<font>{$Think.lang.Symbol} {$bonus.month_bonus}</font></p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">{$time} {$Think.lang.BonusStatistics} </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>[ {$Think.lang.PersonalShopSales} ]: </td>
+                    <td>{$Think.lang.Symbol} {$bonus_detail.month_sales_commission}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.ShareSalesCommission} ]:</td>
+                    <td>{$Think.lang.Symbol} {$bonus_detail.month_share_commission}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.DailySalesOfGlobal} ]:</td>
+                    <td>{$Think.lang.Symbol} {$bonus_detail['day_platform_commission']}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.MonthlyTeamSalesCommission} ]:</td>
+                    <td>{$Think.lang.Symbol}  {$bonus_detail.month_team_sales}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.SpecialContribution} ]:</td>
+                    <td>{$Think.lang.Symbol} {$bonus_detail.month_special_sales}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.WeekLeaderPrize} ]:</td>
+                    <td>{$Think.lang.Symbol} {$bonus_detail.week_leader_award}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.EliteSalesCommission} ]:</td>
+                    <td>{$Think.lang.Symbol} {$bonus_detail.month_best_member}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.NewcomerAward} ]:</td>
+                    <td>{$Think.lang.Symbol}  {$bonus_detail.new_comer_award}</td>
+                </tr>
+                <tr>
+                    <td>[ {$Think.lang.PerformanceAward} ]:</td>
+                    <td>{$Think.lang.Symbol}  {$bonus_detail.performance_award}</td>
+                </tr>
+
+                <tr>
+                    <td>[ {$Think.lang.TeamSpecialCommission} ]:</td>
+                    <td>{$Think.lang.Symbol}  {$bonus_detail.team_special_award}</td>
+                </tr>
+
+                <if condition="$bonus_detail.replacement_award gt 0">
+                    <tr>
+                        <td>[ {$Think.lang.ReplacementCommission} ]:</td>
+                        <td>{$Think.lang.Symbol}  {$bonus_detail.replacement_award}</td>
+                    </tr>
+
+                </if>
+
+
+                <tr>
+                    <td>[ {$Think.lang.OtherCommission} ]:</td>
+                    <td>{$Think.lang.Symbol}  {$bonus_detail.other_award}</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class="lsu search">
+            <div>{$Think.lang.HistoricalMonth}：</div>
+            <form class="form-inline" method="get" id="search_form">
+                <p>
+                    <select name="year" id="sear_year">
+                        <option value="0">{$Think.lang.PleaseChoose}</option>
+                        <option value="2017" <?php if(I('get.year') == "2017")echo "selected=\"selected\"";?>>2017</option>
+                        <option value="2018" <?php if(I('get.year') == "2018")echo "selected=\"selected\"";?>>2018</option>
+                        <option value="2019" <?php if(I('get.year') == "2019")echo "selected=\"selected\"";?>>2019</option>
+                        <option value="2020" <?php if(I('get.year') == "2020")echo "selected=\"selected\"";?>>2020</option>
+                        <option value="2021" <?php if(I('get.year') == "2021")echo "selected=\"selected\"";?>>2021</option>
+                        <option value="2022" <?php if(I('get.year') == "2022")echo "selected=\"selected\"";?>>2022</option>
+                        <option value="2023" <?php if(I('get.year') == "2023")echo "selected=\"selected\"";?>>2023</option>
+                        <option value="2024" <?php if(I('get.year') == "2024")echo "selected=\"selected\"";?>>2024</option>
+                        <option value="2025" <?php if(I('get.year') == "2025")echo "selected=\"selected\"";?>>2025</option>
+                    </select>
+                </p>
+                年
+                <p>
+                    <select name="month" id="sear_month">
+                        <option value="0">{$Think.lang.PleaseChoose}</option>
+                        <option value="01" <?php if(I('get.month') == "01")echo "selected=\"selected\"";?>>1</option>
+                        <option value="02" <?php if(I('get.month') == "02")echo "selected=\"selected\"";?>>2</option>
+                        <option value="03" <?php if(I('get.month') == "03")echo "selected=\"selected\"";?>>3</option>
+                        <option value="04" <?php if(I('get.month') == "04")echo "selected=\"selected\"";?>>4</option>
+                        <option value="05" <?php if(I('get.month') == "05")echo "selected=\"selected\"";?>>5</option>
+                        <option value="06" <?php if(I('get.month') == "06")echo "selected=\"selected\"";?>>6</option>
+                        <option value="07" <?php if(I('get.month') == "07")echo "selected=\"selected\"";?>>7</option>
+                        <option value="08" <?php if(I('get.month') == "08")echo "selected=\"selected\"";?>>8</option>
+                        <option value="09" <?php if(I('get.month') == "09")echo "selected=\"selected\"";?>>9</option>
+                        <option value="10" <?php if(I('get.month') == "10")echo "selected=\"selected\"";?>>10</option>
+                        <option value="11" <?php if(I('get.month') == "11")echo "selected=\"selected\"";?>>11</option>
+                        <option value="12" <?php if(I('get.month') == "12")echo "selected=\"selected\"";?>>12</option>
+                    </select>
+                </p>
+                月
+                <button class="btn" id="submit_button" type="button"> {$Think.lang.Search}</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    $("#submit_button").click(function(){
+        var year = $('#sear_year option:selected').val();
+        var month = $('#sear_month option:selected').val();
+        if(year == 0) {
+            showErrorMsg("{$Think.lang.SelectYear}");
+            return;
+        }
+
+        if(month == 0) {
+            showErrorMsg("{$Think.lang.SelectMonth}");
+            return;
+        }
+        $("#search_form").submit();
+    })
+</script>
+</body>
+</html>

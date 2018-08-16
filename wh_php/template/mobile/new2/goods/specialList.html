@@ -1,0 +1,89 @@
+<include file="public/header" title="{$Think.lang.ProductList}"/>
+    <!--搜索栏-s-->
+    <div class="classreturn whiback">
+        <div class="content">
+            <div class="ds-in-bl return">
+                <a href="javascript:history.back(-1);"><img src="__STATIC__/images/return.png" alt="返回"></a>
+            </div>
+            <div class="ds-in-bl search">
+                专区商品
+            </div>
+            <div class="ds-in-bl menu">
+                <a href="javascript:void(0);"><img src="__STATIC__/images/class1.png" alt="菜单"></a>
+            </div>
+        </div>
+    </div>
+    <!--搜索栏-e-->
+
+    <!--顶部隐藏菜单-s-->
+    <include file="public/special_top_nav"/>
+    <!--顶部隐藏菜单-e-->
+
+    <!--商品详情s-->
+    <div id="goods_list">
+        <empty name="goods_list">
+            <p class="goods_title" id="goods_title" style="line-height: 100px;text-align: center;margin-top: 30px;">{$Think.lang.SearchTips}！</p>
+        <else />
+            <foreach name="goods_list" item="vo" key="k"  >
+            <div class="orderlistshpop p">
+                <div class="maleri30">
+                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item">
+                        <div class="sc_list se_sclist">
+                            <div class="shopimg fl">
+                                <img src="{$vo.image|goods_images=400,400}">
+                            </div>
+                            <div class="deleshow fr">
+                                <div class="deletes">
+                                    <span class="similar-product-text fl">{$vo.goods_name|getSubstr=0,20}</span>
+                                </div>
+                                <div class="prices">
+                                    <p class="sc_pri fl"><span>{$Think.lang.Symbol}</span><span>{$vo[shop_price]}{$Think.lang.Yuan}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            </foreach>
+        </empty>
+    </div>
+    <!--商品详情e-->
+
+    <!--加载更多S-->
+    <notempty name="goods_list">
+         <div class="loadbefore">
+            <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
+        </div>
+    </notempty>
+    <!--加载更多E-->
+<div class="mask-filter-div" style="display: none;"></div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    var  page = 1;
+
+    function ajax_sourch_submit()
+    {
+        page += 1;
+        $.ajax({
+            type : "POST",
+            url:"{:U('Mobile/Goods/specialList')}",//+tab,
+//			data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
+            data:{is_ajax:1,p:page,flags:1},
+            success: function(data)
+            {
+                if($.trim(data) == ''){
+                    $('.loadbefore').hide();
+                    $('#getmore').hide();
+                }else
+                    $("#goods_list").append(data);
+                    if( $("#goods_list").hasClass('addimgchan')){
+                        $('.orderlistshpop').addClass('addimgchan')
+                    }else{
+                        $('.orderlistshpop').removeClass('addimgchan')
+                    }
+            }
+        });
+    }
+</script>
+	</body>
+</html>

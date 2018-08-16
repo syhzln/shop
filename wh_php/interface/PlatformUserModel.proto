@@ -1,0 +1,221 @@
+/**
+ * Author: fzq
+ * CareatTime: 2017/8/15
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 平台/商家 用户服务接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "Common.proto";
+
+/*平台用户信息*/
+message PlatformUser{
+   string name =1;//用户名
+   int32 uid =2;//用户ID
+   int32 userType =3;//用户类型 (平台运营人员、运营商帐号、运营商主账号等)
+   int32 orgId =4;//默认组织id
+   string phone =6;//手机号
+   string email =7;//邮箱
+   string qq =8;//qq
+   google.protobuf.Timestamp careat_time =9;//帐号创建时间
+   int32 status =10;//状态(锁定/激活使用)
+}
+/*密码信息*/
+message platformPwd{
+    string pwd =2;//登录密码
+    string withdrawPwd =5;//提现密码
+    string token =3;//用户安全登录码
+}
+/*组织表*/
+message organizations{
+    int32 orgId =1;//组织id
+    string orgName =2;//组织名称
+    string orgInfo =3;//组织描述
+    int32 orgLevel =4;//组织层级数
+}
+
+/*部门表*/
+message Departments{
+    int32 depId =1;//部门id
+    int32 orgId =2;//组织id
+    int32 parentDepId =3;//父级部门id
+    string depName =4;//部门名称
+    int32 depLevel =5;//部门层级
+}
+
+/*角色表*/
+message Roles{
+    int32 rolId =1;//角色id
+    int32 orgId =2;//组织id
+    int32 depId =3;//部门id
+    string roleName =4;//角色名称
+    google.protobuf.Timestamp careat_time =5;//角色创建时间
+    int32 upRolId =6;//上级角色id
+
+}
+
+/*权限表*/
+message Privileges{
+    int32 privId =1;//权限id
+    string privName =2;//权限名称
+    string privComment =3;//权限描述
+    int32 isGroup =4;//是否为权限组
+    int32 groupId =5;//所属组id
+}
+
+/*角色-权限绑定关系表*/
+message rolPrivBinds{
+  int32 rolId =1;//角色id
+  int32 depId =2;//部门id
+  int32 privId =3;//权限id或权限组id
+  google.protobuf.Timestamp careat_time =4;//创建时间
+}
+
+/*平台用户-角色绑定关系*/
+message UserRolBind{
+    int32 uid =1;//平台用户id
+    int32 roleId =2;//角色id
+}
+
+/*会员状态变更流水表*/
+message UserStatus{
+    int32 uid =1;//会员id
+    int32 beforeStatus =2;//修改前状态
+    int32 afterStatus =3;//修改后状态
+    string reason =4;//变更原因
+    google.protobuf.Timestamp update_time =5;//变更时间
+
+}
+
+/*短信发送记录表*/
+message SmsSendRecord{
+    int64 sms_id =1;
+    int32 uid =2;//用户id
+    string mobile =3;//手机号
+    string content =4;//内容
+    string sms_type =5;//类型
+    int32 send_status =6;//发送状态
+    string device_number =7;//设备识别号
+    google.protobuf.Timestamp send_time =8;//发送时间
+}
+
+/*鉴权记录表*/
+message grantRecords{
+    string uid =1;//会员id
+    int32 rolId =2;//角色id
+    int32 privId =3;//权限id
+    int32 isPass =4;//是否通过
+    google.protobuf.Timestamp create_time =5;//鉴权时间
+    string ip =6;
+    string associatedId =7;//受操作人id
+    string associatedInfo =8;//操作信息
+}
+//审核商家用
+
+// 商户中心 //
+
+/*店铺申请表*/
+message Provider{
+    int32 apply_id =1;//申请id
+    int32 paltform_id=2;//店铺id
+    int32 org_id =3;//组织id
+    string shop_name =4;//店铺名
+    string prov_name =5;//供应商全名
+    int32 country =6;//国名
+    uint32 location =7;//省市县 编码
+    string location_full =8;//街道详细地址
+    int32 apply_state =9;//申请状态
+    string audit_fail_reason =10;//审核失败原因
+    string business_categories =11;//经营类目
+    string license_id =12;//营业执照关联id
+    int32 is_closed =13;//关闭状态
+    string close_reason =14;//关闭原因
+    google.protobuf.Timestamp apply_time =15;//申请时间
+    google.protobuf.Timestamp open_time =16;//开店时间
+
+}
+
+message ProviderExtra{
+    int32 manager_user_id =1;//管理人id
+    int32 recommender_id =2;//推荐人id
+    int32 template_id =3;//店铺模板
+    int32 service_flags =4;//服务标志
+    int32 credit =5;//商家信用
+    float desc_credit =6;//描述相符度
+    float service_credit=7;//服务满意度
+    string phone =8;//客服电话
+    string fax =9;//传真
+    string email =10;//商务邮箱
+    google.protobuf.Timestamp work_time =11;//工作时间
+    int32 star_count =12;//收藏数量
+
+}
+
+/*商家用户表*/
+message ProviderUser{
+    int32 user_id =1;//用户id(与会员用户、平台用户使用统一序列号)
+    string name =2;//真是姓名
+    string login_username =3;//登录账户名
+    string login_secret =4;//登录密码
+    int32 is_enabled =5;//是否允许使用
+    int32 provider_org_id =6;//所属供应商id
+    int32 role_id =7;//角色id
+    int32 is_manager =8;//是否是管理员
+    int32 nickname =9;//昵称
+    string phone =10;//手机号
+    string email =11;
+    string qq =12;
+    string national_id =13;//身份证号
+    string id_img_front_url =14;//身份证正面照
+    string id_img_back_url =15;//身份证反面照
+    int32 review_state =16;//身份证待审核状态
+    string register_date =17;//注册日期
+    string last_login_date =18;//上一次登录时间
+    int32 is_deleted =19;//是否被删除
+    int32 user_type =20;//账户类型（角色类型）: 0 其他 、1 售前、2 售中、3 售后
+
+}
+
+/*商家用户操作记录表*/
+message ProviderUserLog{
+    int32 user_id =1;//商家用户id
+    google.protobuf.Timestamp operate_time =2;//操作时间
+    int32 is_platform_op =3;//是否是平台直接操作
+    int32 type =4;//操作类型
+    string params =5;//操作参数
+
+}
+
+/*营业执照表*/
+message business_licence{
+    string license_no =1;//营业执照编号
+    string enterprise_name =2;//企业名称
+    int32 company_type =3;//企业类型
+    string tax_no =4;//税号
+    string org_no =5;//组织结构代码证号
+    string scope =6;//经营范围
+    string eastablish_date =7;//注册时间
+    string legal_presentative =8;//法定代表人名称
+    string residence =9;//注册地址
+    string license_img_url =10;//营业执照照片
+    string tax_img_url =11;//税务登记证照片
+    string org_img_url =12;//机构代码证照片
+    string present_front_img_url =13;//法人身份证正面照
+    string present_back_img_ur =14;//反面照
+
+}
+
+/*合同表*/
+message Contract{
+   string contract_no =1;//合同号
+   int32 platform_id =2;//平台id
+   int32 provider_id =3;//供应商id
+   string enterprise_name =4;//供应商名称(营业执照名称)
+   string license_no =5;//营业执照号
+   string issue_date =6;//签署日期
+   string active_date =7;//生效日期
+   int32 period_months =9;//期约(以月计)
+   string front_img_url =10;//前页扫描件
+   string last_img_url =11;//后页扫描件
+}

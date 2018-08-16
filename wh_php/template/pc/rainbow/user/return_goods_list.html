@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{$Think.lang.ReturnRecords}</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+		<link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+	</head>
+	<body class="bg-f5">
+	<include file="user/header"/>
+	<div class="home-index-middle">
+		<div class="w1224">
+			<div class="g-crumbs">
+				<a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+				<i class="litt-xyb"></i>
+				<span>{$Think.lang.ReturnRecords}</span>
+			</div>
+			<div class="home-main">
+				<include file="user/menu"/>
+				<div class="ri-menu fr">
+					<div class="menumain p">
+						<div class="goodpiece">
+							<h1>{$Think.lang.ReturnRecords}</h1>
+							<!--<a href=""><span class="co_blue">帮助</span></a>-->
+						</div>
+						<div class="orderbook-list returnmagament">
+							<div class="time-sala timsearch p">
+								<ul>
+									<li class="red"><a href="javascript:void(0);">{$Think.lang.AllRecords}</a></li>
+									<!--<li class="mal-l"><a href="javascript:void(0);">申请退货</a></li>-->
+								</ul>
+                                <form action="" method="POST" id="searchfrom">
+                                    <div class="search-ss-lit" class="sea_ol">
+                                        <input type="text" value="" name="search_key" placeholder="{$Think.lang.OrderNumber}">
+                                        <i class="litt-sexx" onclick=" $('#searchfrom').submit()"></i>
+                                    </div>
+                                </form>
+							</div>
+							<div class="he"></div>
+							<div class="returngoods">
+								<div class="book-tit">
+									<ul>
+										<li class="sx2">{$Think.lang.ReturnNumber}</include></li>
+										<!--<li class="sx3">{$Think.lang.OrderNumber}</li>-->
+										<li class="sx3">原订单号</li>
+										<li class="sx3">类型</li>
+										<li class="sx1">{$Think.lang.ProductInformation}</li>
+										<li class="sx4 s5clic">{$Think.lang.ApplicationTime}<!--<i class="jt-x"></i>--></li>
+										<li class="sx5">{$Think.lang.Reason}</li>
+										<li class="sx6 s5clic">{$Think.lang.Status}<!--<i class="jt-x"></i>--></li>
+										<li class="sx7">{$Think.lang.Operating}</li>
+									</ul>
+								</div>
+								<!--<div class="hid-derei sq_der">
+									<ul>
+										<li><a href="{:U('Home/User/return_goods_list',array_merge(I('get.'),array('start_time'=>date('Y-m-d',strtotime('-3 month')),'end_time'=>date('Y-m-d'))))}">最近三个月</a></li>
+										<li><a href="{:U('Home/User/return_goods_list',array_merge(I('get.'),array('end_time'=>date('Y-m-d',strtotime('-3 month')))))}">三个月前</a></li>
+									</ul>
+								</div>-->
+								<!-- <div class="hid-derei">
+									<ul>
+										<li><a href="{:U('Home/User/return_goods_list',array('status'=>0))}">申请中</a></li>
+										<li><a href="{:U('Home/User/return_goods_list',array('status'=>1))}">处理中</a></li>
+										<li><a href="{:U('Home/User/return_goods_list',array('status'=>2))}">已完成</a></li>
+									</ul>
+								</div> -->
+                            <if condition="!empty($list)">
+								<div class="book-tit book_content p">
+									<volist name="list" id="v">
+                                        <ul>
+                                            <li class="sx2">{$v.order_id}</li>
+                                            <!--<li class="sx3">{$v.order_sn}</li>-->
+											<li class="sx3"><a class="co_blue" href="{:U('Home/User/order_detail',array('id'=>$v[father_id]))}">{$v.father_sn}</a></li>
+											<li class="sx5">
+												<if condition="$v['type'] eq 2">退货</if>
+												<if condition="$v['type'] eq 3">换货</if>
+											</li>
+                                            <li class="sx1">
+                                                <p class="shop_name"><a
+                                                        href="{:U('Home/Goods/goodsInfo',array('id'=>$v[item_id]))}">{$v.goods_name}</a>
+                                                </p>
+                                            </li>
+                                            <li class="sx4">{$v.add_time|date="Y-m-d",###}</li>
+                                            <li class="sx5">
+												<if condition="$v['reason'] eq 1">{$Think.lang.NoReasonForSevenDays}</if>
+												<if condition="$v['reason'] eq 2">{$Think.lang.QualityIssues}</if>
+											</li>
+											<li class="sx6">
+												<if condition="$v['status'] eq 1">{$Think.lang.Application}</if>
+												<if condition="$v['status'] eq 2">{$Think.lang.Confirmed}</if>
+												<if condition="$v['status'] eq 3">{$Think.lang.AuditFailure}</if>
+												<if condition="$v['status'] eq 4">{$Think.lang.ReturnCompleted}</if>
+											</li>
+                                            <li class="sx7"><a class="co_blue" href="{:U('Home/User/return_goods_info',array('id'=>$v[order_id]))}">{$Think.lang.View}</a></li>
+                                        </ul>
+									</volist>
+								</div>
+                            <else/>
+                                <div class="car-none-pl">
+                                    <i class="account-acco1"></i>{$Think.lang.OrderPrompts}，<a href="/">{$Think.lang.GoShopping}~</a>
+                                </div>
+                            </if>
+								<div class="operating fixed">
+									<div class="fn_page clearfix" style="margin-top:10px">
+										{$page}
+									</div>
+								</div>
+							</div>
+							<!--<div class="returngoods" style="display: none;">
+								<div class="book-tit">
+									<ul class="wipj">
+										<li>订单号</li>
+										<li>商品信息</li>
+										<li>操作</li>
+									</ul>
+								</div>
+								<div class="book-tit book_content p">
+									<volist name="list" id="v">
+										<ul class="wipj">
+											<li>{$v.order_sn}</li>
+											<li>
+												<p class="shop_name"><a href="">{$goodsList[$v[item_id]]|getSubstr=0,25}</a></p>
+											</li>
+											<li>
+												<a class="co_blue" href="{:U('Home/User/return_goods_info',array('id'=>$v[id]))}">查看 </a>
+												&lt;!&ndash;<a class="co_blue" href="">取消</a>&ndash;&gt;
+											</li>
+										</ul>
+									</volist>
+								</div>
+								<div class="operating fixed">
+									<div class="fn_page clearfix" style="margin-top:10px">
+										{$page}
+									</div>
+								</div>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--footer-s-->
+	<div class="footer p"><include file="public/footer_index" /> </div>
+	<!--footer-e-->
+	<script type="text/javascript">
+		$(function () {
+			//退货记录和申请退货切换
+			$('.time-sala ul li').click(function () {
+				var twi = $('.time-sala ul li').index(this);
+				$('.returngoods').eq(twi).show().siblings('.returngoods').hide();
+				$(this).addClass('red').siblings().removeClass('red');
+			})
+            //申请时间和状态切换
+//			$('.s5clic').click(function () {
+//				var ge = $('.s5clic').index(this);
+//				$('.hid-derei').eq(ge).slideToggle(400).siblings('.hid-derei').hide();
+//				$(this).animate({opacity: "1"}, 200, function () {
+//					$(this).toggleClass('sxbb').siblings('.s5clic').removeClass('sxbb');
+//				})
+//			})
+		})
+	</script>
+	</body>
+</html>

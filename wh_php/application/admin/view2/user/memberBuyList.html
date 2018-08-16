@@ -1,0 +1,160 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page flexigrid">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>买呗列表</h3>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+    <ul>
+      <li> 同一个身份证号只能申请一次,多个账号对应一个身份证号或者会员真实姓名与身份证上的姓名不一致 请勿审批通过.</li>
+      <li> 审批额度建议: LZ6-3000 LZ5-2000 LZ4-1000. 买呗申请涉及资金安全,请谨慎处理.</li>
+    </ul>
+  </div>
+  <div class="flexigrid">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>买呗列表</h3>
+        <h5>(共{$total_num}条记录)</h5>
+      </div>
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>	   
+	  <form class="navbar-form form-inline" action="{:U('User/memberBuyList')}" method="post">
+      <div class="sDiv">
+        <div class="sDiv2">
+          <select name="apply_status" class="select" style="width:100px;margin-right:5px;margin-left:5px">
+            <option value="0">--请选择--</option>
+            <option value="1" <?php if(I('apply_status') == '1')echo "selected=\"selected\"";?>>新申请</option>
+            <option value="2" <?php if(I('apply_status') == '2')echo "selected=\"selected\"";?>>已通过</option>
+            <option value="3" <?php if(I('apply_status') == '3')echo "selected=\"selected\"";?>>已拒绝</option>
+          </select>
+        </div>
+        <div class="sDiv2">
+         <input type="text" name="wh_id" class="qsbox" placeholder="请输入量子ID" value="<?php echo I('post.wh_id') ? I('post.wh_id') : '' ;?>">
+
+        </div>
+        <div class="sDiv2">
+          <input type="text" name="real_name" class="qsbox" placeholder="请输入会员姓名" value="<?php echo I('post.real_name') ? I('post.real_name') : '' ;?>">
+        </div>
+
+        <input type="submit" class="btn" value="搜索">
+      </div>
+     </form>
+    </div>
+
+    </div>
+
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+        <table>
+          <thead>
+            <tr>
+              <th class="sign" axis="col0"><i class="ico-check"></i></th>
+              <th align="left" abbr="article_title" axis="col3" class="">编 号</th>
+              <th align="left" abbr="article_title" axis="col3" class="">会员ID</th>
+              <th align="left" abbr="ac_id" axis="col4" class="">量子ID</th>
+              <th align="center" abbr="article_show" axis="col5" class="">会员姓名</th>
+              <th align="center" abbr="article_time" axis="col6" class="">手机号</th>
+              <th align="center" abbr="article_time" axis="col6" class="">申请状态</th>
+              <th align="center" abbr="article_time" axis="col6" class="">申请时间</th>
+              <th align="center" abbr="article_time" axis="col6" class="">备 注</th>
+              <th align="center" axis="col1" class="handle">操作</th>
+              <th axis="col7"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <empty name="list">
+              <tr>
+                <td class="no-data" align="center" axis="col0" colspan="50">
+                  <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                </td>
+              </tr>
+              <else/>
+              <foreach name="list" item="vo" key="k">
+                <tr>
+                  <td class="sign"><i class="ico-check"></i></td>
+                  <td align="left" class="">{$vo[apply_id]}</td>
+                  <td align="left" class="">{$vo[user_id]}</td>
+                  <td align="left" class="">{$vo[wh_id]}</td>
+                  <td align="left" class="">{$vo[real_name]}</td>
+                  <td align="left" class="">{$vo[phone]}</td>
+                  <td align="left" class="">
+                    <if condition="$vo[status] eq 1">
+                      新申请
+                     <elseif condition="$vo[status] eq 2" />
+                       已通过
+                     <elseif condition="$vo[status] eq 3" />
+                       拒绝申请
+                    </if>
+
+                  </td>
+                  <td align="left" class="">{$vo[add_time]}</td>
+                  <td align="left" class="">{$vo[mark]}</td>
+                  <td align="center" class="handle">
+                    <a href="{:U('User/memberBuyDetail',array('apply_id'=>$vo['apply_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                      <a class="btn red" onClick="delfunc(this)" data-url="{:U('User/delMemberBuy')}" data-id="{$vo.apply_id}"><i class="fa fa-trash-o"></i>删除</a>
+                    <a class="btn green" href="{:U('User/member_repayment_log',array('user_id'=>$vo['user_id']))}"><i class="fa fa-list-alt"></i>查看还款记录</a>
+                  </td>
+                  <td align="" class=""></td>
+                </tr>
+              </foreach>
+            </empty>
+          </tbody>
+        </table>
+	 <!--分页位置-->
+     {$page}
+     </div>        
+      </div>       
+    </div>    
+</div>
+<script>	
+    $(document).ready(function(){	
+	    // 表格行点击选中切换
+	    $('#flexigrid > table>tbody >tr').click(function(){
+		    $(this).toggleClass('trSelected');
+		});
+		
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+		
+	});
+    function delfunc(obj){
+      layer.confirm('确认删除？', {
+                btn: ['确定','取消'] //按钮
+              }, function(){
+                // 确定
+                $.ajax({
+                  type : 'post',
+                  url : $(obj).attr('data-url'),
+                  data : {del_id:$(obj).attr('data-id')},
+                  dataType : 'json',
+                  success : function(data){
+                    layer.closeAll();
+                    if(data.status == 1){
+                      layer.msg(data.msg, {icon: 1});
+                      $(obj).parent().parent().remove();
+                    }else{
+                      layer.msg(data.msg, {icon: 2,time: 2000});
+                    }
+//   						layer.closeAll();
+                  }
+                })
+              }, function(index){
+                layer.close(index);
+              }
+      );
+    }
+</script>
+</body>
+</html>

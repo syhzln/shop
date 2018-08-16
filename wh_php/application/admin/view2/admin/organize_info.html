@@ -1,0 +1,92 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>组织管理 - 编辑组织</h3>
+                <h5>平台系统组织管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="organizeHandle" action="{:U('Admin/organizeHandle')}" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="org_id" value="{$info.org_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="org_name"><em>*</em>组织名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="org_name" value="{$info.org_name}" id="org_name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">组织名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="org_desc"><em>*</em>组织描述</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="org_desc" value="{$info.org_desc}" id="org_desc" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">组织描述</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="org_type"><em>*</em>组织类型</label>
+                </dt>
+                <dd class="opt">
+                    <select name="org_type" id="org_type">
+                        <option value="0" >---请选择---</option>
+                        <option value="1" <if condition="$info[org_type] eq 1"> selected="selected"</if>>量子时空平台</option>
+                        <option value="2" <if condition="$info[org_type] eq 2"> selected="selected"</if>>供应商</option>
+                        <option value="3" <if condition="$info[org_type] eq 3"> selected="selected"</if>>虚拟组织</option>
+                        <option value="4" <if condition="$info[org_type] eq 4"> selected="selected"</if>>合作组</option>
+                    </select>
+                    <span class="err"></span>
+                    <p class="notic">组织类型</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="org_level"><em>*</em>组织层级</label>
+                </dt>
+                <dd class="opt">
+                    <select name="org_level" id="org_level">
+                        <option value="0">---请选择---</option>
+                        <option value="1" <if condition="$info[org_level] eq 1"> selected="selected"</if>>1 级</option>
+                        <option value="2" <if condition="$info[org_level] eq 2"> selected="selected"</if>>2 级</option>
+                        <option value="3" <if condition="$info[org_level] eq 3"> selected="selected"</if>>3 级</option>
+                    </select>
+                    <span class="err"></span>
+                    <p class="notic">组织层级 1级为最高级2级次之</p>
+                </dd>
+            </dl>
+
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function adsubmit(){
+        if($('input[name=org_name]').val() == ''){
+            layer.msg('组织名称不能为空！', {icon: 2,time: 1000});   //alert('少年，用户名不能为空！');
+            return false;
+        }
+        if($('input[name=org_desc]').val() == ''){
+            layer.msg('组织描述不能为空！', {icon: 2,time: 1000});//alert('少年，邮箱不能为空！');
+            return false;
+        }
+        if($('input[name=org_contacts]').val() == ''){
+            layer.msg('组织联系人不能为空！', {icon: 2,time: 1000});//alert('少年，邮箱不能为空！');
+            return false;
+        }
+        $('#organizeHandle').submit();
+    }
+</script>
+</body>

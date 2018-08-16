@@ -1,0 +1,194 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>管理员 - 编辑管理员</h3>
+                <h5>网站系统管理员资料</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="adminHandle" action="{:U('Admin/adminHandle')}" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="admin_id" value="{$info.admin_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>账户名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="user_name" value="{$info.name}" id="name" class="input-txt" <if condition="$act == 'edit'"> readonly</if>>
+                    <p class="notic">用户名</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>登陆密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="password" name="password" value="{$info.password}"  class="input-txt">
+                    <p class="notic">登陆密码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="email"><em>*</em>Email地址</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="email" value="{$info.email}" id="email" class="input-txt">
+                    <p class="notic">邮箱地址</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="real_name"><em>*</em>真实姓名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="real_name" value="{$info.real_name}" id="real_name" class="input-txt">
+                    <!--<p class="notic">真实姓名</p>-->
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="age">年龄</label>
+                </dt>
+                <dd class="opt">
+                    <input type="number" name="age" value="{$info.age}" id="age" class="input-txt">
+                    <!--<p class="notic">年 龄</p>-->
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>性别</label>
+                </dt>
+                <dd class="opt">
+                    <input value="0" name="sex" id="member_sex0" type="radio" <if condition="$info['sex'] eq 0">checked</if>>
+                    <label for="member_sex0">保密</label>
+                    <input value="1" name="sex" id="member_sex1" type="radio" <if condition="$info['sex'] eq 1">checked</if>>
+                    <label for="member_sex1">男</label>
+                    <input value="2" name="sex" id="member_sex2" type="radio" <if condition="$info['sex'] eq 2">checked</if>>
+                    <label for="member_sex2">女</label>
+                    <span class="err"></span> </dd>
+            </dl>
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="address">地址</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="address" value="{$info.address}" id="address" class="input-txt">
+                    <p class="notic">住 址</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="phone"><em>*</em>手机号</label>
+                </dt>
+                <dd class="opt">
+                    <input type="number" name="phone" value="{$info.phone}" id="phone" class="input-txt">
+                    <!--<p class="notic">手机号</p>-->
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="qq"><em>*</em>QQ</label>
+                </dt>
+                <dd class="opt">
+                    <input type="number" name="qq" value="{$info.qq}" id="qq" class="input-txt">
+                    <!--<p class="notic">qq号</p>-->
+                </dd>
+            </dl>
+            <if condition=" ($act eq 'add') OR ($info['admin_id'] gt 1)">
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>所属角色</label>
+                    </dt>
+                    <dd class="opt">
+                        <select name="role_id">
+                            <volist name="role" id="rol">
+                                <option value="{$rol.rol_id}" <if condition="$rol[rol_id] eq $info[role_id]"> selected="selected"</if> >{$rol.rol_name}</option>
+                            </volist>
+                        </select>
+                        <span class="err"></span>
+                        <p class="notic">所属角色</p>
+                    </dd>
+                </dl>
+            </if>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>所属部门</label>
+                </dt>
+                <dd class="opt">
+                    <select name="dep_id">
+                        <!--<option value="1">技术部</option>-->
+                        <volist name="depart" id="dep">
+                            <option value="{$dep.dep_id}" <if condition="$dep[dep_id] eq $info[dep_id]"> selected="selected"</if> >{$dep.dep_name}</option>
+                        </volist>
+                    </select>
+                    <span class="err"></span>
+                    <!--<p class="notic">所属部门</p>-->
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>是否启用</label>
+                </dt>
+                <dd class="opt">
+
+                    <div class="onoff">
+                        <label for="is_lock1" class="cb-enable <if condition="$info['status'] eq 1">selected</if>"><span>启用</span></label>
+                        <label for="is_lock2" class="cb-disable <if condition="$info['status'] eq 0">selected</if>"><span>禁用</span></label>
+                        <input id="is_lock1" name="status" value="1" type="radio" <if condition="$info['status'] eq 1">checked</if>>
+                        <input id="is_lock2" name="status" value="0" type="radio" <if condition="$info['status'] eq 0">checked</if>>
+                    </div>
+                    <!--<div>-->
+                    <!--<input name="status" value="1" type="radio" <?php echo $info['status'] == 1 ? 'checked' : '' ; ?>>启用-->
+                    <!--<input name="status" value="0" type="radio" <?php echo $info['status'] == 0 ? 'checked' : '' ; ?>>禁用-->
+                    <!--</div>-->
+                    <p class="notic">如果选择 禁用，该账户将不能登录</p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+    // 判断输入框是否为空
+    function adsubmit(){
+        if($('input[name=user_name]').val() == ''){
+            layer.msg('用户名不能为空！', {icon: 2,time: 1000});   //alert('少年，用户名不能为空！');
+            return false;
+        }
+        if($('input[name=email]').val() == ''){
+            layer.msg('邮箱不能为空！', {icon: 2,time: 1000});//alert('少年，邮箱不能为空！');
+            return false;
+        }
+//        if($('input[name=password]').val() == ''){
+//            layer.msg('密码不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+//            return false;
+//        }
+        if($('input[name=realname]').val() == ''){
+            layer.msg('真实姓名不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+            return false;
+        }
+        if($('input[name=phone]').val() == ''){
+            layer.msg('手机号不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+            return false;
+        }
+        if($('input[name=qq]').val() == ''){
+            layer.msg('QQ号不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+            return false;
+        }
+        $('#adminHandle').submit();
+    }
+
+</script>
+</body>
+</html>

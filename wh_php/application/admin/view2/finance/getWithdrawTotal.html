@@ -1,0 +1,493 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>会员提现转账记录</h3>
+                <h5>网站系统会员提现申请记录索引与管理</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>会员提现转账记录报表</h3>
+                <h5>(共{$list|count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form" method="post" action="{:U('getWithdrawTotal')}" >
+
+                <div class="sDiv2">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time" name="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+                        <input type="button" class="btn" value="时间点">
+                    </div>
+
+                </div>
+                <div class="sDiv2" style="margin-right: 10px;">
+                    <input type="text" size="30" id="end_time" name="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+                    <input type="button" class="btn" value="截止时间">
+                </div>
+                <div class="sDiv2">
+                    <div class="sDiv2">
+
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tDiv">
+            <table>
+                <tr>
+                    <td><div id="statistics5" style="width:950px;height:450px;"></div></td>
+                    <td style="width:500px;height:500px;margin-left: 20px"><div id="statistics6" style="width:600px;height:400px;"></div></td>
+                </tr>
+            </table>
+
+            <div style="clear:both"></div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0"><i class="ico-check" onclick="selectAll()"></i></th>
+                        <th align="center" abbr="article_title" axis="col3" class="">已转提现总金额</th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">已转提现总笔数</th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">转账失败总金额</th>
+                        <th align="center" abbr="article_show" axis="col5" class="">转账失败总笔数</th>
+                        <th align="center" abbr="article_time" axis="col6" class="">当日已转提现总金额</th>
+                        <th align="center" abbr="article_time" axis="col6" class="">当日已转提现总笔数</th>
+                        <th align="center" abbr="article_time" axis="col6" class="">转账失败金额</th>
+                        <th align="center" abbr="article_time" axis="col6" class="">转账失败笔数</th>
+                        <th align="center" abbr="article_time" axis="col6" class="">当日申请中提现笔数</th>
+                        <th align="center" abbr="article_time" axis="col6" class="">总提现记录申请中笔数</th>
+
+                        <th align="center" abbr="article_time" axis="col6" class="">总提现记录申请中金额</th>
+
+                        <th axis="col7"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr data-withdraw_id="{$vo.withdraw_id}" class="withdraw">
+                        <td class="sign"><i class="ico-check"></i></td>
+                        <td align="center" class="">{$data.total_amount}</td>
+                        <td class="memberID" align="center" data-href="{$vo.user_id}">{$data.total_sum}</td>
+                        <td class="memberID" align="center"  data-href="{$vo.user_id}">{$data.total_fail}</td>
+                        <td align="center" class="">{$data.fail_sum}</td>
+                        <td align="center" class="">
+                            {$data.today_total}
+                        </td>
+                        <td align="center" class="">{$data.today_sum}</td>
+                        <td align="center" class="">{$data.today_fail}</td>
+                        <td align="center" class="">{$data.today_fail_sum}</td>
+                        <td align="center" class="">{$data.today_shenqing}</td>
+
+                        <td align="center" class="">{$data.shenqing}</td>
+                        <td align="center" class="">{$data.shenqing_amount}</td>
+                        <td align="" class=""></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+    <form action="{:U('pay_out')}" method="post" id="pay_out">
+        <input type="hidden" name="withdrawids" value="">
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function () {
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function () {
+            location.href = location.href;
+        });
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+
+
+        $('.ico-check ', '.hDivBox').click(function () {
+            $('tr', '.hDivBox').toggleClass('trSelected', function (index, currentclass) {
+                var hasClass = $(this).hasClass('trSelected');
+                $('tr', '#flexigrid').each(function () {
+                    if (hasClass) {
+                        $(this).addClass('trSelected');
+                    } else {
+                        $(this).removeClass('trSelected');
+                    }
+                });
+            });
+        });
+
+
+
+    })
+</script>
+<script src="__PUBLIC__/js/echart/echarts.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/echart/macarons.js"></script>
+<script>
+    var res = {$result};
+    echarts.init(document.getElementById('statistics5')).setOption(
+        {
+            backgroundColor: '#FFFFFF',
+            title: {
+                text: '资金转账情况',
+                textStyle: {
+                    fontSize: 14
+                }
+            },
+
+            tooltip: { // 提示框组件
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: ['收益提现', '余额提现', '转出金额','失败金额', '未处理金额','总数量','成功笔数','失败笔数'],
+                top: '18'
+            },
+            grid: {
+                left: '3%',
+                right: '5%',
+                bottom: '3%',
+                containLabel: true,
+                show: false // 网格边框是否显示，上和右边框
+            },
+            toolbox: {
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: false
+                    }, // 数据试图是否在控件中显示
+                    //magicType: {show: true, type: ['stack', 'tiled']},
+                    //restore: {show: true},
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: true, // 坐标轴两边留白
+                splitLine: { // 网格线 x轴对应的是否显示
+                    show: false
+                },
+                data: res.time
+            },
+
+            yAxis: [ // 双y坐标轴
+                {
+                    name: '金额(10k)',
+                    type: 'value',
+                    splitLine: { // 网格线 y轴对应的是否显示
+                        show: false
+                    },
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                },
+                {
+                    name: '单数',
+                    //nameLocation: 'start',
+                    splitLine: { // 网格线 y轴对应的是否显示
+                        show: false
+                    },
+                    min: 0,
+                    // max: 300, // growing rate upper limit
+                    type: 'value',
+                    //top:10,
+                    inverse: false,
+                    axisLine: {
+                        formatter: '{value}',
+                        lineStyle: {
+                            color: '#2f4554'
+                        }
+                    }
+                }
+            ],
+
+            series: [{
+                name: '收益提现',
+                type: 'bar',
+                color: '#00BFFF',
+                stack: '总量',
+                markPoint: {
+                    data: [{
+                        type: 'max',
+                        name: '最大值'
+                    },
+                        {
+                            type: 'min',
+                            name: '最小值'
+                        }
+                    ]
+                },
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均值'
+                    }]
+                },
+                data: res.income_withdrawals
+            },
+                {
+                    name: '余额提现',
+                    type: 'bar',
+                    color: '#DC143C',
+                    stack: '总量',
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: '最大值'
+                        },
+                            {
+                                type: 'min',
+                                name: '最小值'
+                            }
+                        ]
+                    },
+                    markLine: {
+                        data: [{
+                            type: 'average',
+                            name: '平均值'
+                        }]
+                    },
+                    data: res.balance_withdrawals
+                },
+                {name: '转出金额',
+                    type: 'bar',
+                    color: '#00BFFF',
+                    stack: 'out',
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: '最大值'
+                        },
+                            {
+                                type: 'min',
+                                name: '最小值'
+                            }
+                        ]
+                    },
+                    markLine: {
+                        data: [{
+                            type: 'average',
+                            name: '平均值'
+                        }]
+                    },
+                    data: res.transfer_amount
+                },
+                {
+                    name: '失败金额',
+                    stack: 'out',
+                    type: 'bar',
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: '最大值'
+                        },
+                            {
+                                type: 'min',
+                                name: '最小值'
+                            }
+                        ]
+                    },
+                    markLine: {
+                        data: [{
+                            type: 'average',
+                            name: '平均值'
+                        }]
+                    },
+                    data: res.failure_amount
+                },
+                {
+                    name: '未处理金额',
+                    stack: 'out',
+                    type: 'bar',
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: '最大值'
+                        },
+                            {
+                                type: 'min',
+                                name: '最小值'
+                            }
+                        ]
+                    },
+                    markLine: {
+                        data: [{
+                            type: 'average',
+                            name: '平均值'
+                        }]
+                    },
+                    data: res.unprocessed_amount
+                },
+                {
+                    name: '总数量',
+                    type: 'line',
+
+                    data: res.sum
+                },
+                {
+                    name: '成功笔数',
+                    type: 'line',
+                    yAxisIndex: 1, // yAxisIndex 1 表示第二个y轴，默认为0
+                    color: '#ff260f',
+                    //stack: '总量',
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: '最大值'
+                        },
+                            //{type : 'min', name : '最小值'}
+                        ]
+                    },
+                    data: res.success_sum
+
+                },
+                {
+                    name: '失败笔数',
+                    type: 'line',
+                    yAxisIndex: 1, // yAxisIndex 1 表示第二个y轴，默认为0
+                    color: '#3bff28',
+                    //stack: '总量',
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: '最大值'
+                        },
+                            //{type : 'min', name : '最小值'}
+                        ]
+                    },
+                    data: res.fail_sum
+
+                }
+            ]
+        }
+    );
+
+
+    ////66666
+    var option1 = {
+
+        backgroundColor: '#FFFFFF',
+        title: {
+            text: '整体资金状况',
+            subtext: '',
+            left: 'center',
+            subtextStyle: {
+                fontSize: 16
+            }
+        },
+        toolbox: {
+            feature: {
+                dataView: {
+                    show: true,
+                    readOnly: true
+                }, // 数据试图是否在控件中显示
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series: [{
+            name: '资金整体',
+            type: 'pie',
+            avoidLabelOverlap: false,
+            radius: '50%',
+            center: ['50%', '60%'],
+            selectedMode: 'single',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '13',
+                    },
+                    formatter: '{b} : {d}%',
+                    position: 'outer'
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: true
+                }
+            },
+            data: [
+                {
+                    name: '分红入账资金',
+                    value: {$info1['in_profit']},
+                },
+                {
+                    name: '退货入账资金',
+                    value: {$info1['in_order_return']},
+                },
+                {
+                    name: '经李总确认入账资金',
+                    value: 1000000,
+                },
+                {
+                    name: '维护入账(世纪发放记录缺失)',
+                    value: 596247.58,
+                },
+                {
+                    name: '会员消费',
+                    value: {$info1['out_pay_order']}
+                },
+                {
+                    name: '会员提现',
+                    value: {$info1['out_withdraw']}
+                },
+                {
+                    name: '账户资金余量',
+                    value: {$info1['profit_surplus']}
+                },
+                {
+                    name: '钱包金额',
+                    value: {$info1['wallet']}
+                }
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    }
+
+    echarts.init(document.getElementById('statistics6')).setOption(option1);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<include file="public/header" title="设置支付密码" body=""/>
+<include file="public/header_nav" title="设置支付密码"  href="{:U('Mobile/User/userinfo')}"/>
+<style>
+</style>
+<if condition="$step eq 1">
+        <div class="reset-pwd">
+            <form method="post" >
+                <div class="reset-pwd-title">验证登录密码</div>
+                <div class="lsu">
+                    <span class="ico ico-telephone"></span>
+                    <input type="password" name="tpcode" id="login_pwd" value="" placeholder="请输入您的登录密码"/>
+                </div>
+
+                <div class="lsu-submit">
+                    <input type="button" onclick="nextstep()" value="下一步" />
+                </div>
+            </form>
+        </div>
+    </if>
+<if condition="$step eq 2">
+    <div class="reset-pwd">
+        <form  method="post"  id="payform">
+           <!-- <if condition="!empty($user.paypwd)">
+            <div class="reset-pwd-title">修改支付密码</div>
+            <div class="lsu">
+                <span class="ico ico-old-password"></span>
+                <input type="password" name="old_password" id="old_password"  placeholder="请输入原密码"/>
+            </div>
+            </if>-->
+            <div class="lsu">
+                <span class="ico ico-password"></span>
+                <input type="password" name="new_password" id="new_password"  placeholder="请输入新密码"/>
+            </div>
+            <div class="lsu">
+                <span class="ico ico-password"></span>
+                <input type="password" name="confirm_password" id="confirm_password"  placeholder="再次输入新密码" />
+            </div>
+            <div class="lsu-submit">
+                <input type="button" onclick="submitverify()" value="确认修改" />
+            </div>
+        </form>
+    </div>
+</if>
+<script>
+
+    //第一步验证
+    function nextstep(){
+        var tpcode = $('#login_pwd').val();
+        console.log(tpcode);
+        if(tpcode == ''){
+            showErrorMsg('登录密码不能为空');
+            return false;
+        }
+//        if(tpcode.length != 4){
+//            showErrorMsg('验证码错误');
+//            return false;
+//        }
+        $.ajax({
+            url:'/index.php?m=Mobile&c=User&a=verifyed_login_secret',
+            type:'post',
+            dataType:'json',
+            data:{code:tpcode},
+            success:function(data){
+                if(data.status==1){
+                    is_check = true;
+                    window.location.href='/index.php?m=Mobile&c=User&a=set_paypwd&step=2';
+                }else{
+                    showErrorMsg(data.msg);
+                    return false;
+                }
+            }
+        })
+    }
+
+    //提交前验证表单
+    function submitverify(){
+        var new_password = $('#new_password').val();
+        var confirm_password = $('#confirm_password').val();
+        if(new_password == ''){
+            showErrorMsg('支付密码不能为空');
+            return false;
+        }
+
+        if(new_password != confirm_password){
+            showErrorMsg('两次密码不一致');
+            return false;
+        }
+        if(new_password.length != 6 || !isNumber(new_password)){
+            showErrorMsg('支付密码必须为6位数字密码');
+            return false;
+        }
+        $.ajax({
+            url:'/index.php?m=Mobile&c=User&a=set_paypwd&step=2',
+            type:'post',
+            dataType:'json',
+            data:$('#payform').serialize(),
+            success:function(data){
+                if(data.status==1){
+                    showErrorMsg(data.msg);
+                    window.location.href=data.url;
+                }else{
+                    showErrorMsg(data.msg);
+                    return false;
+                }
+            }
+        })
+    }
+    /**
+     * 提示弹窗
+     * */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:2});
+    }
+
+    function isNumber(value) {
+        var patrn = /^(-)?\d+(\.\d+)?$/;
+        if (patrn.exec(value) == null || value == "") {
+            return false
+        } else {
+            return true
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+package psp;
+import "common.proto";
+
+message GoodsInfo{//添加，更新商品信息，显示商品详情
+    int32 cat_id1 = 2;
+    int32 cat_id2 =3;
+    int32 cat_id3 =4;
+    string goods_sn=5;
+    string goods_name =6;
+    int32 click_count =7;
+    int32 brand_id =8;
+    int32 store_count=9;
+    int32 collect_sum=10;
+    int32 comment_count=11;
+    int32 weight =12;
+    float market_price = 13;
+    float shop_price =14;
+    float tb_price =15;
+    float jd_price =16;
+    float cost_prcie =17;
+    int32 exchange_integral =18;
+    string keywords =19;
+    string goods_remark =20;
+    string goods_content =21;
+    string original_img =22;
+    int32 is_real =23;
+    int32 is_on_sale =24;
+    int32 is_free_taX =25;
+    int32 is_free_shipping =26;
+    int32 on_time =27;
+    int32 sort =28;
+    int32 is_recommend =29;
+    int32 is_new =30;
+    int32 is_hot =31;
+    int32 last_update =32;
+    int32 goods_type =33;
+    int32 give_intergral =34;
+    int32 sales_sum =35;
+    int32 prom_id =36;
+    float distribut =37;
+    int32 store_id =38;
+    string spu =39;
+    string sku =40;
+    int32 goods_state =41;
+    int32 suppliers_id =42;
+    string shipping_area_ids =43;
+    int32 is_vp =44;
+}

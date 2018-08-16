@@ -1,0 +1,345 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/17 0017上午 9:39
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description:
+ */
+
+syntax = "proto3";
+
+package psp;
+import "Common.proto";
+
+
+ //收入表相关文件信息=====================start{
+ 
+message ThirdPartPayTable{//收入表
+    string receipt_id = 1;//支付号（平台收款码）
+    uint32 type = 2;//支付类型
+    float amount = 3;//支付金额
+    uint32 currency = 4;//币种
+    uint32 status = 5;//支付状态
+    uint32 biz_type = 6;//业务类型
+    uint32 user_id = 7;//支付者id
+    uint32 org_id = 8;//组织id
+    uint32 platform_id = 9;//平台id
+    string order_ids = 10;//订单id列表
+    string extra_info = 11;//附加信息
+    google.protobuf.Timestamp issue_date = 12;//发起日期
+    google.protobuf.Timestamp pay_date = 13;//支付完成时间点
+    string failure_reason = 14;//失败原因
+}
+
+message GetReceiptIdRequest{
+    uint32 type = 2;//支付类型
+    float amount = 3;//支付金额
+    uint32 currency = 4;//币种
+    uint32 biz_type = 6;//业务类型
+    uint32 user_id = 7;//支付者id
+    uint32 org_id = 8;//组织id
+    uint32 platform_id = 9;//平台id//常量定义为平台
+    string order_ids = 10;//订单id列表
+    string extra_info = 11;//附加信息
+    google.protobuf.Timestamp issue_date = 12;//发起日期
+}
+
+message ReceiptId{
+    string receipt_id = 1;//支付号（平台收款码）
+}
+
+message UpdatePayStatusRequest{
+    string receipt_id = 1;//支付号（平台收款码）
+    uint32 status = 5;//支付状态
+    google.protobuf.Timestamp pay_date = 13;//支付完成时间点
+    string failure_reason = 14;//失败原因
+}
+
+//收入表=====================================end}
+
+//支出表=====================================start{
+
+message  PayOutTable{//支出表
+    string receipt_id = 1;//支出码
+    uint32 type = 2;//支出类型
+    float amount = 3;//支付金额
+    uint32 currency = 4;//币种
+    uint32 status = 5;//转账状态
+    uint32 receiptor_id = 6;//支付对象id
+    uint32 platform_id = 7;//平台id
+    uint32 operator_id = 8;//平台操作人员id
+    google.protobuf.Timestamp issue_date = 9;//转账发起时间
+    google.protobuf.Timestamp finish_date = 10;//转账完成时间
+    string failure_reason = 11;//转账失败原因
+
+
+}
+
+message PayOutList{
+    repeated PayOutTable payoutlist=1;
+}
+
+message ReceiptId{
+    string receipt_id = 1;//支出码
+}
+
+message AddPayOut{
+    uint32 type = 2;//支出类型
+    float amount = 3;//支付金额
+    uint32 currency = 4;//币种
+    uint32 receiptor_id = 6;//支付对象id
+    uint32 platform_id = 7;//平台id
+    uint32 operator_id = 8;//平台操作人员id
+    google.protobuf.Timestamp issue_date = 9;//转账发起时间
+    }
+
+message UpdatePayOutStatus{
+    string receipt_id = 1;//支出码
+    uint32 status = 5;//转账状态
+    uint32 operator_id = 8;//平台操作人员id
+    google.protobuf.Timestamp finish_date = 10;//转账完成时间
+    string failure_reason = 11;//转账失败原因
+}   
+
+message OperatorId{
+    uint32 operator_id = 8;//平台操作人员id
+} 
+
+message ReceiptorId{
+    uint32 receiptor_id = 6;//支付对象id
+}
+//支出======================================end}
+
+
+//帐号表=====================================start{
+
+message AccountTable{//账户表
+    uint32 account_id = 1;//账户id
+    uint32 platform_id =2;//所属平台
+    uint32 type = 3;//帐号类型  1=会员主账号,2=商家主账号,3=平台账号,4=会员子账号,5=商家子账号
+    uint32 biz_type =4;//业务类型
+    uint32 primary_account=5;//归属主张号
+    uint32 owner_id=6;//归属主张号
+    string name =7;//帐号名称
+    google.protobuf.Timestamp create_date = 8;//创建时间
+    float balance = 9;//帐号总额
+    float extractable_balance = 10;//可提款金额
+    uint32 currency = 11;//币种
+    float incomming_daily =12;//日收入统计
+    float outcomming_daily =13;//支出统计
+    uint32 flags =14;//附加标识
+    string sub_accounts =15;//子账户列表
+    string payments =16;//第三方支付方式列表
+    string extra_info =17;//额外信息
+}
+
+message CheckAccountRequest{
+    google.protobuf.Any =1;
+}
+
+
+
+message OwnerId{
+    uint32 owner_id=6;//归属主张号
+}
+
+message PrimaryAccount{
+    int32 primary_account=5;//归属主张号
+}
+
+message AccountBizType{//业务类型
+    int32 biz_type = 1;
+}
+message AccountType{
+    int32 type = 1;//帐号类型  1=会员主账号,2=商家主账号,3=平台账号,4=会员子账号,5=商家子账号
+}
+message AccountList{
+    repeated AccountTable  account_list= 1;
+}
+
+//帐号表===========================================end}
+
+
+
+
+//第三方支付表====================================start{
+message PaymentTable{//第三方支付方式
+    uint32 payment_id = 1;//主键id
+    uint32 account_id = 2;//账号
+    uint32 type = 3;//第三方支付类型
+    string account = 4;//账户/支付宝/微信OpenID
+    string name = 5;//账户名
+    string bank = 6;//开户行
+    string receipt_id = 7;//关联ThirdPartPayTable
+}
+//第三方支付表====================================end}
+
+
+
+
+
+//转账表====================================start{
+message TransferTable{//转账表
+    uint32 transfer_id = 1;//转账id
+    uint32 transferee_id = 2;//转出方账户
+    uint32 transferor_id = 3;//转出方账户
+    uint32 state = 4;//转账状态
+    float amount = 5;//转账金额（最大支持999万）
+    uint32 currency_pair = 6;//货币对
+    float exchange_rate = 7;//即时汇率
+    google.protobuf.Timestamp begin_date = 8;//转账时间
+    google.protobuf.Timestamp end_date = 9;//完成时间
+    string reject_reason = 10;//转账失败原因
+
+}
+
+message TransferId{
+      uint32 transfer_id = 1;//转账id
+}
+
+message AddTransfer{
+    uint32 transferee_id = 2;//转出方账户
+    uint32 transferor_id = 3;//转出方账户
+    float amount = 5;//转账金额（最大支持999万）
+    uint32 currency_pair = 6;//货币对
+    float exchange_rate = 7;//即时汇率
+    google.protobuf.Timestamp begin_date = 8;//转账时间
+}
+message TransferStatus{
+    uint32 state = 4;//转账状态
+    google.protobuf.Timestamp end_date = 9;//完成时间
+    string reject_reason = 10;//转账失败原因
+
+}
+
+message TransferList{//多数据集合
+    repeated TransferTable transfer_list = 1;
+
+}
+
+message TransfereeId{
+      uint32 transferee_id = 2;//转出方账户
+}
+
+message TransferorId{
+      uint32 transferor_id = 3;//转出方账户
+}
+
+//转账表====================================end}
+
+
+//提现=====================================start{
+
+
+message WithdrawId{
+    uint32 withdraw_id = 1;//业务码
+}
+
+message Withdraw{    
+    uint32 type = 2;//提款类型1会员2商家提款
+    uint32 platform_id = 3;//平台ID
+    uint32 receiptor_id = 4;//会员ID或商家ID
+    uint32 transfer_method = 7;//第三方支付方式
+    string ex_account_name = 8;//收款人
+    string ex_account_info = 9;//第三方接收方信息
+    google.protobuf.Timestamp issue_date = 10;//发起时间    
+    float WithdrawMoney = 15;//提现金额||在此处关联提现周期id
+    uint32 period_id = 16;//周期id//取自商家周期性结算表的周期id与15 2选1 或者并行存在
+}
+
+message WithdrawStatus{
+    uint32 withdraw_id = 1;//业务码
+    uint32 status = 5;//状态
+    uint32 auditor_id = 6;//平台审核员ID
+    google.protobuf.Timestamp transfer_date = 11;//平台开始支付时间
+    google.protobuf.Timestamp finish_date = 12;//完成时间
+    string failure_reason = 13;//转账失败原因
+    string audit_failure_reason = 14;//审核失败原因
+}
+
+message WithdrawTable{//提现申请表
+    Withdraw withdraw = 2;
+    WithdrawStatus withdrawstatus = 3;
+
+}
+
+message WithdrawList{
+    repeated WithdrawTable withdrawlist = 1;
+}
+
+message AccountWithdrawListByConditionRequest{//type默认=2
+    uint32 status = 5;//状态
+    string account_name = 1;//商家名称  通过商家名称找到商家id uint32 receiptor_id = 4;//会员ID或商家ID
+    //string begin_date = 2;//区间查询开始时间[finish_date min]
+    //string end_date = 3;//区间查询结束时间[finish_date max]
+    TimeSection time = 2;
+}
+
+message MemberWithdrawListByConditionRequest{//type默认=1
+    uint32 status = 5;//状态
+    string member_name = 1;//会员名称 receiptor_id = 4;//会员ID或商家ID
+    string tps138_id = 4;//138id通过138id查找receiptor_id
+    TimeSection time = 2;
+
+}
+
+//提现=========================================end}
+
+
+//结算====================================start}
+message AccountSettlementEnclosureTable{//商家结算子账户附表
+    uint32 account_id = 1;//周期性结算子账户id
+    uint32 period = 2;//周期（天数）
+    uint32 by_month = 3;//true表示按自然月结算
+    google.protobuf.Timestamp start_date = 4;//结算起始时间
+    uint32 lock_periods = 5;//提款冻结周期
+    uint32 transfer_method = 6;//提款方式
+    string ex_account_name = 7;//第三方账户名
+    string ex_account_id = 8;//第三方账户
+    string bank = 9;//开户行
+    uint32 currency = 10;//币种
+}
+
+message SettlementRecordTable{
+    uint32 id = 1;//明细id
+    uint32 order_id = 2;//订单id
+    string return_order_ids =3;//退货订单id列表
+    uint32 transfer_id = 4; //商品订单转账id
+    string return_transfer_ids = 5;//退货转账id
+    float  order_amount = 6;//订单（转账）收款金额
+    float  return_amount = 7;// 退款金额
+    uint32 currency = 9;// 币种
+}
+
+message AccountSettlementTable{//商家周期性结算
+    uint32 provider_id = 1;//商家id
+    uint32 account_id = 2;//关联的周期性结算子账户id
+    uint32 period_id = 3;//周期id
+    google.protobuf.Timestamp begin_date = 4;//周期起始
+    google.protobuf.Timestamp end_date = 5;//周期结束
+    uint32 status = 6;//该结算周期状态
+    uint32 locked = 7;//是否被锁定
+    uint32 withdraw_status = 8;//提款状态
+    float amount = 9;//结算总金额
+    uint32 currency = 10;//币种
+}
+
+message LWRequest{
+    repeated LWcondition condition = 1;
+}
+message LWcondition{//lock||withdraw锁定或提现条件
+    uint32 provider_id = 1;//商家id
+    uint32 period_id = 3;//周期id
+}
+
+message ProviderId{
+    uint32 provider_id = 1;//商家id
+}
+
+message AccountSettlementList{
+
+    repeated AccountSettlementTable settlementlist = 1;
+
+
+}
+
+//结算====================================end}

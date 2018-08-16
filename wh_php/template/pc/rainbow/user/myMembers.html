@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的团队-{$walhao_config['shop_info_store_title']}</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/theme.css" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+</head>
+<body class="bg-f5">
+<include file="user/header"/>
+<div class="home-index-middle" style="">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+            <i class="litt-xyb"></i>
+            <span>我的团队</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu"/>
+            <div class="ri-menu fr">
+                <div class="menumain p">
+                    <div class="goodpiece">
+                        <h1>我的团队</h1>
+                        <h2>我的推荐人ID：<span>{$user.parent_id}</span></h2>
+                    </div>
+                    <div class="card-list accbala">
+                        <ul>
+                            <li><a href="javascript:void(0);">会员ID</a></li>
+                            <li><a href="javascript:void(0);">量子时空ID</a></li>
+                            <li><a href="javascript:void(0);">手机号</a></li>
+                            <li><a href="javascript:void(0);">姓名</a></li>
+                            <li><a href="javascript:void(0);">店铺等级</a></li>
+                            <li><a href="javascript:void(0);">会员职称</a></li>
+                            <li><a href="javascript:void(0);">加入时间</a></li>
+                        </ul>
+                    </div>
+                    <if condition="$list neq ''">
+                        <?php foreach($list as $v):?>
+                        <div class="card-list c_contan accbala-list">
+                            <ul>
+                                <li><a href="javascript:void(0);">{$v['user_id']}</a></li>
+                                <li><a href="javascript:void(0);">{$v['wh181_id']}</a></li>
+                                <li><a href="javascript:void(0);">{$v['mobile']|default='暂无'}</a></li>
+                                <li><a href="javascript:void(0);">{$v['real_name']|default='暂无'}</a></li>
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        {$v.user_level}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);">
+
+                                       {$v.user_title}
+                                    </a>
+                                </li>
+
+                                <li><a href="javascript:void(0);">{$v.add_time|date='Y-m-d H:i:s',###}</a></li>
+                            </ul>
+                        </div>
+                        <?php endforeach;?>
+                        <else />
+                            <p class="ncyekjl">--{$Think.lang.NoRecords}--</p>
+                    </if>
+                </div>
+                <div class="operating fixed" id="bottom">
+                    <div class="fn_page clearfix">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<div class="footer p">
+    <include file="public/footer_index" />
+</div>
+<!--footer-e-->
+<script type="text/javascript">
+    $(document).ready(function(){
+
+    });
+</script>
+</body>
+</html>

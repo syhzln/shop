@@ -1,0 +1,130 @@
+<include file="public/header" title="申请提现" body=""/>
+<include file="public/header_nav" title="申请提现" href="javascript:history.back(-1)"/>
+		<div class="loginsingup-input ma-to-20">
+			<form  method="post"  id="returnform">
+				<div class="content30">
+                    <div class="lsu">
+                        <span>提现类型：</span>
+                        <div class="withType">
+                            <i class="icon-sanjiao iconfont"></i>
+                            <select name="with_type" id="with_type" required>
+                                <option value="0">请选择提现类型</option>
+                                <option value="1">余额提现</option>
+                                <option value="2">收益提现</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="lsu">
+                        <span>提现方式：</span>
+                        <div class="withWay">
+                            <i class="icon-sanjiao iconfont"></i>
+                            <select  name="with_way" id="with_way" onchange="withWay(this)" required>
+                                <option value="0">请选择提现方式</option>
+                                <option value="1">支付宝提现</option>
+                                <!--<option value="2">银行卡提现</option>-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="lsu">
+                        <span>提现金额：</span><span>￥</span>
+                        <input type="text" name="money" id="money" value=""  placeholder="可提现金额：{$user.user_money}元"  onKeyUp="this.value=this.value.replace(/[^\d]/g,'')">
+                    </div>
+					<div class="lsu">
+						<span>收款账号：</span>
+						<input type="text" name="account_bank" id="account_bank" value=""  placeholder="目前只支持使用支付宝账号" >
+					</div>
+					<div class="lsu">
+						<span>开户名：</span>
+						<input type="text" name="account_name" id="account_name" value=""  placeholder="支付宝账号实名认证的姓名">
+					</div>
+                    <div class="lsu lsu-recharge">
+                        <span>支付密码：</span>
+                        <input type="password" name="paypwd" id="paypwd" placeholder="支付密码">
+                    </div>
+                    <div class="lsu test">
+                        <span>验证码：</span>
+                        <input type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码">
+                        <img  id="verify_code_img" src="{:U('Mobile/User/verify',array('type'=>'withdrawals'))}" onClick="verify()" style=""/>
+                    </div>
+					<div class="lsu submit">
+                        <input type="hidden" name="__token__" value="{$Request.token}" />
+                        <input type="button" onclick="checkSubmit()" value="提交申请">
+					</div>
+				</div>
+			</form>
+		</div>
+
+<script type="text/javascript" charset="utf-8">
+    // 验证码切换
+    function verify(){
+        $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&type=withdrawals&r='+Math.random());
+    }
+
+    function withWay(obj){
+        var way = obj.value;
+        if(way == 1){
+            $('.bankName').css('display','none');
+        }else{
+            $('.bankName').css('display','block');
+        }
+    }
+    /**
+     * 提交表单
+     * */
+    function checkSubmit(){
+        var withdraw_type = $('#with_type').val();//提现类型
+        var withdraw_way = $('#with_way').val();//提现方式
+        var bank_name = $.trim($('#bank_name').val());
+        var account_bank = $.trim($('#account_bank').val());//账户名
+        var account_name = $.trim($('#account_name').val());//姓名
+        var money = parseFloat($.trim($('#money').val()));
+        var usermoney = parseFloat({$user.user_money});  //用户余额
+        var verify_code = $.trim($('#verify_code').val());
+
+        if(withdraw_type == 0){
+            showErrorMsg('请选择提现类型')
+            return false;
+        }
+        if(withdraw_way == 0){
+            showErrorMsg('请选择提现方式')
+            return false;
+        }
+
+        if(account_bank == '' || account_name =='' || money == ''){
+            showErrorMsg("所有信息为必填")
+            return false;
+        }
+        if(money > usermoney){
+            showErrorMsg("提现金额大于您的账户余额")
+            return false;
+        }
+        if(paypwd == ''){
+            showErrorMsg("请输入支付密码")
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url :"{:U('Mobile/User/withdrawals')}",
+            dataType:'json',
+            data:$('#returnform').serialize(),
+            success: function(data)
+            {
+                showErrorMsg(data.msg);
+                if(data.status == 1){
+                    window.location.href=data.url;
+                } else {
+//                    window.location.reload();
+                    showErrorMsg(data.msg);
+                    verify();
+
+                }
+            }
+        });
+    }
+
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:3});
+    }
+</script>
+	</body>
+</html>

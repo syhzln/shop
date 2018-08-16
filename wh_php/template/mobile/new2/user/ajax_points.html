@@ -1,0 +1,34 @@
+<if condition="$type eq 'recharge'">
+    <foreach name="account_log" item="recharge">
+        <div class="fll_acc">
+            <ul>
+                <li>{$recharge[pay_name]}</li>
+                <li><span>充值金额：</span><span class="red">{$recharge[account]}</span></li>
+                <li>
+                    <p><span>支付状态: </span>
+                        <span class="red"><if condition="$recharge[pay_status] eq 0">{$Think.lang.Unpaid}&nbsp;&nbsp;<a href="{:U('User/recharge',array('order_id'=>$recharge[order_id]))}" class="">{$Think.lang.details}</a><else/>{$Think.lang.Paid}</if></span>
+                    </p>
+                    <p class="coligh"><span>{:date('Y-m-d H:i:s',$recharge[ctime])}</span></p>
+                </li>
+            </ul>
+        </div>
+    </foreach>
+<else/>
+    <foreach name="account_log" item="v">
+        <div class="fll_acc">
+            <ul>
+                <li>{$v[desc]}</li>
+                <li>
+                    <span>余额：</span><span class="red">{$v[user_money]}</span></li>
+                <li>
+                    <p>
+                        <span>{$Think.lang.integral}：</span><span class="red">{$v[pay_points]}</span>
+                    </p>
+                    <p class="coligh">
+                        <span>{:date('Y-m-d H:i:s',$v[change_time])}</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </foreach>
+</if>

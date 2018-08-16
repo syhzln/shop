@@ -1,0 +1,261 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/2
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心数据接口定义
+ */
+syntax = "proto3";
+
+package psp;
+import "Common.proto";
+
+
+/*tps接口传参*/
+message Tps138User {
+	string name = 1;
+	string tps13_id = 2;
+	string email = 3;
+	string phone = 4;
+	string parent_id = 5;
+	string pwd_token = 6;
+	string password = 7;
+	int32 user_level = 8;
+	google.protobuf.Timestamp careat_time = 9;//帐号创建时间
+	int32 status = 10;
+	string prefix = 11;
+	string languageid_id = 12;//语种&&国别
+	int32 country_id = 13;//国别
+
+}
+
+
+/*用户帐号信息*/
+message UserBasicInfo{
+	string name = 1;
+	string tps13_id = 2;
+	string email = 3;
+	string phone = 4;
+	string parent_id = 5;
+	int32 user_level = 8;
+	google.protobuf.Timestamp careat_time = 9;//帐号创建时间
+	int32 status = 10;
+	string prefix = 11;
+	string languageid_id = 12;//语种&&国别
+	int32 country_id = 13;//国别
+}
+
+/*用户基本补充信息*/
+message UserExtraInfo {
+	uint32 id = 1;
+	int32 user_level = 9;//会员等级
+	google.protobuf.Timestamp upgrade_time = 10;//等级达成时间
+	string user_title= 11;//用户职称
+	google.protobuf.Timestamp title_updade_time = 12;//职称达成时间
+	int32 region_id= 14;//省市地区________________________________需扩展
+	int32 org_id=15;//组织来源
+	int32 card_audit_status=16;//证件审核状态
+	google.protobuf.Timestamp enable_time = 17;//帐号激活时间
+	int32 status = 18;//帐号状态
+	google.protobuf.Timestamp update_time = 19;//帐号更新时间
+	string img = 20;//用户头像
+	int32 sex = 21;//用户性别
+	google.protobuf.Timestamp birthday_time = 22;//生日
+	int32 role_id = 23;//角色id
+	bool is_tourist  = 24;//是否游客登录
+	bool is_verified_email= 25;//是否验证邮箱
+	bool is_verified_mobile= 26;//是否验证手机
+	int32 login_method = 31;//'登陆渠道（0非第三方，1微信。。）
+}
+
+/*身份证信息*/
+message UserIdCard{
+	string id_card = 27;//用户身份证号码
+}
+
+/*密码信息*/
+message  UserPWDInfo{
+	string pwd = 6;//'账号密码,
+	string token = 7;//'用户安全加密码',
+	string pwd_withdraw = 29;//提现密码
+}
+
+
+/*用户地址表*/
+message UserAddress{
+	int32 address_id = 1;
+	string uid = 2;
+	int32 location_code = 3;
+	string address = 4;
+	string name = 5;
+	string post_code = 6;
+	string phone = 7;
+	bool is_default = 8;
+}
+
+
+/*商品收藏表*/
+message FavoriteItem{
+    int32 item_id = 1;
+    string uid = 2;
+
+}
+
+
+/*商品收藏表*/
+message FavoriteStore{
+    int32 store_id = 1;
+    string uid = 2;
+}
+
+/**************************************/
+
+/*用户订单表*/
+message UserOrder{
+	int32 order_id = 1;  //订单id
+	string uid = 2;      //用户id
+	int32 order_sn = 3;  //订单编号
+	string store_name = 4; //供应商名称
+	string goods_name = 5; //商品名称
+	float goods_price = 6;  //商品价格
+	string consignee = 7; //收货人
+	string address = 8; //收货地址
+	string seller_name = 9; //供应商昵称
+	string store_address = 10; //供应商地址
+	string store_phone = 11; //供应商联系方式
+	string store_qq = 12; //供应商qq
+	float shipping_price = 13; //运费
+	string shipping_name = 14; //物流名称
+	int32 shipping_status = 15; //物流状态
+	int32 pay_status = 16; //支付状态
+	int32 order_status = 17; //订单状态
+	google.protobuf.Timestamp add_time = 18; //下单时间
+}
+
+message OrderId{
+	int32 order_id = 1;
+	string uid = 2;
+}
+
+/*用户评论表*/
+message UserComment{
+	int32 comment_id = 1; //评论id
+	string uid = 2;
+	int32 goods_id = 3; //商品id
+	int32 order_id = 4; //订单id
+	int32 store_id = 5; //店铺id
+	string content = 6; //评论
+	google.protobuf.Timestamp comment_time = 7; //评论时间
+	string ip_address = 8; //评论ip地址
+	int32 is_show = 9; //是否显示评论
+	string comment_img = 10; //评论图片
+	float goods_rank = 11; //商品评价等级
+	int32 zan_num = 12; //点赞数
+	string zan_userid = 13; //点赞用户id
+	int32 reply_num = 14; //评论回复数
+	int32 is_anonymous = 15; //是否匿名评论
+}
+
+message GoodsId{
+	int32 goods_id = 1;
+	string uid = 2;
+}
+
+/*回复表*/
+message UserReply{
+	int32 reply_id = 1; //回复id
+	string uid = 2;
+	int32 comment_id = 3; //评论id
+	string content = 4; //评论
+	string user_name = 5; //用户名
+	string to_name = 6; //被回复的用户的用户名
+	int32 deleted = 7; //是否删除（0未删除 1删除）
+	google.protobuf.Timestamp reply_time = 8; //回复时间
+}
+
+/*提现申请表*/
+message Withdrawals{
+	int32 withdrawals_id = 1; //提现id
+	string uid = 2;
+	float money = 3; //提现金额
+	string bank_name = 4; //银行名称
+	string account_bank = 5; //银行账号
+	string account_name = 6; //银行账户名
+	string remark = 7; //提现备注
+	int32 status = 8; //提现状态(0申请中 1申请成功 2申请失败)
+}
+
+/*充值表*/
+message UserRecharge{
+	int32 order_id = 1;
+	string uid = 2;
+	string nickname = 3; //会员昵称
+	string order_sn = 4; //充值单号
+	float account = 5; //充值金额
+	google.protobuf.Timestamp account_time = 6; //充值时间
+	google.protobuf.Timestamp pay_time = 7; //支付时间
+	string pay_name = 8; //支付方式
+	int32 pay_status = 9; //充值状态(0待支付 1充值成功 2交易关闭)
+}
+
+
+
+/*会员等级表*/
+message UserLevel{
+	int32 level_id = 1;  //等级id
+	string level_name = 2; //等级名称
+	float amount = 3; //消费额度
+	int32 discount = 4; //折扣
+	string describe = 5; //等级描述
+}
+
+/*优惠券表*/
+message UserCoupon{
+	int32 coupon_id = 1; //优惠券id
+	string coupon_name = 2; //优惠券名字
+	int32 type = 3; //发放类型(0面额模板1 按用户发放 2 注册 3 邀请 4 线下发放)
+	float money = 4; //优惠券金额
+	float condition = 5; //使用条件
+	int32 createnum = 6; //发放数量
+	int32 send_num = 7; //已领取数量
+	int32 use_num = 8; //已使用数量
+	google.protobuf.Timestamp send_start_time = 9; //发放开始时间
+	google.protobuf.Timestamp send_end_time = 10; //发放结束时间
+	google.protobuf.Timestamp use_start_time = 11; //使用开始时间
+	google.protobuf.Timestamp use_end_time = 12; //使用结束时间
+	google.protobuf.Timestamp add_time = 13; //添加时间
+	int32 store_id = 14; //商家店铺id
+}
+
+/*用户资金表*/
+message UserAccount{
+	int32 account_id = 1; //资金id
+	string uid = 2;
+	float user_money = 3; //用户金额
+	float frozen = 4; //冻结金额
+	int32 pay_points = 5; //支付积分
+	google.protobuf.Timestamp change_time = 6; //变动时间
+	string desc = 7; //描述
+	string order_sn = 8; //订单编号
+	int32 order_id = 9; //订单id
+}
+
+/*用户收件箱消息表*/
+message UserMessage{
+	int32 msg_id = 1; //消息id
+	string uid = 2;
+	int32 piority = 3; //优先级
+	google.protobuf.Timestamp issue_date = 4; //消息时间
+	int32 template_id = 5; //消息模板
+	int32 flags = 6; //标志位
+	string params = 7; //消息内容
+}
+
+/*用户消息配置表*/
+message UserMessageConf{
+	string uid = 1;
+	int32 level_forwarding_sms = 2;//发送给手机的最低信息优先级，如果超过最大优先级则表示不发送到用户短信
+	int32 level_forwarding_email = 3;//发送给邮箱的最低信息优先级，如果超过最大优先级则表示不发送到用户邮箱
+	int32 keep_days = 4;//消息保留天数
+	int32 max_amount = 5;//保留最多条目
+	int32 keep_urgent_msg = 6;//是否保留所有紧急消息
+}

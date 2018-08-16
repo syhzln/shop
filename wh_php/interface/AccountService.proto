@@ -1,0 +1,75 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/17 0017上午 9:15
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description:
+ */
+syntax = "proto3";
+
+package psp;
+import "Common.proto";
+import "AccountModel.proto";
+
+service AccountService{
+
+    rpc getReceiptId (GetReceiptIdRequest) returns (ReceiptId);//订单合并支付获取支付号
+    rpc updatePayStatus (UpdatePayStatusRequest) returns (google.protobuf.BoolValue);//支付成功修改支付状态,失败提交信息
+    rpc getPayInfo(OrderId) returns (ThirdPartPayTable);//查询订单支付状态/拆分表字段
+
+    rpc addPayment(PaymentTable) returns (google.protobuf.Empty);//添加完善支付信息
+    rpc getPayment(ReceiptId) returns (PaymentTable);//通过第三方收入表支付号获取此笔金额的来源方式
+
+    rpc checkAccount(CheckAccountRequest) returns(google.protobuf.BoolValue)//添加前验证该帐号类型是否存在
+    rpc addAccount (AccountTable) returns (google.protobuf.BoolValue);//添加一个账务账户
+    rpc updateAccount (AccountTable) returns (google.protobuf.BoolValue);//修改账户信息
+    rpc getAccount(google.protobuf.Empty) returns (AccountList);//获取列表(无用)
+    rpc getAccountByType(AccountType) returns (AccountList);//通过帐号类型获取帐号列表
+    rpc getAccountByBizType(AccountBizType) returns (AccountList);//通过业务类型获取帐号列表
+    rpc getAccountByPrimaryAccount(PrimaryAccount) returns (AccountList);//通过主张号获取列表
+    rpc getAccountBywnerOwner(OwnerId) returns (AccountList);//通过帐号所有者获取帐号表
+
+    rpc addTransfer(TransferTable) returns (google.protobuf.Empty);//记录一笔自动记录转账(日志记录型,PS:记录从缓冲账户到资金帐号)
+    rpc addTransfer1(AddTransfer) returns (TransferId);//记录一笔用户发起的转账(用户间金额互转)
+    rpc updateTransferStatus(TransferStatus)returns (google.protobuf.Empty);//修改转账状态
+    rpc getTransferList(google.protobuf.Empty) returns(TransferList);//获取所有转账记录
+    rpc getTransferInfo(TransferId) returns(TransferTable);//获取所有转账记录
+    rpc getTransferListByTransfereeId(TransfereeId) returns(TransferList);//通过转出方帐号查询转账信息
+    rpc getTransferListByTransferorId(TransferorId) returns(TransferList);//通过收入方帐号查询转账信息
+
+    rpc getAccountSettlementList(google.protobuf.Empty) returns (AccountSettlementList);//获取商家结算记录列表
+    rpc getAccountSettlementListByProviderId(ProviderId) returns (AccountSettlementList);//通过商家id获取该商家结算记录
+    rpc addAccountSettlementEnclosure(AccountSettlementEnclosureTable) returns (google.protobuf.BoolValue);//添加商家结算条件
+    rpc updateAccountSettlementEnclosure(AccountSettlementEnclosureTable) returns (google.protobuf.BoolValue);//修改商家结算条件
+    rpc setLockedSettlement(LWRequest) returns (google.protobuf.Empty);//锁定周期结算记录
+    rpc updateAccountSettlementWithdrawStatus(LWRequest)returns (google.protobuf.BoolValue);//修改周期结算表周期提现状态(已结算/未结算)
+
+    rpc addWithdraw(WithdrawTable) returns(google.protobuf.BoolValue);//商家申请提现,添加申请提现记录
+    rpc updateWithdrawStatus(WithdrawStatus) returns(google.protobuf.Empty)//修改提现申请表提现状态{审核,审核通过(转账处理中),转账完成}
+    rpc getWithdrawInfo(WithdrawId) returns (WithdrawTable);//获取提现申请详情
+    rpc getAccountWithdrawList(google.protobuf.Empty) returns (WithdrawList);//获取商家提现申请列表(type=2)
+    rpc getAccountWithdrawListByCondition(AccountWithdrawListByConditionRequest) returns (WithdrawList);//条件筛选获取商家提现申请列表(type=2)
+    rpc getMemberWithdrawList(google.protobuf.Empty) returns (WithdrawList);//获取会员提现申请列表()type=1
+    rpc getMemberWithdrawListByCondition(MemberWithdrawListByConditionRequest) returns (WithdrawList);//条件筛选获取会员提现申请列表()type=1
+    rpc getWithdrawOrder(WithdrawId) returns(OrderList);//通过提现反向查找此笔金额包括的订单
+
+    rpc addPayOut(AddPayOut) returns (google.protobuf.Empty);//添加一笔对外支付记录
+    rpc updatePayOutStatus(ReceiptId)returns (google.protobuf.BoolValue);//修改支付状态
+    rpc getPayOutInfo(ReceiptId) returns (PayOutTable);//查看该笔操作的详细信息
+    rpc getPayOutList(google.protobuf.Empty) returns(PayOutList);//获取对外支付列表
+    rpc getPayOutByOperatorId(OperatorId) returns (PayOutList);//通过平台操作人员id获取支出记录
+    rpc getPayOutByReceiptorId(ReceiptorId) returns (PayOutList);//通过支付对象id获取支出记录
+
+}
+
+
+message OrderId{
+    string order_id = 1;//单个订单号
+}
+
+message OrderIds {
+    string order_ids = 1;  //小强生成的订单id||合并订单id字符串集合
+}
+
+message OrderList{
+
+}

@@ -1,0 +1,187 @@
+header{
+    @media screen and (min-width: 1300px) {
+        height: 44px/$ppr;   
+    }
+    width: 750px/$ppr;
+    position:fixed;
+    z-index: 999;
+    height: $num88;
+    background:#fff;
+    //@include background-li-gr(rgba(0,0,0,0.3),rgba(255,255,255,0));
+    //-webkit-transition: -webkit-transform 3s,opacity 4s,background 10s;
+    //opacity: 0;
+    .content{
+        padding-top: $num14;
+        @media screen and (min-width: 1300px) {
+            padding-top: 6px/$ppr;   
+        }
+    }
+    .logo img{
+        margin-left: $num10;
+        width: 60px/$ppr;
+        //height: 45px/$ppr;
+        @media screen and (min-width: 1300px) {
+            width: 60px/$ppr;
+            height: 23px/$ppr;   
+        }
+    }
+    .sea-box{
+        width: 500px/$ppr;
+        height: $num58;
+        @media screen and (min-width: 1300px) {
+            height: $num30;  
+            width: 580px/$ppr; 
+        }
+        background:$white;
+        position: $pr;
+        margin-left: $num10;
+        @include border-radius(20px/$ppr);
+        span{
+            @include background-image(search);
+            height: 30px/$ppr;
+            width: 30px/$ppr;
+            @include position($pa,14px);
+            margin-left: $num10;
+            @media screen and (min-width: 1300px) {
+                width: $num20;
+                height: $num20;
+                @include position($pa,6px);   
+            }
+        }
+        .sear-input{
+            //width: 340px/$ppr;
+            //margin-left: 42px/$ppr;
+            @media screen and (min-width: 1300px) {
+                width: 520px/$ppr;
+            }
+        }
+        input{
+            border: 0;
+            width: 100%;
+            height: $num58;
+            color: #666666;
+            background: #fd2e36;
+            vertical-align: middle;
+            @media screen and (min-width: 1300px) {
+                height:$num30;  
+                font-size: $num20; 
+            }
+            outline: none;
+            padding: 0 $num10;
+            font-size: $num28;
+            border-radius: $num10;
+            padding-left: $num55;
+        }
+        input::-webkit-input-placeholder { /* WebKit browsers */
+            color: #fff;
+        }
+        input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #fff;
+        }
+        input::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #fff;
+        }
+        input:-ms-input-placeholder { /* Internet Explorer 10+ */
+            color: #fff;
+        }
+        .sea_icon{
+            position: absolute;
+            top: $num14;
+            left: $num10;
+            height: $num50;
+            width: $num50;
+            color: #fff;
+            font-size: $num34;
+        }
+    }
+    .login{
+        margin-left: $num10;
+        font-size: $num30;
+        @media screen and (min-width: 1300px) {
+            font-size: $num18;   
+        }
+        a{
+            color: $white;
+        }
+    }
+}
+#clear_top{
+    height: $num88;
+}
+//.headerbg{
+//    //@include background-li-gr(rgba(242,48,48,0.8),rgba(242,48,48,0.8));
+//    opacity: 1;
+//}
+.foohi{
+    height: 110px/$ppr;
+    @media screen and (min-width: 1300px) {
+        height: 60px/$ppr;
+    }
+}
+.foohiext{
+    @media screen and (min-width: 1300px) {
+        height: 110px/$ppr;
+    }
+}
+.footer{
+    height: $num100;
+    background: $white;
+    position: fixed;
+    z-index: 999;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    @include box-shadow(0 0 10px 0 rgba(155,143,143,0.6));
+    @media screen and (min-width: 1300px) {
+        height: 50px/$ppr;
+    }
+    ul{
+        li{
+            float: left;
+            text-align: center;
+            width: 100/5*1%;
+            .yello{
+                color: #f23030;
+            }
+            a{
+                display: inline-block;
+                cursor: pointer;
+                .icon{
+                    margin-top: 6px/$ppr;
+                    @media screen and (min-width: 1300px) {
+                        margin-top: 2px/$ppr;
+                    }
+                    .iconfont{
+                        font-size: $num50;
+                        @media screen and (min-width: 1300px) {
+                            font-size: $num28;
+                        }
+                    }
+                    p{
+                        font-size: $num26;
+                        margin-top: $num10;
+                        @media screen and (min-width: 1300px) {
+                            font-size: $num14;
+                            margin-top: 4px/$ppr;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.kefuList{
+    position: fixed;
+    top: 35%;
+    right: 0;
+    background: #fff;
+    padding: $num34;
+    border: 1px solid #333;
+    border-radius: $num14;
+    a{
+        display: block;
+        font-size: $num28;
+        padding: $num14;
+    }
+}
+

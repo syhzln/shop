@@ -1,0 +1,393 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="__PUBLIC__/static/css/index.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/css/purebox.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery.cookie.js"></script>
+    <style>
+        .contentWarp_item .section_select .item_comment{
+            padding: 83px 0 31px 38px;
+        }
+        .contentWarp_item .section_select .item {
+            padding: 83px 0 38px 38px;
+        }
+        .contentWarp_item .section_order_select li{
+            width: 32.3%;
+        }
+    </style>
+</head>
+<body class="iframe_body">
+<div class="warpper">
+    <div class="title">商户管理中心</div>
+    <div class="content start_content">
+        <div class="contentWarp">
+            <div class="contentWarp_item clearfix">
+                <div class="section_select">
+                    <div class="item item_price">
+                        <i class="icon"><img src="__PUBLIC__/static/images/1.png" width="71" height="74"></i>
+                        <div class="desc">
+                            <div class="tit">{$amount.count}</div>
+                            <span>今日销售额</span>
+                        </div>
+                    </div>
+                    <div class="item item_order">
+                        <i class="icon"><img src="__PUBLIC__/static/images/2.png"></i>
+                        <div class="desc">
+                            <div class="tit">{$count.s0}</div>
+                            <span>商品数量</span>
+                        </div>
+                        <i class="icon"></i>
+                    </div>
+                    <div class="item item_comment">
+                        <i class="icon"><img src="__PUBLIC__/static/images/3.png" width="90" height="86"></i>
+                        <div class="desc">
+                            <div class="tit">{$count.p0}</div>
+                            <span>今日待审评论数</span>
+                        </div>
+                    </div>
+                    <div class="item item_flow">
+                        <i class="icon"><img src="__PUBLIC__/static/images/4.png" width="86"></i>
+                        <div class="desc">
+                            <div class="tit">{$count.today_login}</div>
+                            <span>今日访问量</span>
+                        </div>
+                        <i class="icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="contentWarp_item clearfix">
+                <div class="section_order_select">
+                    <ul>
+                        <li>
+                            <a href="{:U('Seller/Order/index',array('order_status'=>0))}">
+                                <i class="ice ice_w"></i>
+                                <div class="t">待处理订单</div>
+                                <span class="number">{$count.o0}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a  href="{:U('Seller/Goods/goodsList')}">
+                                <i class="ice ice_y"></i>
+                                <div class="t">商品数量</div>
+                                <span class="number">{$count.s0}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:U('Seller/Comment/index')}">
+                                <i class="ice ice_f"></i>
+                                <div class="t">评论数量</div>
+                                <span class="number">{$count.p1}</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="clear"></div>
+                <div class="section section_order_count">
+                    <div class="sc_title" style="padding: 26px 0 14px;border-bottom: 1px solid #e4eaec;">
+                        <i class="sc_icon"></i>
+                        <h3>店铺信息</h3>
+                    </div>
+                    <div class="sc_warp" style="padding-bottom: 30px;">
+                        <table cellpadding="0" cellspacing="0" class="system_table">
+                            <tbody><tr>
+                                <td class="gray_bg">店铺名称:</td>
+
+                                <td>{$shop_info.shop_name}</td>
+
+                                <td class="gray_bg">入驻时间:</td>
+                                <td>{$shop_info.add_time|date='Y-m-d H:i:s',###}</td>
+                            </tr>
+                            <tr>
+                                <td class="gray_bg">所属人账号:</td>
+
+                                <td>{$shop_info.manage_account}</td>
+
+                                <td class="gray_bg">店铺有效期:</td>
+                                <td>{$shop_info.effect_time|date='Y-m-d H:i:s',###}</td>
+                            </tr>
+                            <tr>
+
+                                <td class="gray_bg">店铺等级:</td>
+                                <td>默 认</td>
+                                <td class="gray_bg">店铺设置:</td>
+                                <td><a href="#" >编辑店铺</a></td>
+
+                            </tr>
+                            </tbody></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--三大框-->
+                <div class="info-box section_order_count">
+                    <div class="boxes">
+                        <div class="box-header">
+                            <h3 class="box-title">商品{$count.s0} 件</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="detail-box">
+                                <a href="{:U('Goods/goodsList')}" title="点击查看">
+                                    审核通过商品<br>
+                                    <span class="box-item-num">{$count.s4}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    库存警告商品数<br>
+                                    <span class="box-item-num">{$count.k0}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    新品推荐数<br>
+                                    <span class="box-item-num">{$count.s6}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    已上架商品数<br>
+                                    <span class="box-item-num">{$count.s1}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    已下架商品数<br>
+                                    <span class="box-item-num">{$count.s2}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    审核未通过商品数<br>
+                                    <span class="box-item-num">{$count.s5}个</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boxes">
+                        <div class="box-header">
+                            <h3 class="box-title">订单{$count.o5}笔</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="detail-box">
+                                <a href="{:U('Order/index',array('pay_status'=>2,shipping_status=>1))}" title="点击查看">
+                                    待发货订单<br>
+                                    <span class="box-item-num">{$count.o0}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    待支付订单<br>
+                                    <span class="box-item-num">{$count.o2}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    待确认订单<br>
+                                    <span class="box-item-num">{$count.o3}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    退款申请<br>
+                                    <span class="box-item-num">0个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    部分发货订单<br>
+                                    <span class="box-item-num">{$count.o1}个</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    退货申请<br>
+                                    <span class="box-item-num">{$count.o4}个</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="boxes">
+                        <div class="box-header">
+                            <h3 class="box-title">待处理</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="detail-box">
+                                <a href="{:U('Admin/system_message',array('is_read'=>0))}" title="点击查看">
+                                    待处理信息<br>
+                                    <span class="box-item-num">{$read_num} 条</span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
+                                <a href="javascript:;">
+                                    待审核商品<br>
+                                    <span class="box-item-num">{$count.s3} 个</span>
+                                </a>
+                            </div>
+                            <!--<div class="detail-box">-->
+                            <!--<a href="javascript:;">-->
+                            <!--待回复咨询<br>-->
+                            <!--<span class="box-item-num">0 个</span>-->
+                            <!--</a>-->
+                            <!--</div>-->
+                            <!--<div class="detail-box">-->
+                            <!--<a href="javascript:;">-->
+                            <!--新增商品评论<br>-->
+                            <!--<span class="box-item-num">0 个</span>-->
+                            <!--</a>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+
+                    <div class="clear"></div>
+                </div>
+
+</div>
+<div id="footer" style="position: static; bottom: 0px; font-size:12px;">
+    <p><b>版权所有 © 2012-2017 杭州量子时空网络科技有限公司，并保留所有权利。</b></p>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $("*[data-toggle='tooltip']").tooltip({
+            position: {
+                my: "left top+5",
+                at: "left bottom"
+            }
+        });
+    });
+</script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery.purebox.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/echart/echarts.min.js"></script>
+<script type="text/javascript">
+    set_statistical_chart(".section_order_count .filter_date a:first", "order", "week"); //初始设置
+    set_statistical_chart(".section_total_count .filter_date a:first", "sale", "week"); //初始设置
+    function set_statistical_chart(obj, type, date)
+    {
+        var obj = $(obj);
+        obj.addClass("active");
+        obj.siblings().removeClass("active");
+
+        $.ajax({
+            type:'get',
+            url:'index.php',
+            data:'act=set_statistical_chart&type='+type+'&date='+date,
+            dataType:'json',
+            success:function(data){
+                if(type == 'order'){
+                    var div_id = "order_main";
+                }
+                if(type == 'sale'){
+                    var div_id = "total_main";
+                }
+                var myChart = echarts.init(document.getElementById(div_id));
+                myChart.setOption(data);
+            }
+        })
+    }
+
+    var option = {
+        title : {
+            text: ''
+        },
+        tooltip : {
+            trigger: 'axis',
+            backgroundColor:"#f5fdff",
+            borderColor:"#8cdbf6",
+            borderRadius:"4",
+            borderWidth:"1",
+            padding:"10",
+            textStyle:{
+                color:"#272727",
+            },
+            axisPointer:{
+                lineStyle:{
+                    color:"#6cbd40",
+                }
+            }
+        },
+        toolbox: {
+            show : true,
+            orient:"vertical",
+            x:"right",
+            y:"60",
+            feature : {
+                magicType : {show: true, type: ['line', 'bar']},
+                saveAsImage : {show: true}
+            },
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                axisLine:{
+                    lineStyle:{
+                        color:"#ccc",
+                        width:"0",
+                    }
+                },
+                data : ['07-01','07-02','07-03','07-04','07-05','07-06','07-07']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                axisLine:{
+                    lineStyle:{
+                        color:"#ccc",
+                        width:"0",
+                    }
+                },
+                axisLabel : {
+                    formatter: '{value}个',
+                }
+            }
+        ],
+        series : [
+            {
+                name:'订单个数',
+                type:'line',
+                itemStyle:{
+                    normal:{
+                        color:"#6cbd40",
+                        lineStyle:{
+                            color:"#6cbd40",
+                        }
+                    }
+                },
+                data:[0, 5, 8, 3, 10, 15, 2],
+                markPoint : {
+                    itemStyle:{
+                        normal:{
+                            color:"#6cbd40"
+                        }
+                    },
+                    data : [
+                        {type : 'max', name: '最大值'},
+                        {type : 'min', name: '最小值'}
+                    ]
+                }
+            }
+
+        ]
+    }
+    function closes(){
+        is_close = 1;
+        $('#ordfoo').css('display','none')
+    }
+//    $("#system_section").click(function(){
+//        $("#system_warp").slideDown();
+//    });
+</script>
+</body>
+
+</html>

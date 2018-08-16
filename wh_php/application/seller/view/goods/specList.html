@@ -1,0 +1,127 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>商品规格</h3>
+        <h5>商品规格及管理</h5>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+    <ul>
+      <li>商品规格是购买商品时给用户选择的, 涉及到价格变动库存等, 例如:衣服的 颜色 尺寸 等</li>
+    </ul>
+  </div>
+  <div class="flexigrid">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>规格列表</h3>
+        <h5></h5>
+      </div>
+      <form action="{:U('Seller/goods/specList')}" id="search-form2" class="navbar-form form-inline" method="post" >
+        <div class="sDiv">
+          <div class="sDiv2">
+            <select name="cat_id" id="cat_id"  class="select">
+              <option value="">所有分类</option>
+              <foreach name="goodsCatList" item="v" key="k" >
+                <option value="{$v['id']}">{$v['name']}</option>
+              </foreach>
+            </select>
+            <!--排序规则-->
+            <input type="submit" class="btn" value="搜索"  id="button-filter" />
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="tDiv">
+      <div class="tDiv2">
+        <div class="fbutton">
+          <!--<a href="{:U('Seller/goods/addEditSpec')}" onclick="addSpec()" data-toggle="tooltip" title="" class="btn btn-success pull-right" data-original-title="返回">-->
+            <!--<div class="add" title="添加规格">-->
+              <!--<span><i class="fa fa-plus"></i>添加规格项</span>-->
+            <!--</div>-->
+          <!--</a>-->
+        </div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="bDiv" style="height: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th class="sign" axis="col6"><i class="ico-check"></i></th>
+            <th align="left" abbr="article_title" axis="col6" class="">id</th>
+            <th align="left" abbr="ac_id" axis="col4" class="">规格项</th>
+            <th align="center" abbr="article_show" axis="col6" class="">所属分类</th>
+            <th align="center" abbr="article_time" axis="col6" class="">规格值</th>
+            <th align="center" abbr="article_time" axis="col6" class="">状态</th>
+            <th align="center" abbr="article_time" axis="col6" class="">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        <if condition="empty($specList) eq true">
+          <tr data-id="0">
+            <td class="no-data" align="center" axis="col0" colspan="50">
+              <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+            </td>
+          </tr>
+          <else/>
+          <volist name="specList" id="list">
+            <tr>
+              <td class="sign" axis="col6"><i class="ico-check"></i></td>
+              <td align="center" axis="col0">{$list.spec_id}</td>
+              <td align="center" axis="col0">{$list.spec_name}</td>
+              <td align="center" axis="col0">{$list.class_1_name}(一级)>>>{$list.class_2_name}(二级)>>>{$list.class_3_name}(三级)</td>
+              <td align="center" axis="col0"></td>
+              <td align="center" axis="col0">
+                <if condition='$list[state] eq 1'>
+                  <span class="yes" ><i class="fa fa-check-circle"></i>审核通过</span>
+                  <elseif condition='$list[state] eq 2'/>
+                  <span class="no" ><i class="fa fa-ban"></i>审核失败</span>
+                  <else />
+                  <span class="no" ><i class="fa fa-ban"></i>待审核</span>
+                </if>
+              </td>
+              <td align="center" class="handle">
+                  <a class="btn red"  href="javascript:del_fun('{:U('Goods/delGoodsSpec',array('id'=>$list['id']))}');"><i class="fa fa-trash-o"></i>删除</a>
+                  <a href="#" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+              </td>
+            </tr>
+          </volist>
+        </if>
+        </tbody>
+      </table>
+      <div id="ajax_return" cellpadding="0" cellspacing="0" border="0"></div>
+    </div>
+    {$page}
+  </div>
+</div>
+
+</body>
+<script>
+
+
+//    function addSpec(){
+//        alert(111);
+//        layer.open({
+//            type: 2,
+//            title: '添加规格项',
+//            shadeClose: true,
+//            shade: 0.2,
+//            area: ['660px', '300px'],
+//            content: "{:U('Seller/goods/addEditSpec')}",
+//        });
+//    }
+
+</script>
+</html>

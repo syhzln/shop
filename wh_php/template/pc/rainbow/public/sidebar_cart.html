@@ -1,0 +1,167 @@
+<div class="soubao-sidebar">
+    <div class="soubao-sidebar-bg"></div>
+    <div class="sidertabs tab-lis-1">
+        <div class="sider-top-stra sider-midd-1">
+            <div class="icon-tabe-chan">
+                <a href="{:U('Home/User/index')}">
+                    <i class="share-side share-side1"></i>
+                    <i class="share-side tab-icon-tip triangleshow"></i>
+                </a>
+
+                <div class="dl_login">
+                    <div class="hinihdk">
+                        <img src="__STATIC__/images/dl.png"/>
+
+                        <p class="loginafter nologin"><span></span><a href="{:U('Home/user/login')}">{$Think.lang.LoginPrompt}</a></p>
+                        <!--未登录-e--->
+                        <!--登录后-s--->
+                        <p class="loginafter islogin">
+                            <span class="id_jq userinfo"></span>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="{:U('Home/user/logout')}" title="点击退出">{$Think.lang.Exit}！</a>
+                        </p>
+                        <!--未登录-s--->
+                    </div>
+                </div>
+            </div>
+            <div class="icon-tabe-chan shop-car">
+                <a href="javascript:void(0);" onclick="ajax_side_cart_list()">
+                    <div class="tab-cart-tip-warp-box">
+                        <div class="tab-cart-tip-warp">
+                            <i class="share-side share-side1"></i>
+                            <i class="share-side tab-icon-tip"></i>
+                            <span class="tab-cart-tip">{$Think.lang.Cart}</span>
+                            <span class="tab-cart-num J_cart_total_num" id="tab_cart_num">0</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="icon-tabe-chan massage">
+                <a href="{:U('Home/User/message_notice')}" target="_blank">
+                    <i class="share-side share-side1"></i>
+                    <!--<i class="share-side tab-icon-tip"></i>-->
+                    <span class="tab-tip">{$Think.lang.Message}</span>
+                </a>
+            </div>
+        </div>
+        <div class="sider-top-stra sider-midd-2">
+            <div class="icon-tabe-chan mmm">
+                <a href="{:U('Home/User/goods_collect')}" target="_blank">
+                    <i class="share-side share-side1"></i>
+                    <!--<i class="share-side tab-icon-tip"></i>-->
+                    <span class="tab-tip">{$Think.lang.Collection}</span>
+                </a>
+            </div>
+            <div class="icon-tabe-chan hostry">
+                <a href="{:U('Home/User/visit_log')}" target="_blank">
+                    <i class="share-side share-side1"></i>
+                    <!--<i class="share-side tab-icon-tip"></i>-->
+                    <span class="tab-tip">{$Think.lang.Footprint}</span>
+                </a>
+            </div>
+            <!--<div class="icon-tabe-chan sign">-->
+                <!--<a href="" target="_blank">-->
+                    <!--<i class="share-side share-side1"></i>-->
+                    <!--&lt;!&ndash;<i class="share-side tab-icon-tip"></i>&ndash;&gt;-->
+                    <!--<span class="tab-tip">签到</span>-->
+                <!--</a>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <div class="sidertabs tab-lis-2">
+        <div class="icon-tabe-chan advice">
+            <i class="share-side share-side1"></i>
+            <!--<i class="share-side tab-icon-tip"></i>-->
+            <span class="tab-tip kefu">
+                <p><span>{$Think.lang.TelService}①:</span>0571-86995016</p>
+                <p><span>{$Think.lang.TelService}②:</span>0571-86770789</p>
+                <p><span>{$Think.lang.TelService}③:</span>0571-86773215</p>
+                <p><span>{$Think.lang.TelService}④:</span>0571-85383721</p>
+                <p><span>{$Think.lang.TelService}⑤:</span>0571-86776015</p>
+                <p><span>{$Think.lang.TelService}⑥:</span>0571-85383362</p>
+                <p><span>{$Think.lang.TelService}⑦:</span>0571-85383361</p>
+                <p><span>{$Think.lang.TelService}⑧:</span>0571-86993015</p>
+                <p><span>{$Think.lang.TelService}⑨:</span>0571-86854509</p>
+                <p><span>{$Think.lang.TelService}⑩:</span>0571-86775015</p>
+                <p><span>{$Think.lang.CustomerService}:&nbsp;&nbsp;&nbsp;&nbsp;</span>0571-86773115</p>
+            </span>
+        </div>
+        <div class="icon-tabe-chan advice">
+            <i class="share-side share-side1"></i>
+            <!--<i class="share-side tab-icon-tip"></i>-->
+            <div class="tab-tip qqkefu">
+                <p>
+                    <span>{$Think.lang.QQService}①:</span>
+                    <a href="tencent://message/?uin=3516995610&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.QQService}②:</span>
+                    <a href="tencent://message/?uin=2795817030&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.QQService}③:</span>
+                    <a href="tencent://message/?uin=1480552415&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.QQService}④:</span>
+                    <a href="tencent://message/?uin=3232651919&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.QQService}⑤:</span>
+                    <a href="tencent://message/?uin=3510508498&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.QQService}⑥:</span>
+                    <a href="tencent://message/?uin=3196277952&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.MerchantsService}①:</span>
+                    <a href="tencent://message/?uin=3244057716&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.MerchantsService}②:</span>
+                    <a href="tencent://message/?uin=978334939&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.Complaints}:</span>
+                    <a href="tencent://message/?uin=3154580074&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <p>
+                    <span>{$Think.lang.TechnicalAdvice}:</span>
+                    <a href="tencent://message/?uin=2734699187&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a>
+                </p>
+                <span>{$Think.lang.CustomerServiceOnline}:08:30——18:00</span>
+            </div>
+        </div>
+        <!--<div class="icon-tabe-chan qrcode">
+            <a href="javascript:;">
+                <i class="share-side share-side1"></i>
+                <i class="share-side tab-icon-tip triangleshow"></i>
+                <span class="tab-tip qrewm">
+                    <img src="__STATIC__/images/APP-ios.jpg"/>
+                    {$Think.lang.AppleAPPDownload}
+                </span>
+            </a>
+        </div>
+        <div class="icon-tabe-chan qrcode">
+            <a href="javascript:;">
+                <i class="share-side share-side1"></i>
+                <i class="share-side tab-icon-tip triangleshow"></i>
+                <span class="tab-tip qrewm">
+                    <img src="__STATIC__/images/APP-android.png"/>
+                    {$Think.lang.AndroidAPPDownload}
+                </span>
+            </a>
+        </div>-->
+        <div class="icon-tabe-chan comebacktop">
+            <a href="javascript:;">
+                <i class="share-side share-side1"></i>
+                <!--<i class="share-side tab-icon-tip"></i>-->
+                <span class="tab-tip">{$Think.lang.BackToTop}</span>
+            </a>
+        </div>
+    </div>
+    <div class="shop-car-sider">
+
+    </div>
+</div>
+<script src="__STATIC__/js/common.js"></script>

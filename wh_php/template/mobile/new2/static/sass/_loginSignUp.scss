@@ -1,0 +1,383 @@
+.loginsignup2{
+    text-align: center;
+    padding: $num100 0;
+    img{
+        width: 300px/$ppr;
+    }
+}
+.loginsingup-input{
+    .content30{
+        margin: 0 $num30;
+        .lsu{
+            font-size: $num28;
+            position: $pr;
+            padding: 1px/$ppr 0;
+            margin-bottom: $num30;
+            .withType,.withWay{
+                position: relative;
+                display: inline-block;
+                margin: $num10 0;
+                .iconfont{
+                    background: none;
+                    font-size: $num30;
+                    position: absolute;
+                    right: 0;
+                    top: $num10;
+                }
+                select{
+                    width: 280px/$ppr;
+                    height: $num58;
+                    font-size: $num28;
+                    -webkit-appearance: listbox;
+                }
+            }
+            span{
+                
+            }
+            input{
+                width: 462px/$ppr;
+                height: $num88;
+                border: 0;
+                outline: none;
+                padding: 0 $num10;
+                font-size:  $num28;
+            }
+            i{
+                width: 40px/$ppr;
+                height: $num24;
+                @include background-image(eye);
+                display: block;
+                position: $pa;
+                right: 58px/$ppr;
+                top: $num30;
+                cursor: pointer;
+                background-position: 0;
+            }
+            .eye{
+                background-position: -40px/$ppr 0;
+            }
+            .upImg{
+                padding: 5px $num10;
+                color: #757575;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                text-align: center;
+            }
+            p{
+                height: $num34;
+                font-size: $num24;
+                color: #999;
+                line-height: $num34;
+                span{
+                    color: green;
+                }
+            }
+            #sel_bank{
+                height: 50px/$ppr;
+                font-size:  $num26;
+            }
+        }
+        .test{
+            input{
+                width: 300px/$ppr;
+            }
+            img{
+               width: 190px/$ppr;
+               margin-left: 32px/$ppr;
+            }
+        }
+        .submit{
+            border: 0;
+            text-align: center;
+            input{
+                width: 610px/$ppr;
+                height: $num80;
+                color: $white;
+                background-color: #bd1a24;
+                -webkit-appearance:none;
+                margin-top: 66px/$ppr;
+                @include border-radius(6px/$ppr);
+                font-size: $num28;
+            }    
+        }
+        
+        .signup-find{
+            .note{
+                img{
+                    width: $num30;
+                    height: $num30;
+                    vertical-align: bottom;
+                }
+                span{
+                    margin-left: $num10;
+                }
+            }
+        }
+    }
+    .commission{
+        .lsu{
+            p{
+                font-size: $num28;
+                color: #333;
+                display: inline-block;
+                padding: 0 $num46;
+            }
+            font{
+                color: #e23435;
+            }
+        }
+        .search{
+            div{
+                padding: $num30 0;
+            }
+            p{
+                padding:0;
+                width: 32%;
+                select{
+                    width:$num203;
+                    height: 1rem;
+                    margin: $num10 $num16;
+                    font-size: $num24;
+                    border:1px solid #999;
+                    padding: 0 $num10;
+                    vertical-align: middle;
+                }
+            }
+            #submit_button{
+                vertical-align: middle;
+                color: #fff;
+                font-size: 0.512rem;
+                background: #e23435;
+                border: none;
+                padding: $num10 $num34;
+                border-radius: 6px/$ppr;
+                margin-left: $num24;
+            }
+        }
+        table{
+            width: 100%;
+            font-size: $num28;
+            border-bottom: 1px solid #999;
+            th{
+                padding: $num28;
+            }
+            tbody{
+                tr{
+                    td{
+                        padding: $num22 $num46;
+                        color: #e23435;
+                    }
+                    td:first-child{
+                        width: 60%;
+                        text-align: left;
+                        padding: 0;
+                        color: #666;
+                    }
+                }
+            }
+        }
+    }
+}
+.radio{
+    .che{
+        span{
+            margin-left: $num10;
+            vertical-align: sub;
+        }
+    }
+    .check_t{
+        i{
+           background-position: -37px/$ppr 0; 
+        }
+    }
+    i{
+        width: 29px/$ppr;
+        height: $num28;
+        display: block;
+        float: left;
+        @include background-image(check);
+        background-position: 0;
+    }
+}
+.signup-find,.radio{
+    padding-top: $num50;
+    width: 610px/$ppr;
+    margin: 0 auto;
+}
+.signup-find span,.radio span{
+    font-size: $num24;
+    cursor: pointer;
+}
+.thirdlogin{
+    border-top: 1px solid $grey3;
+    text-align: center;
+    margin: $num50 0;
+    h4{
+        font-size: $num30;
+        font-weight: normal;
+        background-color: $white;
+        position: $pr;
+        top: -16px/$ppr;
+        display: inline;
+        padding: 0 $num10;
+    }
+    ul{
+        display: table;
+        margin: 0 auto;
+        margin-top: $num50;
+        li{
+            float: left;
+            text-align: center;
+            font-size: $num20;
+            margin: 0 75px/$ppr;
+            img{
+                width: 68px/$ppr;
+                height: 68px/$ppr;
+            }
+            p{
+                padding-top: $num20;
+            }
+        }
+    }
+}
+.singupphone{
+    .content30{
+        .bk{
+            border: 2px solid $grey3;
+            overflow: hidden;
+            @include border-radius(6px/$ppr);
+            margin-top: $num100;
+            span{
+                display: block;
+                float: left;
+                width: 116px/$ppr;
+                border-right: 2px solid $grey3;
+                height: 86px/$ppr;
+                line-height: 86px/$ppr;
+                text-align: center;
+            }
+            input{
+                float: left;
+                width: 560px/$ppr;
+            }
+        }
+        .radio{
+            width: auto;
+            padding-top: $num20;
+        }
+        .signup-find{
+            padding-top: $num20;
+        }
+    }
+}
+.recept{
+    font-size: $num24;
+    color: #666666;
+    vertical-align: middle;
+    text-align: left;
+    a{
+        vertical-align: top;
+        text-decoration: underline;
+        color: #e30000;
+    }
+}
+.findpassword{
+    .content30 {
+        .bk{ 
+            span{
+                border-right: 0;
+            }
+        }
+        .ma{
+            margin-top: $num50;
+            span {
+                width: 172px/$ppr;
+                border-left:2px solid $grey3;
+                img{
+                    width: 154px/$ppr;
+                    height: 64px/$ppr;
+                    margin-top: -4px/$ppr;
+                }
+            }
+            input{
+                width: 512px/$ppr;
+            }
+        }
+        
+    }
+}
+.zc_se{
+    input{
+        width: 408px/$ppr;
+    }
+    a{
+        padding: 26px/$ppr 10px/$ppr;
+        background-color: #ec5151;
+        color: white;
+        border-radius: 6px/$ppr;
+    }
+}
+.loginsingup-input .content30 .boo{
+    border:0;
+    margin-top: 60px/$ppr;
+    position: relative;
+    span{
+        position: absolute;
+        bottom:-2px;
+        left:5px;
+        display: none;
+        color:#e23435;
+        font-size: 12px;
+    }
+    #fileList{
+        img{
+            max-width: 100%;
+        }
+        .delImg{
+            color: #e23435;
+            display: none;
+            width:100%;
+            text-align: center;
+            padding:5px;
+        }
+    }
+    input{
+        border-radius: 6px/$ppr;
+    }
+}
+.loginsingup-input .content30 .wicheck{
+    input{
+        width: 100%;
+    }
+}
+.loginsingup-input .content30 .boz{
+    border: 0;
+    margin-top: 0;
+}
+.mobil_topup{
+    .content30{
+        .lsu{
+            padding: 16px 0;
+            border-bottom: 1px solid #ebebeb;
+        }
+    }
+    .customer-messa{
+        padding: 48px/$ppr 0;
+        background: white;
+    }
+    .myorder{
+        padding: 0 0;
+        border-bottom: none;
+        height: 119px/$ppr;
+        .order{
+            border-top: 1px solid #ebebeb;
+            padding: 24px/$ppr 0;
+            .fl span{
+                margin-left: 0;
+            }
+        }
+    }
+    .bawhite{
+        background: white;
+    }
+}

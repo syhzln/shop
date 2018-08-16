@@ -1,0 +1,117 @@
+syntax = "proto3";
+package psp;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service TradeService{
+    rpc getShoppingCartItems(MemberId) returns(ShopingItem); //获取购物车列表
+    rpc addShoppingItem(ShoppingItems) returns(google.protobuf.BoolValue); //添加商品到购物车
+    rpc increaseShoppingItemAmount(CartId) returns(google.protobuf.BoolValue); //添加购物车商品数量
+    rpc decreaseShoppingItemAmount(CartId) returns(google.protobuf.BoolValue); //减少购物车商品数量
+    rpc setShoppingItemAmount(ShoppingItemAmount) returns(google.protobuf.BoolValue); //设置购物车商品数量
+    rpc deleteShoppingItem(CartId) returns(google.protobuf.BoolValue)//删除商品
+    rpc clearShoppingCart(MemberId) returns(google.protobuf.BoolValue)//清空购物车
+    rpc createOrderFromShoppingCart(OrderInfo) returns(OrderId)//全部转换成订单
+    rpc clearShoppingCartByDate(orderThan) returns(google.protobuf.BoolValue)//按时间清理购物车
+    rpc getAccount(MemberId) returns (UserAccountAndCoupon)//获取用户钱包资金 和 优惠券
+    rpc getCouponInfo(CouponId) returns(UserCouponInfo)//获取优惠券详情
+    rpc createOrderItem(OrderInfo) returns(google.protobuf.Empty); //生成购物订单
+    rpc getPayNumber(OrderIds) returns(PayMember); //获取订单支付号
+    rpc updatePayStatus(OrderPayInfo) returns(google.protobuf.Empty); //支付完成修改订单状态
+    rpc tellPaySuccessOrder(OrderIds) returns(google.protobuf.Empty); //告知哪些订单支付成功
+    rpc OrderAction(ActionInfo) returns(google.protobuf.BoolValue); //订单操作
+//    rpc getOrder(MenberId) returns (UserOrders)//用户获取所有订单
+//    rpc getUnpaidOrder(MenberId) returns (UnpaidOrders)//未支付订单
+//    rpc getNotReceivedOrder(MemberId) returns (NotReceivedOrders)//待收货订单
+//    rpc getCompletionOrder(MemberId) returns (CompletionOrders)//已完成订单
+    rpc getUserOrder(OrderCondition) returns(UserOrders); //根据订单条件获取订单列标表 all no_pay no_recieve completed
+    rpc deleteOrderItem(OrderId) returns(google.protobuf.BoolValue); //删除订单
+    rpc addOrderItem(OrderItems) returns(google.protobuf.Empty);
+    rpc increaseOrderItemCount(OrderId) returns(google.protobuf.BoolValue); //增加订单商品数量
+    rpc decreaseOrderItemCount(OrderId) returns(google.protobuf.BoolValue); //减少订单商品的数量
+    rpc setOrderItemCount(Count) returns(google.protobuf.BoolValue); //修改订单商品的数量
+    rpc updateOrderAddressWithId(AddressId) returns(google.protobuf.BoolValue); //修改订单收货地址id
+    rpc updateOrderAdress(AddressInfo) returns(google.protobuf.BoolValue); //修改地址
+    rpc getOrderList(SearchInfo) returns(OrderList); //订单列表
+    rpc orderDetails(OrderId) returns(OrderInfo);//订单详情
+    rpc addDeliveryInfo(DeliveryInfo) returns(google.protobuf.Empty); //添加发货单
+    rpc confirmOrder(OrderId) returns (google.protobuf.BoolValue)//订单确认收货
+
+    rpc addReturnGoods(ReturnInfo) returns(google.protobuf.Empty); //申请退货
+    rpc getReturnList(google.protobuf.Empty) returns(ReturnList); //退货单列表
+    rpc returnAction(ReturnInfo) returns(goofle.protobuf.BoolValue); //退换货操作
+
+
+    rpc sendOrder(OrderId) returns(SendOrderInfo);//订单推送
+
+}
+
+/*订单项*/
+message OrderItem{
+    uint32 type = 1; //订单类型
+    string name = 2; //商品名称
+    uint32 itemId = 3; //商品id
+    uint32 providerId = 4; //商家id
+    uint32 skuId = 5; //商品sku
+    double price = 6; //商品成本价
+    double cost = 7; //商品单价
+    uint32 currencey = 8; //币种
+    uint32 amount = 9; //数量
+    string skuUnit = 10; //单位
+}
+
+/*物流信息*/
+message OrderLogistics{
+    uint32 providerId = 1; //商家id
+    double price = 2; //费用
+    uint32 currency = 3; //币种
+    string deliverer = 4; //物流公司
+    string remark = 5; //用户备注信息
+}
+
+/*商家促销信息*/
+message OrderPrviderPromotion{
+    uint32 providerId = 1; //商家id
+    uint32 promotionId = 2; //促销活动id
+    uint32 type = 3; //促销类型
+    string name = 4; //促销活动名称
+    double discount = 5; //折扣金额
+    uint32 currency = 6; //币种
+}
+
+/*商家促销信息*/
+message OrderPlatformPromotion{
+    uint32 type = 1;
+    string name = 2;
+    uint32 promotionId = 3;
+    double discount = 5;
+    uint32 currency = 6;
+}
+
+/*订单信息*/
+message OrderInfo{
+    uint32 orderId = 1; //订单id
+    uint32 state = 2; //订单状态
+    uint32 type = 3; //订单类型
+    uint32 memberId = 4; //会员id
+    uint32 platformId = 5; //平台id
+    double money = 6; //订单金额
+    uint32 currency = 7; //订单金额种币
+    OrderItem items = 8; //订单项列表
+    OrderLogistics logictics = 9; //物流信息列表
+    OrderProviderPromotion providerPromotions = 10; //商家促销列表
+    OrderPlatformPromotion platformPromotions = 11; //平台促销信息
+
+}
+
+/*购物车商品项*/
+message ShoppingItem{
+    uint32 itemId = 1; //商品id
+    uint32 skuId = 2; //商品sku
+    uint32 amount = 3; //商品数量
+}
+
+message MemberId{
+    uint32 menberId = 1; //用户id
+}

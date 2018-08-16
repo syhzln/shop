@@ -1,0 +1,139 @@
+<include file="public/layout" />
+<script type="text/javascript" src="/Public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>支出日志</h3>
+                <h5>平台支出结算日志记录</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>平台支出记录包括会员提现，商家提现，以及平台跟商家或会员之间其他协商的现金流出操作日志</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>订单列表</h3>
+                <h5>(共{$list|count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline"  method="post" action=""  name="search-form2" id="search-form2">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="type" name="type" class="form-control">
+                            <option value="0">类型</option>
+                            <option value="1"<if condition="$_REQUEST['type'] eq 1">selected</if>>支付到商家</option>
+                            <option value="2"<if condition="$_REQUEST['type'] eq 2">selected</if>>支付到会员</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="status" name="status" class="form-control">
+                            <option value="-1">状态</option>
+                            <option value="0"<if condition="$_REQUEST['status'] eq 0">selected</if>>处理中</option>
+                            <option value="1"<if condition="$_REQUEST['status'] eq 1">selected</if>>成功转出</option>
+                            <option value="2"<if condition="$_REQUEST['status'] eq 2">selected</if>>转出失败</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="platform_id" name="platform_id" class="form-control">
+                            <option value="1">平台</option>
+                            <option value="1"<if condition="$_REQUEST['platform_id'] eq 1">selected</if>>量子时空平台</option>
+                            <option value="2"<if condition="$_REQUEST['platform_id'] eq 1">selected</if>>量子时空1</option>
+                            <option value="3"<if condition="$_REQUEST['platform_id'] eq 2">selected</if>>..</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="time_select_type" name="time_select_type" class="form-control">
+                            <option value="1">时间类型</option>
+                            <option value="1"<if condition="$_REQUEST['time_select_type'] eq 1">selected</if>>发起时间</option>
+                            <option value="2"<if condition="$_REQUEST['time_select_type'] eq 2">selected</if>>完成时间</option>
+                        </select>
+                    </div>
+
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="start_time" name="start_time" value="" class="qsbox"  placeholder="开始时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="end_time" name="end_time" value="" class="qsbox"  placeholder="结束时间">
+                    </div>
+
+                    <div class="sDiv2">
+                        <input type="text" size="30" name="receiptor" class="qsbox" placeholder="接收方">
+                    </div>
+
+                    <div class="sDiv2">
+                        <input type="text" size="30" name="admin_id" class="qsbox" placeholder="操作管理员id">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="submit"  class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sign" axis="col0"><i class="ico-check"></i></th>
+                            <th align="center" abbr="order_sn" axis="col3" class="">记录id</th>
+                            <th align="center" abbr="consignee" axis="col4" class="">支出金额</th>
+                            <th align="center" abbr="article_show" axis="col5" class="">支出类型</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">业务关联id</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">涉及人</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">操作人</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">日志时间</th>
+                            <th axis="col7"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="sign" axis="col0"><i class="ico-check"></i></td>
+                            <td align="center" abbr="order_sn" axis="col3" class="">1</td>
+                            <td align="center" abbr="consignee" axis="col4" class=""></td>
+                            <td align="center" abbr="article_time" axis="col6" class="">商家提现</td>
+                            <td align="center" abbr="article_time" axis="col6" class="">10</td>
+                            <td align="center" abbr="article_time" axis="col6" class="">1</td>
+                            <td align="center" abbr="article_time" axis="col6" class="">admin</td>
+                            <td align="center" abbr="article_time" axis="col6" class="">2017-04-15 11:00</td>
+                            <td align="" class=""></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6 text-left"></div>
+                    <div class="col-sm-6 text-right"><div class='dataTables_paginate paging_simple_numbers'><ul class='pagination'>    </ul></div></div>
+                </div>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $('#add_time_begin').layDate();
+        $('#add_time_end').layDate();
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+1.GRPC使用说明:
+	
+	1,配置conf选项名     ps:  'Account' => "192.168.1.115:9300",
+	
+	2,GRPC()   ps GRPC('ACCOUNT')||GRPC('account')不区分大小写 返回资源等同于 new Psp\Account\AccountServiceClient(192.168.1.115:9300,['credentials' => Grpc\ChannelCredentials::createInsecure()]);
+
+1.1版本更正
+	1,支持连接查询,连接未通抛出异常,
+	2,支持连接定义,GRPC(trade,'192.168.1.115')//定义不同的服务中心提供相同的服务
+	
+
+
+              ____________________________________________________________________________
+             |              |   |                                      |  |               | 
+             |___GRPC()_____|___|____________实例化类__________________|__|_conf须填参数__|
+             |'account':    |   |  Psp\Account\AccountServiceClient    |  |Account        |
+             |'trade':      |   |  Psp\Trade\TradeServiceClient        |  |Trade          |
+             |'sellerorder':|   |  Psp\Trade\SellerOrderServiceClient  |  |SellerOrder    |
+             |'adminorder': |   |  Psp\Trade\AdminOrderServiceClient   |  |AdminOrder     |
+             |'item':       |   |  Psp\Item\ItemServiceClient          |  |Item           |
+             |'cat':        |   |  Psp\Item\CatServiceClient           |  |Cat            |
+             |'brand':      |   |  Psp\Item\ItemBrandServiceClient     |  |Brand          |
+             |'comment':    |   |  Psp\Item\ItemcommentServiceClient   |  |Comment        |
+             |'extra':      |   |  Psp\Item\ItemExtraServiceClient     |  |Extra          |
+             |'user':       |   |  Psp\User\PlatfromUserServiceClient  |  |User           |
+             |'member':     |   |  Psp\Member\UserServiceClient        |  |Member         |
+             |'mobile':     |   |  Psp\Mobile\MobileIndexServiceClient |  |Mobile         |
+             |'search':     |   |  Psp\Search\SearchServiceClient      |  |Search         |
+             |'seller':     |   |  Psp\Seller\SellerUserServiceClient  |  |Seller         |
+             |'sellerstore':|   |  Psp\Store\SellerStoreServiceClient  |  |SellerStore    |
+             |'article':    |   |  Psp\Content\ArticleServiceClient    |  |Article        |
+             |'report':     |   |  Psp\Content\ReportServiceClient     |  |Report         |
+             |'home':       |   |  Psp\Home\HomeIndexServiceClient     |  |Home           |
+             |'goodslist':  |   |  Psp\Home\GoodsListServiceClient     |  |GoodsList      |
+             |______________|___|______________________________________|__|_______________|    
+
+2.grpcTime()
+	所有需填写即时时间的地方.直接填写grpcTime(),
+	须填写某个时间点的时间戳对象grpcTime($timestamp) $timestamp 某个时间点'时间戳',时间戳,时间戳
+
+
+3.grpcEmpty() 
+	返回空对象;	
+
+4.grpcBool($bool)	
+	$bool 0|1 ,true| false.

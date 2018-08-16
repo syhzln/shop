@@ -1,0 +1,268 @@
+.pjiscion{
+    padding-top: 20px/$ppr;
+    background: white;
+    ul{
+        li{
+            float: left;
+            width: 100/3*1%;
+            text-align: center;
+            font-size: 28px/$ppr;
+            font-family: "黑体";
+            line-height: 40px/$ppr;
+            cursor: pointer;
+        }
+        .red{
+            color: #f23030;
+            border-bottom: 1px solid #f23030;
+            padding-bottom: 20px/$ppr;
+        }
+    }
+}
+.after-set-li{
+    ul li{
+        width: 100/3*1%;
+    }
+}
+.said{
+    background:url(../images/co.png) no-repeat;
+    width: 24px/$ppr;
+    height: 21px/$ppr;
+    display: inline-block;
+    vertical-align: inherit;
+    background-size: cover;
+    margin-right: 6px/$ppr;
+}
+.co2{
+    background: url(../images/co2.png) no-repeat;
+    width: 28.2px/$ppr;
+    height: 24px/$ppr;
+    background-size: cover;
+}
+.c23{
+    background: url(../images/c23.png) no-repeat;
+    width: 24px/$ppr;
+    height: 24px/$ppr;
+    background-size: cover;
+}
+.c24{
+    background: url(../images/c24.png) no-repeat;
+    width: 18px/$ppr;
+    height: 17px/$ppr;
+    background-size: cover;
+}
+.dapco{
+    .compj{
+        border-color: #F23030;
+//      margin-top: 24px/$ppr;
+        margin-left: 15px/$ppr;
+        color: #f23030;
+    }
+    .nomar{
+        border-color: inherit;
+        color: inherit;
+    }
+}
+.dyeai{
+    clear: both;
+    overflow: hidden;
+    font-size: 24px/$ppr;
+    color: #b3b3b3;
+    span{
+        float: right;
+        margin-top: 15px/$ppr;
+        margin-right: 100px/$ppr;
+    }
+}
+.pall0{
+    padding: 0 10px/$ppr;
+    color: #b3b3b3;
+    font-size: 24px/$ppr;
+}
+.quedbox.bg_white{
+    .img_or{
+        img{
+            border: 0;
+        }
+    }
+}
+.bg_white .bg3g{
+    background: #f3f5f7;
+}
+.bg3g{
+    .dyeai{
+        background: white;
+        padding: 20px/$ppr 0;
+        margin-top: 25px/$ppr;
+    }
+}
+.tuijian{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: $num24;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+    padding: $num28;
+}
+.after-set-li .my_tuijian>li{
+    width:25%;
+    background: #e9e9e9;
+    padding: $num14 $num10;
+}
+.tuijianList span{
+    display: inline-block;
+    width: 24.3%;
+    text-align: center;
+    font-size: $num28;
+    padding: $num14 $num10;
+    border-bottom: 1px solid #ccc;
+}
+.m_detail{
+    display: none;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+}
+.m_detail_box{
+    width: 60%;
+    background: #fff;
+    margin: 30% auto;
+    border-radius: 10px;
+    padding:$num28;
+    font-size: $num28;
+}
+.m_detail_box>h3{
+    text-align: center;
+    padding:$num28;
+}
+.m_detail_box li{
+    padding:$num14;
+}
+
+
+.leave-message>a,.write-message button{
+    display: block;
+    margin-top: $num46;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    background: #e23435;
+    padding: $num16 $num24;
+    font-size: $num28;
+    border-radius: $num10;
+    border:none;
+}
+.last-message{
+    margin: 0 auto;
+    width:80%;
+    font-size: $num28;
+    border-bottom: 1px solid #999;
+    background:#f8f8f8;
+    p{
+        padding: $num16;
+        span{
+            padding: $num10 $num16;
+            display: inline-block;
+        }
+    }
+    .repeat{
+        color:#e23435;
+    }
+}
+.write-message{
+    font-size: $num28;
+    margin: 0 auto;
+    background: #fff;
+    padding: 1rem;
+    p{
+        span{
+            margin: $num24 0;
+            display: inline-block;
+        }
+    }
+    input,textarea{
+        width: 100%;
+        border: 1px solid #666;
+        padding: $num20;
+        font-size: $num28;
+    }
+    textarea{
+        height: $num203;
+    }
+}
+.message_list{
+    table{
+        th{
+            font-size: $num28;
+            padding-bottom:$num20;
+        }
+        width: 100%;
+        font-size: $num24;
+        padding: $num10;
+        td{
+            text-align: center;
+            padding: $num16 0;
+        }
+        .view_detail{
+            padding: $num16 $num20;
+        }
+        .message_title{
+            max-width: $num145;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
+}
+
+.message_record{
+    .message_list{
+        padding: $num24;
+        font-size: $num24;
+        .my_message{
+            width: 100%;
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .kefu_message{
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+            font{background: #eee;}
+        }
+        font{
+            display: inline-block;
+            background: #95dcd2;
+            padding: $num10;
+            border-radius: $num10;
+            text-align: left;
+        }
+    }
+    .reply_message{
+        textarea{
+            width: 85%;
+            height: 3rem;
+            margin: 0 auto;
+            display: block;
+            border-radius: $num10;
+            margin-bottom: $num46;
+            font-size: $num28;
+            padding: $num12;
+        }
+        a{
+            display: block;
+            width: 85%;
+            background: #e23435;
+            padding: 0.512rem 0;
+            font-size: 0.597rem;
+            color: #fff;
+            text-align: center;
+            margin: 0 auto;
+            border-radius: $num10;
+            margin-bottom: 2rem;
+        }
+    }
+}

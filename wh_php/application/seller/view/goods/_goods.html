@@ -1,0 +1,539 @@
+<include file="public/min-header"/>
+
+<!--物流配置 css -start-->
+<style>
+    ul.group-list {
+        width: 96%;min-width: 1000px; margin: auto 5px;list-style: disc outside none;
+    }
+    ul.group-list li {
+        white-space: nowrap;float: left;
+        width: 150px; height: 25px;
+        padding: 3px 5px;list-style-type: none;
+        list-style-position: outside;border: 0px;margin: 0px;
+    }
+    .wrapper .content,.wrapper .container-fluid{padding:0;}
+    .panel-default{border: none;}
+    .panel-default > .panel-heading{background:#fff;}
+    .fa-arrow-circle-o-left{
+      font-size: 40px;
+      vertical-align: middle;
+      color: #999;
+      margin-right: 10px;
+    }
+</style>
+<!--物流配置 css -end-->
+
+<!--以下是在线编辑器 代码 -->
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"> </script>
+ <script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+
+    var url="{:url('Admin/Ueditor/index',array('savePath'=>'goods'))}";
+    var ue = UE.getEditor('goods_content',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "100%", //初化宽度
+        initialFrameHeight: 300, //初化高度
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:true, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+</script>
+<!--以上是在线编辑器 代码  end-->
+<div class="wrapper">
+    <!-- <include file="public/breadcrumb"/> -->
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+        
+                <!--<a href="{:U('Goods/goodsList',array('goods_state'=>1,'is_back'=>1))}" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>-->
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>商品详情</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_tongyong" data-toggle="tab">通用信息</a></li>
+                        <li><a href="#tab_goods_images" data-toggle="tab">商品相册</a></li>
+                        <li><a href="#tab_goods_spec" data-toggle="tab">规格库存</a></li>
+                        <li><a href="#tab_goods_shipping" data-toggle="tab">商品物流</a></li>
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="addEditGoodsForm" action="">
+                    <!--通用信息-->
+                    <div class="tab-content">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>商品名称:</td>
+                                    <td>
+                                        <input type="text" placeholder="请输入32个以内字符" value="{$iteminfo.title}" name="title" class="form-control" maxlength="32" style="width:550px;"/>
+                                        <span id="err_goods_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>商品简介:</td>
+                                    <td>
+	                                    <textarea class="remark" rows="3" cols="80" name="remark" placeholder="请输入120个以内字符！" style="vertical-align: middle;">{$itemdetail.remark}</textarea>
+                                        <span id="err_goods_remark" style="color:#F00; display:none;">输入超过120个字！</span>
+                                         
+                                    </td>                                                                       
+                                </tr>
+
+                                <tr>
+                                    <td>商品分类：</td>{$itemInfo['cat_id1']}
+                                    <td>
+                                      <div class="col-xs-3">
+                                      <select name="cat_id1" id="cat_id1" onchange="get_category2(this.value,'cat_id2','0');" class="form-control" style="width:250px;margin-left:-15px;">
+                                        <option value="0">请选择商品分类</option>
+                                             <foreach name="cat_list" item="v" >
+                                               <option value="{$v['id']}" <if condition="$v['id'] eq $iteminfo['cat_id1']">  selected="selected" </if> >
+                                               		{$v['name']}
+                                               </option>
+                                             </foreach>
+                                      </select>
+                                      </div>
+                                      <div class="col-xs-3">
+                                      <select name="cat_id2" id="cat_id2" onchange="get_category2(this.value,'cat_id3','0');" class="form-control" style="width:250px;margin-left:-15px;">
+                                        <option value="0">请选择商品分类</option>
+                                      </select>  
+                                      </div>
+                                      <div class="col-xs-3">                        
+                                      <select name="cat_id3" id="cat_id3" class="form-control" style="width:250px;margin-left:-15px;">
+                                        <option value="0">请选择商品分类</option>
+                                      </select> 
+                                      </div>    
+                                      <span id="err_cat_id1" style="color:#F00; display:none;"></span>                                      
+                                      <span id="err_cat_id2" style="color:#F00; display:none;"></span>
+                                      <span id="err_cat_id3" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>                                 
+
+                                <tr>
+                                    <td>商品品牌:</td>
+                                    <td>
+									<select name="brand_id" id="brand_id" class="form-control" style="width:250px;">
+                                       		 <option value="0">选择品牌</option>
+                                            <foreach name="brandList" item="v" key="k" >
+
+                                                    <option value="{$v['brand_id']}"  data-cat_id1="{$v['cat_id1']}" <if condition="$v['brand_id'] eq $iteminfo['brand_id'] ">selected="selected"</if>>
+                                                    {$v['name']}
+                                                    </option>
+                                               </if>
+                                           </foreach>
+                                      </select>                                    
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>生产厂家:</td>
+                                    <td>
+                                        <input type="text" value="{$itemdetail.producer}" name="producer" class="form-control" style="width:250px;" />
+                                        <span id="err_producer" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>原产地:</td>
+                                    <td>
+                                        <input type="text" value="{$itemdetail.original}" name="original" class="form-control" style="width:250px;" />
+                                        <span id="err_original" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>上传商品图片:</td>
+                                    <td>
+                                        <input type="button" value="上传图片"  onclick="GetUploadify(1,'','goods','call_back');"/>
+                                        <input type="text" class="input-sm"  name="original_img" id="original_img" value="{$iteminfo.index_img}"/>
+                                        (必须上传,商品列表主图)
+                                        <if condition="$iteminfo['index_img'] neq null">
+                                            &nbsp;&nbsp;
+                                            <a target="_blank" href="{$iteminfo['index_img']}" id="original_img2">
+                                                <img width="25" height="25" src="/public/images/image_icon.jpg">
+                                            </a>
+                                        </if>
+                                        <span id="err_original_img" style="color:#F00; display:none;"></span>
+
+                                    </td>
+                                </tr>                                 
+                                <tr>
+                                    <td>商品重量:</td>
+                                    <td>
+
+                                        <input type="text" class="form-control" style="width:150px;" value="{$iteminfo.weight}" name="weight" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        &nbsp;克 (以克为单位)
+                                        <span id="err_weight" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>是否包邮:</td>
+                                    <td>
+
+                                        是:<input type="radio" <if condition="empty($iteminfo) OR $iteminfo[is_free_shipping] eq 1">checked="checked"</if> value="1" name="is_free_shipping" />
+                                        否:<input type="radio" <if condition="empty(!$iteminfo) AND $iteminfo[is_free_shipping] eq 0">checked="checked"</if> value="0" name="is_free_shipping" />
+                                        (默认包邮)
+                                    </td>
+                                </tr> 
+
+                                 <tr>
+                                    <td>是否虚拟商品:</td>
+                                    <td>
+                                        是:<input type="radio" <if condition="$iteminfo[is_vp] eq 1 ">checked="checked"</if> value="1" name="is_vp" />
+                                        否:<input type="radio" <if condition="$iteminfo[is_vp] eq 0">checked="checked"</if> value="0" name="is_vp" />  (*如果是酒店/餐饮/旅游/健康类产品，属于虚拟商品，选择是，其他默认否，请勿点击*)
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>商品关键词:</td>
+                                    <td>
+                                        <input type="text" class="form-control" style="width:550px;" value="{$itemdetail.keywords}" name="keywords"/>用空格分隔
+                                        <span id="err_keywords" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>                                    
+                                <tr>
+                                    <td>商品详情描述:</td>
+                                    <td width="85%">
+										<textarea class="span12 ckeditor" id="goods_content" name="goods_content" title="">{$itemdetail.item_content}</textarea>
+                                        <span id="err_goods_content" style="color:#F00; display:none;"></span>                                         
+                                    </td>                                                                       
+                                </tr>   
+                                </tbody>                                
+                                </table>
+                        </div>
+                         <!--其他信息-->
+                         
+                        <!-- 商品相册-->
+                        <div class="tab-pane" id="tab_goods_images">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>                                    
+                                    <td>                                                            
+                                    <foreach name="itemimg" item="vo" key="k" >
+                                        <div style="width:100px; text-align:center; margin: 5px; display:inline-block;" class="goods_xc">
+                                            <input type="hidden" value="{$vo['url']}" name="goods_images[]">
+                                            <a onclick="" href="{$vo['url']}" target="_blank"><img width="100" height="100" src="{$vo['url']}"></a>
+                                            <br>
+                                            <a href="javascript:void(0)" onclick="ClearPicArr2(this,'{$vo[url]}','{$vo[id]}')">删除</a>
+                                        </div>
+                                    </foreach>
+                                    
+                                        <div class="goods_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">
+                                            <input type="hidden" name="goods_images[]" value="" />
+                                            <a href="javascript:void(0);" onclick="GetUploadify(10,'','goods','call_back2');"><img src="/public/images/add-button.jpg" width="100" height="100" /></a>
+                                            <br/>
+                                            <a href="javascript:void(0)">&nbsp;&nbsp;</a>
+                                        </div>                                        
+                                    </td>
+                                </tr>                                              
+                                </tbody>
+                            </table>
+                        </div>
+                         <!--商品相册--> 
+   
+                        <!-- 商品规格-->
+                        <div class="tab-pane" id="tab_goods_spec">
+                            <table class="table table-bordered" id="goods_spec_table">
+                                <tr>
+                                    <ul>
+                                        <foreach name="itemaction" item="vo" key="k" >
+                                            <li>{$vo.create_time|date='Y-m-d H:i',###}  {$vo.msg} </li>
+                                        </foreach>
+                                    </ul>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">                                    
+									<p class="text-warning" style="font-size:16px;">
+                                    请先选择商品分类再设置规格
+                                    </p>                                    
+                                    </td>
+                                </tr>     
+                                                           
+                            </table>
+                            <div id="ajax_spec_data"><!-- ajax 返回规格--></div>
+                        </div>
+                        <!-- 商品规格-->
+
+                        <!-- 商品属性-->
+                        <div class="tab-pane" id="tab_goods_attr">
+                            <table class="table table-bordered" id="goods_attr_table">
+                                <tr>
+                                    <td colspan="2">
+									<p class="text-warning" style="font-size:16px;">
+                                    请先选择商品分类再设置属性
+							        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- 商品属性-->
+
+                        <!-- 商品物流-->
+                        <div class="tab-pane" id="tab_goods_shipping">
+                            <h4><b>物流配送：</b>若无满意的物流选择可向平台申请添加</h4>
+                            <table class="table table-bordered table-striped dataTable" id="goods_shipping_table">
+
+                                <tr>
+                                    <th align="left" abbr="article_title" axis="col3" class="">
+                                        <div style="text-align: left; width: 120px;" class="">物流名称</div>
+                                    </th>
+                                    <th align="left" abbr="ac_id" axis="col3" class="">
+                                        <div style="text-align: left; width: 120px;" class="">物流编码</div>
+                                    </th>
+                                    <th align="left" abbr="ac_id" axis="col4" class="">
+                                        <div style="text-align: left; width: 120px;" class="">配送区域</div>
+                                    </th>
+                                    <th align="left" abbr="article_show" axis="col5" class="">
+                                        <div style="text-align: center; width: 120px;" class="">物流费用</div>
+                                    </th>
+                                </tr>
+
+                                <volist name="plugin_shipping" id="l">
+                                    <tr>
+                                        <td align="left" class="">
+
+                                            <div style="text-align: left; width: 120px;">
+                                                <input type="checkbox" name="temp_id[]" value="{$l.temp_id}" <in name="$l.temp_id" value="$iteminfo.logistics">checked</in>>
+                                                {$l.name}
+                                            </div>
+                                        </td>
+                                        <td align="left" class="">
+
+                                            <div style="text-align: left; width: 120px;">
+
+                                                {$l.method}
+                                            </div>
+                                        </td>
+
+                                        <td align="left" class="">
+                                            <if condition="$l.areas neq ''">
+                                                <div style="text-align: left;">{$l.areas}</div>
+                                                <else/>
+                                                <div style="text-align: left;">全国通用</div>
+                                            </if>
+                                        </td>
+                                        <if condition="$l.config neq ''">
+                                        <td align="left" class="">
+                                            <div style="text-align: left;">首重每{$l.config.first_weight}克:{$l.config.money}元</div>
+                                            <div style="text-align: left; width: 120px;">续重每{$l.config.second_weight}克:{$l.config.add_money}元</div>
+                                        </td>
+                                        </if>
+                                    </tr>
+                                </volist>
+                            </table>
+                        </div>
+
+                        <!-- 商品物流-->
+
+                    </div>
+                    <div class="pull-right">
+                        <input type="hidden" name="goods_id" value="{$iteminfo.item_id}">
+                        <button class="btn btn-primary" onclick="check_submit('addEditGoodsForm');" title="" data-toggle="tooltip" type="button" data-original-title="保存">保存</button>
+                    </div>
+
+			    </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        $(":checkbox[cka]").click(function(){
+            var $cks = $(":checkbox[ck='"+$(this).attr("cka")+"']");
+            if($(this).is(':checked')){
+                $cks.each(function(){$(this).prop("checked",true);});
+            }else{
+                $cks.each(function(){$(this).removeAttr('checked');});
+            }
+        });
+        $('.remark').keydown(function(){
+            if(this.value.length >= 120){
+                $('#err_goods_remark').css('display','inline-block');
+                this.value=this.value.substr(0,100);
+            }else{
+                $('#err_goods_remark').css('display','none')
+            }
+        })
+    });
+    /*
+     * 以下是图片上传方法
+     */
+ 
+    // 上传商品图片成功回调函数
+    function call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+    	$("#original_img2").attr('href', fileurl_tmp);
+    }
+ 
+    // 上传商品相册回调函数
+    function call_back2(paths){
+
+        var  last_div = $(".goods_xc:last").prop("outerHTML");	
+        for (i=0;i<paths.length ;i++ )
+        {                    
+            $(".goods_xc:eq(0)").before(last_div);	// 插入一个 新图片
+                $(".goods_xc:eq(0)").find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            $(".goods_xc:eq(0)").find('img').attr('src',paths[i]);// 修改他的图片路径
+                $(".goods_xc:eq(0)").find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+            $(".goods_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+        } 			   
+    }
+    /*
+     * 上传之后删除组图input     
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path,img_id)
+    {
+        $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片				 		
+		/*
+    	$.ajax({
+                    type:'GET',
+                    url:"{:U('Admin/Uploadify/delupload')}",
+                    data:{action:"del", filename:path},
+                    success:function(){
+                      $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片
+                    }
+		});
+		*/
+		// 删除数据库记录
+    	$.ajax({
+                    type:'GET',
+                    url:"{:U('Seller/Goods/del_goods_images')}",
+                    data:{filename:path,img_id:img_id},
+                    success:function(){
+                          //		 
+                    }
+		});			
+    }
+
+/**
+* ajax 加载规格 和属性
+*/
+function ajaxGetSpecAttr(goods_id,cat_id3)
+{
+        // ajax调用 返回规格
+	$.ajax({
+			type:'GET',
+            url:"/index.php?m=Seller&c=Goods&a=ajaxGetSpecSelect&goods_id="+goods_id+"&cat_id3="+cat_id3,
+
+            success:function(data){
+				   $("#ajax_spec_data").html('');
+				   $("#ajax_spec_data").append(data);
+				if($.trim(data) != '')
+				   ajaxGetSpecInput();	// 触发完  马上处罚 规格输入框
+			}
+	});
+
+}
+
+
+/** 以下是编辑时默认选中某个商品分类*/
+$(document).ready(function(){
+
+	 // 商品分类第二个下拉菜单
+	<if condition="$iteminfo['cat_id2'] gt 0">
+		 get_category2("{$iteminfo['cat_id1']}",'cat_id2',"{$iteminfo['cat_id2']}")
+	</if>
+
+	// 商品分类第三个下拉菜单	
+	<if condition="$iteminfo['cat_id3'] gt 0">
+		 get_category2("{$iteminfo['cat_id2']}",'cat_id3',"{$iteminfo['cat_id3']}");
+         ajaxGetSpecAttr({$iteminfo['item_id']},{$iteminfo['cat_id3']})
+	</if>
+
+
+});
+
+
+
+
+// 商品类型切换时 ajax 调用  返回不同的属性输入框
+$("#cat_id3").change(function(){        
+		var goods_id = '{$goodsInfo.goods_id}';
+		var cat_id3 = $(this).val();
+		if(cat_id3 == 0)
+		 return false;
+		 ajaxGetSpecAttr(goods_id,cat_id3);        
+});
+
+/**
+ * 获取多级联动的商品分类
+ */
+function get_category2(id,next,select_id){
+
+
+    var url = '/index.php?m=Seller&c=Goods&a=get_category&parent_id='+ id + '&level=' + next;
+    $.ajax({
+        type : "GET",
+        url  : url,
+        error: function(request) {
+            alert("服务器繁忙, 请联系管理员!");
+            return;
+        },
+        success: function(v) {
+            v = "<option value='0'>请选择商品分类</option>" + v;
+            $('#'+next).empty().html(v);
+            (select_id > 0) && $('#'+next).val(select_id);//默认选中
+        }
+    });
+}
+
+
+before_request = 1;// 标识上一次ajax 请求有没回来, 没有回来不再进行下一次
+function check_submit(o){
+     if($("input:text[name='title']").val()==""){
+         alert('商品名称不能为空');
+         return false;
+     }
+     if($("input:text[name='weight']").val()==""){
+         alert('请填写商品重量');
+         return false;
+     }
+
+    if($("original_img").val()==""){
+        alert('商品主图必须上传');
+        $("#err_original_img").html('请在此处上传商品图片');
+        $("#err_original_img").css('display','block');
+
+        return false;
+    }
+
+    var url = "{:U('addEditGoods?is_ajax=1')}";
+    if(before_request == 0)
+        return false;
+    $.ajax({
+        type : "POST",
+        url  : url,
+        data : $('#'+o).serialize(),
+        error: function(request) {
+            alert("服务器繁忙, 请联系管理员!");
+        },
+        success: function(data) {
+            before_request = 1; // 标识ajax 请求已经返回
+            var data =JSON.parse(data);
+            if (data.status == 1){
+                layer.msg(data.msg, {icon: 1, time: 3000},function(){
+                    location.href = data.data.url;
+                });
+            }else{
+                layer.msg(data.msg, {icon: 2, time: 3000});
+            }
+
+        }
+    });
+    before_request = 0; // 标识ajax 请求已经发出
+//     ajax_submit_form(o,url);
+
+}
+
+</script>
+</body>
+</html>

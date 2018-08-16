@@ -1,0 +1,142 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+package psp;
+import "common.proto";
+import "ItemCategoryModel.proto";
+
+service ItemCategoryService{//商品类目
+    /*获取分类级别信息*/
+    rpc getParentId1(GetParentId1) returns (ParentId1Reply);//获取上级分类一层信息
+    rpc getParentId2(GetParentId2) returns (ParentId2Reply);//获取上级分类二层信息
+    rpc getItemCategoryLevel(GetItemCategoryLevel) returns(ItemCategoryLevelInfo);//获取分类级别信息
+
+   /*添加商品信息*/
+    rpc addItemCategory(ItemCategoryInfo)  returns(google.protobuf.Empty)//添加商品信息
+
+    /*删除商品分类信息*/
+    rpc delItemCategory(ItemCid)  returns(google.protobuf.BoolValue)//删除分类
+     /*后台获取分类列表信息*/
+    rpc getItemCategoryList(GetItemCategoryTree) returns(ItemCategoryTreeList)//获取分类列表信息
+
+    /*设置/更新商品分类信息*/
+    rpc setItemCategoryName(ItemCid)  returns(ItemCategoryName) //设置/更新商品 分类名称
+    rpc setItemCategoryMobileName(ItemCid)  returns(CategoryMobileName) //设置/更新商品 手机显示名称
+    rpc setItemCategoryIsShow(ItemCid)  returns(ItemCategoryIsShow) //设置/更新商品分类 是否显示
+    rpc setItemCategoryIsRecommend(ItemCid)  returns(ItemCategoryIsRecommend) //设置/更新商品分类 是否推荐
+    rpc setItemCategoryCommission(ItemCid) returns(ItemCategoryCommission)//设置佣金比例
+    rpc setItemCategoryGroup(ItemCid)  returns(ItemCategoryGroup) //设置/更新商品分类 分组信息
+    rpc setItemCategorySort(ItemCid) returns(ItemCategorySort)//设置/更新商品分类 排序信息
+
+    rpc updateItemCategoryInfo(ItemCid) returns(ItemCategoryInfo)//更新商品信息
+
+
+
+    /*前台获取分类导航信息 */
+
+
+
+
+}
+/*获取分类等级信息*/
+message GetParentId1{//一层
+    int32 parent_id =1;//0或者分类数据表中所有 父id=0 的情况
+}
+message ParentId1Reply{//获取一层信息
+    ItemCid item_cid =1;//0或 父id =0 的cid
+}
+message GetParentId2{
+    ParentId1Reply parent_id1_reply =1;//一层信息
+}
+message ParentId2Reply{//由一层信息获取二层信息
+   ItemCid item_cid =1;//0或 父id = 一层cid 的cid
+}
+message GetItemCategoryLevel{//上级分类信息
+   ParentId1Reply parent_id1_reply =1;//一层信息
+   ParentId2Reply parent_id2_reply =2;//二层信息
+ }
+message ItemCategoryLevelInfo{//返回父id，等级信息
+    int32 parent_id =1;//父id；例：如果parent_id_1=0，parent_id_2=0时，那么parent_id=0，level=1，一级分类；
+    int32  level =2;//等级；例：如过parent_id_1=x，parent_id_2=0时，那么parent_id=x，level=2，二级分类;parent_id_1=x，parent_id_2=y时，那么parent_id=y，level=3，三级分类
+}
+
+/*分类信息*/
+message ItemCategoryBasicInfo{//添加 分类基本信息
+    string name = 1;//名称
+    string mobile_name =2;//手机分类名称
+    int32 is_show = 3;//是否显示
+    int32 cat_group =4;//分类分组
+    string image =5;//分类图片
+    int32 sort_order = 6;//排序
+    int32 is_recommend = 9;//是否推荐
+    int32 commission = 11;//佣金比例
+    int32 commission_rate = 12;//佣金
+    int32 type_id = 13;//类型
+    string parent_id_path = 14;//家族图谱
+}
+/*添加商品分类信息*/
+message ItemCategoryInfo{
+    ItemCategoryBasicInfo item_category_basic_info =1;//基本信息
+    ItemCategoryLevelInfo item_category_level_info =2;//等级信息
+}
+
+
+/*删除分类信息*/
+message ItemCid{//分类id
+  uint32 id =1;//分类id
+}
+
+
+/*后台获取分类列表信息*/
+message ItemCategoryTreeList{//分类树信息
+   uint32 id =1;//
+   ItemCategoryShowInfo item_category_show_info =2;//
+}
+message  ItemCategoryShowInfo{//后台商品分类列表显示信息
+   string name = 1;//名称
+   int32 is_recommend = 2;//是否推荐
+   int32 is_show = 3;//是否显示
+   int32 commission = 4;//佣金比例
+   int32 cat_group =5;//分组
+   int32 sort_order = 6;//排序
+}
+
+
+/*设置/更新商品分类信息*/
+message ItemCategoryName{//名称信息
+   string name = 2;//名称
+}
+message ItemCategoryMobileName{//手机显示名称信息
+   string mobile_name =2;//手机分类名称
+}
+message ItemCategoryIsShow{
+    bool is_show =1;//是否显示
+}
+message ItemCategoryIsRecommend{
+    bool is_recommend =1;//是否推荐
+}
+message ItemCategoryCommission{
+    int32 commission =1;//佣金比例
+}
+message ItemCategoryGroup{//分组信息
+    int32 cat_group =4;//分类分组
+}
+message ItemCategorySort{//排序信息
+   int32 sort_order = 6;//排序
+}
+
+
+
+
+
+
+
+
+
+
+
+

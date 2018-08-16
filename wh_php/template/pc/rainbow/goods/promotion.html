@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$Think.lang.PromotionList}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/layer/layer-min.js"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__PUBLIC__/js/pc_common.js"></script>
+    <link rel="stylesheet" href="__STATIC__/css/location.css" type="text/css">
+    <style>
+        @media screen and (max-width: 1298px) {
+            .header .ecsc-join{
+                display: none;
+            }
+            .top-ri-header ul li{
+                padding: 0 4px;
+            }
+            .list1 .dd{
+                width: 200px !important;
+            }
+            .footer{
+                min-width: inherit;
+            }
+            .navitems{
+                width: 840px;
+            }
+            .categorys .dt a{
+                width: 100px;
+            }
+            .categorys{
+                width: 140px;
+            }
+            .footer .foot-list-fl{
+                width: 608px;
+            }
+            .footer .foot-list-fl ul{
+                width: 120px;
+            }
+            .categorys .cata-nav-name h3{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .home_categorys .cata-nav-layer{
+                left: 180px !important;
+            }
+            .categorys .cata-nav-layer{
+                width: 840px;
+            }
+            .categorys .cata-nav-layer .cata-nav-rigth{
+                display: none;
+            }
+            .categorys .dt a:before{
+                margin-right: 0;
+                width: 0;
+            }
+            .sendaddress{
+                display: none;
+            }
+            .tp_h_alone .ecsc-search{
+                margin: 10px 0 0 40px;
+            }
+            .tp_h_alone .navitems{
+                width: 790px;
+            }
+            .tp_h_alone .categorys2 .cata-nav-layer .cata-nav-rigth{
+                display: none;
+            }
+            .tp_h_alone .categorys2 .cata-nav-layer{
+                width: 800px;
+            }
+        }
+        @media screen and (min-width: 1298px){
+            .tp_h_alone .ecsc-search{
+                margin: 10px 0 0 150px;
+            }
+            .u-g-cart{
+                width: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+<include file="public/header"/>
+
+<div class="shop-list-tour p">
+    <div class="w1224">
+        <!--轮播图-s-->
+        <div id="myCarousel" class="carousel slide p header-tp" data-ride="carousel">
+            <div class="out" style="height: 440px;">
+                <ul class="img">
+                    <foreach name="GetAdlist" item="v1" limit="5">
+                        <li class="item <if condition='$adk++ eq 1'>active</if>" style="height: 440px;;">
+                            <a href="{$v1[ad_link]}"  target="_blank">
+                                <img  src="{$v1[ad_code]}" title="{$v1[title]}"  style="{$v1[style]}">
+                            </a>
+                        </li>
+                    </foreach>
+                </ul>
+                <ul class="carousel_num">
+                    <!--底部数字栏-->
+                </ul>
+                <!-- 左右箭头-->
+                <!--<a class="btn left"><img src="__STATIC__/images/toleft.png" alt=""/></a>-->
+                <!--<a class="btn right"><img src="__STATIC__/images/toright.png" alt=""/></a>-->
+            </div>
+        </div>
+        <!--轮播图-e-->
+        <div class="tjhot fl">
+            <div class="sx_topb"><h3>{$Think.lang.RecommendHot}</h3></div>
+            <div class="tjhot-shoplist" id="ajax_hot_goods">
+                <foreach name="hot_goods" item="vo" key="k">
+                    <div class="alone-shop">
+                        <a href="{:U('Home/Goods/goodsInfo',array('id'=>$vo.goods_id))}"><img class="lazy" src="{$vo.image|goods_images=160,160}"/></a>
+                        <p class="line-two-hidd"><a href="{:U('Home/Goods/goodsInfo',array('id'=>$vo.goods_id))}">{$vo.goods_name}</a></p>
+                        <p class="price-tag"><span class="li_xfo">￥</span><span>{$vo.shop_price}</span></p>
+                        <p class="store-alone"><a href="{:U('Home/Store/index',array('id'=>$vo.store_id))}">{$vo.store_name}</a></p>
+                    </div>
+                </foreach>
+            </div>
+        </div>
+        <div class="stsho fr">
+            <div class="shop-list-splb p">
+                <ul>
+                    <empty name="newList">
+                        <p class="ncyekjl" style="font-size: 16px;margin:100px auto;text-align: center;">-- {$Think.lang.SearchTips}！--</p>
+                        <else/>
+                        <foreach name="newList" item="v" key="k">
+                            <li>
+                                <div class="s_xsall">
+                                    <div class="xs_img">
+                                        <a href="{:U('/Home/Goods/goodsInfo',array('id'=>$v[goods_id]))}">
+                                            <img class="lazy-list" src="{$v.image|goods_images=199,199}"/>
+                                        </a>
+                                    </div>
+                                    <div class="xs_slide">
+                                        <div class="small-xs-shop">
+                                            <ul>
+                                                <foreach name="goods_images" item="v2" key="k2">
+                                                    <if condition="$v2[goods_id] eq $v[goods_id]">
+                                                        <li>
+                                                            <a href="javascript:void(0);">
+                                                                <img class="lazy-list" data-original="{$v2[image_url]}"/>
+                                                            </a>
+                                                        </li>
+                                                    </if>
+                                                </foreach>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="price-tag">
+                                        <span class="now"><em class="li_xfo">￥</em><em>{$v[shop_price]}</em></span>
+                                        <span class="old"><em>{$Think.lang.Symbol}</em><em>{$v[market_price]}</em></span>
+                                    </div>
+                                    <div class="shop_name1 shop_name2">
+                                        <a href="{:U('/Home/Goods/goodsInfo',array('id'=>$v[goods_id]))}">
+                                            {$v[goods_name]}
+                                        </a>
+                                    </div>
+                                    <div class="shop_name2">
+                                        <a class="co_hchh" href="{:U('/Home/Store/index',array('id'=>$v[store_id]))}">
+                                            {$v[store_name]}
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </foreach>
+                    </empty>
+
+                </ul>
+            </div>
+            <div class="page p">
+                {$page}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer p">
+    <div class="mod_service_inner">
+        <!--只有这个页面的class是w1430-->
+        <div class="w1224">
+            <ul>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_01.jpg" class="list_foot">
+                        <p>{$Think.lang.Invoice}</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_02.jpg" class="list_foot">
+                        <p>{$Think.lang.CategoryComplete}</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_03.jpg" class="list_foot">
+                        <p>{$Think.lang.SaleWorryFree}</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="mod_service_unit">
+                        <img src="__STATIC__/images/footer_04.jpg" class="list_foot">
+                        <p>{$Think.lang.SampleCollection}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="w1224">
+        <!--<//include file="public/footer_index" />-->
+        <div class="footer-ewmcode">
+            <div class="foot-list-fl">
+                <foreach name="GetArticleCat"  key="k" item='v'>
+                    <dl class="foot-con">
+                        <dt>{$v[name]}</dt>
+                        <foreach name="GetArticle"  key="k2" item='v2'>
+                            <if condition="$v['name'] eq $v2['category']">
+                                <dd>
+                                    <a target="_blank" href="{:U('Home/Article/detail',array('article_id'=>$v2[article_id]))}">{$v2[title]}</a>
+                                </dd>
+                            </if>
+
+                        </foreach>
+                    </dl>
+                </foreach>
+            </div>
+        </div>
+        <div class="mod_copyright p">
+            <p>Copyright © 2016-2025 {$walhao_config['shop_info_store_name']|default='商城'} {$Think.lang.AllSreserved} {$Think.lang.AllRightSreserved} {$Think.lang.CaseNumber}:{$walhao_config['shop_info_record_no']}<br>增值电信业务许可证：浙B2-20170157 丨
+                <a target="_blank" style="color:#5d5def" href="__STATIC__/images/yingyezhizhao.jpg">{$Think.lang.BusinessLicense}</a>
+            </p>
+            <p>
+                <script type="text/javascript">
+                    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                    document.write(unescape("%3Cspan id='cnzz_stat_icon_1255962454'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255962454%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+                </script>
+            </p>
+        </div>
+    </div>
+    <include file="public/sidebar_cart" />
+</div>
+<!--footer-e-->
+<script src="__STATIC__/js/lazyload.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/js/popt.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/js/headerfooter.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/js/location.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //初始化
+        var size = $(".img li").size();  //获取图片的个数
+        for(var i=1;i<=size;i++){ //创建图片个数相对应的底部数字个数
+            var li="<li>"+i+"</li>";  //创建li标签，并插入到页面中
+            $(".carousel_num").append(li);
+        }
+
+        //手动控制图片轮播
+        $(".img li").eq(0).show();  //显示第一张图片
+        $(".carousel_num li").eq(0).addClass("active");  //第一张图片底部相对应的数字列表添加active类
+        $(".carousel_num li").mouseover(function(){
+            $(this).addClass("active").siblings().removeClass("active");  //鼠标在哪个数字上那个数字添加class为active
+            var index=$(this).index();  //定义底部数字索引值
+            i=index;  //底部数字索引值等于图片索引值
+            $(".img li").eq(index).stop().fadeIn(300).siblings().stop().fadeOut(300); //鼠标移动到的数字上显示对应的图片
+        })
+
+        //自动控制图片轮播
+        var i=0;  //初始i=0
+        var t=setInterval(move,1500);  //设置定时器，1.5秒切换下一站轮播图
+        //向左切换函数
+        function moveL(){
+            i--;
+            if(i==-1){
+                i=size-1;  //如果这是第一张图片再按向左的按钮则切换到最后一张图
+            }
+            $(".carousel_num li").eq(i).addClass("active").siblings().removeClass("active");  //对应底部数字添加背景
+            $(".img li").eq(i).fadeIn(300).siblings().fadeOut(300);  //对应图片切换
+        }
+        //向右切换函数
+        function move(){
+            i++;
+            if(i==size){
+                i=0;  //如果这是最后一张图片再按向右的按钮则切换到第一张图
+            }
+            $(".carousel_num li").eq(i).addClass("active").siblings().removeClass("active");  //对应底部数字添加背景
+            $(".img li").eq(i).fadeIn(300).siblings().fadeOut(300);  //对应图片切换
+        }
+        //左按钮点击事件
+        $(".out .left").click(function(){
+            moveL();  //点击左键调用向左切换函数
+        })
+        //右按钮点击事件
+        $(".out .right").click(function(){
+            move();    //点击右键调用向右切换函数
+        })
+        //定时器开始与结束
+        $(".out").hover(function(){
+            clearInterval(t); //鼠标放在轮播区域上时，清除定时器
+        },function(){
+            t=setInterval(move,1500);  //鼠标移开时定时器继续
+        })
+    })
+</script>
+</body>
+</html>

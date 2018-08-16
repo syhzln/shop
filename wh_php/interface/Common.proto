@@ -1,0 +1,35 @@
+/**
+ * Author: {Ning<nk11@qq.com>}
+ * CareatTime: 2017/8/5 0005上午 10:08
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 自定义公共接口类目
+ */
+syntax = "proto3";
+package psp;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
+
+message Pagination {//分页信息
+    uint32 index = 1;//起始页
+    uint32 limit = 2;//限定
+    string sort_by = 3;//排序
+    bool sort_asc = 4;
+    google.protobuf.Timestamp begin_date = 5;//限定时间开始
+    google.protobuf.Timestamp end_date = 6;//限定时间结束
+}
+
+
+message TimeSection{
+    google.protobuf.Timestamp begin_date = 1;//限定时间开始
+    google.protobuf.Timestamp end_date = 2;//限定时间结束
+}
+
+message GetItemCategoryTree{//获取分类树信息
+                            uint32 id =1;//id
+                            int32 parent_id =2;//父id
+                            int32 level =3;//等级
+                            int32 sort_order = 6;//排序
+}
+

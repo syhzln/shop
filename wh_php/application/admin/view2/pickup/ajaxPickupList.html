@@ -1,0 +1,98 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table>
+        <thead>
+            <tr>
+                <th class="sign" axis="col0"><i class="ico-check"></i></th>
+                <th align="center" abbr="article_title" axis="col3" class="">ID</th>
+                <th align="center" abbr="ac_id" axis="col4" class="">自提点名称</th>
+                <th align="center" abbr="article_show" axis="col5" class="">自提点地址</th>
+                <th align="center" abbr="article_time" axis="col6" class="">自提点电话</th>
+                <th align="center" abbr="article_time" axis="col6" class="">自提点联系人</th>
+                <th align="center" abbr="article_time" axis="col6" class="">省</th>
+                <th align="center" abbr="article_time" axis="col6" class="">市</th>
+                <th align="center" abbr="article_time" axis="col6" class="">区</th>
+                <th align="center" abbr="article_time" axis="col6" class="">供应商</th>
+                <th align="center" axis="col1" class="handle">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        <volist name="pickupList" id="list">
+            <tr>
+                <td class="sign">
+                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 50px;">{$list.pickup_id}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 100px;">{$list.pickup_name|getSubstr=0,33}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 100px;">{$list.pickup_address|getSubstr=0,33}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 100px;">{$list.pickup_phone}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 80px;">{$list.pickup_contact}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 80px;">{$list.province_name}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 80px;">{$list.city_name}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 80px;">{$list.district_name}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="width: 80px;">{$list.suppliers_name|default='无供应商'}</div>
+                </td>
+                <td align="center" class="handle">
+                    <div style="idth: 170px; max-width:170px;">
+                        <a class="btn blue" href="{:U('Admin/Pickup/edit_address',array('pickup_id'=>$list['pickup_id']))}"><i class="fa fa-pencil-square-o"></i>查看编辑</a>
+                        <a class="btn red"  href="javascript:void(0)" onclick="del('{$list[pickup_id]}')" ><i class="fa fa-trash-o"></i>删除</a>
+                    </div>
+                </td>
+                <td align="" class="" style="width: 100%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<!--分页位置-->
+{$page}
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid >table>tbody>tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        $('#count').empty().html("{$pager->totalRows}");
+    });
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+
+    // 删除操作
+    function del(id)
+    {
+        if(!confirm('确定要删除吗?'))
+            return false;
+        $.ajax({
+            url:"/index.php?m=Admin&c=Pickup&a=del&pickup_id="+id,
+            success: function(v){
+                var v =  eval('('+v+')');
+                if(v.hasOwnProperty('status') && (v.status == 1))
+                    ajax_get_table('search-form2',cur_page);
+                else
+                    layer.msg(v.msg, {icon: 2,time: 1000}); //alert(v.msg);
+            }
+        });
+        return false;
+    }
+</script>

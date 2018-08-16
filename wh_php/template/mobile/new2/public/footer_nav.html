@@ -1,0 +1,84 @@
+<div class="foohi">
+    <div class="footer">
+        <ul>
+            <li>
+                <a <if condition="CONTROLLER_NAME eq 'Index'">class="yello" </if>  href="{:U('Index/index')}">
+                    <div class="icon">
+                        <i class="icon-shouye iconfont"></i>
+                        <p>{$Think.lang.Home}</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" onclick="telList()">
+                    <div class="icon">
+                        <i class="icon-zaixiankefu iconfont"></i>
+                        <p>{$Think.lang.customer_service}</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/categoryList')}">
+                    <div class="icon">
+                        <i class="icon-shangpinfenlei iconfont"></i>
+                        <p>{$Think.lang.classification}</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="layer.open({
+                                      type: 1,
+                                      skin: 'layui-layer-rim', //加上边框
+                                      area: ['420px', '240px'], //宽高
+                                      content: '<p><a href={:U('cart/cart')}>{$Think.lang.Ordinary}</a></p><a href={:U('cart/cart',array('flag'=>1))}>{$Think.lang.Special}</a></p>'
+                                    });">
+                    <div class="icon">
+                        <i class="icon-gouwuche iconfont"></i>
+                        <p>{$Think.lang.ShoppingCart}</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a <if condition="CONTROLLER_NAME eq 'User'">class="yello" </if> href="{:U('User/index')}">
+                    <div class="icon">
+                        <i class="icon-geren iconfont"></i>
+                        <p>{$Think.lang.My}</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="kefuList" style="display: none;">
+    <a href="tel:0571-85383361"><span>{$Think.lang.TelService}①：</span>0571-85383361</a>
+    <a href="tel:0571-86993015"><span>{$Think.lang.TelService}②：</span>0571-86993015</a>
+    <a href="tel:0571-86854509"><span>{$Think.lang.TelService}③：</span>0571-86854509</a>
+    <a href="tel:0571-86775015"><span>{$Think.lang.TelService}④：</span>0571-86775015</a>
+    <a href="tel:0571-86995016"><span>{$Think.lang.TelService}⑤：</span>0571-86995016</a>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	  var cart_cn = getCookie('cn');
+	  if(cart_cn == ''){
+		$.ajax({
+			type : "GET",
+			url:"/index.php?m=Home&c=Cart&a=header_cart_list",//+tab,
+			success: function(data){								 
+				cart_cn = getCookie('cn');
+				$('#cart_quantity').html(cart_cn);						
+			}
+		});	
+	  }
+	  $('#cart_quantity').html(cart_cn);
+});
+function telList(){
+    $('.kefuList').fadeToggle();
+}
+window.addEventListener('touchmove', touchMove);
+function touchMove(){
+    $('.kefuList').fadeOut(800);
+}
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<include file="public/wx_share"/>
+<!-- 微信浏览器 调用微信 分享js  end-->

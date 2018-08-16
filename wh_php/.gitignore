@@ -1,0 +1,49 @@
+###############
+#  过滤文件   #
+###############
+composer.lock
+
+
+###############
+#  fixed file #
+###############
+#/public/
+application/config.php
+sproxy/
+runtime/
+vendor/
+vendor/composer/
+.idea/
+*.exe
+*.def
+*.dsp
+*.lib
+*.doc
+*.dll
+*.lnt
+*.pm
+*.xls
+*.dbg
+*.DBG
+*.o
+*.plg
+*.mp4
+
+###############
+#  temp file  #
+###############
+#
+~*
+#*.log
+*.cmm
+*.men
+*.ini
+*.fig
+*.cmp
+*.tmp
+
+###############
+#    script   #
+###############
+*.bat
+

@@ -1,0 +1,67 @@
+/**
+ * Author: {704126440@qq.com>}
+ * CareatTime: 2017/8/8
+ * Definition: GRPC通讯协议文件定义说明 | add 添加操作 | update 修改操作 | del 删除 | get 获取 | set 定义取反操作
+ * Description: 用户中心服务接口定义
+ */
+syntax = "proto3";
+package psp;
+import "common.proto";
+import "HomeIndexService";
+
+
+service MobileIndexService { //wap端，微信首页
+    rpc getMobileAdlist(AdPid) returns(MobileAdlist)//获取轮播商品信息
+    rpc getMobileRecommendItem(GetMobileRecommendItem) returns(MobileRecommendItem)//精品推荐商品
+    rpc getMobileNewItem(GetMobileNewItem)  returns(MobileNewItem)//新品上市
+    rpc getMobileHotItem(GetMobileHotItem)  returns(MobileHotItem)// 热销商品
+}
+/*获取轮播商品信息*/
+message MobileAdlist{
+    int32 ad_id =1;//广告id
+    string ad_link =2;//链接地址
+    string ad_code =3;//图片地址
+    google.protobuf.Timestamp start_time =4;//投放时间
+    google.protobuf.Timestamp end_time_time =5;//结束时间
+    int32 orderby =6;//排序
+}
+
+/*精品推荐商品*/
+message GetMobileRecommendItem{
+    bool is_recommend =1;
+    bool is_on_sale =2;
+    int32 goods_state =3;
+    int32 sort =4;
+}
+message MobileRecommendItem{
+    uint32 goods_id =1;
+    string goods_name =2;
+    string shop_price =3;
+    string original_img =4;
+}
+/*新品上市 */
+message GetMobileNewItem{
+    bool is_new =1;
+    bool is_on_sale =2;
+    int32 goods_state =3;
+    int32 sort =4;
+}
+message MobileNewItem{
+    uint32 goods_id =1;
+    string goods_name =2;
+    string shop_price =3;
+    string original_img =4;
+}
+/* 热销商品*/
+message GetMobileHotItem{
+    bool is_hot =1;
+    bool is_on_sale =2;
+    int32 goods_state =3;
+    int32 sort =4;
+}
+message MobileHotItem{
+    uint32 goods_id =1;
+    string goods_name =2;
+    string shop_price =3;
+    string original_img =4;
+}

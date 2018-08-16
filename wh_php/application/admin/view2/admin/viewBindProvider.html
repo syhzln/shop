@@ -1,0 +1,79 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>该账号绑定的店铺</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" action="{:U('Admin/Admin/addBindProvider')}" id="roleform" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name"><em>*</em>管理员账号:</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="user_name" id="user_name" class="input-txt" value="{$data.user_name}" readonly>
+                    <input type="hidden" name="admin_id"  class="input-txt" value="{$data.admin_id}">
+                </dd>
+            </dl>
+            <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label ><em>*</em>所属部门</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<input type="text" name="depart_name" class="input-txt">-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <dl class="row">
+                <dt class="tit">
+                    <label>已绑定店铺</label>
+                </dt>
+                <dd style="margin-left:200px;">
+                    <div class="ncap-account-container" style="border-top:none;">
+                        <h4 style="width: 5%">
+                            <label></label>
+                            <input value="1" cka="mod" type="checkbox">
+                            <label>全部</label>
+                        </h4>
+                        <ul class="ncap-account-container-list bind_provider_list">
+                            <volist name="store" id="vo">
+                                <li>
+                                    <label><input class="checkbox" name="store_id[]" value="{$vo.provider_id}" ck="mod" type="checkbox" checked="checked">{$vo.provider_name}</label>
+                                </li>
+                            </volist>
+
+                        </ul>
+                    </div>
+                </dd>
+            </dl>
+
+            <div class="bot"><a href="JavaScript:void(0);" onclick="roleSubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+        <input type="hidden" name="act" value="edit">
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(":checkbox[cka]").click(function(){
+            var $cks = $(":checkbox[ck='"+$(this).attr("cka")+"']");
+            if($(this).is(':checked')){
+                $cks.each(function(){$(this).prop("checked",true);});
+            }else{
+                $cks.each(function(){$(this).removeAttr('checked');});
+            }
+        });
+    });
+    
+    function roleSubmit(){
+
+        $('#roleform').submit();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>提现申请管理</h3>
+                <h5>网站系统提现申请索引与管理</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+            <ul>
+                <li>订单类型解释,交易类型 退货,换货,正常购物</li>
+                <li>结算金额包含商品成本价格,物流金额</li>
+                <li>结算类型说明 金额增\减状态</li>
+            </ul>
+        </div>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>计算订单列表</h3>
+                <h5>(共{$list|count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+        </div>
+
+        <div style="clear:both"></div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th class="sign" axis="col0"><i class="ico-check"></i></th>
+                            <th align="center" abbr="article_title" axis="col3" class="">订单编号</th>
+                            <th align="center" abbr="article_title" axis="col3" class="">订单类型</th>
+                            <th align="center" abbr="article_show" axis="col5" class="">店铺名称</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">结算金额</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">结算类型</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">结算币种</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">订单开始时间</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">签收状态</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">收货人</th>
+                            <th align="center" abbr="article_time" axis="col6" class="">订单完成时间</th>
+                            <th align="center" axis="col1" class="handle">物流详情</th>
+                            <th axis="col7"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="vo">
+                        <tr style="hight:45px;">
+                            <td class="sign"><i class="ico-check"></i></td>
+                            <td align="center" class="">
+                                <a class="open" href="{:U('/Admin/Order/detial',array('order_id'=>$vo[order_id]))}" >
+                                    {$vo.order_sn}<i class="fa fa-external-link "></i>
+                                </a>
+                            </td>
+                            <td align="center" class="">
+                                <if condition="$vo[type] eq 1">消费</if>
+                                <if condition="$vo[type] eq 2">退货</if>
+                                <if condition="$vo[type] eq 3">换货</if>
+                            </td>
+                            <td align="center" class="">{$vo.shop_name}</td>
+                            <td align="center" class="">{$vo.settlement_amount}</td>
+                            <td align="center" class="">
+                                <font ><if condition="$vo[settlement_type] eq 0">结算</if></font>
+                                <font color="red"><if condition="$vo[settlement_type] eq 1">扣回</if></font>
+                            </td>
+                            <td align="center" class="">
+                                <if condition="$vo[currency] eq 1">人民币</if>
+                                <if condition="$vo[currency] eq 2">美元</if>
+                            </td>
+                            <td align="center" class="">{$vo.order_date|date="Y-m-d",###}</td>
+                            <td align="center" class="">{$vo.delivery_status}</td>
+                            <td align="center" class="">{$vo.receiver}</td>
+                            <td align="center" class="">
+                                <volist name="$vo[delivery]" id="delivery">
+                                    发货:{$delivery.shipping_date|date="Y-m-d",###}//收货:{$delivery.receipted_date|date="Y-m-d",###}<br>
+                                </volist>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <volist name="$vo[delivery]" id="delivery">
+                                    <a href="">{$delivery.delivery_sn}<br></a>
+                                </volist>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+<if condition="$check['end'] eq 1">
+    <form class="form-horizontal" action="{:U('updatewithdrawstatus')}" id="order-add" method="post">
+        <div class="ncap-form-default">
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="payment"><em>*</em>审核状态</label>
+                </dt>
+                <dd class="opt">
+                    <select id="status" name="status"  >
+                       <option value="1" >审核通过</option>
+                       <option value="2" >审核失败</option>
+                    </select>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">操作备注</dt>
+                <dd class="opt">
+                    <textarea class="tarea" style="width:600px; height:150px;" name="admin_note" id="admin_note">审核结果备注,通过可不填,失败必填!</textarea>
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <input type="hidden" name="withdraw_id" value="{$check['withdraw_id']}">
+            <input type="submit" value="条件">
+            <div class="bot"><a href="JavaScript:void(0);" onClick="checkSubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+
+    </form>
+
+</if>
+
+
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    });
+
+    function checkSubmit(){
+
+        $('#order-add').submit();
+
+    }
+
+
+
+</script>
+</body>
+</html>

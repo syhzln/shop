@@ -1,0 +1,97 @@
+<footer class="main-footer" style="text-align: center;">
+	   <div class="pull-right hidden-xs">
+	    	<!--感谢使用ThinkPHP Shop开源系统<b></b>-->
+	   </div>
+	   <strong>Copyright &copy; 2015-2025 <a href="http://www.18lzsk.com">杭州量子时空网络科技有限公司</a>.</strong>保留所有权利。
+	</footer>
+
+   <div class="control-sidebar-bg"></div>
+</div>
+
+<!-- 新订单提醒-s -->
+<style type="text/css">
+.fl{ float:left; margin-left:10px; margin-top:4px}
+.fr{ float:right; margin-right:10px; margin-top:3px}
+.orderfoods{ width:200px; position:fixed; bottom:50px; z-index:999; right:10px; background-color:#9acccc; padding:15px 5px;}
+.dor_head{ border-bottom:1px solid #dedede; height:28px; color:#FFF; font-size:12px}
+.dor_head:after{ content:""; clear:both; display:block}
+.dor_foot{ margin-top:6px; color:#FFF;padding:5px 0;}
+.dor_foot p{ padding:0 12px}
+.te-in{ text-indent:2em;}
+.dor_foot p span{ color:red}
+.te-al-ce{ text-align:center}
+</style>
+<div id="ordfoo" class="orderfoods" style="">
+	<div class="dor_head">
+    	<p class="fl">新订单通知</p>
+        <p onClick="closes();" id="close" class="fr" style="cursor:pointer">x</p>
+    </div>
+    <div class="dor_foot">
+    	<p class="te-in">您有<span id="orderAmount">{$order_amount}</span>个订单待处理</p>
+        <p class="te-al-ce"><a href="{:U('Order/index')}" target='rightContent'><span>点击查看</span></a></p>
+    </div>
+    <div class="dor_head">
+        <p class="fl">待发货订单通知</p>
+    </div>
+    <div class="dor_foot">
+        <p class="te-in">您有<span id="">0</span>个待发货订单待处理</p>
+        <p class="te-al-ce"><a href="{:U('Order/delivery_list')}" target='rightContent'><span>点击查看</span></a></p>
+    </div>
+</div>
+<script type="text/javascript">
+	function closes(){
+        is_close = 1;
+		$('#ordfoo').css('display','none');
+	}
+    
+	// 没有点击收货确定的按钮让他自己收货确定
+	var timestamp = Date.parse(new Date());
+	$.ajax({
+        type:'post',
+        url:"{:U('Admin/System/login_task')}",
+        data:{timestamp:timestamp},
+        timeout : 100000000, //超时时间设置，单位毫秒
+        success:function(){
+            // 执行定时任务
+        }
+    });
+    $(document).ready(function(){
+        $("#riframe").height($(window).height()-100);//浏览器当前窗口可视区域高度
+        $("#rightContent").height($(window).height()-100);
+        $('.main-sidebar').height($(window).height()-50);
+    });
+
+    var tmpmenu = 'index_Index';
+    function makecss(obj){
+        $('li[data-id="'+tmpmenu+'"]').removeClass('active');
+        $(obj).addClass('active');
+        tmpmenu = $(obj).attr('data-id');
+    }
+
+    function callUrl(url){
+        layer.closeAll('iframe');
+        rightContent.location.href = url;
+    }
+    var now_num = 0; //现在的数量
+    var is_close=0;
+    function ajaxOrderNotice(){
+        var url = '{:U("Order/ajaxOrderNotice")}';
+        if(is_close > 0)
+            return;
+        $.get(url,function(data){
+            //有新订单且数量不跟上次相等 弹出提示
+            if(data > 0 && data != now_num){
+                now_num = data;
+                if(document.getElementById('ordfoo').style.display == 'none'){
+                    $('#orderAmount').text(data);
+                    $('#ordfoo').show();
+                }
+            }
+        })
+//        setTimeout('ajaxOrderNotice()',5000);
+    }
+    //setTimeout('ajaxOrderNotice()',5000);
+</script>
+<!-- 新订单提醒-e -->
+</body>
+</html>

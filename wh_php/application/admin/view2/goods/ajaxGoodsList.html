@@ -1,0 +1,235 @@
+<table>
+  <thead>
+  <tr>
+    <th class="sign" axis="col6"><i class="ico-check"></i></th>
+    <th align="left" abbr="article_title" axis="col6" class="">操作</th>
+    <th align="left" abbr="article_title" axis="col6" class="" onClick="sort('goods_id');">id</th>
+    <th align="left" abbr="ac_id" axis="col4" class="" onClick="sort('goods_name');">商品名称</th>
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('cat_id');">分类</th>
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('shop_name');">供应商</th>
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('shop_price');">价格</th>
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('is_recommend');">推荐</th>
+
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('is_hot');">热卖</th>
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('is_on_sale');">上/下架</th>
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('is_on_sale');">专区</th>
+    <th align="center" abbr="article_time" axis="col6" class="" >商品状态</th>
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('is_new');">审核</th>
+
+    <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('sort');">库存价格信息</th>
+  </tr>
+  </thead>
+  <tbody>
+  <volist name="goodsList" id="list">
+    <tr>
+      <td class="sign" axis="col6"><i class="ico-check"></i></td>
+      <td class="handle" >
+        <span class="btn"><em><i class="fa fa-cog"></i>设置<i class="arrow"></i></em>
+        <ul>
+          <li><a target="_blank" href="{:U('Home/Goods/goodsInfo',array('id'=>$list['item_id']))}">预览商品</a></li>
+          <li><a href="{:U('Admin/Goods/addEditGoods',array('id'=>$list['item_id']))}">编辑商品</a></li>
+          <li><a href="javascript:void(0);" onclick="del_goods('{$list[item_id]}',this)">删除商品</a></li>
+          <!-- <li><a href="javascript:void(0);" onclick="ClearGoodsHtml('{$list[goods_id]}')">清除静态缓存</a></li> -->
+          <li><a href="javascript:void(0);" onclick="ClearGoodsThumb('{$list[item_id]}')">清除缩略图缓存</a></li>
+        </ul>
+        </span>
+      </td>
+      <td align="center" axis="col0">{$list.item_id}</td>
+      <td align="center" axis="col0">{$list.title|getSubstr=0,33}</td>
+      <td align="center" axis="col0">{$list.cate_name}</td>
+      <td align="center" axis="col0">{$list.store_name}</td>
+      <td align="center" axis="col0">{$list.shop_price}</td>
+      <td align="center" axis="col0">
+        <if condition='$list[is_recommend] eq 1'>
+          <span class="yes" onClick="changeVal('{$list.item_id}','is_recommend',this)" ><i class="fa fa-check-circle"></i>是</span>
+          <else />
+          <span class="no" onClick="changeVal('{$list.item_id}','is_recommend',this)" ><i class="fa fa-ban"></i>否</span>
+        </if>
+      </td>
+
+      <td align="center" axis="col0">
+        <if condition='$list[is_hot] eq 1'>
+          <span class="yes" onClick="changeVal('{$list.item_id}','is_hot',this)" ><i class="fa fa-check-circle"></i>是</span>
+          <else />
+          <span class="no" onClick="changeVal('{$list.item_id}','is_hot',this)" ><i class="fa fa-ban"></i>否</span>
+        </if>
+      </td>
+      <td align="center" axis="col0">
+        <if condition='$list[is_on_sale] eq 1'>
+          <span class="yes" onClick="changeVal('{$list.item_id}','is_on_sale',this)" ><i class="fa fa-check-circle"></i>是</span>
+          <else />
+          <span class="no" onClick="changeVal('{$list.item_id}','is_on_sale',this)" ><i class="fa fa-ban"></i>否</span>
+        </if>
+      </td>
+      <td align="center" axis="col0">
+        <if condition='$list[special] eq 1'>
+          <span class="yes" onClick="changeVal('{$list.item_id}','special',this)" ><i class="fa fa-check-circle"></i>是</span>
+          <else />
+          <span class="no" onClick="changeVal('{$list.item_id}','special',this)" ><i class="fa fa-ban"></i>否</span>
+        </if>
+      </td>
+      <td align="center" axis="col0">
+        <if condition='$list[state] eq 0'>
+            待审核
+        </if>
+        <if condition='$list[state] eq 1'>
+          审核通过
+        </if>
+        <if condition='$list[state] eq 2'>
+        审核失败
+        </if>
+        <if condition='$list[state] eq 3'>
+          违规下架
+        </if>
+
+      </td>
+      <td align="center" axis="col0">
+        <select onChange="changeVal('{$list[item_id]}','state',this)">
+          <option value="">操作</option>
+          <option value="1">审核通过</option>
+          <option value="2">审核失败</option>
+          <option value="3">违规下架</option>
+        </select>
+      </td>
+
+      <td align="center" axis="col0" style="<if condition="$list.store_count elt tpCache('basic.warning_storage')">color:#D91222;</if>">
+      <span onclick="show(this)" item_id="{$list[item_id]}"><i class="fa fa-list-alt"></i>显示</span>
+      </td>
+    </tr>
+    <tr id="{$list[item_id]}" style="display: none">
+      <td colspan="4"></td>
+      <td colspan="9">
+        <table>
+          <thead>
+          <tr>
+            <!--<th class="sign" axis="col6"><i class="ico-check"></i></th>-->
+
+            <th align="left" abbr="article_title" axis="col6" class="" onClick="sort('goods_id');">规格名称</th>
+            <th align="left" abbr="ac_id" axis="col4" class="" onClick="sort('goods_name');">成本价</th>
+            <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('cat_id');">供货商定价</th>
+            <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('cat_id');">商城定价</th>
+            <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('sort');">市场价</th>
+            <th align="center" abbr="article_time" axis="col6" class="" onClick="sort('sort');">库存</th>
+            <!--<th align="left" abbr="article_title" axis="col6" class="">操作</th>-->
+          </tr>
+          </thead>
+          <tbody>
+          <volist name="list.price" id="item_price">
+            <tr>
+              <!--<td class="sign" axis="col6"><i class="ico-check"></i></td>-->
+
+              <td align="center" axis="col0">{$item_price.sku_name}</td>
+              <td align="center" axis="col0">{$item_price.provider_price}</td>
+              <td align="center" axis="col0">{$item_price.provider_shop_price}</td>
+              <td align="center" axis="col0">{$item_price.provider_shop_price}</td>
+              <td align="center" axis="col0">{$item_price.market_price}</td>
+              <td align="center" axis="col0">
+                {$item_price.stock}
+                <!--<input type="text" name="stock" value="{$item_price.stock}" item_id="{$list.item_id}" sku_id="{$item_price.sku_id}">-->
+              </td>
+
+              <!--<td class="handle" >-->
+              <!--<span><i class="fa fa-list-alt"></i>查看</span>-->
+              <!--</td>-->
+              </td>
+            </tr>
+          </volist>
+          </tbody>
+        </table>
+      </td>
+
+    </tr>
+  </volist>
+  </tbody>
+</table>
+<!--分页位置--> {$page}
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+
+    /*
+     * 清除静态页面缓存
+     */
+    function ClearGoodsHtml(goods_id)
+    {
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/System/ClearGoodsHtml')}",
+            data:{goods_id:goods_id},
+            dataType:'json',
+            success:function(data){
+                layer.alert(data.msg, {icon: 2});
+            }
+        });
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function ClearGoodsThumb(goods_id)
+    {
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/System/ClearGoodsThumb')}",
+            data:{goods_id:goods_id},
+            dataType:'json',
+            success:function(data){
+                layer.alert(data.msg, {icon: 2});
+            }
+        });
+    }
+
+    function show(e){
+        $("#"+$(e).attr('item_id')).toggle();
+    }
+
+
+
+
+    // 审核商品
+    function changeVal(id_value,field,obj)
+    {
+
+        var src = "";
+
+            if($(obj).hasClass('no')) // 图片点击是否操作
+            {
+                //src = '/public/images/yes.png';
+                $(obj).removeClass('no').addClass('yes');
+                $(obj).html("<i class='fa fa-check-circle'></i>是");
+                var value = 1;
+
+            }else if($(obj).hasClass('yes')){ // 图片点击是否操作
+                $(obj).removeClass('yes').addClass('no');
+                $(obj).html("<i class='fa fa-ban'></i>否");
+                var value = 0;
+            }else{ // 其他输入框操作
+                var value = $(obj).val();
+            }
+            if(field=='state' && value==2){
+              var note = prompt("输入原因");
+              if(!note){
+                  note = '';
+              }
+             }else{
+                note='';
+            }
+        $.ajax({
+            url:"/index.php?m=Admin&c=Goods&a=Check_goods&item_id="+id_value+"&code="+field+'&value='+value+'&note='+note,
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function(data){
+                if(data=='true'){
+
+                    layer.msg('修改成功', {icon: 1});
+                }else{
+                    layer.msg('修改失败', {icon: 2});
+                }
+            }
+        });
+    }
+
+</script>

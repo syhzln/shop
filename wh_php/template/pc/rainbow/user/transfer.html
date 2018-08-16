@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$Think.lang.Transfer}</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+    <link rel="shortcut  icon" type="image/x-icon" href="__STATIC__/images/logo2.ico" media="screen"  />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body class="bg-f5">
+<include file="user/header"/>
+<div class="home-index-middle">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">{$Think.lang.MyMall}</a>
+            <i class="litt-xyb"></i>
+            <span>{$Think.lang.AccountBalance}</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu"/>
+            <div class="ri-menu fr">
+                <div class="menumain p">
+                    <div class="goodpiece">
+                        <h1>{$Think.lang.Transfer}</h1>
+                        <!--<a href=""><span class="co_blue">账户余额说明</span></a>-->
+                        <input type="hidden" name="user_id" value="{$user.user_id}">
+                    </div>
+                    <div class="personerinfro tixbox">
+                        <form action="" method="post" id="distribut_form">
+                            <ul class="hend_jz">
+                                <li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>转账类型：</a></li>
+                                <li class="infor_img">
+                                    <select name="with_type" id="with_type" required onchange="checkWithType(this)">
+                                        <option value="0">请选择转账类型</option>
+                                        <option value="1">余额转余额</option>
+                                        <!--<option value="2">收益转收益</option>-->
+                                        <option value="3">收益转余额</option>
+                                    </select>
+                                    <p class="adviceql withType" style="display: none;"> </p>
+
+
+                            </ul>
+                            <ul class="hend_jz">
+                                <li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.TransferAmount}：</a></li>
+                                <li class="infor_img">
+                                    <div class="duleyuan">
+                                        <input type="text" name="money" id="money" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/>
+                                        <span>{$Think.lang.Symbol}</span>
+                                    </div>
+                                    <span class="keyj">{$Think.lang.AccountAvailableBalance}：{$Think.lang.Symbol}<em>{$user.user_money}</em>; 收益余额：{$Think.lang.Symbol}<em>{$user.shouyi}</em></span>
+                                    <p class="adviceql">({$Think.lang.AccountAvailableBalance})</p>
+                                </li>
+                            </ul>
+                            <ul class="name_jz">
+                                <li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.IntoTheAccount}：</a></li>
+                                <li>
+                                    <a href="javascript:void(0);"><input class="name_zjxs" type="number" name="account_id" id="account_id" value="" /></a>
+                                    <p class="adviceql account_info" style="color:red"><span style="color: red;">*</span>{$Think.lang.PleaseEnterOtherWhID}</p>
+
+                            </ul>
+                            <ul class="name_jz">
+                                <li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.VerificationCode}：</a></li>
+                                <li class="name_jz">
+                                    <a href="javascript:void(0);">
+                                        <input class="name_zjxs wisd" type="text" name="verify_code" id="verify_code" value="" placeholder="{$Think.lang.PleaseEnterVerificationCode}"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" style="cursor:pointer"><img src="{:U('User/verify',array('type'=>'transfer'))}" id="verify_code_img" width="120" heigth="38" onclick="verify(this)"/></a>
+                                </li>
+                            </ul>
+                            <ul class="name_jz">
+                                <li class="infor_wi_le"><a href="javascript:void(0);"><i class="star">*</i>{$Think.lang.PayPassword}：</a></li>
+                                <li>
+                                    <a href="javascript:void(0);"><input class="name_zjxs wisd" type="password" name="paypwd" id="paypwd" value="" /></a>
+                                    <if condition="empty($user['paypwd'])">
+                                        <p class="haiew">{$Think.lang.NoPaymentPassword}</p>
+                                        <a class="ha-re" style="cursor:pointer" href="{:U('User/set_paypwd')}">{$Think.lang.SetRightAway}</a>
+                                    </if>
+                                </li>
+                            </ul>
+                            <ul class="hobby_jz">
+                                <li class="infor_wi_le"><a href="javascript:void(0);"></a></li>
+                                <li class="infor_wi_ri">
+                                    <div class="save_s">
+                                        <input class="save" type="button" onclick="checkSubmit()" value="{$Think.lang.ConfirmTransfer}" />
+                                        <input class="save closoff" type="reset" onclick="location.href='{:U('User/transfer')}'" value="{$Think.lang.Cancel}" />
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<div class="footer p"><include file="public/footer_index" /> </div>
+<!--footer-e-->
+<script type="text/javascript">
+    $(function(){
+        $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=transfer&r='+Math.random());
+        $('#account_id').blur(function(){
+            var account_id = $.trim($('#account_id').val());
+            if(account_id.length == 0){
+                return;
+            }
+            $.ajax({
+                type:'POST',
+                dataType:'json',
+                url:'/index.php?m=Home&c=User&a=getMemberInfo',
+                data:{wh_id:account_id},
+                success:function (data) {
+                    console.log(data);
+                    if(data.status == 1){
+                        $('.account_info').html('转入账户名: '+data.name);
+                    }else{
+                        $('.account_info').html(data.name);
+
+                    }
+
+                }
+            });
+        });
+
+    });
+
+
+    function verify(){
+        $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=transfer&r='+Math.random());
+    }
+
+
+    // 表单验证提交
+    function checkSubmit(){
+        var money = $.trim($('#money').val());
+        var account_id = $.trim($('#account_id').val());
+        var verify_code = $.trim($('#verify_code').val());
+
+
+
+        if(money == '')
+        {
+            layer.alert('{$Think.lang.AmountCashRequired}',{icon:2});
+            return false;
+        }
+        if(money < 10)
+        {
+            layer.alert("{$Think.lang.MinimumTransferLimit}",{icon:2});
+            return false;
+        }
+//        if(money > {$user['user_money']})
+//        {
+//            layer.alert("{$Think.lang.AccountBalanceNotEnough}",{icon:2});
+//            return false;
+//        }
+
+        if(account_id.length != 10)
+        {
+            layer.alert('{$Think.lang.TransferAccountFormatIncorrect}!',{icon:2});
+            return false;
+        }
+        if(verify_code.length !=4)
+        {
+            layer.alert('{$Think.lang.VerificationCodeError}!',{icon:2});
+            return false;
+        }
+        if(verify_code == '')
+        {
+            layer.alert('{$Think.lang.OutputPaymentPassword}!',{icon:2});
+            return false;
+        }
+
+        $('#distribut_form').submit();
+    }
+</script>
+</body>
+</html>
