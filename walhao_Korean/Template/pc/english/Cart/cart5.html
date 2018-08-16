@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Payment-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+<link rel="stylesheet" href="__STATIC__/css/pay.min.css">
+<link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__STATIC__/css/jh.css">
+<script src="__PUBLIC__/js/jquery-1.8.2.min.js"></script>    
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__PUBLIC__/js/pc_common.js"></script>
+<script src="__PUBLIC__/js/layer/layer.js"></script><!-- 弹窗js 参考文档 http://layer.layui.com/-->
+</head>
+<body>
+<include file="Public/sign-header"/>
+<div class="fn-cart-pay"> 
+   <!-- cart-title -->
+   <div class="wrapper1190">
+    <div class="order-header">
+    	<div class="layout after">
+        	<div class="fl">
+            	<div class="logo pa-to-36 wi345">
+                	<a href="/"><img style="margin-top:-20px;" src="{$tpshop_config['shop_info_store_logo']}" alt=""></a>
+                </div>
+            </div>
+        	<div class="fr">
+            	<div class="pa-to-36 progress-area progress-en">
+                	<div class="progress-area-wd" style="display:none">我的购物车</div>
+                	<div class="progress-area-tx" style="display:none">填写核对订单信息</div>
+                	<div class="progress-area-cg">成功提交订单</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end cart-title --> 
+    
+    <div class="layout after-ta order-ha">
+    	<div class="erhuh">
+        	<i class="icon-succ"></i>
+            <h3>Order submit successful，please pay as soon as possible.</h3>
+            <p class="succ-p">
+                        <if condition="$master_order_sn neq ''">                        
+                            Order number:&nbsp;&nbsp;{$master_order_sn}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+                            Payment amount ($):&nbsp;&nbsp;<b>$</b> <b>{$sum_order_amount}</b>&nbsp;                       
+                        <else />
+                            Order number:&nbsp;&nbsp;{$order['order_sn']}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+                            Payment amount ($):&nbsp;&nbsp;<b>$</b><b>{$order['order_amount']}</b>&nbsp;	                       
+                        </if>                        
+			</p>
+            <div class="succ-tip">
+            	Please finish the payment before &nbsp;&nbsp;<b>{$pay_date}</b>&nbsp;,or the order will be cancelled automatically
+            </div>
+        </div>
+        <div class="ddxq-xiaq">
+        <if condition="$master_order_sn neq ''">
+        	<a href="{:U('Home/User/order_list')}">Order Detail<i></i></a>        
+        <else/>
+        	<a href="{:U('Home/User/order_detail',array('id'=>$order['order_id']))}">Order Detail<i></i></a>
+        </if>    
+        </div>
+        <form action="" method="post" name="cart5_form" id="cart5_form">
+        <div class="orde-sjyy">
+        	<h3 class="titls">Check Order</h3>
+            <div class="bsjy-g">
+            	<dl>
+            		<dd>
+						<div class="order-payment-area">
+                        	<!--<div class="dsfzfpte">
+                            </div>-->
+                            <div class="table-part clearfix">
+
+                            <table cellpadding="0" cellspacing="0" border="0" class="information-table">
+
+                                <tr>
+                                    <td width="110" >FirstName:</td>
+                                    <td ><input type="text" name="firstName" id="firstName" value="{$order['firstname']}" ></input></td>
+
+                                </tr>
+                                <tr>
+                                    <td width="110" >LastName:</td>
+                                    <td ><input type="text" name="lastName" id="lastName" value="{$order['lastname']}" ></input></td>
+
+                                </tr>
+                                <tr>
+                                    <td width="110" >Email:</td>
+                                    <td ><input style="width:70%;" type="text" name="email" id="email" value="{$order['email']}" ></input></td>
+
+                                </tr>
+                                <tr>
+                                    <td width="110" >Phone:</td>
+                                    <td ><input style="width:70%;" type="text" name="phone" id="phone" value="{$order['mobile']}" ></input></td>
+
+                                </tr>
+
+                                <tr>
+                                    <td width="110" >Country:</td>
+                                    <td >
+										<input style="width:22%;" type="text" name="country" id="country" value="US" readonly></input>
+										<input style="width:22%;margin-left:5px;" type="text" name="state" id="state" value="{$order['province']}" ></input>
+									</td>
+
+                                </tr>
+                                <!--<tr>
+                                    <td width="110" >state:</td>
+                                    <td ></td>
+
+                                </tr>-->
+                                <tr>
+                                    <td width="110" >City:</td>
+                                    <td ><input type="text" name="city" id="city" value="{$order['city']}" ></input></td>
+
+                                </tr>
+                                <tr>
+                                    <td width="110" >Address:</td>
+                                    <td ><!--<input style="width:100%;height:80px;" type="text" name="address" id="address" value="{$order['address']}" ></input>-->
+										<textarea style="padding:0 5px;" name="address" id="address" cols="30" rows="5">{$order['address']}</textarea>
+									</td>
+
+                                </tr>
+                                <tr>
+                                    <td width="110" >Zip:</td>
+                                    <td ><input style="width:30%;" type="text" name="zip" id="zip" value="{$order['zipcode']}" ></input></td>
+
+                                </tr>
+                                <tr>
+                                    <td width="110" >Remark:</td>
+                                    <td ><input style="width:140%;" type="text" name="remark" id="remark" value="" ></input></td>
+
+                                </tr>
+
+                                
+                            </table>
+                            </div>
+
+                        </div>  
+                        
+
+                    </dd>
+            	</dl>
+                <div class="order-payment-action-area">
+                    <a class="button-style-5 button-confirm-payment" href="javascript:void(0);" onClick="checksub();" >Submit</a>
+                </div>
+            </div>
+        </div>
+            <input type="hidden" name="orderNo" id="orderNo" value="{$master_order_sn}" ></input></td>
+            <input type="hidden" name="order_id" value="{$order['order_id']}" />
+
+       </form>
+    </div>
+  </div>
+</div>
+
+<include file="Public/min-footer"/>
+<script>
+function checkinfo(){
+    var firstName = $('#firstName').val();
+    if(firstName==''){
+        layer.msg('FirstName is empty', {icon: 2});
+        return false;
+    }
+var lastName = $('#lastName').val();
+    if(lastName==''){
+        layer.msg('LastName is empty', {icon: 2});
+        return false;
+    }
+var email = $('#email').val();
+    if(email==''){
+        layer.msg('Email is empty', {icon: 2});
+        return false;
+    }
+var phone = $('#phone').val();
+    if(phone==''){
+        layer.msg('Phone is empty', {icon: 2});
+        return false;
+    }
+var country = $('#country').val();
+    if(country==''){
+        layer.msg('Country is empty', {icon: 2});
+        return false;
+    }
+var state = $('#state').val();
+    if(state==''){
+        layer.msg('State is empty', {icon: 2});
+        return false;
+    }
+var city = $('#city').val();
+    if(city==''){
+        layer.msg('City is empty', {icon: 2});
+        return false;
+    }
+var address = $('#address').val();
+    if(state==''){
+        layer.msg('Address is empty', {icon: 2});
+        return false;
+    }
+var zipcode = $('#zip').val();
+    if(zipcode==''){
+        layer.msg('Zipcode is empty', {icon: 2});
+        return false;
+    }
+    return true;
+
+}
+function checksub(){
+    if(checkinfo()){
+
+        $("#cart5_form").submit();
+    }
+}
+
+</script>
+</body>
+</html>

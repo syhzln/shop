@@ -1,0 +1,97 @@
+<include file="Public/header"/>
+<body>
+<header>
+    <div class="tab_nav special_head">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)"></a></div>
+            <div class="h-mid">상품 업그레이드</div>  <!--升级专区产品-->
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<include file="Public/menu"/>
+
+<!--商品详情s-->
+<div id="goods_list" style="margin-top:40px;">
+
+        <!--加载更多S-->
+        <div id="getmore" style="font-size:.24rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both">
+        </div>
+        <!--加载更多E-->
+
+        <!--<foreach name="goods_list" item="vo" key="k">
+            <li>
+                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item">
+                    <div class="pic_box">
+                        <div class="active_box">
+                            <span style=" background-position:0px -36px">신제품</span>
+                        </div>
+                        <img src="{$vo.goods_id|goods_thum_images=400,400}">
+                    </div>
+                    <div class="title_box">{$vo.goods_name}</div>
+                    <div class="price_box">
+                        <span class="new_price"><i>${$vo.shop_price}</i></span>
+                    </div>
+                    <div class="comment_box">판매 0</div>
+                </a>
+                <div class="ui-number b">
+                    <a class="decrease" onClick="goods_cut({$vo.goods_id});">-</a>
+                    <input class="num" id="number_{$vo.goods_id}" type="text" onBlur="changePrice();" value="1" onFocus="if(value=='1') {value=''}" size="4" maxlength="5">
+                    <a class="increase" onClick="goods_add({$vo.goods_id});">+</a>
+                </div>
+                <span class="bug_car" onClick="AjaxAddCart({$vo[goods_id]},$('#number_'+{$vo.goods_id}).val(),0);"><i class="icon-shop_cart"></i></span>
+            </li>
+        </foreach>-->
+
+</div>
+<!--商品详情e-->
+<script src="__PUBLIC__/js/dropload.min.js"></script>
+<script>
+
+    var url = "index.php?m=Mobile&c=Goods&a=ajaxSpecialList";
+    $(function(){
+        //$('#J_ItemList').more({'address': url});
+        var counter = 0;
+        var num = 4;
+        var pageStart = 0,pageEnd = 0;
+        var page = 1;
+        $('#goods_list').dropload({
+            scrollArea : window,
+            loadDownFn : function(me){
+                $.ajax({
+                    type : "get",
+                    url:"/index.php?m=Mobile&c=Goods&a=ajaxSpecialList&p="+page,
+                    dataType:'html',
+                    success: function(data){
+                        var result = '';
+                        counter++;
+                        pageEnd = num * counter;
+                        pageStart = pageEnd - num;
+                        console.log(counter);
+                        if(data){
+                            $("#goods_list").append(data);
+                            page++;
+                        }
+                        setTimeout(function(){
+                            $('.lists').append(result);
+                            // 每次数据加载完，必须重置
+                            me.resetload();
+                        },1000);
+                    },
+                    error: function(xhr, type){
+                        alert('Ajax error!');
+                        // 即使加载出错，也得重置
+                        me.resetload();
+                    }
+                });
+            }
+        })
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i> 提现申请</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i> Apply for withdrawal</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active chn"><a href="#tab_tongyong" data-toggle="tab">申请店铺</a></li>
+                        <li class="active eng"><a href="#tab_tongyong" data-toggle="tab">Apply store</a></li>
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="editForm">
+                        <!--通用信息-->
+                    <div class="tab-content">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>Store id</td>
+                                    <td>
+									    <a href="{:U('Store/store_info',array('store_id'=>$data[store_id]))}">{$data.store_id}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Store name</td>
+                                    <td>
+                                        {$store.store_name}
+                                    </td>
+                                </tr>
+                                <!--
+                                <tr>
+                                    <td>店铺待提现余额</td>
+                                    <td>
+                                        {$store.pending_money}
+                                    </td>
+                                </tr>
+                                -->                               
+                                <tr>
+                                    <td>Store cash balance</td>
+                                    <td>
+                                        {$store.store_money}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cash withdrawal amount</td>
+                                    <td>
+                                        {$data.money}
+                                    </td>
+                                </tr>                                                                        
+                                <tr>
+                                    <td>Application bank</td>
+                                    <td>
+                                        {$data.bank_name}                                        
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td>Bank account</td>
+                                    <td>
+                                        {$data.account_bank}
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td>Bank account name</td>
+                                    <td>
+                                        {$data.account_name}                                        
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td>Application date</td>
+                                    <td>
+                                        {$data.create_time|date="Y-m-d H:i",###}
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td>State</td>
+                                    <td>
+                                        <if condition="$data[status] eq 0">Applying</if>
+                                        <if condition="$data[status] eq 1">Successful application</if>
+                                        <if condition="$data[status] eq 2">Application failure</if>   
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>Cash order details</td>
+                                    <td>
+                                        <a href="{:U('withdrawals_order',array('store_id'=>$data[store_id],'id'=>$data[id],'status'=>$data[status]))}" target="rightContent">Click View  </a>   <span style="color:red">Be sure to check this before you can create a transfer flow or refuse to cash in</span>
+                                    </td>
+                                </tr>           
+                                <tr>
+                                    <td>Remarks</td>
+                                    <td>
+                                        <textarea rows="4" cols="60" id="remark" name="remark">{$data.remark}</textarea>
+                                        <span id="err_remark" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td>Cash flow:</td>
+                                    <td>
+                                        1:Store apply for withdrawal.<br/>
+                                        2:Administrator audit generate transfer records (automatically deducted from the store platform can be generated when the balance)<br/>
+                                        3:Financial transfer to the store<br/>
+                                        Or exchange the second and third step,record after transfer.<br/>
+                                    </td>
+                                </tr>                                   
+                                </tbody>                                
+                                </table>
+                        </div>                           
+                    </div>              
+                    <div class="pull-right">
+                        <input type="hidden" name="id" value="{$data.id}">
+                        <input type="hidden" name="store_id" value="{$data.store_id}">
+                        <input type="hidden" id="status" name="status" value="{$data[status]}">
+<!--                        <if condition="in_array($data[status],array(0,2))">
+                            <button class="btn btn-primary" data-toggle="tooltip" type="button" onclick="confirm_withdrawals();">去生成转账记录</button>
+                        </if>                        -->
+                        <if condition="$data[status] eq 0">
+                         
+                            <button class="btn btn-primary" data-toggle="tooltip" type="button" onclick="confirm_withdrawals();">To generate the transfer record</button>
+                            <button class="btn btn-primary" data-toggle="tooltip" type="button" onclick="cancel_withdrawals();">Refuse to withdraw</button>
+                        </if>
+                        <if condition="$data[status] eq 1">
+                            <button class="btn btn-primary" data-toggle="tooltip" type='submit'>Modify remarks</button>
+                        </if>
+                        
+                    </div>
+                 </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+<script>
+// 确定提现
+function confirm_withdrawals()
+{
+    if(!confirm("Make sure the user balance ${$data.money} is deducted from the platform"))
+        return false;
+        
+    if($.trim($('#remark').val()).length == 0)
+    {
+        alert('Please fill in the transfer');
+        return false;
+    }
+
+    $('#status').val('1');
+    $('#editForm').submit();
+}
+// 拒绝提现    
+function cancel_withdrawals()
+{
+    if(!confirm('Do you want to deny the user?'))
+        return false;
+
+    if($.trim($('#remark').val()).length == 0)
+    {
+        alert('Please fill in the rejected remarks');
+        return false;
+    }
+    
+    $('#status').val('2');    
+    $('#editForm').submit();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i> 添加物流</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i> Add Logistics</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+							<a href="#tab_tongyong" data-toggle="tab">
+								<span class="chn">添加物流</span>
+								<span class="eng">Add Logistics</span>
+							</a>
+						</li>
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="addEditshipping" enctype="multipart/form-data" >                    
+                        <!--通用信息-->
+                    <div class="tab-content">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>                                                     
+                                <tr>
+                                    <td>
+										<span class="chn">物流编码:</span>
+										<span class="eng">Logistics code:</span>
+									</td>
+                                    <td>
+                                        <input type="text" value="{$shipping.code}" id="code" name="code" class="form-control" style="width:250px;display:inherit"/>
+                                        <a href="http://www.ickd.cn/api/list.html" target="_blank">
+											<span class="chn">参考查询编码</span>
+											<span class="eng">Reference query coding</span>
+										</a>                                        
+                                        <span class="chn">一般为物流公司拼音组成,不得含有英文以外的字符</span>
+										<span class="eng">Generally, it is composed of logistics companies, and shall not contain characters other than English</span>
+                                        <span id="err_code" style="color:#F00; display:none;">物流编码不能为空!! Logistics code cannot be empty</span>                                        
+                                    </td>
+                                </tr> 
+   
+                                <tr>
+                                    <td>
+										<span class="chn">物流公司名字:</span>
+										<span class="eng">Logistics company name:</span>
+									</td>
+                                    <td>
+                                        <input type="text" value="{$shipping.name}" id="name" name="name" class="form-control" style="width:250px; display:inherit"/>
+                                        <span id="err_name" style="color:#F00; display:none;">名称不得为空.Company name cannot be empty</span>
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td>
+										<span class="chn">简短描述:</span>
+										<span class="eng">Short description:</span>
+									</td>
+                                    <td>
+                                        <input type="text" value="{$shipping.desc}" id="desc"  name="desc" class="form-control" style="width:250px;"/>
+                                    </td>
+                                </tr>    
+                                <tr>
+                                    <td>
+										<span class="chn">物流图片图标:</span>
+										<span class="eng">Logistics icon:</span>
+                                    <font class="chn" color="#FF0000">必传</font>
+                                    <font class="eng" color="#FF0000">Required</font>
+                                    </td>
+                                    <td>
+                                        <span class="chn"><input type="file" class="button" value="上传图片" accept="image/*" name="shipping_img[]" style="display:inherit"/></span>
+                                        <span class="eng"><input type="file" class="button" value="Upload picture" accept="image/*" name="shipping_img[]" style="display:inherit"/></span>
+                                    </td>
+                                </tr>                                                             
+                                
+                                </tbody>
+                                </table>
+                        </div>                           
+                    </div>              
+                    <div class="pull-right">
+                        <input type="hidden" name="id" value="{$shipping.id}">
+                        <button class="btn btn-primary" title="" data-toggle="tooltip" type="button" onclick="checkSubmit()" data-original-title="保存">
+							<span class="chn">保存</span>
+							<span class="eng">Submit</span>
+						</button>
+                    </div>
+			    </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+<script>
+// 判断输入框是否为空
+
+$("input[type='text']").focus(function(){
+	  $('span[id^="err_"]').hide();
+});
+
+function checkSubmit(){
+ 
+	var code = $.trim($("#code").val());
+	var name = $.trim($("#name").val());
+
+    (code.length == 0) && $('#err_code').show();
+    (name.length == 0) && $('#err_name').show();
+		
+	if($('span[id^="err_"]:visible').length > 0)
+		 return false;
+    $('#addEditshipping').submit();		 
+}
+ 
+</script>
+
+</body>
+</html>

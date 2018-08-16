@@ -1,0 +1,32 @@
+<footer>
+  <div id="ft-service-infr"  class="move-down">
+    <div class="wrapper">
+      <dl class="contact-infr">
+       <dt class="icon-phone"><i class="icon-tel"></i>투자 주둔</dt>
+         <!--<dd>CEO邮箱：<a href="mailto:ceo@feiyu.com" target="_blank">CEO@feiyu.com</a></dd>
+        <dd style="font-size:13px;line-height:30px;"><a href="{:U('Newjoin/index')}" target="_blank">商家进驻</a></dd>-->
+	    <dd style="font-size:13px;line-height:30px;"><a href="{:U('Article/detail',array('article_id'=>19))}" target="_blank">투자 주둔</a></dd>
+      </dl>
+     <tpshop sql="select * from `__PREFIX__article_cat` where parent_id = 2" key="k" item='v'>
+      <dl class="nav-service">
+        <dt>{$v[cat_name]}</dt>
+        <tpshop sql="select * from `__PREFIX__article` where cat_id = $v[cat_id] and is_open=1" key="k2" item='v2'>
+	        <dd style="font-size:13px;line-height:30px;"><a href="{:U('Home/Article/detail',array('article_id'=>$v2[article_id]))}">{$v2[title]}</a></dd>
+        </tpshop>
+      </dl>
+    </tpshop> 
+    </div>
+  </div>
+  <div class="wrapper" id="global-footer" style="width: 100%;text-align:center;">
+    <p class="copyright">저작권 © 2016-2025 {$tpshop_config['shop_info_store_name']}  판권 소유, 기록 번호:{$tpshop_config['shop_info_record_no']}</p>
+	<p class="cnzzp"><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255962454'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255962454%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script></p>
+    <!--<dl class="authentic">
+      <a target="_blank" href="" taregt="_blank"><dd class="sgs"></dd></a>
+      <a target="_blank" href="" taregt="_blank"><dd class="zx110"></dd></a>
+      <a target="_blank" href="" taregt="_blank"><img src="__STATIC__/images/time_cnnic.jpg"></a>
+      <a target="_blank" href="" taregt="_blank" class="aqlm"><img src="__STATIC__/images/aqlm.jpg"></a>
+    </dl>-->
+  </div>
+  <!-- /#global-footer --> 
+</footer>
+<script type="text/javascript" src="__STATIC__/js/common.js"></script>

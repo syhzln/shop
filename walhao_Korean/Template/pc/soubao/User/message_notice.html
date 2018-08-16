@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<title>메시지 알림-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+<link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body> 
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<!-- 头部-e -->
+<link rel="stylesheet" href="__STATIC__/css/favorite.css">
+
+<div class="wrap">
+  <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">내 Walhao</a>&gt;<span class="color">메시지 알림</span></div>
+  <!--菜单--> 
+  <include file="User/menu" /> 
+  <!--菜单-->     
+  <!--侧边导航栏结束-->
+    <div class="col_main">
+    <div class="main my_order">
+      <div class="ui_tab">
+        <div>
+            <div class="tp_notice p">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>번호</th> <!--编号-->
+                        <th>타이틀</th> <!--公告标题-->
+                        <th>시간</th> <!--时间-->
+                        <th>오퍼레이션</th> <!--操作-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="messages" id="message">
+                        <tr>
+                            <td class="message_number">{$message['notice_id']}</td>
+                            <td class="message_title">{$message['title']}</td>
+                            <td>{$message['create_time']}</td>
+                            <td><a href="javascript:;" onclick="ajax_message('{$message.notice_id}','{$user_id}')">보기</a></td><!--查看-->
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+          <!-- page next star -->
+          <div class="operating fixed" id="bottom">
+              <div class="fn_page clearfix">
+                  {$page}
+              </div>
+          </div>
+          <!-- page next end -->
+        </div>
+    </div>
+  </div>
+</div>
+<div class="ajax_message_notice"></div>
+<div style="clear: both;"></div>
+<include file="Public/footer1" />
+<script>
+    $(function () {
+//        ajax_message(0);
+        $('.wddd-li ul li a').click(function () {
+            $(this).addClass('red').parent().siblings('li').find('a').removeClass('red');
+        });
+    });
+    /**
+     * @author dyr
+     * 消息ajax请求
+     * @param type
+     */
+    function ajax_message(type,user_id) {
+        $.ajax({
+            type: "POST",
+            url: "{:U('Home/User/ajax_message_notice')}",
+            data: {type: type,user_id:user_id},
+//            dataType: 'html',
+            success: function (data) {
+                if (data) {
+                    $(".ajax_message_notice").html('');
+                    $(".ajax_message_notice").append(data);
+                } else {
+                    $(".ajax_message_notice").html('');
+                }
+                $('.close').click(function(){
+                    $(".ajax_message_notice").html('');
+                })
+            }
+        });
+    }
+</script>
+</body>
+</html>

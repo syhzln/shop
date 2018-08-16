@@ -1,0 +1,186 @@
+<include file="Public/min-header" />
+<div class="wrapper">
+	<include file="Public/breadcrumb"/>
+	<section class="content">
+       <div class="row">
+       		<div class="col-xs-12">
+	       		<div class="box">
+	             <div class="box-header">
+	           	   <nav class="navbar navbar-default">	     
+				      <div class="collapse navbar-collapse">
+	    				<div class="navbar-form form-inline">
+				            <div class="form-group">
+				            	<p class="text-success margin blod"><span class="chn">店铺:</span><span class="eng">Store:</span></p>
+				            </div>
+				             <div class="form-group">
+                                 <a class="btn btn-default" href="{:U('Store/store_own_list')}">
+									<span class="chn">管理</span><span class="eng">Manage</span>
+								 </a>&nbsp;&nbsp;&nbsp;&nbsp;                                            
+                                 <a class="btn btn-default" href="{:U('Store/store_add')}" >
+									<span class="chn">新增</span><span class="eng">Add</span>
+								 </a>&nbsp;&nbsp;&nbsp;&nbsp;                                            
+                                 <a class="btn btn-primary" href="javascript:;" >
+									<span class="chn">编辑</span><span class="eng">Edit</span>
+								 </a>
+				            </div>
+    	                    <div class="pull-right">
+				                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+				            </div>
+				          </div>
+				       </div>
+	    		 	</nav>	
+	               	<nav class="navbar navbar-default">
+              	         <div class="callout callout-inro chn">
+							<p>1. 可以修改自营店铺的店铺名称以及店铺状态是否为开启状态</p>
+					        <p>2. 可以修改自营店铺的店主商家中心登录账号。</p>
+					        <p>3. 如需修改店主登录密码，请到会员管理中，搜索“店主账号”相应的会员并编辑。</p>
+					        <p>4. 已绑定所有类目的自营店，如果将“绑定所有类目”设置为“否”，则会下架其所有商品，请谨慎操作！</p>
+		            	</div>
+						<div class="callout callout-inro eng">
+							<p>1. Can modify the name of the shop and the store is open state</p>
+					        <p>2. Can modify the owner of the store owner shop login account.</p>
+					        <p>3. If you want to modify the owner login password, please go to the member management, search the owner account number of the corresponding members and editors.</p>
+					        <p>4. All the categories of the store has been bound, if the "binding all categories" set to "no", it will be on the shelves of all its goods, please be careful!</p>
+		            	</div>
+	    			</nav>
+	             </div>
+	             <div class="box-body">
+	           	 <div class="col-xs-12">
+	            	 <form method="post" id="store_info">
+		              <table class="table table-bordered table-striped dataTable">
+                        <tbody>
+                        <tr><td><span class="chn">店铺名称：</span><span class="eng">Store name:</span></td>
+                        	<td><input name="store_name" value="{$store.store_name}" class="form-control" onchange="store_check('store')"></td>
+                        	<td></td>
+                        </tr>
+                        <tr>
+                        	<td><span class="chn">开店时间：</span><span class="eng">Store opening time:</span></td>
+                        	<td>{$store.store_time|date="Y-m-d H:i:s",###}</td>
+                        	<td></td>
+                        </tr> 
+                        <tr>
+                            <td><span class="chn">店主卖家账号：</span><span class="eng">Shopkeeper account:</span></td>
+                            <td><input name="seller_name" value="{$store.seller_name}" onchange="store_check('seller')"></td>
+                       		<td class="text-warning">
+								<span class="chn">用于登录商家中心，可与店主账号不同</span><span class="eng">For log in to the seller center, different with the shopkeeper account </span>
+							</td>
+                        </tr> 
+
+                         <tr>
+                            <td>
+								<span class="chn">绑定所有类目：</span><span class="eng">Bind all categories:</span>
+							</td>
+                            <td class="chn">
+								<input type="radio" name="bind_all_gc" value="1" <if condition="$store[bind_all_gc] eq 1">checked</if>>是
+                            	<input type="radio" name="bind_all_gc" value="0" <if condition="$store[bind_all_gc] eq 0">checked</if>>否
+                            </td>
+							<td class="eng">
+								<input type="radio" name="bind_all_gc" value="1" <if condition="$store[bind_all_gc] eq 1">checked</if>>Yes
+                            	<input type="radio" name="bind_all_gc" value="0" <if condition="$store[bind_all_gc] eq 0">checked</if>>No
+                            </td>
+                       		<td></td>
+                        </tr>
+						<tr>
+							<td>
+								<span class="chn">商品是否需要审核：</span><span class="eng">Goods need to audit:</span>
+							</td>
+							<td class="chn">
+								<input type="radio" name="goods_examine" value="1" <if condition="$store[goods_examine] eq 1">checked</if>>是
+								<input type="radio" name="goods_examine" value="0" <if condition="$store[goods_examine] eq 0">checked</if>>否
+							</td>
+							<td class="eng">
+								<input type="radio" name="goods_examine" value="1" <if condition="$store[goods_examine] eq 1">checked</if>>Yes
+								<input type="radio" name="goods_examine" value="0" <if condition="$store[goods_examine] eq 0">checked</if>>No
+							</td>
+						</tr>
+						<tr>
+                            <td><span class="chn">状态：</span><span class="eng">State:</span></td>
+                            <td class="chn">
+								<input type="radio" name="store_state" value="1" <if condition="$store[store_state] eq 1">checked</if>>开启
+                            	<input type="radio" name="store_state" value="0" <if condition="$store[store_state] eq 0">checked</if>>关闭
+                            </td>
+							<td class="eng">
+								<input type="radio" name="store_state" value="1" <if condition="$store[store_state] eq 1">checked</if>>Open
+                            	<input type="radio" name="store_state" value="0" <if condition="$store[store_state] eq 0">checked</if>>Close
+                            </td>
+                       		<td></td>
+                        </tr> 
+                        <tr> 
+                        	<td colspan="3" style="text-align:center;">
+                        		<input type="hidden" name="store_id" value="{$store.store_id}">
+	                        	<a href="javascript:void(0)" onclick="actsubmit()" class="btn btn-info margin">
+									<span class="chn">提交</span><span class="eng">Submit</span>
+								</a>
+	                        </td>
+                        </tr>
+                        </tbody>
+		               </table>
+		             </form>
+	            </div>
+	          </div>
+	        </div>
+       	</div>
+       </div>
+   </section>
+<script>
+var flag = true;
+function actsubmit(){
+	if($('input[name=store_name]').val() == ''){
+		layer.msg("店铺名称不能为空<br>The store cannot be empty", {icon: 2,time: 2000});
+		return;
+	}
+	var user_name = $('input[name=user_name]').val();
+	if(user_name == ''){
+		layer.msg("店主账号不能为空<br>The seller account cannot be empty", {icon: 2,time: 2000});
+		return;
+	}
+	if($('input[name=seller_name]').val() == ''){
+		layer.msg("店主卖家账号不能为空<br>The shopkeeper account cannot be empty", {icon: 2,time: 2000});
+		return;
+	}
+	if(flag){
+		$('#store_info').submit();
+	}else{
+		layer.msg("请检查店铺名称和卖家账号<br>Please check the shop name and seller account", {icon: 2,time: 2000});
+	}
+}
+
+function store_check(type){
+	if(type=="store"){
+		$.ajax({
+			type:'post',
+			url:"{:U('Store/store_check')}",
+			dataType:'json',
+			data:{store_name:$('input[name=store_name]').val()},
+			success:function(res){
+				if(res.stat != 'ok'){
+					layer.msg(res.msg, {icon: 2,time: 2000});
+					flag = false;
+					return;
+				}else{
+					flag = true;
+				}
+			}
+		});
+	}else{
+		$.ajax({
+			type:'post',
+			url:"{:U('Store/store_check')}",
+			dataType:'json',
+			data:{seller_name:$('input[name=seller_name]').val()},
+			success:function(res){
+				if(res.stat != 'ok'){
+					layer.msg(res.msg, {icon: 2,time: 2000});
+					flag = false;
+					return;
+				}else{
+					flag = true;
+				}
+			}
+		});
+	}
+}
+</script>
+</div>
+</body>
+</html>   

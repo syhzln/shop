@@ -1,0 +1,184 @@
+<include file="Public/header"/>
+<body>
+<header>
+	<div class="tab_nav">
+		<div class="header">
+			<div class="h-left"><a class="sb-back" href="javascript:history.back(-1)"></a></div>
+			<div class="h-mid">현금 인출</div>  <!--提现-->
+			<div class="h-right">
+				<aside class="top_bar">
+					<div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+				</aside>
+			</div>
+		</div>
+	</div>
+</header>
+<include file="Public/menu"/>
+<div class="withdraw_head">
+	<div class="lsu">
+		<p>가용 잔액：<font>$ {$user}</font></p>  <!--可用余额-->
+		<!--<p>가용 포인트：<font>$ {$user.shouyi}</font></p>  &lt;!&ndash;&ndash;&gt;-->
+	</div>
+</div>
+
+<div class="withdraw">
+	<form  method="post"  id="returnform">
+		<div class="content30">
+			<div class="lsu">
+				<span>현금인출 타입：</span>  <!--提现类型-->
+				<div class="withType">
+					<i class="icon-sanjiao iconfont"></i>
+					<select name="with_type" id="with_type" required>
+						<option value="0">타입을 선택하세요</option><!--请选择提现类型-->
+						<option value="1">잔액 현금인출</option><!--余额提现-->
+					</select>
+				</div>
+				<p>현금인출 가능한 금액 </p>  <!--可提现额度-->
+			</div>
+			<div class="lsu">
+				<span>현금인출 방식：</span> <!--提现方式-->
+				<div class="withType">
+					<i class="icon-sanjiao iconfont"></i>
+					<select name="with_type" id="with_way" required>
+						<option value="0">방식을 선택하세요</option><!--请选择提现方式-->
+						<option value="1">Alipay</option><!--支付宝提现-->
+						<option value="2">은 행카드</option><!--银行卡提现-->
+					</select>
+				</div>
+			</div>
+			<div class="lsu">
+				<span>인출 금액：</span><span>$</span>  <!--提现金额-->
+				<input type="text" name="money" id="money" value=""  placeholder=""  onKeyUp="this.value=this.value.replace(/[^\d]/g,'')">
+				<p class="keyj">최소 현금인출 금액<i>$200</i>, 인출 시 수수료 2%를 공제합니다.</p><!--最少提现额度XX，,提现将扣除 1%手续费 及 2%店铺管理费-->
+			</div>
+			<div class="lsu">
+				<span>입금 계좌번호：</span>  <!--收款账号-->
+				<input type="text" name="account_bank" id="account_bank" value=""  placeholder="" >
+			</div>
+			<div class="lsu">
+				<span>은행 이름：</span> <!--银行名称-->
+				<input type="text" id="bank_name" name="bank_name" class="imput_text vam" value="" placeholder=""/>
+				<p class="keyj">Alipay로 인출하면 은행 이름을 입력할 필요없습니다.</p> <!--支付宝提现可不用写银行名称-->
+			</div>
+			<div class="lsu">
+				<span>예금주：</span>  <!--开户名-->
+				<input type="text" name="account_name" id="account_name" value=""  placeholder="" >
+			</div>
+			<div class="lsu test">
+				<span>인증코드：</span>  <!--验证码-->
+				<input type="text" name="verify_code" id="verify_code" value="" placeholder="">
+				<img  id="verify_code_img" src="{:U('Mobile/User/verify',array('type'=>'withdrawals'))}" onClick="verify()" style=""/>
+			</div>
+			<!--<div class="lsu lsu-recharge">-->
+			<!--<span>결제 비밀번호：</span>  &lt;!&ndash;支付密码&ndash;&gt;-->
+			<!--<input type="password" name="paypwd" id="paypwd" placeholder="결제 비밀번호">-->
+			<!--<if condition="empty($user['paypwd'])">-->
+			<!--<p class="haiew">결제 비밀번호가 설정하지 않습니다</p>  &lt;!&ndash;还未设置支付密码&ndash;&gt;-->
+			<!--<a class="ha-re" style="color: #0066aa" href="{:U('User/set_paypwd')}">바로 설정하기</a>  &lt;!&ndash;马上设置&ndash;&gt;-->
+			<!--</if>-->
+			<!--</div>-->
+			<div class="lsu submit">
+				<input type="hidden" name="__token__" value="{$Request.token}" />
+				<input type="button" onclick="checkSubmit()" value="제출하기">  <!--提交-->
+				<p class="submit_tip">※주의사항: 1~15일 동안 현금일출 신청할 때 당월 말일에 발급합니다. <br>
+					16~말일 동안 현금일출 신청할 때 다음 달 15일에 발급합니다.
+				</p>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+</div>
+<include file="Public/footer"/>
+</div>
+<include file="Public/footer_nav"/>
+</body>
+<script>
+    // 表单验证提交
+    function checkSubmit(){
+        var withdraw_type = $('#with_type').val();//提现类型
+        var withdraw_way = $('#with_way').val();//提现方式
+        var money = $.trim($('#money').val());
+        var account_bank = $.trim($('#account_bank').val());
+        var account_name = $.trim($('#account_name').val());
+        var bank_name = $.trim($('#bank_name').val());
+        var verify_code = $.trim($('#verify_code').val());
+
+        if(withdraw_type == 0){
+            showErrorMsg('타입을 선택하세요');<!-- 请选择提现类型-->
+            return false;
+        }
+        if(withdraw_way == 0){
+            showErrorMsg('방식을 선택하세요');<!--请选择提现方式 -->
+            return false;
+        }
+
+        if(bank_name == " " && withdraw_way == 2){
+            showErrorMsg('은행 이름을 입력하세요.'); <!--请填写银行名称 -->
+            return false;
+        }
+
+        if(money == '')
+        {
+            showErrorMsg('현금인출 금액을 입력하세요'); <!--请填写提现金额-->
+            return false;
+        }
+
+        if(money < {$tpshop_config['basic_min']} || money > {$user['user_money']})
+        {
+//		showErrorMsg("每次最少提现额度{$tpshop_config['distribut_min']},你的账户余额{$user['user_money']}");
+//		return false;
+        }
+
+
+        if(account_bank == '')
+        {
+            showErrorMsg('입금 계좌번호를 입력하세요'); <!--请填写收款账号-->
+            return false;
+        }
+        if(account_name == '')
+        {
+            showErrorMsg('예금주 입력하세요'); <!--请填写开户名-->
+            return false;
+        }
+        if(verify_code == '')
+        {
+            showErrorMsg('인증코드를 입력하세요'); <!--请填写验证码-->
+            return false;
+        }
+
+//    if(paypwd == ''){
+//        showErrorMsg("请输入支付密码")
+//        return false;
+//    }
+
+        $.ajax({
+            type : "POST",
+            dataType:'json',
+            url:"/index.php?m=Mobile&c=User&a=withdrawals",//+tab,
+            data : $('#returnform').serialize(),// 你的formid 搜索表单 序列化提交
+            success: function(data)
+            {
+                showErrorMsg(data.msg);
+                if(data.status == 1){
+                    window.location.href=data.url;
+                } else {
+                    showErrorMsg(data.msg);
+                    verify();
+                }
+            }
+        });
+    }
+
+    // 验证码切换
+    function verify(){
+        $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&type=withdrawals&r='+Math.random());
+    }
+
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:3});
+    }
+
+</script>
+</html>

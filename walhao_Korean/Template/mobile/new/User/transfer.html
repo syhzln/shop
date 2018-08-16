@@ -1,0 +1,102 @@
+<include file="Public/header"/>
+<body>
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)"></a></div>
+            <div class="h-mid">송금</div>  <!--转账-->
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<include file="Public/menu"/>
+
+<div class="transfer">
+    <form  method="post"  id="returnform">
+        <div class="content30">
+            <div class="lsu">
+                <span>계좌이체 타입：</span>  <!--请选择转账类型-->
+                <div class="withType">
+                    <i class="icon-sanjiao iconfont"></i>
+                    <select name="type" id="type" required >
+                    <option value="0">타입을 선택하세요</option>  <!--请选择转账类型-->
+                    <option value="1">잔액 계좌이체</option>  <!--余额转账-->
+                    <option value="2">수익 계좌이체</option>  <!--收益转账-->
+                    </select>
+                </div>
+                </div>
+            <div class="lsu">
+                <span>계좌이체 금액：</span><span>$</span>  <!--转账金额-->
+                <input type="text" name="money" id="money" value=""  placeholder=""  onKeyUp="this.value=this.value.replace(/[^\d]/g,'')">
+                <p class="keyj">가용 잔액：$<em>{$user_balance|default=0.00}</em>&nbsp;&nbsp;&nbsp; 수익 잔액：$<em>{$shouyi}</em></p>  <!--账号可用余额--><!--收益余额-->
+            </div>
+            <div class="lsu">
+                <span>입금 계정：</span>  <!--转入账号-->
+                <input type="text" id="wh_id" value="" onchange="check_user(this.value)" >
+                <p id="wu_id" style="color:red" readonly><span style="color: red;">*</span>수취인의 Walhao ID 입력하세요</p> <!--请输入对方Walhao ID-->
+            </div>
+            <div class="lsu">
+                <span>수취인：</span>  <!--转入账号名字-->
+                <input type="text" id="user_nick_name" readonly>
+            </div>
+            <div class="lsu lsu-recharge">
+    <span>결제 비밀번호：</span>  <!--支付密码-->
+    <input type="password" id="password" placeholder="支付密码">
+</div>
+<div class="lsu submit">
+    <input type="button" onclick="disp_prompt()" value="제출">  <!--提交申请-->
+</div>
+</div>
+</form>
+</div>
+
+<script>
+
+    function check_user(o){
+        $.ajax({
+            url:"{:U('Mobile/User/check_user')}",//+tab,
+            data:{uuid:o},
+            success: function(data){
+                $('#user_nick_name').val(data);
+            }
+
+        });
+    }
+
+    function disp_prompt()
+    {
+        var wh_id=$("#wh_id").val();
+        var money=$("#money").val();
+        var nick_name = $("#user_nick_name").val();
+        var password=$("#password").val();
+        var type = $("#type").val();
+        if (money!=null && wh_id!="" && password!="" && nick_name!="" && type!="")
+        {
+            $.ajax({
+                url:"{:U('Home/User/user_transfer')}",//+tab,
+                data:{wh_id:wh_id,money:money,password:password,type:type},
+                success: function(data){
+
+                    layer.open({
+                        time: 2,
+                        content: data,
+                        end: function () {
+                            window.parent.location.reload();
+                        }
+
+                    });
+
+                }
+            });
+
+        }else{
+            alert("전체 정보 입력");  //请输入完整的信息
+        }
+    }
+</script>
+</body>
+</html>

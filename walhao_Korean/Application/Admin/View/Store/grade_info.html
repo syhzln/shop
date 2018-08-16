@@ -1,0 +1,107 @@
+<include file="Public/min-header" />
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+    <section class="content ">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i> 添加店铺等级</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i> Add store grade</h3>
+                </div>
+                <div class="panel-body ">   
+                    <!--表单数据-->
+                    <form method="post" id="handleposition" action="{:U('Store/grade_info_save')}">                    
+                        <!--通用信息-->
+                    <div class="tab-content col-md-10">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td class="col-sm-2"><span class="chn">等级名称：</span><span class="eng">Grade name:</span></td>
+                                    <td class="col-sm-4">
+                                        <input type="text" class="form-control" id="sg_name" name="sg_name" value="{$info.sg_name}" >
+                                        <span id="err_attr_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                    <td class="col-sm-4"><span class="chn">设置店铺等级名称</span><span class="eng"> Set store grade name:</span></td>
+                                </tr>  
+                                <tr>
+                                    <td><span class="chn">可发布商品数：</span><span class="eng">Number of goods for sale:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" placeholder="0" name="sg_goods_limit" value="{$info.sg_goods_limit}">
+                                    </td>
+                                    <td class="col-sm-4"><span class="chn">0表示没有限制</span><span class="eng">0 means no restrictions</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="chn">可选模板套数：</span><span class="eng">Optional template:</span></td>
+                                    <td>
+                               			<input type="text" class="form-control"  placeholder="0" name="sg_template_limit" value="{$info.sg_template_limit}">     
+                                    </td>
+                                    <td class="col-sm-4"><span class="chn">0表示没有限制</span><span class="eng">0 means no restrictions</span></td>
+                                </tr>  
+                                <tr>
+                                    <td><span class="chn">收费标准：</span><span class="eng">Charge standard:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="sg_price" value="{$info.sg_price}">
+                                    </td>
+                                    <td class="col-sm-4">
+										<span class="chn">收费标准，单：元/年，必须为数字，在会员开通或升级店铺时将显示在前台</span>
+										<span class="eng">Charges, single: dollar / year, must be a number, when the members of the opening or upgrading shop will be displayed at the front desk</span>
+									</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="chn">申请说明：</span><span class="eng">Application description:</span></td>
+                                    <td>
+                             			<textarea rows="5" cols="30" name="sg_description">{$info.sg_description}</textarea>
+                                    </td>
+                                    <td class="col-sm-4">
+										<span class="chn">申请说明，在会员开通或升级店铺时将显示在前台</span>
+										<span class="eng">The application will be displayed at the front desk when the member is opened or upgraded</span>
+									</td>
+                                </tr> 
+                                <tr>
+                                    <td><span class="chn">级别：</span><span class="eng">Grade:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="sg_sort" value="{$info.sg_sort}">
+                                    </td>
+                                    <td class="col-sm-4">
+										<span class="chn">数值越大表明级别越高</span>
+										<span class="eng">The higher the value, the higher the level</span>
+									</td>
+                                </tr>                             
+                                </tbody> 
+                                <tfoot>
+                                	<tr>
+                                	<td>
+                                		<input type="hidden" name="sg_id" value="{$info.sg_id}">
+                                	</td>
+                                	<td class="col-sm-4"></td>
+                                	<td class="text-right">
+										<input class="btn btn-primary chn" type="button" onclick="adsubmit()" value="保存">
+										<input class="btn btn-primary eng" type="button" onclick="adsubmit()" value="Submit">
+									</td>
+								  </tr>
+                                </tfoot>                               
+                                </table>
+                        </div>                           
+                    </div>              
+			    	</form><!--表单数据-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+function adsubmit(){
+	if($('#sg_name').val()==''){
+		alert('等级名称不能为空<br>The Grade name cannot be empty');
+		return false;
+	}
+	$('#handleposition').submit();
+}
+</script>
+</body>
+</html>

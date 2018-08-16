@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>보너스 리포트-{$walhao_config['shop_info_store_title']}</title>
+    <link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="__STATIC__/css/theme.css">
+    <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <style>
+        .m-top-search .logo{margin-top:-50px;}
+    </style>
+</head>
+<body class="bg-f5">
+<include file="Public/min-header" />
+<div class="wrap">
+    <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">내 쇼핑몰</a>&gt;<span class="color">보너스 리포트</span></div>
+    <div class="home-main">
+        <include file="User/menu"/>
+        <div class="col_main">
+            <div class="container-fluid" id="UserCenterMaxContainer">
+
+                <div class="row-fluid">
+                    <div class="main">
+
+                        <script>
+                            $(function(){
+                                var login_wohao_url = "";
+                                if (login_wohao_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_wohao_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+                        <script>
+                            $(function(){
+                                var login_bbs_url = "";
+                                if (login_bbs_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_bbs_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+                        <div class="" style="">
+                            <p class="block-heading" style="border:none;">
+                                <span style="">당일 어워드: $ {$today_reward|default='0.00'}</span>  <!--当日奖金-->
+                                <span style="padding-left:25px;">당월 어워드: $ {$report[0]|default='0.00'}</span>  <!--当月奖金-->
+                            </p>
+
+                        </div>
+
+                        <!-- 当用佣金统计 start -->
+                        <div class="block ">
+                            <p class="block-heading">
+                                <span style="">달 보너스 통계:</span>
+                            </p>
+                            <div class="block-body">
+                                <table class="tb" width="100%">
+                                    <tbody><tr>
+                                        <td>
+                                            <div class="row-fluid person_sale">
+                                                [ 개인 점포 판매 커미션 ]: $ {$report[1]|default='0.00'}
+                                                <if condition="$report[101] neq null">| <font color="red">[보충 지급]:${$report[101]}</font> </if>
+                                                <if condition="$report[-1] neq null">| <font color="green">[회수]:$ {$report[-1]} </font> </if>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-fluid comm_team">
+                                                [ 추천공유 ]: $ {$report[2]|default='0.00'}
+                                                <if condition="$report[102] neq null">| <font color="red">[보충 지급]:${$report[102]}</font> </if>
+                                                <if condition="$report[-2] neq null">| <font color="green">[회수]:$ {$report[-2]} </font> </if>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-fluid week_profit_sharing">
+                                                [ 일일 플랫폼 매출 이익 보너스 ]: $ {$report[3]|default='0.00'}
+                                                <if condition="$report[103] neq null">| <font color="red">[보충 지급]:${$report[103]}</font> </if>
+                                                <if condition="$report[-3] neq null">| <font color="green">[회수]:$ {$report[-3]} </font> </if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td>
+                                            <div class="row-fluid comm_25">
+                                                [ 엘리트 보너스 ]: $ {$report[4]|default='0.00'}
+                                                <if condition="$report[104] neq null">| <font color="red">[보충 지급]:${$report[104]}</font> </if>
+                                                <if condition="$report[-4] neq null">| <font color="green">[회수]:$ {$report[-4]} </font> </if>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-fluid comm_month_leader">
+                                                [ 월간 팀 매출 커미션 ]: $ {$report[5]|default='0.00'}
+                                                <if condition="$report[105] neq null">| <font color="red">[보충 지급]:${$report[105]}</font> </if>
+                                                <if condition="$report[-5] neq null">| <font color="green">[회수]:$ {$report[-5]} </font> </if>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-fluid comm_138">
+                                                [ 주간 리더 대등상 ]: $ {$report[6]|default='0.00'}
+                                                <if condition="$report[106] neq null">| <font color="red">[보충 지급]:${$report[106]}</font> </if>
+                                                <if condition="$report[-6] neq null">| <font color="green">[회수]:$ {$report[-6]} </font> </if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="row-fluid comm_week_leader">
+                                                [ 월간 특별 기금 판매 커미션 ]: $ {$report[7]|default='0.00'}
+                                                <if condition="$report[107] neq null">| <font color="red">[보충 지급]:${$report[107]}</font> </if>
+                                                <if condition="$report[-7] neq null">| <font color="green">[회수]:$ {$report[-7]} </font> </if>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="row-fluid" style="color:#666;">
+                                                [ 신인상 ]: $ {$report[8]|default='0.00'}
+                                                <if condition="$report[108] neq null">| <font color="red">[보충 지급]:${$report[108]}</font> </if>
+                                                <if condition="$report[-8] neq null">| <font color="green">[회수]:$ {$report[-8]} </font> </if>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="row-fluid comm_infinite">
+                                                [ 기타 ]: $ {$report[9]|default='0.00'}
+                                                <if condition="$report[109] neq null">| <font color="red">[보충 지급]:${$report[109]}</font> </if>
+                                                <if condition="$report[-9] neq null">| <font color="green">[회수]:$ {$report[-9]} </font> </if>
+                                                <!--其它-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="row-fluid comm_infinite">
+                                                [ 성과급 ]: $ {$report[10]|default='0.00'}
+                                                <!--绩效奖-->
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    </tbody></table>
+                            </div>
+                        </div>
+                        <!-- 当月佣金统计 end -->
+
+
+                        <!-- 历史月份各项佣金查询 start -->
+                        <div class="block " style="margin: 1em 0em 1.5em 0em;">
+                            <p class="block-heading">
+                                <span style="">역사 월 보너스 통계:</span>
+                            </p>
+                            <div class="block-body">
+                                <div class="search-well">
+                                    <form class="form-inline" method="get" id="search_form">
+
+                                        <select id="sear_year" name="year" style="width:100px;">
+                                            <option value="0">선택하십시오</option>
+                                            <option value="2015">2015</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                        -
+                                        <select id="sear_month" name="month" style="width:100px;">
+                                            <option value="0">선택하십시오</option>
+                                            <option value="01">1</option>
+                                            <option value="02">2</option>
+                                            <option value="03">3</option>
+                                            <option value="04">4</option>
+                                            <option value="05">5</option>
+                                            <option value="06">6</option>
+                                            <option value="07">7</option>
+                                            <option value="08">8</option>
+                                            <option value="09">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                        <button class="btn" id="submit_button" type="button"><i class="icon-search"></i> 검색</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <script>
+                                $("#submit_button").click(function(){
+                                    var year = $('#sear_year option:selected').val();
+                                    var month = $('#sear_month option:selected').val();
+                                    if(year == 0) {
+                                        layer.msg("연도를 선택하십시오");
+                                        return;
+                                    }
+
+                                    if(month == 0) {
+                                        layer.msg("월을 선택하십시오");
+                                        return;
+                                    }
+                                    $("#search_form").submit();
+                                })
+                            </script>
+                        </div>
+                    </div>
+
+                    <div id="confirm_sponsor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-body" id="confirm_message" style="text-align: center;">
+                        </div>
+                        <div class="modal-footer">
+                            <button autocomplete="off" style="float:left;margin-left: 20%;" class="btn btn-primary" id="confirm_ok">확인</button>
+                            <button autocomplete="off" style="float:right;margin-right: 20%;" class="btn btn-primary" id="confirm_cancel">취소</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<include file="Public/footer1" />
+<!--footer-e-->
+<script type="text/javascript">
+    //
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<div class="message_record">
+    <div>
+        <h3>채팅 기록</h3> <!--工单记录-->
+
+        <a href="javascript:;" class="close"></a>
+        <div class="message_list">
+            <input id='wh181' value="{$whid}" style="display:none">
+            <input id='mnu' value="{$number}" style="display:none">
+            <foreach name='talks' item="val">
+                <p class="my_message">
+                    <span>：본인</span><br/> <!--我-->
+                    <font>{$val['u_message']}</font>
+                </p>
+                <p class="kefu_message">
+                    <span>고객 센터：</span><br/> <!--客服-->
+                    <font>{$val['k_message']}</font>
+                </p>
+            </foreach>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="reply_message">
+            <textarea name="" id="texts" cols="60" rows="3"></textarea>
+            <a href="javascript:;" onclick='subst()'>확인 제출</a> <!--提交-->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        var kefu_message = $('.kefu_message font');
+        for(var i=0;i<kefu_message.length;i++){
+            if(kefu_message[i].innerHTML == ""){
+               kefu_message[i].style.padding = "0";
+               kefu_message[i].parentNode.style.display = "none";
+            }
+        }
+    })
+    $('.message_record').click(function(){
+        $('.message_record').css('display','none');
+    })
+    $(".message_record>div").click(function(event){
+        event.stopPropagation();
+    });
+    var checkSubmit = false;
+    function subst(){
+        var a="{$is_talk}";
+        if(a=='1'){
+            alert('고객님 해당 문의사항은 이미 완료되었습니다. 더 문의하려고 하면 새로운 문의하기를 작성하세요.');  //"工单已完结请重新建立工单"
+        }
+        if(checkSubmit == true){
+            return false; //当表单被提交过一次后checkSubmit将变为true,根据判断将无法进行提交。
+        }
+        checkSubmit = true;
+        var texts=$("#texts").val();
+        var whid=$("#wh181").val();
+        var message_number=$("#mnu").val();
+        $.post("/index.php/home/User/ajax_my_message",{'texts':texts,'whid':whid,'message_number':message_number},function(data){
+            var  texts= $('#texts').val();
+            $('.message_record .message_list').append(
+                    "<p class='my_message'>"+
+                    "<span>：본인</span><br/>"+
+                    "<font>"+texts+"</font>"+
+                    "</p>");
+            $('#texts').val('');
+        });
+    }
+</script>

@@ -1,0 +1,64 @@
+<if condition="empty($messages)">
+    <p class="norecode" style="font-size: 16px;color: #999999;padding:100px 0;text-align: center;">죄송합니다. 지금 처리할 소식이 없습니다.</p>
+    <else/>
+    <volist name="messages" id="message">
+        <div class="message_record">
+            <div class="tp_message message_line{$message['msg_id']}" >
+                <h3><if condition="$message['category'] eq 1">회사 규정<else/>회사 규정</if></h3>
+                <a href="javascript:;" class="close"></a>
+                {$message['content']}
+                <!-- <p class="flags"><if condition="$message['flags'] eq 1">(已读)<else/><span>新消息!</span></span></if></p> -->
+                <p class="checknoti"><em>{$message['create_time']}</em></p>
+                <p class="checknoti">
+                    <!-- <a class="set_readMessage read_message{$message['msg_id']}" data-id="{$message['msg_id']}" href="javascript:void(0)"><if condition="$message['flags'] eq 1"><else/>设为已读</if></a>&nbsp;&nbsp; -->
+                    <!--<a class="delete_message"  data-id="{$message['msg_id']}"  href="javascript:void(0)">删除</a>-->
+                </p>
+            </div>
+        </div>
+    </volist>
+</if>
+
+<script type="text/javascript">
+    $('.set_readMessage').click(function(){
+        var message_id = $(this).attr('data-id');
+        if(message_id){
+            $.ajax({
+                type:'POST',
+                dataType:'JSON',
+                url:'/index.php?m=Home&c=User&a=set_read',
+                data:{message_id:message_id},
+                success:function(data){
+                    if(data.status ==1){
+                        layer.msg(data.msg, {icon: 1, time: 2000});
+                        $(".read_message"+message_id).css('visibility', 'hidden');
+                    }
+
+                }
+            });
+        }
+    });
+    $('.message_record').click(function(){
+        $('.message_record').css('display','none');
+    })
+    $(".message_record>div").click(function(event){
+        event.stopPropagation();
+    });
+    $('.delete_message').click(function(){
+        var message_id = $(this).attr('data-id');
+        if(message_id){
+            $.ajax({
+                type:'POST',
+                dataType:'JSON',
+                url:'/index.php?m=Home&c=User&a=del_message',
+                data:{message_id:message_id},
+                success:function(data){
+                    if(data.status ==1){
+                        layer.msg(data.msg, {icon: 1, time: 2000});
+                        $(".message_line"+message_id).hide();
+                    }
+                }
+            });
+        }
+    });
+
+</script>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="__STATIC__/css/appointment.css">
+    <title>사용자 센터-{$tpshop_config['shop_info_store_title']}</title>
+    <meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+    <meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+    <link rel="stylesheet" href="__STATIC__/css/common_order.css" />
+</head>
+<style>
+    .indexloading{text-align: center; padding-top: 20px}
+    .indexloading img{ width:16px; height: 16px }
+    .my_card .brand {
+        background: url(../static/images/card_bg.png) 0 -100px no-repeat;
+    }
+    .related .browse_related_list .slide_box a:hover{ border:0}
+    div.informations .in_01 .personal_head img {
+        width: 84px;
+        height: 84px;
+        border: 1px solid #f1f1f1;
+        padding: 2px;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        behavior: url(iecss3.htc);
+        position:relative;
+        z-index:2;
+    }
+</style>
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<!-- 头部-e -->
+<div class="wrap">
+    <!-- bread crumbs star -->
+    <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font target_no">내 Walhao</a> </div>
+    <!-- bread crumbs end -->
+
+    <!--菜单-->
+    <include file="User/menu" />
+    <!--菜单-->
+
+    <!-- 首页右侧 start -->
+    <div class="col_main myfeiniu">
+        <div class="informations clearfix">
+            <ul>
+                <li class="in_01">
+                    <span id="loadingpic" class="indexloading"> <a class="personal_head   target_no" href="javascript:void(0);"><img width="100" height="100" src="{$user.head_pic|default='__STATIC__/images/img88.jpg'}"></a> </span>
+                    <h2>
+                        <span class="num" id="spanNickname">{$user.nickname}</span>
+                        <div>
+                            <!--店铺-->
+                            <a class="usertitle target_no" >{$Think.Config.USER_LEVEL.$user[level]}</a>
+                            <a class="usertitle target_no" > LZ{$user[user_title]}</a>
+
+                        </div>
+                        <p id="greeting" class="greeting">Walhao 님.</p>
+                    </h2>
+                </li>
+                <li class="in_02">
+                    <div id="loadinguserinf" class="slide_box J_slide_box">
+                        <ul class="genre clearfix">
+                            <!--<li>-->
+                                <!--<span class="gray">138 ID:</span>-->
+                                <!--<span> {$user.tp138_user_id}</span>-->
+                            <!--</li>-->
+                            <li>
+                                <span class="gray">Walhao ID:</span>
+                                <span>{$user.wh_id}</span>
+                            </li>
+                            <li>
+                                <span class="gray">추천자 ID:</span>
+                                <a class="red target_no" href="{:U('/Home/User/myMembers')}">
+                                    클릭하다
+                                </a>
+                            </li>
+                            <li>
+
+                                <i class="icon_line"></i>
+                                <a class="target_no" href="">
+                                    <i class="icon_purse"></i>
+                                    <span>계정 잔액:</span>
+                                    <span class="text"><small class="rmb">${$user[user_money]}</small> </span>
+                                    <span class="go">&gt;</span>
+                                </a>
+
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="in_03">
+                    <div id="loadinguserinfo" class="slide_box J_slide_box">
+                        <div class="account_security">
+                            <span class="title">계정 보안 :</span>
+                            <div class="progress_bar">
+                                <div style="width:80%" class="progress"></div>
+                            </div>
+                            <span class="security_tips">높음</span>
+                            <!--  <a class="security_up blue target_no" href="https://i.tp-shop.cn/safetySettings/view">强化</a>-->
+                        </div>
+                        <ul class="genre clearfix">
+                            <li>
+                                <span class="gray">전화</span>
+                                <a class="blue target_no" href="{:U('/Home/User/mobile_validate',array('type'=>'mobile','step'=>1))}">
+                                    <if condition="$user['mobile_validated'] eq 0">바운드되지 않음<else/>바인딩 바꾸기</if>
+                                </a>
+                            </li>
+                            <li>
+                                <span class="gray">E 메일</span>
+                                <a class="red target_no" href="{:U('/Home/User/email_validate',array('type'=>'email','step'=>1))}">
+                                    <if condition="$user['email_validated'] eq 0">바운드되지 않음<else/>바인딩 바꾸기</if>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="grid_02">
+            <div class="middle_infor">
+                <div class="order_tips">
+                    <div class="cell_title clearfix">
+                        <h2>내 주문</h2>
+                        <p class="type">
+                            <a class="target_no" href="{:U('Home/User/order_list',array('type'=>'WAITPAY'))}"  title="Pending payment">결제 대기</a>
+                            <span class="v_line"></span>
+                            <a class="target_no" href="{:U('Home/User/order_list',array('type'=>'WAITSEND'))}" title="Waiting for delivery">배송 대기</a>
+                            <span class="v_line"></span>
+                            <a class="target_no" href="{:U('Home/User/order_list',array('type'=>'WAITRECEIVE'))}" title="Receiving goods">수취 대기</a>
+                            <span class="v_line"></span>
+                            <a class="target_no" href="{:U('Home/User/order_list',array('type'=>'WAITCCOMMENT'))}" title="Pending evaluation">평가 대기</a>
+                        </p>
+                        <a href="{:U('Home/User/order_list')}" class="order_viewAll">주문 전체 보기</a>
+                    </div>
+                    <div class="order_list J_order_list">
+
+                        <tpshop sql="select * from `__PREFIX__order` where user_id = $user[user_id] order by order_id desc limit 1" item="v" key="k" >
+                            <?php
+           		$v = set_btn_order_status($v);  // 添加属性  包括按钮显示属性 和 订单状态显示属性
+           ?>
+                            <if condition="count($v) gt 0">
+                                <!--购买过商品-->
+                                <table class='paying'>
+                                    <tr class="list_top">
+                                        <td colspan="3">
+                                            <div class="f_left order_info">
+                                                <span class="time num">{$v[add_time]|date="Y-m-d H:i",###}</span>
+                                                <span class="order_No">주문 번호:<small class="num">{$v['order_sn']}</small></span>
+                                            </div>
+                                            <div class="f_right order_tip">
+                                                <span class="num">금액:<em class="rmb">$</em>{$v['order_amount']}</span>
+                                                <if condition="$v.pay_btn eq 1"><a href='{:U('/Home/Cart/cart4',array('order_id'=>$v[order_id]))}' class="btn_pay">결제하기</a></if>
+                                                <if condition="$v.receive_btn eq 1"><a onclick="if(confirm('Are you sure you have recive it?')) location.href='{:U('Home/User/order_confirm',array('id'=>$v['order_id']))}'"  class="btn_pay">영수증 확인</a></if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tpshop sql="select * from `__PREFIX__order_goods` where order_id = $v[order_id]" item="v2" key="k2">
+                                        <tr class='list_cont '>
+                                            <td class="td_01">
+                                                <div class="list_main clearfix">
+                                                    <a href="{:U('Home/Goods/goodsInfo',array('id'=>$v2[goods_id]))}" class="J_hover"> <img src="{$v2.goods_id|goods_thum_images=80,80}"></a>
+                                                    {$v2.goods_name}
+                                                </div>
+                                            </td>
+                                            <td class="td_02">
+                                                <p><a class="target_no" href="{:U('Home/User/order_detail',array('id'=>$v[order_id]))}">주문 내역</a></p>
+                                            </td>
+                                            <td class="td_03">
+                                                <p><a href='{:U('Home/Goods/goodsInfo',array('id'=>$v2[goods_id]))}' class="btn-02">다시 구매</a></p>
+                                                <if condition="($v[comment_btn] eq 1) and ($v2[is_comment] eq 0)">
+                                                    <p><a href='{:U('Home/User/comment')}' class="btn-02">논평</a></p>
+                                                </if>
+                                            </td>
+                                        </tr>
+                                    </tpshop>
+                                    <!-- 预售单处理 -->
+                                </table>
+                                <!--购买过商品 end-->
+                                <else />
+                                <!--未购买过商品-->
+                                <div class="null">
+                                    <p>아직 물건을 사지 않았다,<a class="blue" title="Go shoping!" alt="Go shoping!" href="/" target="_blank">쇼핑하러가!</a></p>
+                                </div>
+                                <!--未购买过商品 end-->
+                            </if>
+                        </tpshop>
+
+
+                    </div>
+                </div>
+                <div class="items_collect">
+                    <h4 class="cell_title">가장 좋아하는 제품</h4>
+                    <div class="browse_related_list J_slide_parent">
+
+                        <tpshop sql="select * from __PREFIX__goods_collect where user_id = $user[user_id] order by collect_id desc limit 3" result_name="collect_result"></tpshop>
+                        <if condition="count($collect_result) gt 0">
+                            <!--有收藏-->
+                            <div id="favShow" class="slide_box J_slide_box">
+                                <ul class="clearfix">
+                                    <foreach name="collect_result" item="v">
+                                        <li>
+                                            <a target="_blank" class="items_tit" href="{:U('Home/Goods/goodsInfo',array('id'=>$v[goods_id]))}">
+                                                <img width="100" height="100" src="{$v.goods_id|goods_thum_images=100,100}">
+                                            </a>
+                                        </li>
+                                    </foreach>
+                                </ul>
+                            </div>
+                            <div class="view_all_order" id="favMore"><a class="target_no" href="{:U('Home/User/goods_collect')}">더 많은 컬렉션보기</a></div>
+                            <!--有收藏 end-->
+                            <else />
+                            <!--没有收藏-->
+                            <div class="null">
+                                <p>아직 컬렉션이 없습니다, <a class="blue" title="Go for shoping" href="/">쇼핑하러가!</a></p>
+                            </div>
+                            <!--没有收藏 end-->
+                        </if>
+                    </div>
+                </div>
+                <div class="my_card">
+                    <h4 class="cell_title">내 쿠폰</h4>
+                    <div class="browse_related_list J_slide_parent">
+                        <if condition="$user['coupon_count'] gt 0">
+                            <!--有优惠券-->
+                            <div id="couponShow" class="slide_box J_slide_box">
+                                <ul class="clearfix">
+                                    <tpshop sql="select * from __PREFIX__coupon_list where uid = $user[user_id] and  use_time = 0 order by id desc limit 3" result_name="coupon_list">
+                                        <a target="_blank" class="items_tit" href="{:U('Home/User/coupon')}">
+                                            <img width="100" height="100" src="__STATIC__/images/youhuiquan.jpg">
+                                        </a>
+                                    </tpshop>
+                                </ul>
+                            </div>
+                            <div class="view_all_order" id="cardMore"><a class="target_no" href="{:U('Home/User/coupon')}">더 많은 쿠폰보기</a></div>
+                            <!--有优惠券-->
+                            <else />
+                            <!--没有优惠券-->
+                            <div class="null">
+                                <p>쿠폰이 없습니다.</p>
+                            </div>
+                            <!--没有优惠券 end-->
+                        </if>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+
+            </div>
+            <div class="right_infor">
+                <div class="fl weixin_box">
+                </div>
+                <div class="my_cart">
+                    <h4 class="cell_title">내 카트</h4>
+                    <div class="browse_related_list" id="cartShow">
+                        <tpshop sql="select * from __PREFIX__cart where user_id = $user[user_id] order by id desc limit 8" t="1" result_name="cart_list"></tpshop>
+                        <if condition="count($cart_list) gt 0">
+                            <!--购物车有商品-->
+                            <ul class="clearfix">
+                                <foreach name="cart_list" item="v">
+                                    <li>
+                                        <img width="100" height="100" alt="{$v[goods_name]}" src="{$v.goods_id|goods_thum_images=100,100}">
+                                        <div class="mask">
+                                            <a class="items_tit" href="{:U('Home/Goods/goodsInfo',array('id'=>$v[goods_id]))}">
+                                                <span class="goods_name">{$v[goods_name]}</span>
+                                                <span class="num"><em class="rmb">$</em>{$v[member_goods_price]}</span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </foreach>
+                            </ul>
+                            <div class="view_all_order" id="cartMore"><a href="{:U('Home/Cart/cart')}" title="View more">더보기</a></div>
+                            <!--购物车有商品 end-->
+                            <else />
+                            <!--购物车没商品-->
+                            <div class="null">
+                                <p>장바구니가 비어 있습니다,<a class="blue" title="Go shopping!" href="/">쇼핑 가기!</a></p>
+                            </div>
+                            <!--购物车没商品  end-->
+                        </if>
+                    </div>
+                </div>
+                <div class="fl weixin_box">
+                    <div class="clearfix in">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 首页右侧  end -->
+</div>
+<div style="clear: both;"></div>
+<!--导入用户中心的底部-->
+<include file="Public/footer1" />
+</body>
+</html>

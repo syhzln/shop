@@ -1,0 +1,283 @@
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__PUBLIC__/js/layer/layer.js"></script> 
+<link rel="shortcut icon"  href="__STATIC__/images/bitbug_favicon.ico" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/common.min.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/main.min.css">
+<div class="fn-cms-top">
+<adv pid="1" limit="1" item="v">
+<div fnp="m-top-banner" style="background:{$v.bgcolor};" class="m-top-banner rel editable" moduleId="2010053" style="position:relative;min-height:35px;">
+	 <!--顶部公告图后台传<div class="bar container">
+	 	<a class="img-small" <if condition="$v['target'] eq 1">target="_blank"</if> href="{$v.ad_link}"> 
+			<img class="img100" src="{$v[ad_code]}"  title="{$v[title]}" style="{$v[style]}"/>
+		</a>   
+	 </div>-->
+	 <!--顶部第二张公告图<div style="text-align:center;"><a href="javascript:;"><img src="__STATIC__/images/banner2.jpg"/></a></div>-->
+	 <i data-role="close" class="icon icon-close"></i>
+</div>
+</adv>
+<div class="m-top-bar editable" moduleId="1539923" style="position:relative;min-height:25px;">
+  <div class="container">
+    <ul class="fl">
+      <li class="fl J_login_status dn nologin">
+      	<a class="menu-item fl J_do_login J_chgurl" href="{:U('Home/user/login')}">
+        <span>안녕하세요. 로그인 해주세요.</span> </a><a class="menu-item fl ht" href="{:U('Home/user/signUp')}">회원가입</a>
+      </li>
+      <li class="fl J_login_status dn islogin"><a href="{:U('Home/user/index')}" class="userinfo" title="" target="_self"></a>
+      	<a href="{:U('Home/user/logout')}" style="margin:0 10px;" title="Sign out" target="_self">로그아웃</a></li>
+      <!--<li class="fl sep"></li>-->
+      <!-- 
+      <li class="fl select-city dropdown">
+        <span class="menu-item">
+        <span>送货至：</span>
+        <a title="" alt="" href="" class="J_cur_place"></a><i class="dd"></i></span>
+      </li>-->
+    </ul>
+    <ul class="fr bar-right">
+      <!--<li class="fl dropdown my-feiniu"><a class="menu-item" target="_blank" href="{:U('Home/Newjoin/index')}">
+        <span>供应商入驻</span><i class="dd"></i></a>
+        <ul class="sub-panel">
+          <li><a class="J_chgurl" target="_blank" href="{:U('/seller/Admin/login')}">Seller login</a></li>
+        </ul>
+      </li>-->
+      <li class="fl dropdown my-feiniu"><a class="menu-item" target="_blank" href="{:U('/Home/User/index')}">
+        <span>나의 쇼핑</span>
+        <i class="dd"></i></a>
+        <ul class="sub-panel">
+          <li><a class="J_chgurl" target="_blank" href="{:U('/Home/User/order_list')}">나의 주문</a></li>
+          <!--<li><a class="J_chgurl" target="_blank" href="{:U('/Home/User/account')}">我的积分</a></li>-->
+          <!--<li><a class="J_chgurl" target="_blank" href="{:U('/Home/User/coupon')}">我的优惠券</a></li>-->
+          <li><a class="J_chgurl" target="_blank" href="{:U('/Home/User/goods_collect')}">나의 즐겨찾기</a></li>
+          <!--<li><a class="J_chgurl" target="_blank" href="{:U('/Home/User/comment')}">我的评论</a></li>-->
+        </ul>
+      </li>
+      <li class="fl sep"></li> 
+     <!--<li class="fl dropdown mobile-feiniu"><a class="menu-item" href=""><i class="fl ico"></i>
+       <span class="fl">Walhao APP</span>
+        <i class="dd"></i></a>
+        <div class="sub-panel m-lst">
+         <dl style="height:85px;">
+            <dt class="fl mr10"><a target="_blank" href="javascript:;"><img height="80" width="80" src="__STATIC__/images/qrcode_vmall_app01.png"></a></dt>
+            <dd class="fl mb10"><a target="_blank" href="javascript:;"><i class="andr"></i> Andiord</a></dd>
+            <dd class="fl"><a target="_blank" href=""><i class="iph"></i> iPhone</a></dd>
+          </dl>
+		  <p>Android APP users scan code - with the exception of WeChat sweep code!<br>Or download in Wisdom market,the application of treasure,SnapPea!<br>IPhone users please download with AppStore!</p>
+        </div>
+      </li>-->
+      <li class="fl sep"></li>
+      <li class="fl"><a class="menu-item" href="{:U('Home/Article/detail',array('article_id'=>17))}" target="_blank">
+        <span>고객센터</span></a></li>
+      <li class="fl sep"></li>
+	    <li class="fl change_ln">
+        <a href="javascript:void(0);" style="text-align:left;"><i class="flag-kor"></i>한글</a>
+        <i class="dd"></i>
+        <div class="ln_box">
+          <div>
+            <div><a id="korean" href="javascript:void(0);"><i class="flag-kor"></i>한글</a></div>
+            <div><a id="english" href="javascript:void(0);"><i class="flag-usa"></i>English</a></div>
+            <div><a href="http://www.walhao.com"><i class="flag-chn"></i>中文</a></div>
+          </div>
+        </div>
+      </li>
+
+        <!-- <li class="fl about-us"><a class="txt fl" style="line-height:unset;" href="">关注我们：</a></li>
+         <li class="fl dropdown weixin"><a href="" class="fl ico"></a>  -->
+        <!--<div class="sub-panel wx-box">
+          <span class="arrow-b">◆</span>
+          <span class="arrow-a">◆</span>
+          <p class="n"> 扫描二维码 <br>	关注TPshop网官方微信 </p>
+          <img src="__STATIC__/images/qrcode_vmall_app01.png"></div>-->
+      <!--</li>-->
+    </ul>
+  </div>
+</div>
+
+
+<div class="m-top-sidebar m-sdb-sale J-sdb " moduleId="2026855" style="z-index:401;" fnp="m-top-sidebar">
+  <div class="t-main">
+    <div class="tb-tabs">
+      <div class="tb-tabs-up">
+      	<a href="{:U('Home/Cart/cart')}" class="i-cart" data-role="ico-cart"><i class="demo-icon"><div class="cartpic"></div></i> 
+        <span class="text">장바구니</span><span id ="miniCartRightQty" class="num"></span></a>
+        <a href="{:U('/Home/User/order_list')}" target="_blank" class="i-ico i-ico-order" data-role="ico-btn">
+			<span>내 주문</span><i class="demo-icon"><img style="margin-top:3px;" src="__STATIC__/images/myorder.png" alt=""></i>
+			<div class="myorderbox">내 주문
+				<div class="sanjiao"></div>
+			</div>
+		</a>
+        <!--<a href="{:U('/Home/User/coupon')}" target="_blank" class="i-ico i-ico-coupon" data-role="ico-btn">
+        <span>我的优惠券</span><i class="demo-icon">&#xe80f;</i></a>-->
+        <a href="{:U('/Home/User/goods_collect')}" target="_blank" class="i-ico i-ico-fav" data-role="ico-btn">
+			<span>내 즐겨 찾기</span><i class="demo-icon"><img style="margin-top:-6px;" src="__STATIC__/images/mycol.png" alt=""></i>
+			<div class="mycolbox">컬렉션
+				<div class="sanjiao"></div>
+			</div>
+		</a>
+      <div class="i-ico i-ico-foot" data-role="ico-btn">
+			<i class="demo-icon"><img style="margin-top:1px;" src="__STATIC__/images/qqkefu.png" alt=""></i>
+			<div class="qqkefubox">
+				<div>
+					<dl><dt>사전 판매</dt><dd><a href="tencent://message/?uin=3516995610&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+					<dl><dt>사전 판매</dt><dd><a href="tencent://message/?uin=2795817030&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+					<dl><dt>고객 서비스</dt><dd><a href="tencent://message/?uin=1480552415&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+					<dl><dt>고객 서비스</dt><dd><a href="tencent://message/?uin=3232651919&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+					<dl><dt>사전 판매</dt><dd><a href="tencent://message/?uin=3510508498&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+					<dl><dt>고객 서비스</dt><dd><a href="tencent://message/?uin=3196277952&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+		 			<dl><dt>불평</dt><dd><a href="tencent://message/?uin=3154580074&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+					<dl><dt>기술 조언</dt><dd><a href="tencent://message/?uin=2734699187&Site=qq&Menu=yes"><img src="__STATIC__/images/tencent.png" alt="" /></a></dd></dl>
+					<dl><dt>온라인 시간:&nbsp;&nbsp;08:30——18:00</dt></dl>
+				</div>
+			</div>
+		</div>
+		<a class="i-ico i-ico-telkefu" data-role="ico-btn">
+			<i class="demo-icon"><img style="margin-top:-7px;" src="__STATIC__/images/telkefu.png" alt=""></i>
+			<div class="telkefubox">
+				<div>
+					<dl><dt>사전 판매 전화</dt><dd>0571-86854509</dd></dl>
+					<dl><dt>사전 판매 전화</dt><dd>0571-86775015</dd></dl>
+					<dl><dt>애프터 세일즈 폰</dt><dd>0571-86995016</dd></dl>
+					<dl><dt>애프터 세일즈 폰</dt><dd>0571-86770789</dd></dl>
+					<dl><dt>사전 판매 전화</dt><dd>0571-86773215&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0571-85383721</dd></dl>
+					<dl><dt>애프터 세일즈 폰</dt><dd>0571-86776015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0571-85383362</dd></dl>
+					<dl><dt>불평:&nbsp;&nbsp;0571-86773115</dt></dl>
+					<dl><dt>온라인 시간:&nbsp;&nbsp;08:30——18:00</dt></dl>
+				</div>
+			</div>
+		</a>
+		
+      </div>
+      <div class="tb-tabs-down">
+        <!--<a class="i-ico i-ico-ur" data-role="ico-btn">
+		  客服
+		</a>--> 
+		<a href="" class="i-ico i-ico-gotop" data-role="ico-gotop"><em></em>
+		<div class="text" style="color: #fff;text-align: center;">맨위</div>
+        <span>위로 가기</span>
+        <i></i></a></div>
+      <div class="my-cart-shim"></div>
+    </div> 
+    <div class="my-cart">
+      <div class="mn-c-top" ><a href="{:U('Home/Cart/cart')}">장바구니</a><i data-role="cart-close-btn"></i></div>
+      <div class="sub-panel u-fn-cart u-mn-cart">
+        <div id="miniCartRight"></div>
+        <div class="empty-c fn-hide">
+          <span class="ma"><i class="c-i oh"></i>장바구니가 비어 있습니다!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="m-top-search editable" moduleId="1539927" style="position:relative;min-height:35px;">
+  <div class="container">
+    <div class="logo fl">
+    	<a href="/" target="_self" class="item fl"><img height="72" width="126" src="{$tpshop_config['shop_info_store_logo']}"></a>
+    	<!-- <a href="" target="_blank" class="item fl"><img height="60" width="140" src="__STATIC__/images/csmrrvbluvoamtx8aaeoswlm7gg007.gif"></a>-->
+    </div>
+    <div fnp="m-top-search-form" class="m-top-search-form fl">
+     <form name="sourch_form" id="sourch_form" method="post" action="{:U("/Home/Goods/search")}">
+        <div data-role="form-inner" class="s-form"><i class="s-ico"></i>         
+		 <input type="text" data-role="input-search" autocomplete="off" class="fl s-input" name="q" id="q" value="<?php echo I('q'); ?>" placeholder="키워드 입력하세요"/>
+          <a data-role="btn" href="javascript:void(0);" class="s-btn fl" onclick="if($.trim($('#q').val()) != '') $('#sourch_form').submit();">검색</a>
+        </div>
+        <div class="s-hotword">
+        	<foreach name="tpshop_config.hot_keywords" item="wd" key="k">
+				<a href="{:U('Home/Goods/search',array('q'=>$wd))}" <if condition="$wd eq I('q')">class="ht"</if>>{$wd}</a>
+        	</foreach>
+        </div>
+        <ul data-role="tip-list" class="s-tip-list">
+        </ul>
+      </form>
+    </div>
+    <div class="my-cart fr" id="hd-my-cart">
+      <p class="c-n fl">내 장바구니</p>
+      <p class="c-num fl quantity">(<span class="count cart_quantity" id="cart_quantity"></span>) <i class="i-c oh"></i></p>
+      <div id="show_minicart" class="sub-panel u-fn-cart u-mn-cart">
+        <div id="minicart" class="minicartContent">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="m-top-nav editable" moduleId="1539926" style="position:relative;min-height:35px;">
+  <div class="main-container new-year">
+    <div class="main-title-wrap"><a href="" target="_blank" class="main-title">
+      <span class="ico"><i class="il il-lt"></i><i class="il il-lc"></i><i class="il il-lb"></i>
+      <i class="il il-rt"></i><i class="il il-rc"></i><i class="il il-rb"></i></span>몰 제품 카테고리</a>
+      <!--  <div class="nav-list" fnp="nav-list">
+        <ul class="nav-list-warpper">
+        </ul>
+      </div>-->
+    </div>
+     
+    <ul class="main-nav">
+      <li class="nav-item"><a class="menu-item <if condition=" CONTROLLER_NAME eq 'Index' ">menu-item-active"</if> target="_blank" href="/" style="overflow: visible;">홈 </a></li>
+      <foreach name="navigation" key="k" item='v'>
+       <li class="nav-item"><a  style="overflow: visible;"   href="{$v[url]}" 
+       		<?php  if($_SERVER['REQUEST_URI']==str_replace('&amp;','&',$v[url])){ echo "class='menu-item menu-item-active'";}
+       		else{ echo "class='menu-item'"; } ?>> {$v[name]} </a></li>
+      </foreach>
+      <li class="nav-item"><a class="menu-item "  href="javascript:void();" style="overflow: visible;">Walhao<i class="e-hot"></i></a></li>
+    </ul>     
+    </div>
+</div>
+<div>
+  <div class="J_side_nav_trigger"></div>
+</div>
+</div>
+<script type="text/javascript"> 
+
+$('#korean').click(function(){
+    var lang ='kor';
+    $.ajax({
+        type : "GET",
+        url:"/index.php?m=Home&c=Index&a=languageSwitch&lang="+lang,//+tab,
+        success: function(data){
+            location.reload();
+        }
+    });
+});
+
+$('#english').click(function(){
+    var lang ='english';
+    $.ajax({
+        type : "GET",
+        url:"/index.php?m=Home&c=Index&a=languageSwitch&lang="+lang,//+tab,
+        success: function(data){
+            location.reload();
+        }
+    });
+});
+
+$(document).ready(function(){
+	get_cart_num();
+	var uname= getCookie('uname');
+	if(uname == ''){
+		$('.islogin').remove();
+		$('.nologin').show();
+	}else{
+		$('.nologin').remove();
+		$('.islogin').show();
+		$('.userinfo').html(decodeURIComponent(uname));
+	};
+});
+
+
+function get_cart_num(){
+   var cart_cn = getCookie('cn');
+   if(cart_cn == ''){
+	$.ajax({
+		type : "GET",
+		url:"/index.php?m=Home&c=Cart&a=header_cart_list",//+tab,
+		success: function(data){								 
+			cart_cn = getCookie('cn');
+			$('#cart_quantity').html(cart_cn);					
+		}
+	});	
+  }
+  $('#cart_quantity').html(cart_cn);
+  $('#miniCartRightQty').html(cart_cn);
+}
+
+</script>

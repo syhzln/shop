@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<title>결제 성공-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+<link rel="stylesheet" href="__STATIC__/css/success_index.css" type="text/css">
+</head>
+<body>
+<script src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+<!--最顶部-->
+<include file="Public/siteTopbar" />
+
+ <!--------在线客服-------------->
+<include file="Public/kefu" />
+ <!--------在线客服-------------->    
+    
+    <div class="order-header">
+    	<div class="layout after">
+        	<div class="fl">
+            	<div class="logo pa-to-36 wi345">
+                	<a href="/"><img src="{$tpshop_config['shop_info_store_logo']}" alt="" width="50%"></a>
+                </div>
+            </div>
+        	<div class="fr">
+            	<div class="pa-to-36 progress-area">
+            	    <div class="progress-area-wd" style="display:none">재충전</div>
+                	<div class="progress-area-tx" style="display:none">금액을 기입하고 결제를 선택하세요.</div>
+                	<div class="progress-area-cg">리스트 제출</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layout after-ta order-ha">
+    	<div class="erhuh">
+        	<i class="icon-succa"></i>
+            <h3>성공을 축하합니다!</h3>
+            <p class="succ-p">재충전 번호:&nbsp;&nbsp;{$order['order_sn']}<br/>결제 금액 ($):&nbsp;&nbsp;<b>{$order['account']}</b>&nbsp;<b></b></p>
+            <div class="succ-tip">
+                회원님의 재충전 금액을 도착했습니다. 주문 결제할 때 잔액으로 결제할 수 있습니다.
+            </div>
+        </div>
+        <div class="ddxq-xiaq">
+            <a href="{:U('/Mobile/User/recharge',array('order_id'=>$order['order_id']))}">주문 내역<i></i></a>
+        </div>
+    </div>
+<!--------footer-开始-------------->
+
+<!--------footer-结束-------------->    
+</body>
+</html>

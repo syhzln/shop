@@ -1,0 +1,201 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i> 拆分订单</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i> Split order</h3>
+                </div>
+                <div class="panel-body">
+                    <!--表单数据-->
+                    <form method="post" action="{:U('Admin/Order/split_order')}" id="split_order">
+                        <div class="tab-pane">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr><td class="chn">费用信息:</td>
+                                <tr><td class="eng">Cost information:</td>
+                                	<td class="chn">
+                                		<div class="col-xs-9">
+                                		<input type="hidden" name="order_id" value="{$order.order_id}">
+                                		 商品总价：{$order.goods_price}+运费:{$order.shipping_price}-积分：{$order.integral}-优惠:{$order.discount}                                        
+                                		</div>
+                                	</td>
+									<td class="eng">
+                                		<div class="col-xs-9">
+                                		<input type="hidden" name="order_id" value="{$order.order_id}">
+                                		 Goods price:{$order.goods_price}+Freight:{$order.shipping_price}-Integral：{$order.integral}-Discpunt:{$order.discount}                                        
+                                		</div>
+                                	</td>
+                                </tr>
+                                <tr>
+                                    <td class="chn">收货人:</td>
+                                    <td class="eng">Consignee:</td>
+                                    <td>
+                                    <div class="form-group">
+	                                    <div class="col-xs-2"> {$order.consignee}</div>
+                                        <div class="col-xs-1 chn">手机：</div>
+                                        <div class="col-xs-1 eng">Mobile:</div>
+                                        <div class="col-xs-2">{$order.mobile}</div>
+                                        <div class="col-xs-3">
+											<p class="text-warning chn">温馨提示：原单商品不可全部移除</p>
+											<p class="text-warning eng">Reminder: the original single goods can not be removed</p>
+										</div>
+                                        <div class="col-xs-2 pull-right">
+                                        	<button type="button" class="btn btn-default pull-left" onclick="window.location.reload();">
+												<span class="chn">重置</span>
+												<span class="eng">Reset</span>
+											</button>
+                                        	<button type="button" class="btn btn-primary pull-right" onclick="add_split()">
+												<span class="chn">拆单</span>
+												<span class="eng">Split order</span>
+											</button>
+                                        </div>
+                                    </div>    
+                                    </td>
+                                </tr>                                                                                      
+                                <tr>
+                                    <td class="chn">原单商品列表:</td>
+                                    <td class="eng">The original single goods list:</td>
+                                    <td id="origin" style="border:2px orange solid;"> 
+                                       <div class="form-group">
+                                       		<div class="col-xs-10">
+	                                       		<table class="table table-bordered">
+	                                       			<thead>
+	                                       			<tr>
+										                <td class="text-left chn">商品名称</td>
+										                <td class="text-left eng">Goods name</td>
+										                <td class="text-left chn">规格</td>
+										                <td class="text-left eng">Spec</td>
+										                <td class="text-left chn">价格</td>
+										                <td class="text-left eng">Price</td>
+										                <td class="text-left chn">原购数</td>								                
+										                <td class="text-left eng">Original purchase</td>								                
+										                <td class="text-left chn">数量</td>
+										                <td class="text-left eng">Amount</td>
+										                <td class="text-left chn">操作</td>
+										                <td class="text-left eng">Edit</td>
+										            </tr>
+										            </thead>
+										            <tbody>
+										            <foreach name="orderGoods" item="vo">
+										            	<tr>
+										                <td class="text-left">{$vo.goods_name}</td>            
+										                <td class="text-left">{$vo.spec_key_name}</td>
+										                <td class="text-left">{$vo.goods_price}</td>
+										                <td class="text-left">{$vo.goods_num}</td>
+										                <td class="text-left">
+										                	<input type="text" name="goods[{$vo.rec_id}]" rel="{$vo.rec_id}" class="input-sm" style="width:40px;" value="{$vo.goods_num}">
+										               	</td>
+										                <td class="text-left">
+										                	<a href="javascript:void(0)" onclick="javascript:$(this).parent().parent().remove()">
+																<span class="chn">移除</span>
+																<span class="eng">Remove</span>
+															</a>
+										                </td>
+										           		</tr>
+										           </foreach>
+										           </tbody>
+	                                       		</table>
+                                       	   </div>
+                                       </div>                                       
+                                    </td>
+                                </tr>                               
+                                <tr id="last_tr">
+                                    <td class="chn">管理员备注:</td>
+                                    <td class="eng">Administrator note:</td>
+                                    <td>
+                                    <div class="form-group ">
+	                                    <div class="col-xs-4">
+                                        	<textarea style="width:450px; height:100px;" name="admin_note">{$order.admin_note|htmlspecialchars_decode}</textarea>
+                                        </div>
+                                    </div>    
+                                    </td>
+                                </tr>                                  
+                             </tbody>
+                          </table>
+                          <div class="col-xs-12">
+                          	<div class="pull-left">
+                          		<p class="text-danger" id="error_log"></p>
+                          	</div>
+	                        <div class="pull-right">
+		                        <button class="btn btn-info" type="button" onclick="checkSubmit()">
+		                            <i class="ace-icon fa fa-check bigger-110"></i>
+									<span class="chn">保存</span>
+									<span class="eng">Submit</span>
+		                        </button>
+	                        </div>
+                        </div>
+                      </div>
+                    </form> 
+                </div>
+            </div>
+        </div> 
+    </section>
+</div>
+<script>
+var no = 1;
+$(function(){
+	//add_split();
+});
+
+function add_split(){
+	var new_order = '';
+	new_order += '<tr id="new_'+no+'"><td>新商品列表:</td><td>';                      
+	new_order += $('#origin').html();
+	new_order += '<div class="col-xs-1 pull-right"><button type="button" class="btn btn-danger pull-right" onclick="$(this).parent().parent().parent().remove();">删除</button></div>';
+	new_order += '</td></tr>';
+	$('#last_tr').before(new_order);
+	$('#new_'+no+' .input-sm').each(function(i,o){
+		var name = $(this).attr('name');
+		$(this).attr('name',no+'_'+name);
+	});
+	no++;
+}
+
+var b = {$goods_num_arr};
+
+function checkSubmit(){
+	var a = [],g = [];
+	$('input[name*=old_goods]').each(function(i,o){
+		var rec_id = $(o).attr('rel');
+		if(!a[rec_id]){
+			a[rec_id] = 0;
+		}
+		a[rec_id] = a[rec_id] + parseInt($(o).val());
+	});
+	
+	$('#origin .input-sm').each(function(){
+		g.push($(this).val());
+	});
+	
+	if(g.length == 0){
+		$('#error_log').empty().html('原单商品不可全部移除');
+		return false;
+	}
+	
+	for(var k in b){
+		if(a[k] > parseInt(b[k]['goods_num'])){
+			var lt = a[k] - parseInt(b[k]['goods_num']);
+			$('#error_log').empty().html(b[k]['goods_name']+',数量大于原商单购买数'+lt+'件');
+			return false;
+		}
+		if(a[k] < parseInt(b[k]['goods_num'])){
+			var lt = parseInt(b[k]['goods_num']) - a[k];
+			$('#error_log').empty().html(b[k]['goods_name']+',数量少于原商单购买数'+lt+'件');
+			return false;
+		}else{
+			$('#error_log').empty();
+		}
+	}
+	
+	$('#split_order').submit();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+
+                    <form method="post" enctype="multipart/form-data" target="_blank" id="form-order">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"></td>
+    
+                                    <td class="text-right">
+                                        <a href="javascript:sort('user_id');">ID</a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="javascript:sort('username');">
+											<span class="chn">会员昵称</span>
+											<span class="eng">Member name</span>
+										</a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="javascript:sort('level');">
+											<span class="chn">会员等级</span>
+											<span class="eng">Member grade</span>
+										</a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="javascript:sort('wh_id');">
+                                            <span class="chn">沃好ID</span>
+                                            <span class="eng">WalHao ID</span>
+                                        </a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="javascript:sort('total_amount');">
+											<span class="chn">累计消费</span>
+											<span class="eng">Cumulative consumption</span>
+										</a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="javascript:sort('email');">
+											<span class="chn">邮件地址</span>
+											<span class="eng">Email</span>
+										</a>
+                                    </td>
+                                    
+                                    <td class="text-left">
+                                        <a href="javascript:void(0);">
+											<span class="chn">下线数</span>
+											<span class="eng">Next member amount</span>
+										</a>
+                                    </td>
+                                    <!--<td class="text-left">-->
+                                        <!--<a href="javascript:void(0);">二级下线数</a>-->
+                                    <!--</td>-->
+                                    <!--<td class="text-left">-->
+                                        <!--<a href="javascript:void(0);">三级下线数</a>-->
+                                    <!--</td>                                    -->
+                                    <td class="text-left">
+                                        <a href="javascript:sort('mobile');">
+											<span class="chn">手机号码</span>
+											<span class="eng">Amount</span>
+										</a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="javascript:sort('user_money');">
+											<span class="chn">余额</span>
+											<span class="eng">Balance</span>
+										</a>
+                                    </td>
+                                    <!--<td class="text-left">-->
+                                        <!--<a href="javascript:sort('pay_points');">-->
+											<!--<span class="chn">积分</span>-->
+											<!--<span class="eng">Integral</span>-->
+										<!--</a>-->
+                                    <!--</td>-->
+                                    <td class="text-left">
+                                        <a href="javascript:sort('reg_time');">
+											<span class="chn">注册日期</span>
+											<span class="eng">Registration date</span>
+										</a>
+                                    </td>
+                                    <td class="text-right">
+										<span class="chn">操作</span>
+										<span class="eng">Edit</span>
+									</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="userList" id="list">
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="selected[]" value="{$list['user_id']}">
+                                            <input type="hidden" name="shipping_code[]" value="flat.flat">
+                                        </td>
+                                        <td class="text-right">{$list.tp138_user_id}</td>
+                                        <td class="text-left">{$list.nickname}</td>
+                                        <td class="text-left">{$level[$list[level]]}</td>
+                                        <td class="text-left">{$list.wh_id}</td>
+                                        <td class="text-left">{$list.total_amount}</td>
+                                        <td class="text-left">{$list.email}
+                                            <if condition="($list['email_validated'] eq 0) AND ($list['email'])">
+                                                <span class="chn">(未验证)</span><span class="eng">(not verified)</span>
+                                            </if>
+                                        </td>
+                                        <td class="text-left">{$first_leader[$list[tp138_user_id]]['count']|default="0"}</td>
+                                        <!--<td class="text-left">{$second_leader[$list[tp138_user_id]]['count']|default="0"}</td>-->
+                                        <!--<td class="text-left">{$third_leader[$list[tp138_user_id]]['count']|default="0"}</td>-->
+                                        <td class="text-left">{$list.mobile}
+                                            <if condition="($list['mobile_validated'] eq 0) AND ($list['mobile'])">
+                                                <span class="chn">(未验证)</span><span class="eng">(not verified)</span>
+                                            </if>
+                                        </td>
+                                        <td class="text-left">{$list.user_money}</td>
+                                        <!--<td class="text-left">{$list.pay_points}</td>-->
+                                        <td class="text-left">
+                                            <if condition="date('Y-m-d',$list['reg_time']) lt 2000-01-01">
+                                                {$list.reg_time}
+                                            <else/>
+                                                {$list.reg_time|date='Y-m-d H:i',###}
+                                            </if>
+                                        </td>
+                                        <td class="text-right">
+                                            <a href="{:U('Admin/user/structure',array('wh_id'=>$list['wh_id']))}" data-toggle="tooltip" title="" class="btn btn-info">Tree</a>
+                                            <a href="{:U('Admin/user/detail',array('id'=>$list['user_id']))}" data-toggle="tooltip" title="" class="btn btn-info" data-original-title="查看详情"><i class="fa fa-eye"></i></a>
+                                            <a href="{:U('Admin/user/address',array('id'=>$list['user_id']))}" data-toggle="tooltip" title="" class="btn btn-info" data-original-title="收货地址"><i class="fa fa-home"></i></a>
+                                            <!--<a href="{:U('Admin/order/index',array('user_id'=>$list['user_id']))}" data-toggle="tooltip" title="" class="btn btn-info" data-original-title="订单查看"><i class="fa fa-shopping-cart"></i></a>-->
+                                            <a href="{:U('Admin/user/account_log',array('id'=>$list['user_id']))}" data-toggle="tooltip" title="" class="btn btn-info" data-original-title="账户"><i class="glyphicon glyphicon-yen"></i></a>
+                                            <a href="{:U('Admin/user/delete',array('id'=>$list['user_id']))}" id="button-delete6" data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="删除"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-3 text-left">
+                        </div>
+                        <div class="col-sm-6 text-right">{$page}</div>
+                    </div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+</script>

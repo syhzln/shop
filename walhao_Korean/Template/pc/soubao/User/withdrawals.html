@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<title>계정관리-{$tpshop_config['shop_info_store_title']}</title>  <!--账户管理-->
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+</head>
+<body> 
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<!-- 头部-e -->  
+<link rel="stylesheet" href="__STATIC__/css/favorite.css">
+
+<div class="wrap">
+  <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">My Wolhao</a>&gt;<span class="color">자금관리</span></div><!--资金管理-->
+  <!--菜单--> 
+  <include file="User/menu" /> 
+  <!--菜单-->     
+  <!--侧边导航栏结束-->
+   <div class="col_main">
+    <div class="main balance"> 
+      <!-- themes star -->
+      <div class="themes_title">
+        <h3>계정 잔액</h3> <!--账户余额-->
+      </div>
+      <!-- themes end --> 
+      <!-- message star -->
+      <div class="message">
+        <ul class="clearfix">
+          <li class="mes_01"> <i class="icon_purse"></i>
+            <div>
+              <p class="txt">가용 잔액</p> <!--可用余额-->
+              <p class="num"><em class="rmb">$</em>{$user.user_money}</p>
+            </div>
+          </li>
+          <li class="mes_02"> <i class="icon_lock"></i>
+            <div>
+              <p class="txt">가용 포인트</p> <!--可用积分-->
+              <p class="num"><em class="rmb"></em>{$user.pay_points}</p>
+            </div>
+          </li>
+          <li class="mes_03"> <i class="icon_question" id="question"></i> </li>
+          <li class="mes_04"> <span class="txt"></span> <span class="status"></span> </li>
+        </ul>
+        <div class="tip" id="question_tip"> 현금인출 완료되지 않은 금액</div> <!--尚未提现完成的金额-->
+      </div>
+      <!-- message end -->
+      <div class="ui_tab">
+        <ul class="ui_tab_nav">
+          <li class="active"><a id="activeHref" class="activeHref" href=""  >현금인출 정보</a></li> <!--提现信息-->
+        </ul>
+        <div class="ui_tab_content">
+          <div class="ui_panel" id="noComment" style="display: block;"> 
+            <!-- Details List star -->
+            	<div>
+				                <form action="" method="post" enctype="multipart/form-data" name="distribut_form" id="distribut_form">
+								<div class="cash_num bb1">
+                                    <p class="tx_cash">
+                                        <span>현금인출 타입：</span> <!--提现类型-->
+                                        <select name="" id="">
+                                            <option value="0">타입을 선택하세요</option> <!--请选择提现类型-->
+                                            <option value="1">잔액 현금인출</option> <!--余额提现-->
+                                        </select>
+                                        <a class="tips">현금인출 가능한 금액 <i>${$user.user_money}</i></a> <!--可提现额度-->
+                                    </p>
+                                    <p class="tx_cash">
+                                        <span>현금인출 방식：</span> <!--提现方式-->
+                                        <select name="" id="">
+                                            <option value="0">방식을 선택하세요</option> <!--请选择提现方式-->
+                                            <option value="1">Alipay</option> <!--支付宝提现-->
+                                            <option value="2">은행카드</option> <!--银行卡提现-->
+                                        </select>
+                                    </p>
+									<p class="tx_cash">
+                                        <span>인출 금액：</span> <!--提现金额-->
+                                        <a href="javascript:;" class="amount">
+                                            <input type="text" id="money" name="money"  class="imput_text vam" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/>
+                                            <span>$</span>
+                                        </a>
+                                        <a class="tips">최소 현금인출 금액<i>${$tpshop_config['basic_min']}</i>, 인출 시 수수료 2%를 공제합니다.</a>
+                                        <!--最少提现额度XX，,提现将扣除 1%手续费 及 2%店铺管理费-->
+                                    </p>
+                                    <p class="tx_cash">
+                                        <span>입금 계좌번호：</span> <!--收款账号-->
+                                        <input type="text" id="account_bank" name="account_bank" class="imput_text vam" value="{$user.bank_card}" placeholder=""/>
+                                    </p>
+									<p class="tx_cash">
+                                    	<span>은행 이름：</span> <!--银行名称-->
+                                        <input type="text" id="bank_name" name="bank_name" class="imput_text vam" value="{$user.bank_name}" placeholder=""/>
+                                    </p>
+									<p class="tx_cash">
+                                    	<span>예금주：</span> <!--开户名-->
+                                        <input type="text" id="account_name" name="account_name" class="imput_text vam" value="{$user.truename}" placeholder=""/>
+                                    </p>                                    
+									<p class="tx_cash">
+                                   		 <span>인증코드：</span> <!--验证码-->
+                                          <input type="text" name="verify_code" class="imput_text vam" id="verify_code" placeholder="" style="width:100px;" />
+	                                      <img class="yzm_code" id="verify_code_img" width="100" height="30" src="{:U('User/verify',array('type'=>'withdrawals'))}"  onclick="verify(this)" />
+                                    </p>
+                                    <!--<p class="tx_cash">-->
+                                        <!--<span>결제 비밀번호：</span> &lt;!&ndash;支付密码&ndash;&gt;-->
+                                        <!--<input type="password" name="pay_pwd" class="imput_text vam" style="width:100px;" />-->
+                                    <!--</p>-->
+									<p>
+                                        <a id="cash_submit"  onClick="checkSubmit();"  href="javascript:void(0);">제출하기</a>
+                                        <span class="submit_tip">※주의사항: 1~15일 동안 현금일출 신청할 때 당월 말일에 발급합니다. <br/>
+                                                        16~말일 동안 현금일출 신청할 때 다음 달 15일에 발급합니다.
+                                        </span>
+                                    </p> <!--提交-->
+								</div>
+                                </form>
+								<div class="cash_num">
+									<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										<tr>
+                                            <th>번호</th> <!--编号-->
+                                            <th>신청날짜</th> <!--申请日期-->
+                                            <th>금액</th> <!--金额-->
+                                            <th>상태</th> <!--状态-->
+                                            <th>조작</th> <!--操作-->
+                                            <th>처리 결과</th><!--处理结果-->
+										</tr>
+                                        <foreach name="list" item="v" >
+										<tr>
+                                            <td class="with_id">{$v['id']}</td>
+                                            <td>{$v['create_time']|date="Y-m-d",###}</td>
+                                            <td class="with_money">{$v['money']}</td>
+                                            <td>
+                                            <if condition="$v[status] eq 0">신청 중</if> <!--申请中-->
+                                            <if condition="$v[status] eq 1">신청 성공</if> <!--申请成功-->
+                                            <if condition="$v[status] eq 2">신청 실패</if> <!--申请失败-->
+                                            <if condition="$v[status] eq 3">취소됨</if> <!--已取消-->
+                                            </td>
+                                            <td><a href="javascript:;" <if condition="$v[status] eq 0">onclick="cancel_apply(this)"</if>>신청 취소</a></td> <!--取消申请-->
+                                            <td>{$v.remark}</td>
+										</tr>
+										</foreach>
+									</table>
+								</div>
+                <div class="operating fixed">
+                  <div class="fn_page clearfix">
+                         {$show}
+                  </div>
+                </div>
+							</div>
+            <!-- Details List end --> 
+            <!-- page next star -->
+
+	            <div class="operating fixed" id="bottom">
+                    <div class="fn_page clearfix">
+                            {$page} 
+                    </div>
+                </div>             
+            <!-- page next end --> 
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>
+ 
+<div style="clear: both;"></div>
+<include file="User/footer" />
+</body>
+<script>
+// 表单验证提交
+function checkSubmit(){
+	var money = $.trim($('#money').val());
+	var bank_name = $.trim($('#bank_name').val());
+	var account_bank = $.trim($('#account_bank').val());
+	var account_name = $.trim($('#account_name').val());
+	var verify_code = $.trim($('#verify_code').val());
+	if(money == '')
+	{
+		alert('현금인출 금액을 입력하세요.'); <!--请填写提现金额-->
+		return false;
+	}
+	if(money < 200 )
+	{
+		alert("신청 금액{$tpshop_config['distribut_min']}미만입니다. 다시 확인하십시오."); //每次最少提现额度200
+		return false;
+	}
+    if(money > {$user['user_money']}){
+        alert("회원님의 계정 잔액은 {$user['user_money']} 입니다."); //你的账户余额{$user['user_money']}
+        return false;
+    }
+	if(bank_name == '')
+	{
+		alert('은행 이름을 입력하세요.'); <!--请填写银行名称-->
+		return false;
+	}
+	if(account_bank == '')
+	{
+		alert('입금 계좌번호를 입력하세요.'); <!--请填写收款账号-->
+		return false;
+	}
+	if(account_name == '')
+	{
+		alert('예금주 입력하세요.'); <!--请填写开户名-->
+		return false;
+	}
+	if(verify_code == '')
+	{
+		alert('인증코드를 입력하세요.'); <!--请填写验证码-->
+		return false;
+	}
+	$('#distribut_form').submit();
+}
+
+// 验证码切换
+function verify(){
+   $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=withdrawals&r='+Math.random());
+}
+function cancel_apply(obj){
+    var user_money = "{$user.user_money}";
+    var with_id = $(obj).parent().siblings('.with_id').html();
+    var with_money = $(obj).parent().siblings('.with_money').html();
+    $.ajax({
+        type:'post',
+        url:"{:U('Home/User/withdrawals')}",//+tab,
+        data:{user_money:user_money,with_id:with_id,with_money:with_money},
+        success:function (data){
+            alert('성공했습니다.'); <!--取消成功-->
+            window.location.reload();
+        }
+    });
+}
+ 
+</script>	
+</html>

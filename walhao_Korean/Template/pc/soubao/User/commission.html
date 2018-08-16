@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>자산 센터-{$walhao_config['shop_info_store_title']}</title>
+        <link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="__STATIC__/css/theme.css">
+        <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+        <style>
+            .m-top-search .logo{margin-top:-50px;}
+        </style>
+    </head>
+    <body class="bg-f5">
+    <include file="Public/min-header" />
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__PUBLIC__/js/pc_common.js"></script>
+    <script src="__PUBLIC__/js/layer/layer.js"></script>
+        <div class="wrap">
+                <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">사용자 중심</a>&gt;<span class="color">홈 페이지</span></div>
+                <div class="home-main">
+                    <include file="User/menu"/>
+                    <div class="col_main">
+                        <div class="block ">
+                            <p class="block-heading">보너스 풀</p>
+                            <div class="block-body">
+                                <div class="row-fluid">
+                                    <p class="title">[ 내 보너스 풀 ] <span class="msg_conversion_formula">(1 좀 = ₩1 )</span></p>
+                                    <div class="point_formula">
+                                        <div class="my-total-point"><span id="profitSharingPoint">총계 0</span><span class="text">좀</span></div>
+                                        <div class="operators">=</div>
+                                        
+                                                        <div class="my_sale_commissions">0.00<span class="text">좀（나는 매일 한 버는 이익 분배 수량）</span>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <hr>
+                                <table class="tb">
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                            <div class="row-fluid">
+                                                <p class="title">[ 배당금 보너스 포인트 ]</p>
+                                                <div class="proportion_input_div">
+                                                    <div><input class="proportion_input" type="text" id="sale_commissions_proportion" value="0"></div>
+                                                    <div class="percent">%</div>
+                                                    <div class="msg"></div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <input onclick="saveSharingPointProportion('sale_commissions_proportion')" autocomplete="off" name="submit" value="저장" class="btn btn-primary" type="button">
+                                            </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <div class="row-fluid">
+                                    <p class="title">[ 배당금 계좌 이체 ]</p>
+                                    <p class="cur_money">보너스 포인트 이전 가능：<span id="curSharingPoint">0</span>포인트 <span id="losePointMsg"></span></p>
+                                    <div class="proportion_input_div">
+                                        <div class="percent">회전</div>
+                                        <div><input class="proportion_input" type="text" id="pointNeedToMove" value="" autocomplete="off"></div>
+                                        <div class="percent">포인트</div>
+                                        <div class="percent">=</div>
+                                        <div class="percent">₩</div>
+                                        <div><input class="proportion_input" type="text" id="moneyNeedToGet" value="" readonly="" autocomplete="off"></div>
+
+                                        <div class="percent">방향 전환</div>
+                                        <div class="percent">계정 잔액</div>
+                                        <div id="pointToMoneyMsg" class="msg"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <input id="sharingPointToMoneyBtn" onclick="sharingPointToMoney()" autocomplete="off" name="submit" value="제출" class="btn btn-primary" type="button">
+                                    <div style="margin-top: 15px;">
+                                        참고 : 당월 첫날 총 배당금을 기준으로 계정 잔액의 최대 30 %를 한 달에 이체 할 수 있습니다.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        <!--footer-s-->
+        <include file="Public/footer1" />
+        <!--footer-e-->
+        <script type="text/javascript">
+//          
+        </script>
+    </body>
+</html>

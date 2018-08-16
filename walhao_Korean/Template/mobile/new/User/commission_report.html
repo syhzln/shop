@@ -1,0 +1,135 @@
+<include file="Public/header"/>
+<body>
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+            <div class="h-mid">보너스 보고서</div>
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<include file="Public/menu"/>
+
+<div class="loginsingup-input ma-to-20">
+    <div id="commission_report">
+        <div class="lsu">
+            <p>당일 어워드:：<font>$ {$today_reward|default='0.00'}</font></p>
+            <p>당월 어워드：<font>$ {$report[0]|default='0.00'}</font></p>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th colspan="2">달 보너스 통계:</th> <!-- 当用佣金统计 start-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>[ 개인 점포 판매 커미션 ]: </td>  <!-- 个人店铺销售提成奖 -->
+                <td>$ {$report[1]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 추천공유 ]:</td>  <!-- 分享销售提成奖 -->
+                <td>$ {$report[2]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 매일 플랫폼 글로벌 매출 이익 보너스 ]:</td>  <!-- 每天平台全球销售利润分红奖 -->
+                <td>$ {$report[3]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 엘리트 보너스 ]:</td>  <!-- 销售精英提成奖 -->
+                <td>$ {$report[4]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 월간 팀 매출 커미션 ]:</td>  <!-- 每月团队销售提成奖 -->
+                <td>$ {$report[5]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 주간 리더 대등상 ]:</td>  <!-- 周领导对等奖 -->
+                <td>$ {$report[6]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 월간 특별 기금 판매 커미션 ]:</td>  <!-- 每月特殊贡献销售提成奖 -->
+                <td>$ {$report[7]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 신인상 ]:</td>  <!-- 新人奖 -->
+                <td>$ {$report[8]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 성과급 ]:</td>  <!-- 绩效奖 -->
+                <td>$ {$report[10]|default='0.00'}</td>
+            </tr>
+            <tr>
+                <td>[ 기타 ]:</td>  <!-- 其 它 -->
+                <td>$ {$report[9]|default='0.00'}</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="lsu search">
+            <div>지난 월별 각종 상여금 통계：</div>  <!--历史月份各项奖金统计-->
+            <form class="form-inline" method="get" id="search_form">
+                <p>
+                    <select name="year" id="sear_year">
+                        <option value="0">선택하세요</option>  <!--请选择-->
+                        <option value="2017" <?php if(I('get.year') == "2017")echo "selected=\"selected\"";?>>2017</option>
+                        <option value="2018" <?php if(I('get.year') == "2018")echo "selected=\"selected\"";?>>2018</option>
+                        <option value="2019" <?php if(I('get.year') == "2019")echo "selected=\"selected\"";?>>2019</option>
+                        <option value="2020" <?php if(I('get.year') == "2020")echo "selected=\"selected\"";?>>2020</option>
+                        <option value="2021" <?php if(I('get.year') == "2021")echo "selected=\"selected\"";?>>2021</option>
+                        <option value="2022" <?php if(I('get.year') == "2022")echo "selected=\"selected\"";?>>2022</option>
+                        <option value="2023" <?php if(I('get.year') == "2023")echo "selected=\"selected\"";?>>2023</option>
+                        <option value="2024" <?php if(I('get.year') == "2024")echo "selected=\"selected\"";?>>2024</option>
+                        <option value="2025" <?php if(I('get.year') == "2025")echo "selected=\"selected\"";?>>2025</option>
+                    </select>
+                </p>
+                년  <!--年-->
+                <p>
+                    <select name="month" id="sear_month">
+                        <option value="0">선택하세요</option>
+                        <option value="01" <?php if(I('get.month') == "01")echo "selected=\"selected\"";?>>1</option>
+                        <option value="02" <?php if(I('get.month') == "02")echo "selected=\"selected\"";?>>2</option>
+                        <option value="03" <?php if(I('get.month') == "03")echo "selected=\"selected\"";?>>3</option>
+                        <option value="04" <?php if(I('get.month') == "04")echo "selected=\"selected\"";?>>4</option>
+                        <option value="05" <?php if(I('get.month') == "05")echo "selected=\"selected\"";?>>5</option>
+                        <option value="06" <?php if(I('get.month') == "06")echo "selected=\"selected\"";?>>6</option>
+                        <option value="07" <?php if(I('get.month') == "07")echo "selected=\"selected\"";?>>7</option>
+                        <option value="08" <?php if(I('get.month') == "08")echo "selected=\"selected\"";?>>8</option>
+                        <option value="09" <?php if(I('get.month') == "09")echo "selected=\"selected\"";?>>9</option>
+                        <option value="10" <?php if(I('get.month') == "10")echo "selected=\"selected\"";?>>10</option>
+                        <option value="11" <?php if(I('get.month') == "11")echo "selected=\"selected\"";?>>11</option>
+                        <option value="12" <?php if(I('get.month') == "12")echo "selected=\"selected\"";?>>12</option>
+                    </select>
+                </p>
+                월  <!--月-->
+                <button class="btn" id="submit_button" type="button"> 검색</button> <!--搜索-->
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    $("#submit_button").click(function(){
+        var year = $('#sear_year option:selected').val();
+        var month = $('#sear_month option:selected').val();
+        if(year == 0) {
+            layer.msg("연도를 선택하십시오");
+            return;
+        }
+
+        if(month == 0) {
+            layer.msg("월을 선택하십시오");
+            return;
+        }
+        $("#search_form").submit();
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>보너스 청구서-{$walhao_config['shop_info_store_title']}</title>
+        <link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="__STATIC__/css/theme.css">
+
+        <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+        <style>
+            .m-top-search .logo{margin-top:-50px;}
+        </style>
+    </head>
+    <body class="bg-f5">
+    <include file="User/header"/>
+            <div class="wrap" style="margin-top:40px;">
+                <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">내 쇼핑몰</a>&gt;<span class="color">보너스 청구서</span></div>
+                <div class="home-main">
+                    <include file="User/menu"/>
+                    <div class="col_main">
+                        <div class="container-fluid" id="UserCenterMaxContainer">
+                            <div class="row-fluid">
+                                <div class="main">
+                                <script>
+                                    $(function(){
+                                        var login_wohao_url = "";
+                                        if (login_wohao_url.length >0) {
+                                            $.ajax({
+                                                type: "get",
+                                                url: login_wohao_url,
+                                                xhrFields: {
+                                                    withCredentials: true
+                                                },
+                                                crossDomain: true,
+                                                dataType: "jsonp",
+                                                jsonp:"jsoncallback",
+                                                success: function (res) {
+
+                                                }
+                                            });
+                                        }
+                                    })
+                                </script>
+
+
+
+
+                                <script>
+                                    $(function(){
+                                        var login_bbs_url = "";
+                                        if (login_bbs_url.length >0) {
+                                            $.ajax({
+                                                type: "get",
+                                                url: login_bbs_url,
+                                                xhrFields: {
+                                                    withCredentials: true
+                                                },
+                                                crossDomain: true,
+                                                dataType: "jsonp",
+                                                jsonp:"jsoncallback",
+                                                success: function (res) {
+
+                                                }
+                                            });
+                                        }
+                                    })
+                                </script>
+            
+            <p style="color:red">주의 사항：<br>
+            1. 다음의리스트는 상금이 수상자의 요구 사항을 충족시키지 못하는 주문을 취소 한 후 생성되며 유효 기간 내에 해당 주문 금액을 보충하거나 보너스가 시스템에 의해 철회됩니다.<br>
+            2. 모든 주문이 월 실적을 보완해야하므로 주문 금액이 계산됩니다.
+            </p>
+            <p style="color:red">단일 프로세스 만들기：<br>
+            1. "메이크업"버튼 뒤에있는 레코드를 구성하려는 레코드를 클릭하고 버튼을 클릭하면 "메이크업"상태가됩니다.<br>
+            2. 쇼핑몰에 주문을 할 때, 주문 금액의 완료가 메이크업 금액보다 적을 때 하나의 기록을 채울 해당 요구 사항의 목록이 사라지면 완료된 주문을 기입하십시오.
+            </p>
+            <div class="well">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>구성하다몇 년</th>
+                            <th>수상 내역(보너스 날짜)</th>
+                            <th>금액을 회수해야합니다<br>(유효 기간이 단일 기간을 만들지 못할 경우)</th>
+                            <th>단일 금액을 만들어야 함</th>
+                            <th>유효 기간 (일)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th colspan="6" style="text-align: center;" class="text-success"> 일치하는 레코드가 없습니다.</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
+            <div id="confirm_sponsor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-body" id="confirm_message" style="text-align: center;">
+                </div>
+                <div class="modal-footer">
+                    <button autocomplete="off" style="float:left;margin-left: 20%;" class="btn btn-primary" id="confirm_ok">확인</button>
+                    <button autocomplete="off" style="float:right;margin-right: 20%;" class="btn btn-primary" id="confirm_cancel">취소</button>
+                </div>
+            </div>
+
+            </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+        <!--footer-s-->
+        <include file="Public/footer1" />
+        <!--footer-e-->
+        <script type="text/javascript">
+//          
+        </script>
+    </body>
+</html>

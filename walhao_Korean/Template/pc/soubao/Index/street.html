@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+  <title>Store Street-{$tpshop_config['shop_info_store_title']}</title>
+  <link rel="stylesheet" href="__STATIC__/css/stores.css">
+  <link rel="stylesheet" href="__STATIC__/css/Common.css">
+  <link rel="stylesheet" href="__STATIC__/css/page.css">
+</head>
+
+<body>
+<include file="Public/header"/>
+<div class="margin-w1210">
+  <div class="flow">
+    <div class="cate_attr clearfix">
+      <div class="nav-tag">
+        <h5 class="filter-label-ab">Classification</h5>
+        <div class="cate_attr_con">
+          <div class="filter-all-ab"> <a class="selected" target="_self" href="{:U('Home/Index/street')}"><span>All</span></a> </div>
+          <div class="district-tab">
+            <volist name="store_class" id="sc">
+              <a target="_self" href="{:U('Home/Index/street',array('sc_id'=>$sc['sc_id']))}"><span>{$sc['sc_name']}</span></a>
+            </volist>
+          </div>
+        </div>
+      </div>
+      <br/>
+<!--地区下拉框-->
+        
+        <select onchange="get_city(this,{$city})" id="province" name="company_province" class="form-control">
+            <option value="0">Choose Province</option>
+            <foreach name="region" item="vo" key="k">
+                    <option value="{$k}" <if condition="$province eq $k">selected</if> >{$vo}</option>
+            </foreach>
+        </select>
+                                               
+        <select id="city" name="company_city" class="form-control">
+	        <option value="0">Choose City</option>             
+        </select>
+        
+<!--地区下拉框 end-->
+    </div>
+    <div class="flow-wrap">
+      <volist name="store_list" id="scl">
+        <div class="flow-item first">
+          <a href="{:U('Home/Store/index',array('store_id'=>$scl['store_id']))}" class="flow-datu" title="L&amp;L">
+            <img title="L&amp;L" width="150" height="150" alt="" src="{$scl['store_logo']}">
+          </a>
+          <div class="flow-content">
+            <h4 class="flow-title"> <a href="{:U('Home/Store/index',array('store_id'=>$scl['store_id']))}" title="{$scl['store_name']}"><span>{$scl['store_name']}</span></a>
+              <span class="guanzhu" id="favoriteStore" data-id={$scl['store_id']}>Follow</span>
+            </h4>
+            <p class="flow-logo">
+              <a href="{:U('Home/Store/index',array('store_id'=>$scl['store_id']))}" style="float:none; display:inline-block;">
+                <img id="j_logo_5" alt="" width="90" height="45" src="{$scl['store_banner']|default='__STATIC__/images/57c7ed6bcc96f.jpg'}">
+              </a>
+            </p>
+            <p class="flow-desc"> <span>Seller：</span>
+              <a href="supplier.php?suppId=5" title="{$scl['store_name']}Administrator" target="_blank"></a>
+              <a href="http://wpa.qq.com/msgrd?v=3&amp;uin={$scl['store_qq']}&amp;site=qq&amp;menu=yes" target="_blank" alt="Click to contact me" title="Click to contact me" class="flow-qq">
+                <img src="__STATIC__/images/button_old_41.gif" height="16" border="0" alt="QQ"> </a>
+              <a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid={$scl['store_aliwangwang']}&amp;s=2" target="_blank" class="flow-qq">
+                <img src="__STATIC__/images/T1B7m.XeXuXXaHNz_X-16-16.gif" width="16" height="16" border="0" alt="淘宝旺旺">
+              </a>
+            </p>
+            <p class="flow-desc"> <span>Location:</span>{$scl['province_name']},{$scl['city_name']},{$scl['district_name']} </p>
+            <p class="flow-desc"> <a href="{:U('Home/Store/index',array('store_id'=>$scl['store_id']))}" title="Enter the shop to see all the goods">Subtotal<strong>{$scl['goods_array']['goods_count']}</strong>items&gt;&gt;</a> </p>
+          </div>
+          <div class="flow-score">
+            <h3>Shop Dynamic score</h3>
+            <p>Description match：<span>{$scl['store_desccredit']}</span></p>
+            <p>Service attitude:<span>{$scl['store_servicecredit']}</span></p>
+            <p>Delivery speed:<span>{$scl['store_deliverycredit']}</span></p>
+          </div>
+          <div class="flow-main flow-main1">
+            <div class="picMarquee-left">
+              <div class="bda">
+                <div class="picListta">
+                  <ul>
+                    <volist name="scl['goods_array']['goods_list']" id="goods">
+                      <li>
+                        <a href="{:U('Home/Goods/goodsInfo',array('id'=>$goods['goods_id']))}"
+                           title="{$goods['goods_name']}" target="_blank" class="img">
+                          <img src="{$goods['goods_id']|goods_thum_images=112,112}"> <span>￥{$goods['shop_price']}</span>
+                        </a>
+                        <a href="{:U('Home/Goods/goodsInfo',array('id'=>$goods['goods_id']))}" title="{$goods['goods_name']}" target="_blank" class="name">{$goods['goods_name']}</a>
+                      </li>
+                    </volist>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </volist>
+<div class="mui-page">
+        <div class="mui-page-wrap">
+          <div class="operating fixed" id="bottom">
+            <div class="fn_page clearfix">
+              {$page}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Public/footer"/>
+<script type="text/javascript">
+
+   $(document).ready(function(){
+	   
+	    // 加载默认选中
+	    var province_id = $('#province').val();
+		if(province_id != 0)
+		   $('#province').trigger('change');		
+		   
+   });
+
+   // 切换城市帅选店铺
+   $("#city").change(function(){
+	   var city = $(this).val();
+	   //alert($(this).val());
+	   location.href = "/index.php?m=Home&c=Index&a=street&province="+$('#province').val()+"&city="+city;
+   });
+
+
+  //收藏店铺
+  $('.guanzhu').click(function () {
+    if (getCookie('user_id') == '') {
+      pop_login();
+    } else {
+      $.ajax({
+        type: 'post',
+        dataType: 'json',
+        data: {store_id: $(this).attr('data-id')},
+        url: "{:U('Home/Store/collect_store')}",
+        success: function (res) {
+          if (res.status == 1) {
+            layer.msg('成功添加至收藏夹', {icon: 1});
+          } else {
+            layer.msg(res.msg, {icon: 3});
+          }
+        }
+      });
+    }
+  });
+  function pop_login(){
+    layer.open({
+      type: 2,
+      title: '<b>登陆TPshop网</b>',
+      skin: 'layui-layer-rim',
+      shadeClose: true,
+      shade: 0.5,
+      area: ['490px', '460px'],
+      content: "{:U('Home/User/pop_login')}",
+    });
+  }
+</script>
+</html>

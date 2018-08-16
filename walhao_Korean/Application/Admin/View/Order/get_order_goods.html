@@ -1,0 +1,50 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-body">          
+          <div id="ajax_return"> 
+			    <div class="table-responsive">
+			        <table class="table table-bordered table-hover">
+			            <thead>
+			            <tr>
+			                <td class="text-left chn">商品名称</td>            
+			                <td class="text-left eng">Goods name</td>            
+			                <td class="text-left chn">价格</td>
+			                <td class="text-left eng">Price</td>
+			                <td class="text-left chn">购买数量</td>
+			                <td class="text-left eng">Amount</td>
+			                <td class="text-left chn">Spec</td>                            
+			                <td class="text-left eng">规格</td>                            
+			                <td class="text-right chn">操作</td>
+			                <td class="text-right eng">Edit</td>
+			            </tr>
+			            </thead>
+			            <tbody>
+			            <volist name="orderGoods" id="list">
+			            	<tr>
+			                    <td class="text-left">{$list.goods_name|getSubstr=0,33}</td>
+			                    <td class="text-left">{$list.goods_price}</td>
+			                    <td class="text-left">{$list.goods_num}</td>                                
+			                    <td class="text-left">{$list.spec_key_name}</td>             
+			                    <td class="text-right">                                 
+			                       	   <a href="javascript:void(0);" onclick="javascript:window.parent.call_back('{$order_id}','{$list.goods_id}')" class="btn btn-info">
+											<span class="chn">申请退换货</span>
+											<span class="eng">Apply for return</span>
+									   </a>
+<!--			                       <a href="{:U('Admin/Order/add_return_goods',array('order_id'=>$order_id,'goods_id'=>$list['goods_id']))}" class="btn btn-info">申请退换货</a>-->
+								</td>
+			                </tr>
+			            </volist>
+			            </tbody>
+			        </table>
+			    </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

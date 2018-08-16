@@ -1,0 +1,51 @@
+<include file="Public/header"/>
+<body>
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)"></a></div>
+            <div class="h-mid">계좌이체 기록</div> <!--转账记录-->
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<include file="Public/menu"/>
+
+<div class="application-record">
+    <div class="maleri30">
+        <ul class="re_tit">
+            <li class="li4"><span>수납자</span></li>  <!--收款方-->
+            <li class="li1"><span>금액</span></li>  <!--金额-->
+            <li class="li2"><span>상태</span></li>  <!--状态-->
+            <li class="li3"><span>시간</span></li>  <!--时间-->
+        </ul>
+        <foreach name="list" item="v">
+            <ul>
+                <li class="li4"><span>{$v[acceptor_id]}</span></li>
+                <li class="li1"><span>{$v[money]}</span></li>
+                <li class="li2">
+                    <span>
+                        <if condition="$v[state] eq 0">신청 중</if>  <!--申请中-->
+                        <if condition="$v[state] eq 1">삼사 통과</if> <!--审核通过-->
+                        <if condition="$v[state] eq 2">심사 실패</if>  <!--申请失败-->
+                        <if condition="$v[state] eq 3">계좌이체 성공했습니다</if>  <!--转账成功-->
+                        <if condition="$v[state] eq 4">이체 실패</if>  <!--转账失败-->
+                        <if condition="$v[state] eq 5">현금일출 거부하기</if>  <!--拒绝提现-->
+                    </span>
+                </li>
+                <li class="li3"><span>{:date('Y-m-d', $v[create_time])}</span></li>
+            </ul>
+        </foreach>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>

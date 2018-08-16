@@ -1,0 +1,39 @@
+<h3 class="trans_title">이체</h3> <!--转账-->
+<a onclick="closeTrans()" class="close"></a>
+<table class="trans_detail">
+    <tr>
+        <td><em>*</em>계좌 이체 금액:</td> <!--转账金额-->
+        <td><input type="text" id="money" value=""/><i>$</i><font class="note">계좌 사용 잔액: <em>$ {$user_balance|default=0.00}</em></font></td> <!--账户可用余额-->
+    </tr>
+    <tr>
+        <td><em>*</em>수금자:</td> <!--转入账号-->
+        <td><input type="text" id="wh_id" value="" onchange="check_user(this.value)"/><font class="note">상대편 Walhao ID 를 입력해주세요.</font></td> <!--请输入对方walhaoID-->
+    </tr>
+    <tr>
+        <td><em>*</em>수취인:</td> <!--转入账号名字-->
+        <td><input type="text" id="user_nick_name" readonly/><font class="note">수취인.</font></td> <!--请输入对方nickname-->
+    </tr>
+    <tr>
+        <td><em>*</em>암호를 지불하다:{$type}</td> <!--支付密码-->
+        <td><input type="password" id="password"  value=""/><font class="note">비밀번호를 입력하십시오</font></td> <!--请输入支付密码-->
+    </tr>
+    <input type="hidden" id="type"  value="{$type}"/>
+</table>
+<p onclick="disp_prompt()">확인하다</p> <!--确认-->
+
+
+<script>
+
+    function check_user(o){
+        $.ajax({
+            url:"{:U('Home/User/check_user')}",//+tab,
+            data:{uuid:o},
+            success: function(data){
+                $('#user_nick_name').val(data);
+            }
+
+        });
+    }
+
+
+</script>

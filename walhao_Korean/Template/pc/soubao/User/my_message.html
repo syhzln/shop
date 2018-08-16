@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title>나의 문의내역-{$tpshop_config['shop_info_store_title']}</title>  <!--我的工单-->
+    <meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+    <meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+</head>
+<body>
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<!-- 头部-e -->
+<div class="wrap">
+    <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">내 Walhao</a>&gt;<span class="color">나의 문의내역</span></div><!--我的工单-->
+    <!--菜单-->
+    <include file="User/menu" />
+    <!--菜单-->
+    <div class="col_main">
+        <div class="main balance">
+            <div class="ui_tab">
+                <div class="message_list">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>번호</th> <!--工单号-->
+                            <th>닉네임</th> <!--昵称-->
+                            <th>181ID</th> <!--181ID-->
+                            <th>문의 제목</th> <!--留言标题-->
+                            <th>처리상태</th> <!--状态-->
+                            <th>시간</th> <!--时间-->
+                            <th>오퍼레이션</th> <!--操作-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <foreach name="talklist" item="vo">
+                            <tr>
+                                <td class="message_number">{$vo['message_number']}</td>
+                                <td>{$vo['name']}</td>
+                                <td class="wh_id">{$vo['wh181_id']}</td>
+                                <td class="message_title">{$vo['message_title']}</td>
+                                <if condition="$vo['is_talk'] eq 1"><td>완성됨</td>
+                                    <else/><td>미완성</td>
+                                </if>
+                                <td>{$vo['message_time']}</td>
+                                <td><a href="javascript:;" onclick="ajax_my_message('{$vo.wh181_id}','{$vo.message_number}')">조회</a></td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="operating fixed">
+                    <div class="fn_page clearfix">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ajax_my_message"></div>
+<div style="clear: both;"></div>
+<include file="User/footer" />
+</body>
+<script>
+    function ajax_my_message(id,number) {
+        var wh_id=id;
+        var message_number=number;
+        $.ajax({
+            type: "POST",
+            url: "{:U('Home/User/ajax_my_message')}",
+            data: {'wh_id':wh_id,'message_number':message_number},
+//            dataType: 'html',
+            success: function (data) {
+                if (data) {
+                    $(".ajax_my_message").html('');
+                    $(".ajax_my_message").append(data);
+                } else {
+                    $(".ajax_my_message").html('');
+                }
+                $('.close').click(function(){
+                    $(".ajax_my_message").html('');
+                })
+            }
+        });
+    }
+</script>
+</html>

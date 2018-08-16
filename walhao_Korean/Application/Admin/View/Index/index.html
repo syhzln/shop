@@ -1,0 +1,76 @@
+<include file="Public/header" />
+
+<include file="Public:left" />
+
+<section class="content-wrapper right-side" id="riframe" style="margin:0px;padding:0px;margin-left:230px;">
+    <iframe id='rightContent' name='rightContent' src="{:U('Admin/Index/welcome')}" width='100%' frameborder="0"></iframe>
+</section>
+
+<include file="Public:footer" />
+<script>
+	var turnEnglish=$("#turnEnglish");
+	var turnChinese=$("#turnChinese");
+	var english=$(".english");
+	var chinese=$(".chinese");
+	var language=$("#language");
+	
+	$("#rightContent").load(function() {
+		eng = $("#rightContent").contents().find(".eng");
+		chn = $("#rightContent").contents().find(".chn");
+		table_eng = $("#rightContent").contents().find(".table .eng");
+		table_chn = $("#rightContent").contents().find(".table .chn");
+		
+		turnEnglish.click(function(){
+			for(var i=0;i<english.length;i++){
+				english[i].style.display="inline-block";
+				chinese[i].style.display="none";
+				eng[i].style.display="inline-block";
+				chn[i].style.display="none";
+				for(var j=0;j<table_eng.length;j++){
+					table_eng[j].style.display="table-cell";
+					table_chn[j].style.display="none";
+				}	
+			}
+			
+			language.removeClass("current_chn");
+			return;
+		})
+		turnChinese.click(function(){
+			for(var j=0;j<english.length;j++){
+				english[j].style.display="none";
+				chinese[j].style.display="inline-block";
+				eng[j].style.display="none";
+				chn[j].style.display="inline-block";
+				for(var i=0;i<table_eng.length;i++){
+					table_chn[i].style.display="table-cell";
+					table_eng[i].style.display="none";
+				}
+			}
+			
+			language.addClass("current_chn");
+			return;
+		})
+		
+		if(language.hasClass("current_chn")){
+			for(var j=0;j<eng.length;j++){
+				eng[j].style.display="none";
+				chn[j].style.display="inline-block";
+				}
+			for(var i=0;i<table_eng.length;i++){
+				table_chn[i].style.display="table-cell";
+				table_eng[i].style.display="none";
+			}
+		}else{
+			for(var i=0;i<eng.length;i++){
+				eng[i].style.display="inline-block";
+				chn[i].style.display="none";
+			}
+			for(var j=0;j<table_eng.length;j++){
+				table_eng[j].style.display="table-cell";
+				table_chn[j].style.display="none";
+			}
+		}
+	})
+	
+	 
+</script>

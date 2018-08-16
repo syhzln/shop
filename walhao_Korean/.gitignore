@@ -1,0 +1,32 @@
+﻿#过滤规则文件#
+###################
+#     文件夹      #
+###################
+/Application/Runtime/ 
+/ThinkPHP/ 
+/.idea/ 
+/Application/Common/Conf/
+###################
+#     文件        #
+###################
+.htaccess
+*.MP3
+*.avi
+*.mid
+*.exe
+*.def
+*.dsp
+*.lib
+*.doc
+*.dll
+*.lnt
+*.pm
+*.xls
+*.dbg
+*.DBG
+*.o
+*.plg
+*.keep
+*.mp4
+*.apk
+db.php

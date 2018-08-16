@@ -1,0 +1,49 @@
+<div class="sideBar_nav">
+<dl>
+  <dt>거래 센터 </dt>
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'order_list'">나의 주문</if>" href="{:U('Home/User/order_list')}">내 주문</a></dd>
+  <!--<dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'comment'">active</if>" href="{:U('Home/User/comment')}">我的评价</a></dd>
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'coupon'">active</if>" href="{:U('Home/User/coupon')}">优惠券</a></dd>
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'account'">active</if>" href="{:U('Home/User/account')}">我的积分</a></dd>-->
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'goods_collect'">나의 찜하기</if>" href="{:U('Home/User/goods_collect')}">내가 좋아하는 것</a></dd>
+  <!-- 新增活动页面 -->
+  <dd><i class="icon_square"></i><a class="target_no" href="{:U('Home/User/new_act')}">프로모션</a></dd>
+
+  <!--<dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'withdrawals'">active</if>" href="{:U('User/withdrawals')}">申请提现</a></dd>-->  
+</dl>
+<dl>
+  <dt>자산 센터</dt>
+  <dd><a class="target_no" href="{:U('Home/User/recharge')}">계정 센터</a></dd>
+  <!--<dd><a class="target_no" href="{:U('Home/User/commission')}">수익 센터</a></dd>-->
+  <dd><a class="target_no" href="{:U('Home/User/commission_report')}">보너스 보고서</a></dd>
+  <dd><a class="target_no" href="{:U('Home/User/commission_order_repair')}">보너스 보충 주문</a></dd>
+  <!--<dd><a class="target_no" href="{:U('Home/User/profit_sharing_point_log')}">이윤 전입 기록</a></dd>-->
+  <!--<dd><a class="target_no" href="{:U('Home/User/profit_sharing_point_to_money_log')}">이윤 돌다 수익 기록</a></dd>-->
+</dl>
+<dl>
+  <dt>개인 센터</dt>
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'info'">유효한</if>" href="{:U('Home/User/info')}">개인 정보</a></dd>
+  <!--<dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'message_notice'">유효한</if>" href="{:U('Home/User/message_notice')}">메시지 알림</a></dd>-->
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'address_list'">유효한</if>" href="{:U('Home/User/address_list')}">주소관리</a></dd>
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'safety_settings'">active</if>" href="{:U('Home/User/safety_settings')}">안전 설치</a></dd>
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'mywallet'">active</if>" href="{:U('Home/User/recharge')}">내 잔액</a></dd>
+  <!--<dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'mywallet'">active</if>" href="{:U('Home/User/leave_message')}">문의하기 작성</a></dd>  新建工单-->
+  <!--<dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'mywallet'">active</if>" href="{:U('Home/User/my_message')}">나의 문의내역</a></dd>  我的工单-->
+</dl>
+<dl>
+  <dt>서비스 센터</dt>
+  <dd><i class="icon_square"></i><a class="target_no <if condition="strtolower(ACTION_NAME)  eq 'return_goods_list'">유효한</if>" href="{:U('Home/User/return_goods_list')}">반품 관리.</a></dd>
+</dl>
+<dl>
+  <dt>공지사항</dt>  <!--平台公告-->
+  <dd><i class="icon_square"></i><a class="target_no" href="{:U('Home/User/message_notice')}">공지사항</a><em>{$count}</em></dd>  <!--平台公告-->
+</dl>
+<dl>
+  <dt>회사 규정</dt>  <!--平台规章-->
+  <dd><i class="icon_square"></i><a class="target_no" href="{:U('Home/User/message_guizhang')}">회원 규칙</a></dd>  <!--平台规章-->
+</dl>
+<dl class="service_center">
+  <dt style="color: #da3a4c;">점포 업그레이드</dt>
+  <dd><a style="color: #da3a4c;" class="target_no" href="{:U('Home/Goods/specialList')}">점포 업그레이드</a></dd>
+</dl>
+</div>

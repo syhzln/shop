@@ -1,0 +1,118 @@
+<include file="Public/min-header" />
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+	<section class="content">
+       <div class="row">
+       		<div class="col-xs-12">
+	       		<div class="box">
+	             <div class="box-header">
+	               	<nav class="navbar navbar-default">	     
+				        <div class="collapse navbar-collapse">
+				          <form class="navbar-form form-inline" action="{:U('Admin/index')}" method="post">
+				            <div class="form-group">
+				              	<span class="chn"><input type="text" name="keywords" class="form-control" placeholder="搜索"></span>
+				              	<span class="eng"><input type="text" name="keywords" class="form-control" placeholder="Search"></span>
+				            </div>
+				            <button type="submit" class="btn btn-default chn">提交</button>
+				            <button type="submit" class="btn btn-default eng">Submit</button>
+				            <div class="form-group pull-right">
+					            <a href="{:U('Admin/admin_info')}" class="btn btn-primary pull-right chn"><i class="fa fa-plus"></i>添加管理员</a>
+					            <a href="{:U('Admin/admin_info')}" class="btn btn-primary pull-right eng"><i class="fa fa-plus"></i>Add administrator</a>
+				            </div>		          
+				          </form>		
+				      	</div>
+	    			</nav>  
+	             </div>	             
+	             <div class="box-body">	               
+	           		<div class="row">
+	            	<div class="col-sm-12">
+		              <table id="list-table" class="table table-bordered table-striped dataTable">
+		                 <thead>
+		                   <tr role="row">
+			                   <th class="chn">ID</th>
+			                   <th class="eng">ID</th>
+			                   <th class="chn">用户名</th>
+			                   <th class="eng">Username</th>
+			                   <th class="chn">所属角色</th>
+			                   <th class="eng">Subordinate role</th>
+			                   <th class="chn">Email地址</th>
+			                   <th class="eng">Email</th>
+			                   <th class="chn">部门</th>
+			                   <th class="eng">Department</th>
+			                   <th class="chn">名字</th>
+			                   <th class="eng">Name</th>
+			                   <th class="chn">电话</th>
+			                   <th class="eng">Tel</th>
+			                   <th class="chn">地址</th>
+			                   <th class="eng">Address</th>
+			                   <th class="chn">加入时间</th>
+			                   <th class="eng">Join time</th>
+			                   <th class="chn">操作</th>
+			                   <th class="eng">Edit</th>
+		                   </tr>
+		                 </thead>
+						<tbody>
+						  <foreach name="list" item="vo" key="k" >
+						  	<tr role="row" align="center">
+		                     <td>{$vo.admin_id}</td>
+		                     <td>{$vo.user_name}</td>
+		                     <td>{$vo.role}</td>
+		                     <td>{$vo.email}</td>
+		                     <td>{$vo.department}</td>
+		                     <td>{$vo.name}</td>
+		                     <td>{$vo.telephone}</td>
+		                     <td>{$vo.address}</td>
+		                     <td>{$vo.add_time}</td>
+		                     <td>
+		                       <if condition="($Think.session.admin_id eq $vo['admin_id']) ">
+		                      		 <a class="btn btn-primary" href="{:U('Admin/admin_info',array('admin_id'=>$vo['admin_id']))}"><i class="fa fa-pencil"></i></a>
+								 <elseif  condition="$Think.session.admin_id lt 4 "/>
+									 <a class="btn btn-primary" href="{:U('Admin/admin_info',array('admin_id'=>$vo['admin_id']))}"><i class="fa fa-pencil"></i></a>
+									 <a class="btn btn-danger" href="javascript:void(0)" data-url="{:U('Admin/adminHandle')}" data-id="{$vo.admin_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
+								</if>
+								<!-- <if condition="($Think.session.admin_id lt 3) or ($Think.session.admin_id eq $vo.admin_id)">
+		                      <a class="btn btn-primary" href="{:U('Admin/admin_info',array('admin_id'=>$vo['admin_id']))}"><i class="fa fa-pencil"></i></a>									  
+									  <a class="btn btn-danger" href="javascript:void(0)" data-url="{:U('Admin/adminHandle')}" data-id="{$vo.admin_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>									  
+								</if> -->
+							</td>
+		                   </tr>
+		                  </foreach>
+		                   </tbody>
+		                 <tfoot>		                 
+		                 </tfoot>
+		               </table>	 
+	               </div>
+	          </div>
+              <div class="row">
+              	    <div class="col-sm-6 text-left"></div>
+                    <div class="col-sm-6 text-right">{$page}</div>		
+              </div>
+	         </div>
+	        </div>
+       	</div>
+       </div>
+   </section>
+</div>
+<script>
+function delfun(obj){
+	if(confirm('Cinfirm delete')){		
+		$.ajax({
+			type : 'post',
+			url : $(obj).attr('data-url'),
+			data : {act:'del',admin_id:$(obj).attr('data-id')},
+			dataType : 'json',
+			success : function(data){
+				if(data==1){
+					$(obj).parent().parent().remove();
+				}else{
+					layer.alert(data, {icon: 2});   //alert('用户名或密码不能为空');// alert(data);
+					layer.closeAll();
+				}
+			}
+		})
+	}
+	return false;
+}
+</script> 
+</body>
+</html>

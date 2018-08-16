@@ -1,0 +1,97 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">                           		
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i>清除缓存</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i>Clear cache</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_tongyong" data-toggle="tab">
+							<span class="chn">选择要清除的缓存</span><span class="eng">Select cache to clear</span>
+						</a></li>
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="cleanCache">                    
+                        <!--通用信息-->
+                    <div class="tab-content">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td><span class="chn">提示:</span><span class="eng">Prompt:</span></td>
+                                    <td>
+                                        <font class="chn" style="color:#F00">如果页面做了修改，建议清除对应的页面以及模板缓存</font>
+                                        <font class="eng" style="color:#F00">If the page has been modified, it is recommended to clear the corresponding page as well as the template cache</font>
+                                        <br/><span class="chn">清除商品缩列图到商品列表页面选择性清除, 清除单个商品静态页到商品列表页选择</span>
+                                        <br/><span class="eng">Clear the goods to shrink diagram product list page selective removal, removal of a single commodity to commodity static page list page selection</span>
+                                    </td>
+                                </tr>                                  
+                                <tr>
+                                    <td><span class="chn">静态页面：</span><span class="eng">Static page:</span></td>
+                                    <td>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="index" /> 首页</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="index" /> Homepage</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="goodsList" /> 商品列表页</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="goodsList" /> Goods list page</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="goodsInfo" /> 所有商品详情页</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="goodsInfo" /> All goods details page</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="channel" /> 频道页</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="channel" /> Channel page</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="articleList" /> 文章列表页</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="articleList" /> Article list page</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="detail" /> 文章详情页</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="detail" /> Article details page</span>
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td><span class="chn">数据:</span><span class="eng">Data:</span></td>
+                                    <td>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="cache" /> 模板缓存(Cache)</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="cache" /> Template cache(Cache)</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="data" /> 项目数据(Data)</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="data" /> Project data(Data)</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="logs" /> logs日志(Logs)</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="logs" /> Logs log(Logs)</span>
+                                        <span class="chn"><input type="checkbox" name="clear[]" value="temp" /> 临时数据(Temp)</span>
+                                        <span class="eng"><input type="checkbox" name="clear[]" value="temp" /> Temporary data(Temp)</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="chn">商品缩略图:</span><span class="eng">Goods thumbnail:</span></td>
+                                    <td>                                        
+										<span class="chn">清除商品缩列图到商品列表页面选择性清除, 清除单个商品静态页到商品列表页选择</span>
+										<span class="eng">Clear the goods to shrink diagram product list page selective removal, removal of a single commodity to commodity static page list page selection</span>
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td><span class="chn">清除所有:</span><span class="eng">Clear all:</span></td>
+                                    <td>                                        
+                                        <input type="checkbox" id="cacheAll" name="clear[]" value="cacheAll" onclick="$('input[name*=\'clear\']').prop('checked', this.checked);"/> 所有
+                                    </td>
+                                </tr>                                
+                                </tbody>                                
+                                </table>
+                        </div>                           
+                    </div>              
+                    <div class="pull-right">
+                        <button class="btn btn-primary" type="submit" >
+							<span class="chn">提交</span><span class="eng">Submit</span>
+						</button>
+                    </div>
+			    </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div> 
+    
+</body>
+</html>

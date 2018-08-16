@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<title>{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+<link rel="stylesheet" href="__STATIC__/css/security_set.css">
+</head>
+<body> 
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<div class="wrap">
+<div class="bread_crumbs"> 
+  <a href="{:U('Home/User/index')}" class="crumbs_font">내 Walhao</a>&gt;<span class="color">보안 설정</span>
+</div>
+<div class="col_main" style="float: none; width: auto;">
+			<div class="main security_passwd">
+				<!-- themes star -->
+				<div class="themes_title">
+					<h3>보안 설정</h3>
+				</div>
+				<!-- themes end -->
+				<section class="security_passwd">
+					<div class="wrapper-3">
+						<div class="pub-step" id="step">
+							<div class="steps-nav fixed w4">
+								<p class="step-nav step-nav-1">
+									1.사용자 이름 채우기<i></i>
+								</p>
+								<p class="step-nav step-nav-2">
+									2.신분 확인<i></i>
+								</p>
+								<p class="step-nav step-nav-3">
+									3.새 암호 설정<i></i>
+								</p>
+								<p class="step-nav step-nav-4 go">4.완전한</p>
+							</div>
+							
+							<form action="" id="vi_form" method="post">
+								<input type="hidden" value="d8667de9-75ac-46df-b43e-660a019a670f" name="CSRF_TOKEN">
+								
+								<div class="steps-con block-03">
+									<div class="step-col">
+										<div class="set-success ie-03 verify-group">
+											<h3><i class="icon-big-success"></i><span class="txt"><p></p><p>새로운 암호가 성공적으로 설정되었습니다!</p><p>새 암호를 기억하십시오.
+											<a href="{:U('User/login')}" style="color: green" target="_self">돌아 오기 및 로그인</a></p><p></p></span></h3>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</section>
+			</div>
+	</div>
+</div>
+<div style="clear: both;"></div>
+<include file="Public/footer1" />
+<script>
+</script>
+</body>
+</html>	

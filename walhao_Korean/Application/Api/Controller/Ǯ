@@ -1,0 +1,150 @@
+<?php
+/**
+ * walhao公共开放接口,内部调用相关
+ * Author: Ning
+ * Date: 2017-03-02
+ */
+namespace Api\Controller;
+use Think\Controller;
+
+class ComController extends Controller { 
+
+       //ajax 传递的订单备注
+    public function texta(){        
+        $model=M('orderbz');
+        $note=I("post.text");
+        $id=I("post.orderid");        
+        $data['otext']=$note;
+        $data['order_id']=$id;
+        $data['add_time'] = time();
+        $a=$model->add($data);
+    }
+
+
+    public function te(){
+        file_put_contents('/home/ali.txt', 'post:'.json_encode($_POST).'get:'.json_encode($_GET).date('Y-m-d')."\n",FILE_APPEND);
+    }
+
+ /**
+     * 快递订阅
+     */
+    public function kuaidires(){
+
+        $today = strtotime(date('Y-m-d'));
+        // $today = strtotime('-4 days');
+        $orders = M('delivery_doc')->field('invoice_no')->where("create_time>$today")->select();
+        foreach ($orders as $k=> $v) {
+            preg_match("/\d+/",$v['invoice_no'],$matches);
+            $code = $matches[0];
+            $this->kuaiditest($code);          
+        }
+        
+
+
+//         foreach ($orders as $v){
+//             preg_match("/\d+/",$v['invoice_no'],$matches);
+//             $code = $matches[0];
+//             // $kd = strtr($v['invoice_no'],["$matches[0]"=>'']);
+//             // if(!empty($kd)) 
+//              $company = getcode($code);
+//             // else $company = $v['shipping_code'];
+
+//             $param = array(
+//             "company"=>$code,
+//             "number"=>$company,
+//             "key"=>"ETryLWuv4600",
+//             "parameters"=>array("callbackurl"=>"http://www.walhao.com/api/com/kuaidi")
+//             );
+//             $post_data = array();
+//             $post_data["schema"] = 'json' ;
+//             //callbackurl请参考callback.php实现，key经常会变，请与快递100联系获取最新key
+// //            $post_data["param"] ='{"company":"$company", "number":"$num","key":"ETryLWuv4600", "parameters":{"callbackurl":"http://walhao.com/api/com/kuaidi"}}';
+//             $post_data["param"] = json_encode($param);
+//             $url='http://www.kuaidi100.com/poll';
+
+
+//        $o="";
+//        foreach ($post_data as $k=>$v)
+//        {
+//            $o.= "$k=".urlencode($v)."&";     //默认UTF-8编码格式
+//        }
+
+//        $post_data=substr($o,0,-1);
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_POST, 1);
+//        curl_setopt($ch, CURLOPT_HEADER, 0);
+//        curl_setopt($ch, CURLOPT_URL,$url);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+//        $result = curl_exec($ch);     //返回提交结果，格式与指定的格式一致（result=true代表成功）
+
+//         http://poll.kuaidi100.com/poll?schema=json&param={"company":"","number":"667388786547","from":"","to":"","key":"ETryLWuv4600","parameters":{"callbackurl":"http://www.walhao.com/api/com/kuaidi","salt":"","resultv2":"1","autoCom":"1","interCom":"0","departureCountry":"","departureCom":"","destinationCountry":"","destinationCom":""}} 
+        }    
+
+
+    public function kuaiditest($kd){
+        // $kd = '9661011918032';
+        // $code = getcode($kd);
+        $url='http://www.kuaidi100.com/poll?';
+      
+       $post_data = array();
+       $post_data["schema"] = 'json' ;
+       //callbackurl请参考callback.php实现，key经常会变，请与快递100联系获取最新key
+        $arr = array(    
+            "company"=> "", 
+            "number"=> "$kd", 
+            "from"=> "", 
+            "to"=> "", 
+            "key"=> "ETryLWuv4600", 
+            "parameters"=>array(
+            "callbackurl"=>"http://www.walhao.com/api/com/kuaidi", 
+            "salt"=> "", 
+            "resultv2"=> "1", 
+            "autoCom"=> "1", 
+            "interCom"=> "0", 
+            "departureCountry"=> "", 
+            "departureCom"=> "", 
+            "destinationCountry"=> "", 
+            "destinationCom"=> ""    
+            )
+        );
+        
+       $post_data["param"] = json_encode($arr);
+       $o="";
+       foreach ($post_data as $k=>$v)
+       {
+           $o.= "$k=".urlencode($v)."&";     //默认UTF-8编码格式
+       }
+       $post_data=substr($o,0,-1);
+       $ch = curl_init();
+       curl_setopt($ch, CURLOPT_POST, 1);
+       curl_setopt($ch, CURLOPT_HEADER, 0);
+       curl_setopt($ch, CURLOPT_URL,$url);
+       curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+       $result = curl_exec($ch);     //返回提交结果，格式与指定的格式一致（result=true代表成功）
+       dump($result);
+
+    }
+
+    public function kuaidi(){
+        //订阅成功后，收到首次推送信息是在5~10分钟之间，在能被5分钟整除的时间点上，0分..5分..10分..15分....
+    $param=$_POST['param'];
+
+    try{
+
+        file_put_contents('/home/kd.txt',json_encode($_POST)."\n",FILE_APPEND);
+        //$param包含了文档指定的信息，...这里保存您的快递信息,$param的格式与订阅时指定的格式一致
+
+        echo  '{"result":"true",    "returnCode":"200","message":"成功"}';
+        //要返回成功（格式与订阅时指定的格式一致），不返回成功就代表失败，没有这个30分钟以后会重推
+    } catch(Exception $e)
+        {
+        echo  '{"result":"false",   "returnCode":"500","message":"失败"}';
+        //保存失败，返回失败信息，30分钟以后会重推
+       }
+        
+    }
+
+    public function heh(){
+        dump(kdcx('227882020192'));
+    }
+}

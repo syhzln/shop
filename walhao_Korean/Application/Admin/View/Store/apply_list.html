@@ -1,0 +1,157 @@
+<include file="Public/min-header" />
+<div class="wrapper">
+	<include file="Public/breadcrumb"/>
+	<section class="content">
+       <div class="row">
+       		<div class="col-xs-12">
+	       		<div class="box">
+	             <div class="box-header">
+	             	<nav class="navbar navbar-default">	     
+				      <div class="collapse navbar-collapse">
+	    				<div class="navbar-form form-inline">
+				            <div class="form-group">
+				            	<p class="text-success margin blod chn">店铺:</p>
+				            	<p class="text-success margin blod eng">Store:</p>
+				            </div>
+				             <div class="form-group">
+                                 <a class="btn btn-default" href="{:U('Store/store_list')}">
+									<span class="chn">店铺列表</span>
+									<span class="eng">Store list</span>
+								 </a>&nbsp;&nbsp;&nbsp;&nbsp;                                            
+                                 <a class="btn btn-info" href="{:U('Store/apply_list')}" >
+									<span class="chn">开店申请</span>
+									<span class="eng">Store application</span>
+								 </a>&nbsp;&nbsp;&nbsp;&nbsp;                                            
+                                 <a class="btn btn-default" href="{:U('Store/reopen_list')}" >
+									<span class="chn">签约申请</span>
+									<span class="eng">Signing application</span>
+								 </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                 <a class="btn btn-default" href="{:U('Store/apply_class_list')}">
+									<span class="chn">经营类目申请</span>
+									<span class="eng">Category application</span>
+								 </a>&nbsp;&nbsp;&nbsp;&nbsp;
+				            </div>			          
+				          </div>
+				       </div>
+	    		 	</nav>	
+	               	<nav class="navbar navbar-default">	     
+				        <div class="collapse navbar-collapse">
+				          <form class="navbar-form form-inline" action="{:U('Store/apply_list')}" method="post">
+				           	<div class="form-group">
+				            	<label class="control-label" for="input-order-id">
+									<span class="chn">所属等级</span>
+									<span class="eng">Subordinate grade</span>
+								</label>
+			            	 	<select name="grade_id" class="form-control chn">
+			            	 		<option>选择等级</option>
+                                    <volist name="store_grade" id="item" key="k">
+                                        <option value="{$k}" <if condition="$sg_id eq $k">selected</if>>{$item}</option>
+                                    </volist>                  
+                                 </select> 
+								<select name="grade_id" class="form-control eng">
+			            	 		<option>Selection level</option>
+                                    <volist name="store_grade" id="item" key="k">
+                                        <option value="{$k}" <if condition="$sg_id eq $k">selected</if>>{$item}</option>
+                                    </volist>                  
+                                 </select>								 
+				            </div>
+				           <div class="form-group">
+				              	<input type="text" name="seller_name" class="form-control chn" placeholder="请输入店主名称">
+				              	<input type="text" name="seller_name" class="form-control eng" placeholder="Please enter the store owner's name">
+				            </div>
+				            <div class="form-group">
+				            	<label class="control-label" for="input-order-id">
+									<span class="chn">店铺类型</span>
+									<span class="eng">Store type</span>
+								</label>
+							     <select name="sc_id" class="form-control chn">
+							     	<option>选择类别</option>
+                                    <volist name="store_class" id="item" key="k">
+                                       <option value="{$k}">{$item}</option>
+                                    </volist>                  
+                                 </select> 
+								 <select name="sc_id" class="form-control eng">
+							     	<option>Select category</option>
+                                    <volist name="store_class" id="item" key="k">
+                                       <option value="{$k}">{$item}</option>
+                                    </volist>                  
+                                 </select>
+				            </div>
+				            <div class="form-group">
+				              	<input type="text" name="store_name" class="form-control chn" placeholder="请输店铺名称">
+				              	<input type="text" name="store_name" class="form-control eng" placeholder="Please input the store name">
+				            </div>
+				            <button type="submit" class="btn btn-primary">
+								<span class="chn">查询</span>
+								<span class="eng">Search</span>
+							</button>	          
+				          </form>
+				      	</div>
+	    			</nav>
+	             </div>
+	             <div class="box-body">
+	           	 <div class="row">
+	            	<div class="col-sm-12">
+		              <table id="list-table" class="table table-bordered table-striped dataTable">
+		                 <thead>
+		                   <tr role="row">
+                               <th><span class="chn">店铺名称</span><span class="eng">Store name</span></th>
+                               <th><span class="chn">店主卖家账号</span><span class="eng">Seller account</span></th>	
+                               <th><span class="chn">联系人</span><span class="eng">Contact:</span></th>
+			                   <th><span class="chn">所属等级</span><span class="eng">Subordinate grade</span></th>	                   
+			                   <th><span class="chn">店铺类别</span><span class="eng">Store type</span></th>
+			                   <th><span class="chn">所在地</span><span class="eng">Location</span></th>
+                               <th><span class="chn">申请时间</span><span class="eng">Application time</span></th>
+			                   <th><span class="chn">状态</span><span class="eng">State</span></th>
+		                  	   <th><span class="chn">操作</span><span class="eng">Edit</span></th>
+		                   </tr>
+		                 </thead>
+						<tbody>
+                          <foreach name="list" item="vo" key="k" >
+                             <tr role="row">    
+                             <td>{$vo.store_name}</td>
+		                     <td>{$vo.seller_name}</td>	 
+		                     <td>{$vo.contacts_name}</td>                   
+		                     <td>{$vo.sg_name}</td>
+		                     <td>{$vo.sc_name}</td>
+		                     <td>{$vo.store_address}</td>                                     
+		                     <td>{$vo.add_time|date='Y-m-d',###}</td>
+		                     <td>
+		                     	<if condition="$vo[apply_state] eq 0">
+									<span class="chn">新申请</span><span class="eng">New application</span>
+								<elseif condition="$vo[apply_state] eq 2"/>
+									<span class="chn">未通过</span><span class="eng">Not passed</span>
+								<else/>
+									<span class="chn">开店成功</span><span class="eng">Set up store successful</span>
+								</if>
+		                     </td>
+		                     <td>
+		                      <a class="btn btn-primary" href="{:U('Store/apply_info',array('id'=>$vo['id']))}"><i class="fa fa-pencil"></i></a>
+		                      <a class="btn btn-danger" onclick="delfunc(this)" data-url="{:U('Store/apply_del')}" data-id="{$vo.id}"><i class="fa fa-trash-o"></i></a>
+				     		</td>
+		                   </tr>
+		                  </foreach>
+		                   </tbody>
+		                 <tfoot>
+		                 
+		                 </tfoot>
+		               </table>
+	               </div>
+	          </div>
+              <div class="row">
+              	    <div class="col-sm-6 text-left">
+              	    	<button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
+              	    </div>
+                    <div class="col-sm-6 text-right">{$page}</div>		
+              </div>
+	          </div>
+	        </div>
+       	</div>
+       </div>
+   </section>
+<script>
+
+</script>
+</div>
+</body>
+</html>   

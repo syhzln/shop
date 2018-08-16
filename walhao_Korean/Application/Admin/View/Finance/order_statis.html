@@ -1,0 +1,141 @@
+<include file="Public/min-header"/>
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title chn"><i class="fa fa-list"></i>商家结算记录</h3>
+          <h3 class="panel-title eng"><i class="fa fa-list"></i>Merchant settlement record</h3>
+        </div>
+        <div class="panel-body">    
+		<div class="navbar navbar-default">                    
+                <form id="search-form2" class="navbar-form form-inline"  method="get" action="{:U('order_statis')}">
+                <div class="form-group">                
+                  <label for="input-order-id" class="control-label chn">店铺ID：</label>
+                  <label for="input-order-id" class="control-label eng">Store ID:</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="user_id" placeholder="Store id" value="{$Think.request.store_id}" name="store_id" />
+                  </div>
+                   
+                   <div class="input-group margin">
+					<div class="input-group-addon chn">
+                        时间<i class="fa fa-calendar"></i>
+                    </div>
+                    <div class="input-group-addon eng">
+                        Date<i class="fa fa-calendar"></i>
+                    </div>
+                       <input type="text" id="create_date" value="{$create_date}" name="create_date" class="form-control pull-right" style="width: 200px">
+                  </div>                  
+                </div>
+                <div class="form-group">    
+                    <button class="btn btn-primary" id="button-filter search-order" type="submit"><i class="fa fa-search"></i><span class="chn">筛选</span><span class="eng">Screen</span></button>    
+                </div>                                 
+                </form>    
+          </div>                        
+          <div id="ajax_return">                  
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="sorting text-left chn">记录ID</th>
+                                <th class="sorting text-left eng">Record ID</th>
+                                <th class="sorting text-left chn">店铺id</th>
+                                <th class="sorting text-left eng">Store id</th>
+                                <th class="sorting text-left chn">店铺名称</th>
+                                <th class="sorting text-left eng">Store name</th>
+                                <th class="sorting text-left chn">开始时间</th> 
+                                <th class="sorting text-left eng">Start date</th> 
+                                <th class="sorting text-left chn">结束时间</th>                                                                                                
+                                <th class="sorting text-left eng">End date</th>                                                                                                
+                                <th class="sorting text-left chn">订单商品金额</th>
+                                <th class="sorting text-left eng">Order amount</th>
+                                <th class="sorting text-left chn">运费</th>
+                                <th class="sorting text-left eng">Freight</th>
+                                <th class="sorting text-left chn">平台抽成</th>
+                                <th class="sorting text-left eng">Platform extraction commission</th>
+                                <th class="sorting text-left chn">积分金额</th>
+                                <th class="sorting text-left eng">Integral amount</th>
+                                <th class="sorting text-left chn">分销金额</th>
+                                <th class="sorting text-left eng">Distribution amount</th>
+                                <th class="sorting text-left chn">优惠价</th>
+                                <th class="sorting text-left eng">Concessional rate</th>
+                                <th class="sorting text-left chn">优惠券抵扣</th>                                                                
+                                <th class="sorting text-left eng">Coupon deduction</th>                                                                
+                                <th class="sorting text-left chn">本期应结</th>
+                                <th class="sorting text-left eng">Result totals</th>
+                                <th class="sorting text-left chn">创建记录日期</th>
+                                <th class="sorting text-left eng">Create record date</th>
+                                <!--<th class="sorting text-left">申请提现记录</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="v">
+                                <tr>
+                                    <td class="text-left">{$v.id}</td>
+                                    <td class="text-left">
+                                        {$v.store_id}
+                                    </td>
+                                    <td class="text-left">
+										<a href="{:U('Store/store_info',array('store_id'=>$v[store_id]))}">{$v.store_name}</a>
+                                    </td>
+                                    <td class="text-left">{$v.start_date|date="Y-m-d H:i",###}</td>
+                                    <td class="text-left">{$v.end_date|date="Y-m-d H:i",###}</td>
+                                    <td class="text-left">{$v.order_totals}</td>
+                                    <td class="text-left">{$v.shipping_totals}</td>
+                                    <td class="text-left">{$v.commis_totals}</td>                                    
+                                    <td class="text-left">{$v.give_integral}</td>
+                                    <td class="text-left">{$v.distribut}</td>                                    
+                                    <td class="text-left">{$v.order_prom_amount}</td>
+                                    <td class="text-left">{$v.coupon_price}</td>
+                                    <td class="text-left">{$v.result_totals}</td>
+                                    <td class="text-left">{$v.create_date|date="Y-m-d H:i",###}</td>
+                                    <!--<td class="text-left"><a href="{:U('Admin/Distribut/editWithdrawals',array('id'=>$v[withdrawals_id]))}">查看</a></td>-->
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                
+                <div class="row">
+                    <div class="col-sm-6 text-left"></div>
+                    <div class="col-sm-6 text-right">{$show}</div>
+                </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row --> 
+  </section>
+  <!-- /.content --> 
+</div>
+<!-- /.content-wrapper --> 
+ <script>
+
+$(document).ready(function() {
+	$('#create_date').daterangepicker({
+		format:"YYYY-MM-DD",
+		singleDatePicker: false,
+		showDropdowns: true,
+		minDate:'2016-01-01',
+		maxDate:'2030-01-01',
+		startDate:'2016-01-01',
+	    locale : {
+            applyLabel : 'Confirm',
+            cancelLabel : 'Cancel',
+            fromLabel : 'Start date',
+            toLabel : 'End date',
+            customRangeLabel : 'Custom',
+            daysOfWeek : [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
+            monthNames : [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+            firstDay : 1
+        }
+	});
+});
+</script>
+</body>
+</html>

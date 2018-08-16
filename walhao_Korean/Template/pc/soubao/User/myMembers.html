@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="__STATIC__/css/appointment.css">
+    <title>사용자 센터-{$tpshop_config['shop_info_store_title']}</title>
+    <meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+    <meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+    <link rel="stylesheet" href="__STATIC__/css/common_order.css" />
+</head>
+<style>
+    .indexloading{text-align: center; padding-top: 20px}
+    .indexloading img{ width:16px; height: 16px }
+    .my_card .brand {
+        background: url(../static/images/card_bg.png) 0 -100px no-repeat;
+    }
+    .related .browse_related_list .slide_box a:hover{ border:0}
+    div.informations .in_01 .personal_head img {
+        width: 84px;
+        height: 84px;
+        border: 1px solid #f1f1f1;
+        padding: 2px;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        behavior: url(iecss3.htc);
+        position:relative;
+        z-index:2;
+    }
+</style>
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<!-- 头部-e -->
+<div class="wrap">
+    <!-- bread crumbs star -->
+    <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font target_no">내 Walhao</a> </div>
+    <!-- bread crumbs end -->
+    <!--菜单-->
+    <include file="User/menu" />
+    <!--菜单-->
+    <div class="col_main">
+        <div class="main myMembers">
+            <div class="themes_title">
+                <h3>내 팀</h3> <!--我的团队-->
+                <h2>내 추천자 ID:<span>{$recommond}</span></h2> <!--我的推荐人ID-->
+            </div>
+            <div class="myMembers-list accbala">
+                <ul>
+                    <li><a href="javascript:void(0);">회원 ID</a></li> <!--会员ID-->
+                    <li><a href="javascript:void(0);">Walhao ID</a></li> <!--沃好ID-->
+                    <!--<li><a href="javascript:void(0);">138 ID</a></li> &lt;!&ndash;沃好ID&ndash;&gt;-->
+
+                    <li><a href="javascript:void(0);">핸드폰 번호</a></li> <!--手机号-->
+                    <li><a href="javascript:void(0);">성명</a></li> <!--姓名-->
+                    <li><a href="javascript:void(0);">점포 등급</a></li> <!--店铺等级-->
+                    <li><a href="javascript:void(0);">회원 직명</a></li> <!--会员职称-->
+                    <li><a href="javascript:void(0);">가입 시간</a></li> <!--加入时间-->
+                </ul>
+                <div style="clear:both"></div>
+            </div>
+            <if condition="$list neq ''">
+                <?php foreach($list as $v):?>
+                <div class="myMembers-list c_contan accbala-list">
+                    <ul>
+                        <li><a href="javascript:void(0);">{$v['user_id']}</a></li>
+                        <li><a href="javascript:void(0);">{$v['wh_id']}</a></li>
+                        <!--<li><a href="javascript:void(0);">{$v['tp138_user_id']}</a></li>-->
+                        <li><a href="javascript:void(0);">{$v['mobile']}</a></li>
+                        <li><a href="javascript:void(0);">{$v['nickname']|default='暂无'}</a></li>
+                        <li>
+                            <a href="javascript:void(0);">
+                                <if condition="$v.level eq 1 ">브론즈 점포  <!--铜级店铺-->
+                                    <elseif condition="$v[level] eq 2"/>실버 점포  <!--银级店铺-->
+                                    <elseif condition="$v[level] eq 3" /> 골드 점포  <!--金级店铺-->
+                                    <elseif condition="$v[level] eq 4" /> 다이아몬드 점포  <!--钻石店铺-->
+                                    <elseif condition="$v[level] eq -1" /> 일반 회원  <!--免费店铺-->
+                                    <else />일반 회원
+                                </if>
+                            </a>
+                        </li>
+                        <!--<li>-->
+                            <!--<a href="javascript:void(0);">-->
+                                <!--<if condition="$user[user_title] eq 0">-->
+                                    <!--乡镇代理 (LZ0) &lt;!&ndash;乡镇代理&ndash;&gt;-->
+                                    <!--<elseif condition="$v[user_title] eq 1" />-->
+                                    <!--县级代理 (LZ1) &lt;!&ndash;县级代理&ndash;&gt;-->
+                                    <!--<elseif condition="$v[user_title] eq 2" />-->
+                                    <!--市级代理 (LV2) &lt;!&ndash;白银会员&ndash;&gt;-->
+                                    <!--<elseif condition="$v[user_title] eq 3" />-->
+                                    <!--省级代理 (LZ3) &lt;!&ndash;白银会员&ndash;&gt;-->
+                                    <!--<elseif condition="$v[user_title] eq 4" />-->
+                                    <!--大区代理 (LZ4) &lt;!&ndash;白银会员&ndash;&gt;-->
+                                    <!--<elseif condition="$v[user_title] eq 5" />-->
+                                    <!--全国代理 (LZ5) &lt;!&ndash;白银会员&ndash;&gt;-->
+                                    <!--<elseif condition="$v[user_title] eq 6" />-->
+                                    <!--全球总代理 (LZ6) &lt;!&ndash;白银会员&ndash;&gt;-->
+                                    <!--<else />-->
+                                    <!--乡镇代理 (LZ0) &lt;!&ndash;白银会员&ndash;&gt;-->
+                                <!--</if>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <li><a href="javascript:void(0);">LZ{$v['user_title']}</a></li>
+                        <li><a href="javascript:void(0);">{$v.reg_time}</a></li>
+                    </ul>
+                </div>
+                <div style="clear: both"></div>
+                <?php endforeach;?>
+                <else />
+                <p class="ncyekjl">--기록이 없다--</p>
+            </if>
+        </div>
+        <div class="operating fixed" id="bottom">
+            <div class="fn_page clearfix">
+                {$page}
+            </div>
+        </div>
+    </div>
+</div>
+<div style="clear: both;"></div>
+<!--导入用户中心的底部-->
+<include file="Public/footer1" />
+</body>
+</html>

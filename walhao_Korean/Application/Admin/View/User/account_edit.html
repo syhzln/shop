@@ -1,0 +1,92 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+    <!-- Main content -->
+    <!--<div class="container-fluid">-->
+    <div class="container-fluid">
+        <!--新订单列表 操作信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title chn"><i class="fa fa-list"></i> 管理资金</h3>
+                <h3 class="panel-title eng"><i class="fa fa-list"></i> Administer a finance</h3>
+            </div>
+            <div class="panel-body">
+
+            <form id="delivery-form" method="post" action="">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <div class="row">
+                            <td class="text-right col-sm-2"><span class="chn">金额：</span><span class="eng">Amount:</span></td>
+                            <td colspan="3">
+                                <select name="money_act_type" id="money_act_type" class="input-sm">
+                                    <option value="1">增加/Increase</option>
+                                    <option value="0">减少/Reduce</option>
+                                </select>
+                                <input type="text" name="user_money" class="input-sm" value="{$_REQUEST['user_money']|default='0'}">
+                            </td>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div class="row">
+                            <td class="text-right col-sm-2"><span class="chn">积分：</span><span class="eng">Integral:</span></td>
+                            <td colspan="3">
+                                <select name="point_act_type" id="point_act_type" class="input-sm">
+                                    <option value="1">增加/Increase</option>
+                                    <option value="0">减少/Reduce</option>
+                                </select>
+                                <input type="text" name="pay_points" value="0" class="input-sm">
+                            </td>
+                        </div>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<div class="row">-->
+                            <!--<td class="text-right col-sm-2">冻结金额：</td>-->
+                            <!--<td colspan="3">-->
+                                <!--<select name="frozen_act_type" id="frozen_act_type" class="input-sm">-->
+                                    <!--<option value="1">增加</option>-->
+                                    <!--<option value="0">减少</option>-->
+                                <!--</select>-->
+                                <!--<input type="text" name="frozen_money" value="0" class="input-sm">-->
+                            <!--</td>-->
+                        <!--</div>-->
+                    <!--</tr>-->
+
+                    <tr>
+                        <div class="row">
+                            <td class="text-right col-sm-2"><span class="chn">操作备注：</span><span class="eng">Operation note:</span></td>
+                            <td class="chn" colspan="3">
+                                    <textarea name="desc" placeholder="请输入操作备注" rows="3" class="form-control">{$_REQUEST['desc']}</textarea>
+                            </td>
+							<td class="eng" colspan="3">
+                                    <textarea name="desc" placeholder="Please enter the operation notes" rows="3" class="form-control">{$_REQUEST['desc']}</textarea>
+                            </td>
+                        </div>
+                    </tr>
+
+                    <tr>
+                        <div class="row">
+                            <td colspan="4">
+                                <div class="form-group text-center">
+                                    <button class="btn btn-primary" type="submit" id="disabled"><span class="chn">提交</span><span class="eng">Submit</span></button>
+                                    <button onclick="history.go(-1)"  class="btn btn-primary" type="button">
+										<span class="chn">返回</span><span class="eng">Return</span>
+									</button>
+                                </div>
+                            </td>
+                        </div>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </form>
+
+            </div>
+        </div>
+
+    </div>    <!-- /.content -->
+        </section>
+</div>
+
+

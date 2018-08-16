@@ -1,0 +1,122 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+	<section class="content">
+       <div class="row">
+       		<div class="col-xs-12">
+	       		<div class="box">
+	           	<div class="box-header">
+	               <nav class="navbar navbar-default">	     
+				        <div class="collapse navbar-collapse">
+				          <form class="navbar-form form-inline" action="{:U('Tools/restoreUpload')}" name="change_System" method="post" enctype="multipart/form-data">
+				            <div class="input-group">
+								<span class="chn">要导入的SQL文件:</span>
+								<span class="eng">SQL file to import:</span>
+							</div>
+				            <div class="input-group">
+				            	 <input type="file" class="btn btn-default" name="sqlfile"/>
+				            </div>
+				            <div class="form-group">
+								<input type="submit" class="btn btn-primary chn" value="提交">
+								<input type="submit" class="btn btn-primary eng" value="Submit">
+				            	<label class="text-danger">
+									<span class="chn">导入的SQL语句必须按照MYSQL的语法编写</span>
+									<span class="eng">The imported SQL statement must be written in accordance with the MYSQL syntax</span>
+								</label>
+				            </div>		          
+				          </form>		
+				      	</div>
+	    			</nav>               
+	            </div>	    
+	             <!-- /.box-header -->
+	            <div class="box-body">	             
+	           	<div class="row">
+	            	<div class="col-sm-12">
+	            	<form  method="post" action="">
+		              <table class="table table-bordered table-striped">
+		                 <thead>
+		                   <tr>
+		                       <th class="text-center" style="width: 2px;"><input type="checkbox" onclick="javascript:$('input[name*=backs]').prop('checked',this.checked);"></th>
+			                   <th class="sorting" tabindex="0"><span class="chn">文件名称</span><span class="eng">File name</span></th>
+			                   <th class="sorting" tabindex="0"><span class="chn">文件大小</span><span class="eng">File size</span></th>
+			                   <th class="sorting" tabindex="0"><span class="chn">备份时间</span><span class="eng">Backup time</span></th>
+			                   <th class="sorting" tabindex="0"><span class="chn">卷号</span><span class="eng">Reel number</span></th>
+			                   <th class="sorting" tabindex="0"><span class="chn">操作</span><span class="eng">Edit</span></th>
+		                   </tr>
+		                 </thead>
+						<tbody>
+						  <foreach name="vlist" item="vo" key="k" >
+						  	<tr>
+ 							 <td><input type="checkbox" name="backs[]" value="{$vo.name}"></td>
+		                     <td>{$vo.name}</td>
+		                     <td>{$vo.size|format_bytes}</td>
+		                     <td>{$vo.time|date="Y-m-d H:i:s",###}</td>
+ 							 <td>{$vo.number}</td>
+		                     <td>
+		                      <a class="btn btn-info" href="{:U('Tools/restoreData',array('sqlfilepre'=>$vo['name']))}" data-url="">
+								<span class="chn">恢复</span><span class="eng">Recovery</span>
+							  </a>
+		                      <a class="btn btn-success" href="{:U('Tools/downFile',array('type'=>'sql','file'=>$vo['name']))}">
+								<span class="chn">下载</span><span class="eng">Download</span>
+							  </a>
+		                      <a class="btn btn-danger" href="{:U('Tools/delSqlFiles',array('sqlfilename'=>$vo['name']))}" >
+								<span class="chn">删除</span><span class="eng">Remove</span>
+							  </a>
+							</td>
+		                   </tr>
+		                  </foreach>
+		                   </tbody>
+		                 <tfoot>
+		                 </tfoot>
+		               </table>
+		           </form>
+	               </div>
+	           </div>
+	           	<div class="row">
+	                	<div class="col-sm-6 text-left">
+							<span class="chn">备份文件数量：{$filenum}，占空间大小：{$total}</span>
+							<span class="eng">Backup file number: {$filenum}, accounting for space size: {$total}</span>
+						</div>
+                    	<div class="col-sm-6 text-right"> 
+                    		
+                    	</div>		
+              </div>
+	          </div>
+	        </div>
+       	</div>
+       </div>
+   </section>
+</div>
+<script type="text/javascript">
+function gobackup(obj){
+	var a = [];
+	$('input[name*=backs]').each(function(i,o){
+		if($(o).is(':checked')){
+			a.push($(o).val());
+		}
+	});
+	if(a.length==0){
+		layer.alert('请选择要备份的数据表<br>Select the data table to be backed up', {icon: 2});  //alert('请选择要备份的数据表');
+		return;
+	}else{
+		$(obj).addClass('disabled');
+		$(obj).html('备份进行中...');
+		$.ajax({
+			type :'post',
+			url : "{:U('Admin/Tools/backup')}",
+			datatype : 'json',
+			data : {tables:a},
+			success : function(data){
+				data = eval('('+data+')');
+				if(data.stat=='ok'){
+					layer.alert(data.msg, {icon: 2});  // alert(data.msg);
+				}else{
+					layer.alert(data.msg, {icon: 2});  //alert(data.msg);
+				}
+			}
+		})
+	}
+}
+</script>
+</body>
+</html>

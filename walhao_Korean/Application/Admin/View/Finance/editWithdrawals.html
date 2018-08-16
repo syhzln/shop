@@ -1,0 +1,203 @@
+<include file="Public/min-header"/>
+<?php $usermoney=$user['user_money']+$data['money'];
+
+?>
+
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i> 提现申请</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i> Apply for withdrawal</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active chn"><a href="#tab_tongyong" data-toggle="tab">申请用户</a></li>
+                        <li class="active eng"><a href="#tab_tongyong" data-toggle="tab">Users who applied</a></li>
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="editForm">
+                        <!--通用信息-->
+                    <div class="tab-content">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td class="chn">用户id</td>
+                                    <td class="eng">User id</td>
+                                    <td id="userid">
+                                        <a href="{:U('Admin/user/detail',array('id'=>$data[user_id]))}">{$data[user_id]}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="chn">用户名</td>
+                                    <td>
+                                        {$data.user_name}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="chn">用户平台余额</td>
+                                    <td class="eng">User platform balance</td>
+                                    <td>
+                                       <!-- <if condition="$data[status] eq 0">
+                                        {$usermoney}</if>
+                                        <if condition="$data[status] eq 2">
+                                            {$usermoney}</if>
+                                        <if condition="$data[status] eq 1">
+                                            {$user.user_money}</if>-->
+                                        {$user.user_money}
+                                    </td>
+                                </tr>                               
+                                <tr>
+                                    <td class="chn">申请提现金额</td>
+                                    <td class="eng">Withdrawal amount</td>
+                                    <td>
+                                        {$data.money}
+                                    </td>
+                                </tr>                                       
+                                <tr>
+                                    <td class="chn">申请提现银行</td>
+                                    <td class="eng">Application bank</td>
+                                    <td>
+                                        {$data.bank_name}                                        
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td class="chn">银行账号</td>
+                                    <td class="eng">Bank account</td>
+                                    <td>
+                                        {$data.account_bank}
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td class="chn">银行账户名</td>
+                                    <td class="eng">Bank account name</td>
+                                    <td>
+                                        {$data.account_name}                                        
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td class="chn">申请时间</td>
+                                    <td class="eng">Application date</td>
+                                    <td>
+                                        {$data.create_time|date="Y-m-d H:i",###}
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td class="chn">状态</td>
+                                    <td class="eng">State</td>
+                                    <td>
+                                        <if condition="$data[status] eq 0">Applying</if>
+                                        <if condition="$data[status] eq 1">Successful application</if>
+                                        <if condition="$data[status] eq 2">Application failure</if>   
+                                    </td>
+                                </tr>                                                                                   
+                                <tr>
+                                    <td class="chn">备注</td>
+                                    <td class="eng">Remarks</td>
+                                    <td>
+                                        <textarea rows="4" cols="60" id="remark" name="remark">{$data.remark}</textarea>
+                                        <span id="err_remark" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td class="chn">提现流程：</td>
+                                    <td class="eng">Withdrawals flow:</td>
+									<td class="chn">
+                                        1:用户前台申请提现<br/>
+                                        2:管理员审核生成转账记录 ( 生成时自动扣除用户平台余额 )<br/>
+                                        3:财务转账给用户<br/>
+                                        或 2 , 3步可以调换,先转账后生成记录.<br/>
+                                    </td>
+                                    <td class="eng">
+                                        1:Store apply for withdrawal.<br/>
+                                        2:Administrator audit generate transfer records (automatically deducted from the store platform can be generated when the balance)<br/>
+                                        3:Financial transfer to the store<br/>
+                                        Or exchange the second and third step,record after transfer.<br/>
+                                    </td>
+                                </tr>                                   
+                                </tbody>                                
+                                </table>
+                        </div>                           
+                    </div>              
+                    <div class="pull-right">
+                        <input type="hidden" name="id" value="{$data.id}">
+                        <input type="hidden" id="user_id" name="user_id" value="{$data.user_id}">
+                        <input type="hidden" id="status" name="status" value="{$data[status]}">
+                        <if condition="$data[status] eq 0">
+                            <button class="btn btn-primary chn" data-toggle="tooltip" type="button" onclick="confirm_withdrawals();">去生成转账记录</button>
+                            <button class="btn btn-primary eng" data-toggle="tooltip" type="button" onclick="confirm_withdrawals();">To generate the transfer record</button>
+                        </if>
+                        <if condition="$data[status] eq 0">
+                            <button class="btn btn-primary chn" data-toggle="tooltip" type="button" onclick="cancel_withdrawals(this);">拒绝提现</button>
+                            <button class="btn btn-primary eng" data-toggle="tooltip" type="button" onclick="cancel_withdrawals();">Refuse to withdraw</button>
+                        </if>
+                        <if condition="$data[status] eq 1">
+                            <button class="btn btn-primary chn" data-toggle="tooltip" type='submit'>修改备注</button>
+                            <button class="btn btn-primary eng" data-toggle="tooltip" type='submit'>Modify remarks</button>
+                        </if>
+                        
+                    </div>
+                 </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+<script>
+// 确定提现
+function confirm_withdrawals()
+{
+    if(!confirm("确定将从平台扣除用户余额${$data.money},确定吗?<br>Make sure the user balance ${$data.money} is deducted from the platform?"))
+        return false;
+        
+    if($.trim($('#remark').val()).length == 0)
+    {
+        alert('请填写转账备注<br>Please fill in the transfer');
+        return false;
+    }
+    
+    $('#status').val('1');
+    $('#editForm').submit();
+}
+// 拒绝提现    
+function cancel_withdrawals(obj)
+{
+    var usermoney = "{$usermoney}";
+    var id = "{$id}";
+    var with_id = $.trim($('#user_id').val());
+    var status = $.trim($('#status').val());
+    var remark = $.trim($('#remark').val());
+    if(!confirm('确定要拒绝用户提现吗?<br>Do you want to deny the user?')) {
+       return false;
+
+   }
+
+   if($.trim($('#remark').val()).length == 0)
+    {
+        alert('请填写拒绝备注<br>Please fill in the rejected remarks');
+        return false;
+    }
+    $.ajax({
+        type:'post',
+        url:"{:U('Admin/Finance/refuseWithdrawals')}",//+tab,
+        data:{usermoney:usermoney,with_id:with_id,status:status,id:id,remark:remark},
+        success:function (data){
+            alert('拒绝提现申请.'); <!--取消成功-->
+           window.location.reload();
+        }
+    });
+    //$('#status').val('2');
+    //$('#editForm').submit();
+}
+</script>
+</body>
+</html>

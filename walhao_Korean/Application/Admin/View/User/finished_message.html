@@ -1,0 +1,97 @@
+<include file="Public/min-header"/>
+<style>
+    table{width: 100%;}
+    th,td{text-align: center;}
+    td>div{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 558px;
+        text-align: center;
+    }
+</style>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i>会员工单</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i> Administer a finance</h3>
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="sign"><i class="ico-check"></i></th>
+                            <th abbr="article_title">ID</th>
+                            <th abbr="ac_id">会员ID</th>
+                            <th abbr="article_show">会员姓名</th>
+                            <th abbr="article_time">工单标题</th>
+                            <th abbr="article_time">工单编号</th>
+                            <th abbr="article_time">发送时间</th>
+                            <th class="handle">操作</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <foreach name="talklist" item="val">
+                            <tr>
+                                <td class="sign"><i class="ico-check"></i></td>
+                                <td class="message_id">{$val['id']}</td>
+                                <td>{$val['wh181_id']}</td>
+                                <td>{$val['name']}</td>
+                                <td class="u_message" style="width:40%;"><div style="width:640px;">{$val['message_title']}</div></td>
+                                <td>{$val['message_number']}</td>
+                                <td>{$val['message_time']}</td>
+                                <td class="handle">
+                                    <a class="btn blue" href="javascript:;" onclick="reply_message('{$val.wh181_id}','{$val.message_number}');"><i class="fa fa-pencil-square-o"></i>查看内容</a>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>    <!-- /.content -->
+    </section>
+</div>
+<script>
+    //回复会员工单
+    function reply_message(id,number) {
+        $('table>tbody >tr').click(function(){
+            $(this).addClass('trSelected');
+            $(this).siblings().removeClass('trSelected');
+        });
+        var wh_id=id;
+        var message_number=number;
+        var obj = $('.trSelected');
+        var check_val = $(".trSelected>.message_id").html();
+        var url = "{:U('Admin/User/replyMessage')}";
+        if(obj.length > 0){
+            url += "?whid="+wh_id+"&message_number="+message_number;
+            layer.open({
+                type: 2,
+                title: '回复会员工单',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['580px', '480px'],
+                content: url
+            });
+        }
+
+    }
+    function search(){
+        var text=$("#qsbox").val();
+        $.post("/index.php?m=admin&c=User&a=finished_message",{'text':text,},function(data){
+            $("body").html('');
+            $("body").append(data);
+
+        });
+    }
+</script>

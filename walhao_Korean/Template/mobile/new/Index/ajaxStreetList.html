@@ -1,0 +1,30 @@
+<volist name="store_list" id="store">
+	<section class="rzs_info">
+		<dl>
+			<dt><a href="{:U('Store/index',array('store_id'=>$store[store_id]))}" class="flow-datu" title="{$store['store_name']}"
+				   style="background-image:url({$store['store_logo']})"> </a></dt>
+			<dd><strong><a href="{:U('Store/index',array('store_id'=>$store[store_id]))}"> 스토어:{$store['store_name']}</a></strong>
+
+				<p>위치:{$store['province_name']},{$store['city_name']},{$store['district_name']}</p>
+			</dd>
+		</dl>
+		<ul>
+			<li><span>안내</span><strong>:<if condition="$store['store_desccredit'] eq 0">5.0<else />{$store['store_desccredit']|number_format=1}</if></span></strong>
+				<em><between name="store.store_desccredit" value="0,1.99">낮음</between>
+					<between name="store.store_desccredit" value="2,3.99">중간</between>
+					<between name="store.store_desccredit" value="4,5">높음</between>
+				</em>
+			</li>
+			<li><span>서비스><strong>:<if condition="$store['store_servicecredit'] eq 0">5.0<else />{$store['store_servicecredit']|number_format=1}</if></strong>
+				<em><between name="store.store_desccredit" value="0,1.99">낮음</between>
+					<between name="store.store_desccredit" value="2,3.99">중간</between>
+					<between name="store.store_desccredit" value="4,5">높음</between></em>
+			</li>
+			<li><span>물류</span><strong>:<if condition="$store['store_deliverycredit'] eq 0">5.0<else />{$store['store_deliverycredit']|number_format=1}</if></strong>
+				<em><between name="store.store_desccredit" value="0,1.99">낮음</between>
+					<between name="store.store_desccredit" value="2,3.99">중간</between>
+					<between name="store.store_desccredit" value="4,5">높음</between></em>
+			</li>
+		</ul>
+		<div class="index_taocan">
+			<h2>소계 {$st

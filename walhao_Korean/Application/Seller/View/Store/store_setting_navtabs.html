@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs">
+    <li <if condition="ACTION_NAME eq 'store_setting'">class="active"</if>><a href="javascript:void(0)" data-url="{:U('Store/store_setting')}" onclick="goset(this)" data-toggle="tab">가게 설정</a></li>
+    <li <if condition="ACTION_NAME eq 'store_slide'">class="active"</if>><a href="javascript:void(0)" data-url="{:U('Store/store_slide')}" onclick="goset(this)" data-toggle="tab">슬라이드 설정</a></li>
+    <li <if condition="ACTION_NAME eq 'store_theme'">class="active"</if>><a href="javascript:void(0)" data-url="{:U('Store/theme')}" onclick="goset(this)" data-toggle="tab">샵 테마</a></li>
+    <li <if condition="ACTION_NAME eq 'mobile_slide'">class="active"</if>><a href="javascript:void(0)" data-url="{:U('Store/mobile_slide')}" onclick="goset(this)" data-toggle="tab">휴대 전화 가게 설정</a></li>
+</ul>

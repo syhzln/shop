@@ -1,0 +1,223 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <!-- Content Header (Page header) -->
+   <include file="Public/breadcrumb"/>
+    <section class="content">
+    <!-- Main content -->
+    <!--<div class="container-fluid">-->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title chn"><i class="fa fa-list"></i> 用户信息</h3>
+				<h3 class="panel-title eng"><i class="fa fa-list"></i> User information</h3>
+            </div>
+            <div class="panel-body">
+                <form action="" method="post" onsubmit="return checkUserUpdate(this);">
+                    <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="col-sm-2 chn">会员昵称:</td>
+						<td style="display:none" class="col-sm-2 eng">User nickname:</td>
+                        <td ><input type="text" class="form-control" name="nickname" value="{$user.nickname}"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="chn">用户积分:</td>
+						<td class="eng">User integral:</td>
+                        <td>{$user.pay_points} 
+							<span class="chn" style="margin-left:100px;">账户余额：{$user.user_money}</span>
+							<span class="eng" style="margin-left:100px;">Account balance:{$user.user_money}</span>
+						</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="chn">邮件地址:</td>
+						<td class="eng">Email address:</td>
+                        <td><input type="text" class="form-control" name="email" value="{$user.email}"></td>
+                        <td class="chn">电子邮箱</td>
+						<td class="eng">Email</td>
+                    </tr>
+                    <tr>
+                        <td class="chn">新密码:</td>
+                        <td class="eng">New password:</td>
+                        <td><input type="password" class="form-control" name="password"></td>
+                        <td class="chn">留空表示不修改密码</td>
+                        <td class="eng">Leave a blank message means do not modify the password</td>
+                    </tr>
+                    <tr>
+                        <td class="chn">确认密码:</td>
+                        <td class="eng">Confirm password:</td>
+                        <td><input type="password" class="form-control" name="password2" ></td>
+                        <td class="chn">留空表示不修改密码</td>
+                        <td class="eng">Leave a blank message means do not modify the password</td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td>会员等级:</td>-->
+                        <!--<td>{$user.user_rank}</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="chn">性别:</td>
+                        <td class="eng">Gender:</td>
+                        <td id="order-status">
+                            <span class="chn"><input name="sex" type="radio" value="0" <if condition="$user['sex'] eq 0">checked</if> >保密</span>
+                            <span class="eng"><input name="sex" type="radio" value="0" <if condition="$user['sex'] eq 0">checked</if> >Secrecy</span>
+                            <span class="chn"><input name="sex" type="radio" value="1" <if condition="$user['sex'] eq 1">checked</if> >男</span>
+                            <span class="eng"><input name="sex" type="radio" value="1" <if condition="$user['sex'] eq 1">checked</if> >Male</span>
+                            <span class="chn"><input name="sex" type="radio" value="2" <if condition="$user['sex'] eq 2">checked</if> >女</span>
+                            <span class="eng"><input name="sex" type="radio" value="2" <if condition="$user['sex'] eq 2">checked</if> >Female</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>QQ:</td>
+                        <td>
+                            <input class="form-control" type="text" name="qq" value="{$user.qq}">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="chn">手机:</td>
+                        <td class="eng">Mobile:</td>
+                        <td>
+                            <input type="text" class="form-control" name="mobile" value="{$user.mobile}">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="chn">冻结用户:</td>
+                        <td class="eng">Freeze user:</td>
+                        <td>
+                            <span class="chn"><input name="is_lock" type="radio" value="1" <if condition="$user['is_lock'] eq 1">checked</if> >是</span>
+                            <span class="eng"><input name="is_lock" type="radio" value="1" <if condition="$user['is_lock'] eq 1">checked</if> >Yes</span>
+                            <span class="chn"><input name="is_lock" type="radio" value="0" <if condition="$user['is_lock'] eq 0">checked</if> >否</span>
+                            <span class="eng"><input name="is_lock" type="radio" value="0" <if condition="$user['is_lock'] eq 0">checked</if> >No</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><span class="chn">注册时间:</span><span class="eng">Registration time:</span></td>
+                        <td>
+                            {$user.reg_time|date='Y-m-d H:i',###}
+                        </td>
+                        <td></td>
+                    </tr>
+                        
+                    <tr>
+                        <td><span class="chn">是否分销:</span><span class="eng">Whether distribution:</span></td>
+                        <td id="order-status">                            
+                            <span class="chn"><input name="is_distribut" type="radio" value="1" <if condition="$user['is_distribut'] eq 1">checked</if> >是</span>
+                            <span class="eng"><input name="is_distribut" type="radio" value="1" <if condition="$user['is_distribut'] eq 1">checked</if> >Yes</span>
+                            <span class="chn"><input name="is_distribut" type="radio" value="0" <if condition="$user['is_distribut'] eq 0">checked</if> >否</span>
+                            <span class="eng"><input name="is_distribut" type="radio" value="0" <if condition="$user['is_distribut'] eq 0">checked</if> >No</span>
+                        </td>
+                        <td></td>
+                    </tr>                    
+                    <tr>
+                        <table  class="table table-bordered">
+                            
+                            <tr>
+                                    <td class="chn">用户余额:</td>
+                                    <td class="eng">User balance:</td>
+                                    <td>{$user.user_money}</td>                                
+                                    <td class="chn">累积分佣金额:</td>
+                                    <td class="eng">Cumulative commission amount:</td>
+                                    <td>{$user.distribut_money}</td>    
+                                </tr>                            
+                            
+                             <tr>
+                                <td class="chn">上一级编号</td>
+                                <td class="eng">Upper level number</td>
+                                    <td>                            
+                                        <if condition='$user[first_leader] gt 0'>
+                                                <a href="{:U(detail,array('id'=>$user[first_leader]))}">{$user.first_leader}</a>
+                                        <else />
+                                                {$user.first_leader}
+                                        </if>                           
+                                    </td>                                
+                                    <td class="chn">一级下线数</td>
+									<td class="eng">First grade member</td>
+                                    <td>{$user.first_lower}</td>    
+                                </tr>
+                                
+                                <tr>
+                                    <td class="chn">上二级编号</td>
+                                    <td class="eng">Upper two level number</td>
+                                    <td>                            
+                                        <if condition='$user[second_leader] gt 0'>
+                                                <a href="{:U(detail,array('id'=>$user[second_leader]))}">{$user.second_leader}</a>
+                                        <else />
+                                                {$user.second_leader}
+                                        </if>                           
+                                    </td>
+                                    <td class="chn">二级下线数</td>
+                                    <td class="eng">Second grade menber</td>
+                                    <td>{$user.second_lower}</td>                                
+                                </tr>
+                                <tr>
+                                    <td class="chn">上三级编号</td>
+                                    <td class="eng">Upper three level number</td>
+                                    <td>                            
+                                        <if condition='$user[third_leader] gt 0'>
+                                                <a href="{:U(detail,array('id'=>$user[third_leader]))}">{$user.third_leader}</a>
+                                        <else />
+                                                {$user.third_leader}
+                                        </if>                           
+                                    </td>                                 
+                                    <td class="chn">三级下线数</td>
+									<td class="eng">Third grade member</td>
+                                    <td>{$user.third_lower}</td>                                   
+                           </tr>                    
+                        </table>
+                    </tr>             
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn btn-info">
+                                <i class="ace-icon fa fa-check bigger-110"></i> 
+								<span class="chn">保存</span>
+								<span class="eng">Submit</span>
+                            </button>
+                            <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default pull-right" data-original-title="返回"><i class="fa fa-reply"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </form>
+
+            </div>
+        </div>
+ 	  </div> 
+    </div>    <!-- /.content -->
+   </section>
+</div>
+<script>
+    function checkUserUpdate(){
+        var email = $('input[name="email"]').val();
+        var mobile = $('input[name="mobile"]').val();
+        var password = $('input[name="password"]').val();
+        var password2 = $('input[name="password2"]').val();
+
+        var error ='';
+        if(password != password2){
+            error += "两次密码不一样\n";
+        }
+
+        if(!checkEmail(email)){
+            error += "邮箱地址有误\n";
+        }
+        if(!checkMobile(mobile)){
+            error += "手机号码填写有误\n";
+        }
+        if(error){
+            layer.alert(error, {icon: 2});  //alert(error);
+            return false;
+        }
+        return true;
+
+    }
+</script>
+
+</body>
+</html>

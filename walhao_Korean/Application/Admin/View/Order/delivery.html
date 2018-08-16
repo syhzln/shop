@@ -1,0 +1,173 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+    <section class="content">
+    <!-- Main content -->
+    <div class="container-fluid">
+        <!--新订单列表 基本信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center chn">基本信息</h3>
+                <h3 class="panel-title text-center eng">Essential information</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+
+                    <tr>
+                        <td class="text-right chn">订单号:</td>
+                        <td class="text-right eng">Order number:</td>
+                        <td class="text-center">{$order.order_sn}</td>
+                        <td class="text-right chn">下单时间:</td>
+                        <td class="text-right eng">Order time:</td>
+                        <td class="text-center">{$order.add_time|date='Y-m-d H:i',###}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right chn">配送方式:</td>
+                        <td class="text-right eng">Delivery method:</td>
+                        <td class="text-center">{$order.shipping_name}
+                        </td>
+                        <td class="text-right chn">配送费用:</td>
+                        <td class="text-right eng">Distribution cost:</td>
+                        <td class="text-center">{$order.shipping_price}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right chn">发货单号:</td>
+                        <td class="text-right eng">Consignment number:</td>
+
+                        <td class="text-center">
+                            <input disabled onblur="$('#invoice_no').val($(this).val())" name="num" value="{$order.invoice_no}">
+                            <a onclick="$(this).prev().attr('disabled',false)" data-toggle="tooltip" title="" data-original-title="修改订单号" class="btn btn-primary btn-xs">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody></table>
+
+            </div>
+        </div>
+        <!--新订单列表 收货人信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center chn">收货信息</h3>
+                <h3 class="panel-title text-center eng">Receiving information</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="text-right chn">收货人:</td>
+                        <td class="text-right eng">Consignee:</td>
+                        <td class="text-center">{$order.consignee}</td>
+                        <td class="text-right chn">电子邮件:</td>
+                        <td class="text-right eng">Email:</td>
+                        <td class="text-center">{$order.email}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right chn">地址:</td>
+                        <td class="text-right eng">Address:</td>
+                        <td class="text-center">{$order.address}</td>
+                        <td class="text-right chn">邮编:</td>
+                        <td class="text-right eng">Zip code:</td>
+                        <td class="text-center">{$order.zipcode}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right chn">电话:</td>
+                        <td class="text-right eng">Tel:</td>
+                        <td class="text-center">{$order.mobile}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    </tbody></table>
+
+            </div>
+        </div>
+        <!--新订单列表 商品信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center chn">商品信息</h3>
+                <h3 class="panel-title text-center eng">Goods information</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="text-left chn">商品</td>
+                        <td class="text-left eng">Goods</td>
+                        <td class="text-left chn">属性</td>
+                        <td class="text-left eng">Attribute</td>
+                        <td class="text-left chn">数量</td>
+                        <td class="text-left eng">Amount</td>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="orderGoods" id="good">
+                        <tr>
+                            <td class="text-left"><a href="good.php">{$good.goods_name}</a>
+                            </td>
+                            <td class="text-left">{$good.spec_key_name}</td>
+                            <td class="text-left">{$good.goods_num}</td>
+                            <!--<td class="text-right">{$good.goods_price}</td>-->
+                            <!--<td class="text-right">{$good.goods_total}</td>-->
+                        </tr>
+                    </volist>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <!--新订单列表 操作信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center chn">操作信息</h3>
+                <h3 class="panel-title text-center eng">Operation information</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <div class="row">
+                                <td class="text-right col-sm-2 chn">操作备注：</td>
+                                <td class="text-right col-sm-2 eng">Operation note:</td>
+                                <td colspan="3">
+                                    <form id="delivery-form">
+                                        <input type="hidden" name="invoice_no" id="invoice_no">
+                                        <textarea name="note" placeholder="" rows="3" class="form-control"></textarea>
+                                    </form>
+                                </td>
+                            </div>
+                        </tr>
+
+                    <tr>
+                        <div class="row">
+                            <td colspan="4">
+                                <div class="form-group text-center">
+                                    <button onclick="ajax_submit_form('delivery-form','{:U('Admin/order/delivery',array('id'=>$order['order_id']))}');"  class="btn btn-primary" type="submit" id="disabled">
+										<span class="chn">生成发货单</span>
+										<span class="eng">Generate invoice</span>
+									</button>
+                                    <button onclick="history.go(-1)"  class="btn btn-primary" type="submit">
+										<span class="chn">返回</span>
+										<span class="eng">Return</span>
+									</button>
+                                </div>
+                            </td>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+
+    </div>    <!-- /.content -->
+        </section>
+</div>
+
+</body>
+</html>

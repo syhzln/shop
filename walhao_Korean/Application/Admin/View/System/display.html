@@ -1,0 +1,149 @@
+<include file="Public/min-header"/>
+
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">           
+                <div class="panel-body ">   
+                   	<ul class="nav nav-tabs">
+                        <foreach name="group_list" item="vo" key="k">
+                     		<li><a href="javascript:void(0)" data-url="{:U('System/index',array('inc_type'=>$k))}" data-toggle="tab" onclick="goset(this)">{$vo}</a></li>
+                     	</foreach>                        
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="handlepost" action="{:U('System/handle')}">                    
+                        <!--通用信息-->
+                    <div class="tab-content col-md-10">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td class="col-sm-2"><span class="chn">首页搜索关键字：</span><span class="eng">Homepage search keywords:</span></td>
+                                    <td class="col-sm-8">
+                                        <input type="text" class="form-control" name="search_key" value="{$config.search}" >
+                                        <span id="err_attr_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td><span class="chn">时间格式：</span><span class="eng">Time format:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="store_logo" value="{$config.store_logo}" >                                
+                                    </td>
+                                </tr>   
+                              	<tr>
+                                    <td><span class="chn">货币格式：</span><span class="eng">Currency format:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="store_logo" value="{$config.store_logo}" >                                
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><span class="chn">缩略图高度：</span><span class="eng">Thumbnail height:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="thumb_height" value="{$config.thumb_height}" >                                
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td><span class="chn">缩略图宽度：</span><span class="eng">Thumbnail width:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="thumb_width" value="{$config.thumb_width}" >                                
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td><span class="chn">商品图片高度：</span><span class="eng">Picture height:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="goods_height" value="{$config.goods_height}" >                                
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td><span class="chn">商品图片宽度：</span><span class="eng">Picture width:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="goods_width" value="{$config.goods_width}" >                                
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><span class="chn">销量排行数量：</span><span class="eng">Sales ranking:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="store_logo" value="{$config.store_logo}" >                                
+                                    </td>
+                                </tr>  
+                            	<tr>
+                                    <td><span class="chn">浏览历史数量：</span><span class="eng">Browse history:</span></td>
+                                    <td >
+                         				<input type="text" class="form-control" name="store_logo" value="{$config.store_logo}" >                                
+                                    </td>
+                                </tr>    
+                                 <tr>
+                                 <td><span class="chn">评论数量：</span><span class="eng">Review quantity:</span></td>
+                                 	<td>
+                      					<span class="chn"><input type="radio" class="" name="is_reg" value="0" >是</span>
+                      					<span class="eng"><input type="radio" class="" name="is_reg" value="0" >Yes</span>
+                      					<span class="chn"><input type="radio" class="" name="is_reg" value="1" >否</span>
+                      					<span class="eng"><input type="radio" class="" name="is_reg" value="1" >No</span>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                 <td><span class="chn">分页样式：</span><span class="eng">Page style:</span></td>
+                                 <td>
+                      					<span class="chn"><input type="radio" class="" name="page_style" value="0" >是</span>
+                      					<span class="eng"><input type="radio" class="" name="page_style" value="0" >Yes</span>
+                      					<span class="chn"><input type="radio" class="" name="page_style" value="1" >否</span>
+                      					<span class="eng"><input type="radio" class="" name="page_style" value="1" >No</span>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                 <td><span class="chn">文章标题长度：</span><span class="eng">Article title length:</span></td>
+                                 <td>
+                      					<input type="text" class="form-control" name="title_len" value="" >
+                                 </td>
+                                 </tr>
+                                 <tr>
+                                 <td><span class="chn">商品名称数量：</span><span class="eng">Goods name quantity:</span></td>
+                                 	<td>
+                      				<input type="text" class="form-control" name="version_info" value="" >
+                                  	</td>
+                                </tr>                                
+                                </tbody> 
+                                <tfoot>
+                                	<tr>
+                                	<td><input type="hidden" name="inc_type" value="{$inc_type}"></td>
+                                	<td class="text-right">
+										<input class="btn btn-primary chn" type="buuton" onclick="adsubmit()" value="保存">
+										<input class="btn btn-primary eng" type="buuton" onclick="adsubmit()" value="Submit">
+									</td>
+								  </tr>
+                                </tfoot>                               
+                                </table>
+                        </div>                           
+                    </div>              
+			    	</form><!--表单数据-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+function adsubmit(){
+	$('#handlepost').submit();
+}
+
+$(document).ready(function(){
+	get_province();
+});
+
+function goset(obj){
+	window.location.href = $(obj).attr('data-url');
+}
+</script>
+</body>
+</html>

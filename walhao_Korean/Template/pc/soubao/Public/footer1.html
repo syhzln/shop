@@ -1,0 +1,54 @@
+<div class="fn-cms-footer">
+  <div class="m-footer-g">
+    <div class="footer-map">
+      <ul class="fn-clear">
+        <li class="map"><i class="footer-icon z-icon"></i><strong class="tit">정품 저가</strong><br/>
+          <span class="desc">정품 상품 품질 보장</span>
+        </li>
+        <li class="line"></li>
+        <li class="map"><i class="footer-icon q-icon"></i><strong class="tit">품종 풍부</strong><br/>
+          <span class="desc">상품 다양히 선택 가능</span>
+        </li>
+        <li class="line"></li>
+        <li class="map"><i class="footer-icon k-icon"></i><strong class="tit">신속 배달</strong><br/>
+          <span class="desc">여러 창고에서 직배송</span>
+        </li>
+        <li class="line"></li>
+        <li class="map"><i class="footer-icon t-icon"></i><strong class="tit">A/S 제공</strong><br/>
+          <span class="desc">7일 안에 반품 가능</span>
+        </li>
+      </ul>
+    </div>
+    <div class="server-list">
+      <ul class="fn-clear">
+        <tpshop sql="select * from `__PREFIX__article_cat` where parent_id = 2" key="k" item='v'>
+          <li>
+            <dl class="list-item">
+                  <dt class="">{$v[cat_name]}</dt>
+                  <tpshop sql="select * from `__PREFIX__article` where cat_id = $v[cat_id]" key="k2" item='v2'>
+                  <if condition="$v2[is_open] eq 1">
+                  <dd><a target="_blank" href="{:U('Home/Article/detail',array('article_id'=>$v2[article_id]))}">{$v2[title]}</a></dd>
+                  </if>
+                  </tpshop>
+              </dl>
+          <li>
+        </tpshop>
+      </ul>
+    </div>
+    <div class="site-info">
+      <div class="foot-nav">
+        <tpshop sql="select * from `__PREFIX__article` where cat_id = 5 and is_open=1" key="k" item='v'>
+          <a href="{:U('Home/Article/detail',array('article_id'=>$v[article_id]))}" target="_blank">{$v[title]}</a>|
+        </tpshop>
+	  </div>
+      <div class="link">
+        <p>
+        Copyright © 2015-2018 {$tpshop_config['shop_info_store_name']}  All rights reserved.
+        </p>
+		<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255962454'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255962454%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/jquery.lazyload.js"></script>
+<script type="text/javascript" src="__STATIC__/js/common.js"></script>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title>문의하기 작성-{$tpshop_config['shop_info_store_title']}</title>  <!--新建工单-->
+    <meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+    <meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+</head>
+<body>
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<!-- 头部-e -->
+
+<div class="wrap">
+    <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">내 Walhao</a>&gt;<span class="color">문의하기 작성</span></div><!--新建工单-->
+    <!--菜单-->
+    <include file="User/menu" />
+    <!--菜单-->
+    <!--侧边导航栏结束-->
+    <div class="col_main">
+        <div class="main balance">
+            <!-- themes star -->
+            <div class="themes_title">
+                <h3>문의하기 작성</h3> <!--新建工单-->
+            </div>
+            <!-- themes end -->
+            <div class="ui_tab">
+                <div>
+                    <!-- Details List star -->
+                    <div>
+                        <div class="write-message" >
+                            <div>
+                                <p>
+                                    <span>문의 채널：</span><br/> <!--工单类型：-->
+                                    <select name="" id="message_type">
+                                        <option value="0">문의 채널 선택하세요</option> <!--请选择工单问题类型-->
+                                        <option value="1">커미션 문제</option> <!--佣金问题-->
+                                        <option value="2">수취인 주소 변경</option> <!--更改收货信息-->
+                                        <option value="3">배송 문제</option> <!--催货/物流问题-->
+                                        <option value="4">결제 문제</option> <!--支付问题-->
+                                        <option value="5">기타 문제</option> <!--其他问题-->
+                                    </select>
+                                </p>
+                                <p>
+                                    <span>문의 제목：</span><br/> <!--工单标题-->
+                                    <input id="mtitle" type="text" placeholder="예: 비밀번호 어떻게 찾으십니까?"/> <!--标题示例：如何找回密码？-->
+                                </p>
+                                <p>
+                                    <span>문의 내용：</span><br/> <!--工单问题描述-->
+                                    <textarea name="" id="text" cols="64" rows="7" placeholder="여기서 문제에 관련 자세히 기술해 주세요"></textarea> <!--请在这里补充问题的详细信息，这样有助于我们更好更准确的帮您解答问题。-->
+                                </p>
+                                <p class="submit">
+
+                                    <button onclick="sub_message()">확인 제출</button> <!--提交-->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="operating fixed">
+                            <div class="fn_page clearfix">
+                                {$show}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Details List end -->
+                    <!-- page next star -->
+
+                    <div class="operating fixed" id="bottom">
+                        <div class="fn_page clearfix">
+                            {$page}
+                        </div>
+                    </div>
+                    <!-- page next end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="clear: both;"></div>
+<include file="User/footer" />
+</body>
+<script>
+    var id="{$user['wh_id']}";
+    
+    var nickname="{$user['nickname']}";
+
+    var checkSubmit = false;
+    function sub_message(){
+
+        if(checkSubmit == true){
+            return false; //当表单被提交过一次后checkSubmitFlg将变为true,根据判断将无法进行提交。
+        }
+        checkSubmit = true;
+        var text=$("#text").val();
+        var mtitle=$("#mtitle").val();
+        if(!$.trim(text)==""){
+            $.post("/index.php/home/User/leave_message",{'text':text,'wh181ID':id,'nickname':nickname,'mtitle':mtitle},function(data){
+//                $("#ospan").html(text)+"<br/>";
+                if(data=1){
+                    alert("등록 성공"); // “添加成功”
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>
+</html>

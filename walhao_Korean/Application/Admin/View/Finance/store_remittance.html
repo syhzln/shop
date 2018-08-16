@@ -1,0 +1,146 @@
+<include file="Public/min-header"/>
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title chn"><i class="fa fa-list"></i>汇款记录</h3>
+          <h3 class="panel-title eng"><i class="fa fa-list"></i>Remittance record</h3>
+        </div>
+        <div class="panel-body">    
+		<div class="navbar navbar-default">                    
+                <form id="search-form2" class="navbar-form form-inline"  method="get" action="{:U('store_remittance')}">
+                <div class="form-group">                
+                  <label for="input-order-id" class="control-label chn">店铺ID：</label>
+                  <label for="input-order-id" class="control-label eng">Store ID:</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="user_id" placeholder="Store id" value="{$Think.request.store_id}" name="store_id" />
+                  </div>
+                  
+                  <label for="input-order-id" class="control-label chn">收款账号：</label>                
+                  <label for="input-order-id" class="control-label eng">Account receivable:</label>                
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="input-order-id" placeholder="Account receivable" value="{$Think.request.account_bank}" name="account_bank" />                    
+                  </div>
+                  <label for="input-order-id" class="control-label chn">收款账户名：</label>                
+                  <label for="input-order-id" class="control-label eng">Account name:</label>                
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="input-order-id" placeholder="Account name" value="{$Think.request.account_name}" name="account_name" />                    
+                  </div>
+                  
+                   <div class="input-group margin">
+					<div class="input-group-addon chn">
+                        时间<i class="fa fa-calendar"></i>
+                    </div>
+                    <div class="input-group-addon eng">
+                        Date<i class="fa fa-calendar"></i>
+                    </div>
+                       <input type="text" id="start_time" value="{$create_time}" name="create_time" class="form-control pull-right" style="width: 200px">
+                  </div>                  
+                </div>
+                <div class="form-group">    
+                    <button class="btn btn-primary" id="button-filter search-order" type="submit"><i class="fa fa-search"></i><span class="chn>筛选</span><span class="eng">Screen</span></button>    
+                </div>                                 
+                </form>    
+          </div>                        
+          <div id="ajax_return">                  
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="sorting text-left chn">记录ID</th>
+                                <th class="sorting text-left eng">Record ID</th>
+                                <th class="sorting text-left chn">店铺ID</th>
+                                <th class="sorting text-left eng">Store ID</th>
+                                <th class="sorting text-left chn">店铺名称</th>
+                                <th class="sorting text-left eng">Store name</th>
+                                <th class="sorting text-left chn">银行名称</th>
+                                <th class="sorting text-left eng">Bank name</th>
+                                <th class="sorting text-left chn">银行账号</th>
+                                <th class="sorting text-left eng">Bank number</th>
+                                <th class="sorting text-left chn">银行账户</th>
+                                <th class="sorting text-left eng">Bank account</th>
+                                <th class="sorting text-left chn">申请金额</th>
+                                <th class="sorting text-left eng">Application amount</th>
+                                <th class="sorting text-left chn">状态</th>
+                                <th class="sorting text-left eng">State</th>
+                                <th class="sorting text-left chn">操作时间</th>
+                                <th class="sorting text-left eng">Operating date</th>
+                                <th class="sorting text-left chn">备注</th>
+                                <th class="sorting text-left eng">Remarks</th>
+                                <!--<th class="sorting text-left">申请提现记录</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="v">
+                                <tr>
+                                    <td class="text-left">
+                                        <a href="{:U('editStoreWithdrawals',array('id'=>$v[withdrawals_id]))}">{$v.id}</a>                                        
+                                    </td>
+                                    <td class="text-left">
+                                        {$v.store_id}
+                                    </td>
+                                    <td class="text-left">
+										<a href="{:U('Store/store_info',array('store_id'=>$v[store_id]))}">{$v.store_name}</a>
+                                    </td>
+                                    <td class="text-left">{$v.bank_name}</td>
+                                    <td class="text-left">{$v.account_bank}</td>
+                                    <td class="text-left">{$v.account_name}</td>
+                                    <td class="text-left">{$v.money}</td>
+                                    <td class="text-left">
+                                        <if condition="$v[status] eq 1"><span class="chn">已转账</span><span class="eng">Transferred account</span></if>   
+                                           
+                                        <if condition="$v[status] eq 0"><span class="chn">未转账</span><span class="eng">Not yet transferred</span></if>  
+                                    </td>                                    
+                                    <td class="text-left">{$v.create_time|date="Y-m-d H:i",###}</td>                                    
+                                    <td class="text-left">{$v.remark}</td>
+                                    <!--<td class="text-left"><a href="{:U('Admin/Distribut/editWithdrawals',array('id'=>$v[withdrawals_id]))}">查看</a></td>-->
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                
+                <div class="row">
+                    <div class="col-sm-6 text-left"></div>
+                    <div class="col-sm-6 text-right">{$show}</div>
+                </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row --> 
+  </section>
+  <!-- /.content --> 
+</div>
+<!-- /.content-wrapper --> 
+ <script>
+ 
+$(document).ready(function() {
+	$('#start_time').daterangepicker({
+		format:"YYYY-MM-DD",
+		singleDatePicker: false,
+		showDropdowns: true,
+		minDate:'2016-01-01',
+		maxDate:'2030-01-01',
+		startDate:'2016-01-01',
+	    locale : {
+            applyLabel : 'Confirm',
+            cancelLabel : 'cancel',
+            fromLabel : 'Start date',
+            toLabel : 'End date',
+            customRangeLabel : 'Custom',
+            daysOfWeek : [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
+            monthNames : [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+            firstDay : 1
+        }
+	});
+});
+</script>
+</body>
+</html>

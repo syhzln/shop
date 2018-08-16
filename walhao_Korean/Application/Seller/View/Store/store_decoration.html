@@ -1,0 +1,86 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content" style="padding:0px 15px;">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">           
+                <div class="panel-body ">   
+                   	<ul class="nav nav-tabs">
+						<li class="active"><a href="javascript:void(0)"  data-toggle="tab">가게 장식</a></li>
+					</ul>
+                    <!--表单数据-->
+                    <form method="post" id="handlepost" action="">                    
+                        <!--通用信息-->
+                    <div class="tab-content" style="padding:20px 0px;">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">                           
+                            <table class="table table-bordered">
+                                <tbody> 
+                                <tr><td>가게 장식 사용：</td>
+                                	<td><input type="radio" name="store_decoration_switch" value="{$decoration.decoration_id}" <if condition="$store.store_decoration_switch gt 0">checked</if>>是<i>&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                		<input type="radio" name="store_decoration_switch" value="0" <if condition="$store.store_decoration_switch eq 0">checked</if>>否
+                                	<br/><br/>
+                                	<p class="text-warning">"예"를 선택하면 상점 피팅 템플릿에 설정된 내용에 따라 상점의 홈페이지 배경, 머리, 네비게이션 및 위쪽 영역이 표시됩니다. "상점 테마"에 따라 "아니오" 표시 할 시스템 기본 스타일.</p>
+                                	</td>
+                                </tr>
+                                <tr><td>장식 내용 만 표시：</td>
+                                	<td><input type="radio" name="store_decoration_only" value="1" <if condition="$store.store_decoration_only eq 1">checked</if>>是<i>&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                		<input type="radio" name="store_decoration_only" value="0" <if condition="$store.store_decoration_only eq 0">checked</if>>否
+                                	<br/><br/>
+                                	<p class="text-warning">이 설정에서 "예"를 선택하면 상점의 홈 페이지에서만 상점 피팅에서 설정된 내용이 표시되고, "아니오"이면 표준 기본 스타일 템플리트, 즉 왼쪽 상점의 탐색에 의해 페이지 내용이 계속 표시됩니다. 광고, 최신 제품, 권장 제품 및 기타 관련 상점 정보를 로테이션하십시오.</p>
+                                	</td>
+
+                                </tr>
+                                <tr>
+                                    <td>가게 장식：</td>
+                                    <td><a href="{:U('Decoration/decoration_edit',array('decoration_id'=>$decoration[decoration_id]))}" target="_blank" class="btn btn-info">装修页面</a><i>&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                    	<a href="{:U('Home/Store/decoration_preview',array('decoration_id'=>$decoration[decoration_id],'store_id'=>$store[store_id]))}" target="_blank" class="btn btn-warning">预览页面</a>
+                                    	<br/><br/>
+                                    	<p class="text-warning">
+                                            "리노베이션 페이지"버튼을 클릭하면 새 창에 상점의 홈페이지가 장식됩니다. 미리보기가 완료되면 "페이지 생성"버튼을 클릭하여 미리보기를 "상점 혁신"스타일 템플릿으로 저장하십시오.</p>
+                                    </td>
+                                </tr>   
+            
+                                </tbody> 
+                                <tfoot>
+                                	<tr>
+                                	<td></td>
+                                	<td class="text-center">
+                                		<input class="btn btn-success" type="button" onclick="adsubmit()" value="保存">
+                                	</td>
+                                	</tr>
+                                </tfoot>                               
+                                </table>
+                        </div>                           
+                    </div>              
+			    	</form><!--表单数据-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+function adsubmit(){
+	$('#handlepost').submit();
+}
+
+function goset(obj){
+	window.location.href = $(obj).attr('data-url');
+}
+
+function callback1(img_str){
+	$('input[name="store_logo"]').val(img_str);
+	$('#store_logo').attr('src',img_str);
+}
+
+function callback2(img_str){
+	$('input[name="store_banner"]').val(img_str);
+	$('#store_banner').attr('src',img_str);
+}
+</script>
+</body>
+</html>

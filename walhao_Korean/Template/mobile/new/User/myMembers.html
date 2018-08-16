@@ -1,0 +1,70 @@
+<include file="Public/header"/>
+<body>
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)"></a></div>
+            <div class="h-mid">나의 팀</div>  <!--我的团队-->
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<include file="Public/menu"/>
+
+<div class="myMember">
+    <div class="tuijian">我的推荐人ID：<span>{$recommond}</span></div>
+    <div class="maleri30">
+        <ul class="re_tit">
+            <li class="li5"><span>회원 ID</span></li>  <!--id-->
+            <li class="li3"><span>핸드폰 번호</span></li>  <!--手机号-->
+            <li class="li5"><span>가입 시간</span></li>  <!--加入时间-->
+            <li class="li2"><span>회원 직명</span></li>  <!--会员职称-->
+        </ul>
+        <div class="tuijianList">
+            <if condition="count($list) eq 0">
+                <!--没有内容时-s--->
+                <ul>
+                    <li style="width:100%;">
+                        <div class="comment_con p">
+                            <div class="none">
+                                <img src="__STATIC__/images/none2.png">
+                                <br><br>
+                                죄송합니다. 조회 결과가 없습니다.   <!--抱歉未查到数据！-->
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <!--没有内容时-e--->
+            </if>
+            <ul>
+                <volist name="list" id="lists">
+                    <li><span>{$lists.user_id}</span> <!--被推荐人ID--></li>
+                    <li><span>{$lists.mobile|default='暂无'}</span> <!--被推荐人手机号--></li>
+                    <li><span>{$lists.add_time|date='Y-m-d',###}</span></li>
+                    <li><span>LZ{$lists.user_title}</span></li>
+                </volist>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on("touchmove",function(){
+        $('.tuijian').css('display','none');
+    });
+
+    $('.m_detail').click(function(){
+        $('.m_detail').css('display','none');
+    })
+    $(".m_detail_box").click(function(event){
+        event.stopPropagation();
+
+    });
+</script>
+
+</body>
+</html>

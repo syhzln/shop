@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <include file="User/min-header" />
+    <head>
+        <meta charset="UTF-8">
+        <title>배당금 계좌 이체-{$walhao_config['shop_info_store_title']}</title>
+        <link href="__STATIC__/css/common.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="__STATIC__/css/theme.css" />
+        <script src="__PUBLIC__/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+        <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    </head>
+    <body class="bg-f5">
+    
+            <div class="wrap" style="margin-top:40px;">
+                <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">내 쇼핑몰</a>&gt;<span class="color">배당금 계좌 이체</span></div>
+                <div class="home-main">
+                    <include file="User/menu"/>
+                    <div class="col_main">
+                        <div class="container-fluid" id="UserCenterMaxContainer">
+                            <div class="row-fluid">
+                                <div class="main">
+
+                        <script>
+                            $(function(){
+                                var login_wohao_url = "";
+                                if (login_wohao_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_wohao_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+                        <script>
+                            $(function(){
+                                var login_bbs_url = "";
+                                if (login_bbs_url.length >0) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: login_bbs_url,
+                                        xhrFields: {
+                                            withCredentials: true
+                                        },
+                                        crossDomain: true,
+                                        dataType: "jsonp",
+                                        jsonp:"jsoncallback",
+                                        success: function (res) {
+
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+
+                        <!-- <script src="https://1390393872.tps138.com/ucenter_theme/lib/My97DatePicker/WdatePicker.js?v=1"></script> -->
+                        <div class="search-well">
+                            <form class="form-inline" method="GET">
+                                <input class="Wdate span2 time_input" type="text" name="start" value="" placeholder="날짜를클릭하여선택하십시오">
+                                
+                                <button class="btn" type="submit"><i class="icon-search"></i> 검 색</button>
+                            </form>
+                        </div>
+
+                        <div class="well">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>시간</th>
+                                        <th>배당금</th>
+                                        <th>금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th colspan="6" style="text-align: center;" class="text-success">일치하는 레코드가 없습니다.</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+
+                        <div id="confirm_sponsor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-body" id="confirm_message" style="text-align: center;">
+                            </div>
+                            <div class="modal-footer">
+                                <button autocomplete="off" style="float:left;margin-left: 20%;" class="btn btn-primary" id="confirm_ok">확인</button>
+                                <button autocomplete="off" style="float:right;margin-right: 20%;" class="btn btn-primary" id="confirm_cancel">취소</button>
+                            </div>
+                        </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--footer-s-->
+        <include file="Public/footer1" />
+        <!--footer-e-->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.time_input').daterangepicker({
+                    format:"YYYY/MM/DD",
+                    singleDatePicker: false,
+                    showDropdowns: true,
+                    minDate:'2016/01/01',
+                    maxDate:'2030/01/01',
+                    startDate:'2016/01/01',
+                    locale : {
+                        applyLabel : '확인',
+                        cancelLabel : '취소',
+                        fromLabel : '시작 시간',
+                        toLabel : '종료 시간',
+                        customRangeLabel : '맞춤',
+                        daysOfWeek : [ '일', '월', '화', '수', '목', '금', '토' ],
+                        monthNames : [ '일월', '이월', '삼월', '사월', '오월', '유월','칠월', '팔월', '구월', '시월', '십일월', '십이월' ],
+                        firstDay : 1
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,94 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title chn"><i class="fa fa-list"></i> 阿里大鱼短信配置模板</h3>
+          <h3 class="panel-title eng"><i class="fa fa-list"></i> Ali big fish SMS configuration templates</h3>
+        </div>
+        <div class="panel-body">    
+		<div class="navbar navbar-default">                    
+               	<div class="form-group">     
+	                <button type="button" class="btn btn-primary pull-right"  onclick="location.href='{:U('Admin/SmsTemplate/addEditSmsTemplate')}'">
+	                 	<i class="fa fa-plus"></i> 
+						<span class="chn">添加模板</span>
+						<span class="eng">Add template</span>
+	                </button>    
+               </div>                     
+          </div>
+                        
+          <div id="ajax_return"> 
+                 
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="sorting text-left">ID</th>
+                                <th class="sorting text-left"><span class="chn">应用场景</span><span class="eng">Application scenarios</span></th>
+                                <th class="sorting text-left"><span class="chn">短信签名</span><span class="eng">SMS signature</span></th>
+                                <th class="sorting text-left"><span class="chn">短信模板</span><span class="eng">SMS template</span></th>
+                                <th class="sorting text-left"><span class="chn">发送短信的内容</span><span class="eng">SMS content</span></th>
+                                <th class="sorting text-left"><span class="chn">修改时间</span><span class="eng">Modification time</span></th>
+                                <th class="sorting text-left"><span class="chn">操作</span><span class="eng">Edit</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="smsTplList" id="list">
+                                <tr>
+                                    <td class="text-right">{$list.tpl_id}</td>
+                                    <td class="text-left"> {$send_scene[$list['send_scene']][0]}</td>
+                                    <td class="text-left">{$list.sms_sign}</td>
+                                    <td class="text-left">{$list.sms_tpl_code}</td>
+                                    <td class="text-left">{$list.tpl_content}</td>
+                                    <td class="text-left">{$list.add_time|date='Y-m-d H:i:s',###}</td>
+                                    <td class="text-left">
+                                        <a href="{:U('Admin/SmsTemplate/addEditSmsTemplate', array('tpl_id' => $list['tpl_id']))}" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="编辑"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0);" onclick="del('{$list[tpl_id]}')" id="button-delete6" data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="删除"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+           </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row --> 
+  </section>
+  <!-- /.content --> 
+</div>
+<!-- /.content-wrapper --> 
+ <script>
+ // 删除操作
+function del(id)
+{
+	 
+	//询问框
+	layer.confirm('确定要删除吗？', {
+	 	 btn: ['确定','取消'] //按钮
+	}, function(){
+		$.ajax({										  
+			url:"/index.php?m=Admin&c=SmsTemplate&a=delTemplate&id="+id,
+			success: function(v){	
+				var v =  eval('('+v+')');                                 
+                if(v.hasOwnProperty('status') && (v.status == 1)){
+                	 location.href='{:U('Admin/smsTemplate/index')}';
+                }else{                                
+					layer.msg(v.msg, {icon: 2,time: 1000}); //alert(v.msg);
+                }       
+			}
+		}); 
+	}, function(){
+	  
+	});
+	 
+}
+ 
+ 
+
+ </script>
+</body>
+</html>

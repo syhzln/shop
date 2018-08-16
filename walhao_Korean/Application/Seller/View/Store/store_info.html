@@ -1,0 +1,196 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+    <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+      	<div class="box">
+           <nav class="navbar navbar-default">	     
+			<div class="collapse navbar-collapse">
+                <div class="navbar-form  margin">
+                      <a href="{:U('Store/bind_class_list')}" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="编辑">비즈니스 분류</a>
+                      <a href="{:U('Store/store_info')}" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="编辑">매장 정보</a>
+               </div>
+            </div>
+           </nav>
+   
+        <!--新订单列表 基本信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">회사 및 연락처 정보</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td>회사 명</td>
+                        <td>{$apply.company_name}</td>
+                        <td>회사의 본질:</td>
+                         <td></td>
+                        <td>회사 웹 사이트:</td>
+                         <td>{$apply.company_website}</td>
+                    </tr>
+                    <tr><td>회사 위치:</td>
+                    	<td></td>
+                        <td>회사 주소:</td>
+                        <td>{$apply.company_address}</td>
+                        <td>고정 전화</td><td>{$apply.company_telephone}</td>
+                    </tr>
+                    <tr><td>우편 번호:</td><td>{$apply.company_zipcode}</td>
+                        <td>이메일:</td><td>{$apply.company_email}</td>
+                        <td>팩스:</td><td>{$apply.company_fax}</td>
+                    </tr>
+                    <tr>
+                        <td>담당자 이름:</td><td>{$apply.contacts_name}</td>
+                        <td>전화 문의:</td><td>{$apply.contacts_mobile}</td>
+                        <td>담당자 이메일:</td><td>{$apply.contacts_email}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--新订单列表 收货人信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">영업 허가 정보 (사본)</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+					<td>영업 허가 번호:</td><td>{$apply.business_licence_number}</td>
+                                        <td>사업 면허가 유효합니다:</td><td>{$apply.business_date_start}&nbsp;&nbsp;{$apply.business_date_end}</td>
+					<td>법정 사업 범위:</td><td>{$apply.business_scope}</td>
+                    </tr>
+                    <tr>
+   					<td>등록 자본:</td><td>{$apply.reg_capital}</td>
+					<td>조직 코드:</td><td>{$apply.orgnization_code}</td>
+			 		<td>일반 납세자 증명:</td><td>{$apply.reg_capital}</td>
+                    </tr>
+                    <tr>
+   					<td>법정 대리인 이름:</td><td>{$apply.legal_person}</td>
+					<td>세금 유형 코드:</td><td>{$apply.tax_rate}</td>
+			 		<td>과세 등록 번호:</td><td>{$apply.attached_tax_number}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--新订单列表 商品信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">정산 계정 정보 </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="text-left">은행 계좌 이름</td>
+                        <td class="text-left">회사 은행 계좌：</td>
+                        <td class="text-right">은행 지점의 은행 이름：</td>
+                        <td class="text-right">지회 은행：</td>
+                        <td class="text-right">은행 계좌 위치：</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left">{$apply.bank_account_name}</td>
+                            <td class="text-left">{$apply.bank_account_number}</td>
+                            <td class="text-right">{$apply.bank_branch_name}</td>
+                            <td class="text-right">{$apply.bank_province}</td>
+                            <td class="text-right">{$apply.bank_city}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--新订单列表 费用信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">숍 관리 정보</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="text-right">판매자 계정:</td><td>{$apply.seller_name}</td>
+                        <td class="text-right">가게 이름:</td><td>{$apply.store_name}</td>
+                        <td class="text-right">가게 수준:</td><td></td>
+                        </tr>  
+         				<tr>
+                        <td class="text-right">상점 주인:</td><td>{$apply.store_person_name}</td>
+                         <td class="text-right">담당자 전화 번호:</td><td>{$apply.store_person_mobile}</td>
+                         <td class="text-right">수석 QQ 번호:</td><td>{$apply.store_person_qq}</td>
+                        </tr>
+                        <tr>
+                        <td class="text-right">상점 분류:</td><td>{$apply.sc_name}</td>
+                        <td class="text-right">책임자 사서함:</td><td>{$apply.store_person_email}</td>
+                        <td class="text-right">의견 검토:</td><td></td>
+                  		</tr>
+                  		<tr>
+                        <td class="text-right">비즈니스 분류:</td>
+                        <td colspan="5">
+	                        <table class="table table-bordered">
+					               <thead>
+				                    <tr>
+				                        <th>카테고리 1</th>
+				                        <th>카테고리 2</th>
+				                        <th>카테고리 3</th>
+				                        <th>비율</th>
+				                    </tr>
+					               </thead>
+				                   <tbody>
+				                   <foreach name="bind_class_list" item="vo">
+				                   	<tr>
+				                        <td>{$vo.class_1_name}</td>
+				                        <td>{$vo.class_2_name}</td>
+				                        <td>{$vo.class_3_name}</td>
+				                        <td>{$vo.commis_rate}%</td>
+				                    </tr>
+				                    </foreach>
+				                   </tbody>
+				        	</table>
+                        </td>
+         				</tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">문서 정보</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="text-left">영업 허가증 사본：</td>
+                        <td class="text-left">과세 증명서 사본：</td>
+                        <td class="text-right">조직 코드 인증서 사본：</td>
+                        <td class="text-right">기업 신분증：</td>
+                        <td class="text-right">상점 주인 신분증：</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left"><a href="{$apply.business_licence_cert}" target="_blank"><img src="{$apply.business_licence_cert}" height="60"></a></td>
+                            <td class="text-left"><a href="{$apply.taxpayer_cert}" target="_blank"><img src="{$apply.taxpayer_cert}" height="60"></a></td>
+                            <td class="text-right"><a href="{$apply.orgnization_cert}" target="_blank"><img src="{$apply.orgnization_cert}" height="60"></a></td>
+                            <td class="text-right"><a href="{$apply.legal_identity_cert}" target="_blank"><img src="{$apply.legal_identity_cert}" height="60"></a></td>
+                            <td class="text-right"><a href="{$apply.store_person_cert}" target="_blank"><img src="{$apply.store_person_cert}" height="60"></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+       </div>
+	  </div>
+    </div> 
+   </section>
+</div>
+</body>
+<script>
+</script>
+</html>

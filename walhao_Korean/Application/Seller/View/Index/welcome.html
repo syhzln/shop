@@ -1,0 +1,255 @@
+<include file="Public/min-header" />
+<div class="wrapper">
+     <include file="Public/breadcrumb"/>
+     <section class="content">
+		<div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-bell"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">처리 대기 중</span>
+                  <span class="info-box-number">{$count.handle_order}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">제품 수</span>
+                  <span class="info-box-number">{$count.goods_sum}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12" style="display:none">
+              <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">상품 재고</span>
+                  <span class="info-box-number">{$count.warning_storage}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-cny"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">오늘의 총 판매액</span>
+                  <span class="info-box-number"><if condition="$count['total_amount'] gt 0">{$count.total_amount}<else/>0</if></span>
+                </div>
+              </div>
+            </div>
+         </div>
+          <div class="row">
+          	     <div class="col-md-12">
+			       	 <div class="box  box-primary">
+                        <div class="box-body">
+                            <div class="info-box">                 
+           						<div class="row">
+           							<div class="col-md-3">
+           								<div><img alt="" height="80" src="<empty name='store.store_logo'>__PUBLIC__/images/not_adv.jpg<else/>{$store.store_logo}</empty>">
+           									<br/>
+           									<a href="{:U('Store/store_setting')}"><i></i>상점 설정 수정</a>
+           								</div>
+           							</div>
+           							<div class="col-md-3">
+           								<p><b>{$seller.seller_name}</b>(사용자 이름:{$seller.user_name})</p>
+           								<p>관리 권한：관리자</p>
+           								<p>가게 이름：<a href="{:U('Home/Store/index',array('store_id'=>$store[store_id]))}" target="_blank">{$store.store_name}</a></p>
+           							</div>
+           							<div class="col-md-3">
+           							    <p>마지막 로그인：{$seller.last_login_time|date='Y-m-d H:i',###}</p>
+           								<p>가게 수준：기본 수준</p>
+           								<p>기간 제한：<if condition="$store[store_state] eq 0">폐장<else/>제한 없음</if></p>
+           							</div>
+           						</div>
+                            </div>
+                        </div>
+                    </div>
+			    </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4">
+              <div class="box box-solid">
+                <div class="box-header with-border  bg-aqua">
+                  <i class="fa fa-text-width"></i>
+                  <h3 class="box-title">처리 대기 중</h3>
+                </div>
+                <div class="box-body">
+	                  <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="{:U('Goods/goodsList',array('goods_state'=>0))}">검토 대기 중</a></h4>
+			                   <a href="javascript:;">{$count.verify_goods}个</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">대기중인 커미션</a></h4>
+			                   <a href="javascript:;">0个</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+	                  <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="{:U('Comment/ask_list')}">상담에 회신하려면</a></h4>
+			                   <a href="javascript:;">{$count.consult}个</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="{:U('Comment/index')}">새로운 리뷰</a></h4>
+			                   <a href="javascript:;">{$count.comment}个</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+                </div>
+              </div>
+            </div>            
+            <div class="col-md-4">
+              <div class="box box-solid">
+                <div class="box-header with-border  bg-aqua">
+                  <i class="fa fa-text-width"></i>
+                  <h3 class="box-title">상품{$count.goods_sum}조각들</h3>
+                </div>
+                <div class="box-body">
+	                  <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="{:U('Goods/goodsList',array('goods_state'=>1))}">상품 승인</a></h4>
+			                   <a href="javascript:;">{$count.pass_goods}하나</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">재고 경고 상품 수</a></h4>
+			                   <a href="javascript:;">{$count.warning_goods}하나</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+	                  <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">신제품 추천</a></h4>
+			                   <a href="javascript:;">{$count.new_goods}하나</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">판촉 상품의 수</a></h4>
+			                   <a href="javascript:;">{$count.prom_goods}하나</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+	                 <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">선반 아래 물품 수</a></h4>
+			                   <a href="javascript:;">{$count.off_sale_goods}하나</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="{:U('Goods/goodsList',array('goods_state'=>2))}">항목 수는 감사를 통과하지 못한</a></h4>
+			                   <a href="javascript:;">{$count.below_goods}하나</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+                </div>
+              </div>
+            </div>           
+            <div class="col-md-4">
+              <div class="box box-solid">
+                <div class="box-header with-border  bg-aqua">
+                  <i class="fa fa-text-width"></i>
+                  <h3 class="box-title">주문 용지{$count.order_sum}펜</h3>
+                </div>
+                <div class="box-body">
+	                  <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">배송 명령</a></h4>
+			                  <a href="javascript:;">{$count.wait_shipping}하나</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">지불 주문을 기다리는 중</a></h4>
+			                  <a href="javascript:;">{$count.wait_pay}하나</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+	                  <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">주문 확인을 기다리는 중입니다</a></h4>
+			                  <a href="javascript:;">{$count.wait_confirm}하나</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">환불 신청</a></h4>
+			                   <a href="javascript:;">{$count.refund_pay}하나</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+	                  <div class="row" style="margin-top:20px;">
+	                    <div class="col-xs-6">
+			              <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">부분 납품 주문</a></h4>
+			                  <a href="javascript:;">{$count.part_shipping}하나</a>
+			                </div>
+			              </div>
+	                    </div>
+	                    <div class="col-xs-6">                   
+			               <div class="small-box">
+			                <div class="inner text-center">
+			                  <h4><a href="#">반품 됨</a></h4>
+			                   <a href="javascript:;">{$count.refund_goods}하나</a>
+			                </div>
+			              </div>
+	              		</div>
+	                  </div>
+                </div>
+              </div>
+            </div>
+            
+         </div>
+          <div class="callout callout-inro">
+            <p> <b>WALHAO</b>판권 소유© 2015-2016 Hangzhou Wo good e-commerce Co., Ltd. </p>
+          </div>
+     </section>
+ </div>
+ </body>
+ </html>

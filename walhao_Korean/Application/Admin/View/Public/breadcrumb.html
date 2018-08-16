@@ -1,0 +1,42 @@
+<div class="breadcrumbs" id="breadcrumbs">
+	<ol class="breadcrumb">
+	<foreach name="navigate_admin" key="k" item="v">
+	    <if condition="$k eq '后台首页'">  
+	        <li><a href="{$v}"><i class="fa fa-home"></i>&nbsp;&nbsp;{$k}</a></li>
+	    <else/>    
+	        <li><a href="{$v}">{$k}</a></li>
+	    </if>                  
+	</foreach>      
+			
+	</ol>
+</div>
+<script>
+	/*/var turnEnglish=$("#turnEnglish");
+	//var turnChinese=$("#turnChinese");
+	var eng=$(".eng");
+	var chn=$(".chn");
+	console.log(eng);
+		
+	$(function() {
+		english = $(window.parent.document).find(".english");
+		chinese = $(window.parent.document).find(".chinese");
+	})
+		function turnChinese(){
+				for(var i=0;i<english.length;i++){
+					english[i].style.display="inline-block";
+					chinese[i].style.display="none";
+					eng[i].style.display="inline-block";
+					chn[i].style.display="none";
+				}
+			}
+		function turnEnglish(){
+			for(var j=0;j<english.length;j++){
+				english[j].style.display="none";
+				chinese[j].style.display="inline-block";
+				eng[j].style.display="none";
+				chn[j].style.display="inline-block";
+				console.log(chinese[j]);
+				console.log(chn[j]);
+			}
+		}*/
+</script>

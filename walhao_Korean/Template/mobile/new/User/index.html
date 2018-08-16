@@ -1,0 +1,47 @@
+<include file="Public/header"/>
+<body>      
+<div id="tbh5v0">
+<div class="user_com">
+
+<include file="Public/uer_topnav"/>
+
+<!--<div class="Wallet">
+	<ul>
+	<li class="bain1"><strong>￥{$user['user_money']}元</strong><span>余额</span></li>
+	<li class="bain1"><strong>{$coupon_count}</strong><span>优惠券</span></li>
+	<li><strong>{$user['pay_points']}</strong><span>积分</span></li>
+	</ul>
+	<a href="{:U('Mobile/User/account')}"><em class="Icon Icon1"></em><dl><dt>我的钱包</dt><dd style="color:#aaaaaa;">查看我的钱包</dd></dl></a>
+</div>-->
+
+
+<div class="Wallet">
+	<a href="{:U('Mobile/User/order_list')}" ><em class="Icon Icon2"></em><dl class="b"><dt>전체 주문</dt><dd>주문 조회</dd></dl></a> <!--全部订单 查看订单-->
+	<!--<a href="{:U('Mobile/User/coupon')}"><em class="Icon Icon3"></em><dl class="b"><dt>我的优惠券</dt><dd>&nbsp;</dd></dl></a>
+	<a href="{:U('Mobile/User/comment')}"><em class="Icon Icon4"></em><dl class="b"><dt>我的评价</dt><dd>查看评价</dd></dl></a>-->
+	<a href="{:U('Mobile/User/collect_list')}"><em class="Icon Icon10"></em><dl><dt class="b">나의 즐겨찾기</dt><dd>&nbsp;</dd></dl></a>
+	<!--<a href="{:U('Mobile/User/withdrawals')}"><em class="Icon Icon1"></em><dl><dt class="b">申请提现</dt><dd>&nbsp;</dd></dl></a>-->
+</div>
+<div class="Wallet">
+	<a href="{:U('User/address_list')}"><em class="Icon Icon5"></em><dl class="b"><dt>주소록 관리</dt><dd>&nbsp;</dd></dl></a> <!--地址管理-->
+	<!--<a href="{:U('User/points')}"><em class="Icon Icon6"></em><dl class="b"><dt>我的积分</dt><dd>&nbsp;</dd></dl></a>
+	<a href="{:U('User/message_list')}"><em class="Icon Icon7"></em><dl class="b"><dt>我的留言</dt><dd>&nbsp;</dd></dl></a>-->
+	<a href="{:U('User/return_goods_list')}"><em class="Icon Icon4"></em><dl><dt>A/S</dt><dd>&nbsp;</dd></dl></a>
+
+	<a href="{:U('User/commission_report')}"><em class="Icon Icon1"></em><dl><dt>보너스 보고서</dt><dd>&nbsp;</dd></dl></a>  <!--奖金报表-->
+
+	<a href="{:U('User/account')}"><em class="Icon Icon12"></em><dl><dt>계정 센터</dt><dd>&nbsp;</dd></dl></a>   <!--账户中心-->
+	<a href="{:U('User/myMembers')}"><em class="Icon Icon6"></em><dl><dt>나의 팀</dt><dd>&nbsp;</dd></dl></a>   <!--我的团队-->
+	<a href="{:U('Goods/specialList')}"><em class="Icon Icon11"></em><dl><dt>상품 업그레이드</dt><dd>&nbsp;</dd></dl></a>   <!--升级专区商品-->
+	<!--<a href="{:U('Distribut/index')}"><em class="Icon Icon1"></em><dl><dt>我发展收益</dt><dd>&nbsp;</dd></dl></a>-->
+
+</div>
+<div class="Wallet">
+	<a href="{:U('User/logout')}"><em class="Icon Icon8"></em><dl><dt>로그아웃</dt></dl></a>
+</div>
+</div>
+<include file="Public/footer"/>
+</div>
+<include file="Public/footer_nav"/>
+</body>
+</html>

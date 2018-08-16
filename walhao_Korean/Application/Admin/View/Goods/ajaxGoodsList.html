@@ -1,0 +1,149 @@
+<form method="post" enctype="multipart/form-data" target="_blank" id="goods_list_form">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td style="width: 1px;" class="text-center">                
+                    
+                </td>                
+                <!-- <td class="text-right">
+                    <a href="javascript:sort('goods_id');">ID</a>
+                </td> -->
+                <td class="text-left">
+                    <a href="javascript:sort('goods_name');"><span class="chn">商品名称</span><span class="eng">Goods name</span></a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('goods_sn');"><span class="chn">店铺名</span><span class="eng">Store name</span></a>
+                </td>
+                <!-- <td class="text-left">
+                    <a href="javascript:sort('goods_sn');">货号</a>
+                </td>  -->                               
+                <td class="text-left">
+                    <a href="javascript:sort('cat_id');"><span class="chn">分类</span><span class="eng">Category</span></a>
+                </td> 
+                <td class="text-left">
+                    <a href="javascript:sort('shop_price');"><span class="chn">售价</span><span class="eng">Price</span></a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('cost_price');"><span class="chn">供应商价</span><span class="eng">Supplier price</span></a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('low_price');"><span class="chn">最低售价</span><span class="eng">Minimum price</span></a>
+                </td>
+                <td class="text-center">
+                    <a href="javascript:sort('is_recommend');"><span class="chn">推荐</span><span class="eng">Recommend</span></a>
+                </td>
+                <td class="text-center">
+                    <a href="javascript:sort('is_new');"><span class="chn">新品</span><span class="eng">New</span></a>
+                </td>   
+                <td class="text-center">
+                    <a href="javascript:sort('is_hot');"><span class="chn">热卖</span><span class="eng">Bestseller</span></a>
+                </td> 			
+                <td class="text-left">
+                    <a href="javascript:void(0);"><span class="chn">库存</span><span class="eng">Stock</span></a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('is_on_sale');"><span class="chn">上/下架</span><span class="eng">on/off shelf</span></a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('last_update');"><span class="chn">修改时间</span><span class="eng">Modification time</span></a>
+                </td>
+				<td class="text-left">
+                    <a href="javascript:sort('goods_state');"><span class="chn">审核状态</span><span class="eng">Audit state</span></a>
+                </td>           
+                <td class="text-right"><span class="chn">操作</span><span class="eng">Edit</span></td>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="goodsList" id="list">
+                <tr>
+                    <td class="text-center">
+                       <input type="checkbox" name="goods_id[]" value="{$list.goods_id}"/>
+                    </td>
+                    <!-- <td class="text-right">{$list.goods_id}</td> -->
+                    <td class="text-left">{$list.goods_name|getSubstr=0,33}</td>
+                    <td class="text-left">{$list.store_name|getSubstr=0,33}</td>
+                    <!-- <td class="text-left">{$list.goods_sn}</td> -->
+                    <td class="text-left">{$catList[$list[cat_id1]][name]}</td>
+                    <td class="text-left">{$list.shop_price}</td>
+                    <td class="text-left">{$list.cost_price}</td>
+                    <egt name="list.shop_price" value="$list.low_price">
+                        <td class="text-left" style="color:green">{$list.low_price}</td> 
+                        <else/><td class="text-left" style="color:red">{$list.low_price}</td>
+                    </egt>
+                    <td class="text-center">
+                        <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_recommend] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('goods','goods_id','{$list.goods_id}','is_recommend',this)"/>
+                    </td>                     
+                    <td class="text-center">
+                        <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_new] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('goods','goods_id','{$list.goods_id}','is_new',this)"/>
+                    </td>
+                    <td class="text-center">
+                        <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_hot] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('goods','goods_id','{$list.goods_id}','is_hot',this)"/>
+                    </td>                                                           
+                    <td class="text-left">{$list.store_count}</td>
+                    <td class="text-left">
+                        <if condition="$list[is_on_sale] eq 0"><span class="chn">下架</span><span class="eng">Off the shelf</span></if>
+                        <if condition="$list[is_on_sale] eq 1"><span class="chn">上架</span><span class="eng">Shelf</span> {$list['on_time'] |date='m/d H:i',###}</if>
+                    </td>
+                     <td class="text-left">
+                        <if condition="$list[last_update] eq 0">
+                        <else/>
+                        {$list['last_update'] | date='m/d H:i',###}
+                        </if>
+                    </td>
+                    <td class="text-left">
+                    <if condition="$list[goods_state] eq 0"><span class="chn">待审核</span><span class="eng">Pending audit</span></if>
+                    <if condition="$list[goods_state] eq 1"><span class="chn">审核通过</span><span class="eng">Audit through</span></if>
+                    <if condition="$list[goods_state] eq 2"><span class="chn">审核失败</span><span class="eng">Audit failure</span></if>
+                    <if condition="$list[goods_state] eq 3"><span class="chn">违规下架</span><span class="eng">Illegal off the shelf</span></if>
+                    </td>
+                    <td class="text-right">
+                        <a href="{:U('Home/Goods/goodsInfo',array('id'=>$list['goods_id']))}"><span class="chn">查看</span><span class="eng">View</span></a>&nbsp;
+                    </td>
+                    <td class="text-left">
+                        <a href="{:U('Admin/Goods/ajaxEditGoods',array('id'=>$list['goods_id']))}"><span class="chn">编辑</span><span class="eng">Edit</span></a>&nbsp;
+                    </td>   
+                </tr>   
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="row">
+    <div class="col-sm-3 form-inline">
+        <span class="chn">全选
+        <input type="checkbox" onclick="$('input[name=\'goods_id\[\]\']').prop('checked', this.checked);"></span>
+		<span class="eng">Select
+        <input type="checkbox" onclick="$('input[name=\'goods_id\[\]\']').prop('checked', this.checked);"></span>
+        <div class="form-group">
+            <select id="func_id" class="form-control" style="width: 120px;" onchange="fuc_change(this);">
+                <option value="-1">请选择/Select</option>
+                <option value="0">推荐/Recommend</option>
+                <option value="1">新品/New</option>
+                <option value="2">热卖/Bestseller</option>
+                <option value="3">审核商品/Audit goods</option>
+            </select>
+        </div>
+        <div class="form-group" id="state_div" >
+            <select id="state_id" class="form-control" style="display: none" onchange="state_change(this);">
+                <option value="">请选择/Select</option>
+                <foreach name="goods_state" item="vo" >
+                    <option value="{$key}">{$goods_state[$key]}</option>
+                </foreach>
+            </select>
+        </div>
+        <button id="act_button" type="button" onclick="act_submit();" class="btn btn-primary disabled"><i class="fa"></i> 
+			<span class="chn">确定</span>
+			<span class="eng">Confirm</span>
+		</button>
+    </div>
+    <div class="col-sm-9 text-right">{$page}</div>
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+</script>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<title>E-mail verification-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+</head>
+<style type="text/css">
+.favorites_title ul li,.favorites .favorites_content .clearfix li{width:19.8%}
+.favorites_title ul li, .favorites .favorites_content .clearfix li:last-child{border:0}
+</style>
+<body> 
+<!-- 头部-s -->
+<include file="User/header" />
+<!-- 头部-e -->
+<script src="__PUBLIC__/js/layer/layer.js"></script><!--弹窗js 参考文档 http://layer.layui.com/-->
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__PUBLIC__/js/pc_common.js"></script>
+<link rel="stylesheet" href="__STATIC__/css/favorite.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/security_set.css"/>
+
+<div class="wrap">
+  <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">My Walhao</a>&gt;<span class="color">Coupon</span></div>
+  <!--菜单--> 
+  <include file="User/menu" /> 
+  <!--菜单-->     
+  <!--侧边导航栏结束-->
+    <div class="col_main">
+  <div class="main security_passwd">
+    <div class="themes_title">
+      <h3>security setting</h3>
+    </div>
+    <section class="security_passwd">
+      <div class="wrapper-3">
+        <div id="step" class="pub-step">
+          <div class="steps-nav fixed ">
+            <p class="step-nav step-nav-1 go">1.Old E-mail<i></i></p>
+            <p class="step-nav step-nav-2 go">2.New E-mail<i></i></p>
+            <p class="step-nav step-nav-3 go">3.Complete</p>
+          </div>
+          <form action="" method="post" onSubmit="return check_form();">
+          <div id="stepBlock2" class="steps-con block-02">
+            <div class="step-col fn-form captcha_row" data-fn-verify="">
+              <ul style="display: block;" class="pub-ul verify-captcha-sms">
+              <notempty name="user_info.email">
+                <li> <span class="title">Old E-mail:</span>
+                  <div class="con verify-group">
+                    <input type="text" class="it-01 verify-ctrl my_chkpwd" value="{$user_info['email']}" name="old_email" id="old_email" readonly="readonly"
+                           style="cursor: not-allowed;color:#999" />
+                    <span style="display: block" class="v-tips verify-tips" id="span_tips"> 
+                    	<i class="icon" id="showForPwdtip"></i> 
+                        <span class="txt" id="showForPwd"></span> 
+                    </span> 
+                  </div>
+                </li>
+              </notempty>
+                <li> <span class="title">New-E-mail:</span>
+                  <div class="con verify-group">
+                    <input type="text" class="it-01 verify-ctrl my_chkpwd" value="" name="email" id="new_email">
+                    <span style="display: block;" class="v-tips verify-tips"> <i class="icon" id="rightTip"></i> <span id="errorEmail" class="txt"></span> </span> </div>
+                </li>
+                <li> <span class="title">Verification Code：</span>
+                  <div class="con verify-group">
+                    <input type="text" class="msg-code ie-01 verify-ctrl left" name="code" id="new_code">&nbsp;&nbsp;
+	                <input type="button"  value="Get verification code"  id="btnemailAuthCode2"  onClick="sendCode(this,'new_email')" style="width:100px;"  intervaltime="120"/>
+                   </div>                   
+                </li>                 
+                <li>
+                  <button class="btn_120 verify-ctrl" type="submit"> Next </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          </form>          
+        </div>
+      </div>
+    </section>
+  </div>
+</div> 
+</div>
+ 
+<div style="clear: both;"></div>
+<include file="User/footer" />
+
+<script>
+
+	// 表单提交验证
+	function check_form()
+	{
+        var old_email = $('#old_email').val();		
+        var new_email = $('#new_email').val();
+        //原邮箱不为空的情况下 验证格式
+        if(old_email != ''){
+            if(!checkEmail(old_email) && typeof(old_email) != 'undefined'){
+                layer.alert('Old E-mial format error', {icon: 2});//alert('原邮箱格式错误');
+                return false;
+            }
+        }
+        if(!checkEmail(new_email)){
+            layer.alert('New E-mial format error', {icon: 2});//alert('新邮箱格式错误');
+            return false;
+        }	
+		
+		if($.trim($('#new_code').val()) == '')	
+		{
+            layer.alert('The verification code is empty', {icon: 2});//alert('验证码不能为空');
+            return false;			
+		}
+		return true;
+	}
+
+    function sendCode(obj,input_id)
+	{
+        var id = $(obj).attr('id');
+        var input = $('#'+input_id).val();
+        var old_email = $('#old_email').val();
+        //原邮箱不为空的情况下 验证格式
+        if(old_email != '' && typeof(old_email) != 'undefined'){
+            if(!checkEmail(old_email)){
+                layer.alert('Old E-mial format error', {icon: 2});//alert('原邮箱格式错误');
+                return false;
+            }
+        }
+        if(!checkEmail(input)){
+            layer.alert("the E-mail format error", {icon: 2});//alert('邮箱格式错误');
+            return false;
+        }
+        var url = "/index.php?m=Home&c=Api&a=send_validate_code&type=email&send="+input;	
+        //发送验证码
+        $.ajax({
+            type : "get",
+            url : url,
+            dataType : 'json',
+            error: function(request) {
+                layer.alert('Server busy, please contact administrator!', {icon: 2});//alert("服务器繁忙, 请联系管理员!");
+                return;
+            },
+            success: function(res) {
+                if(res.status == 1){
+					layer.alert(res.msg,{icon: 1});
+                    jsInnerTimeout(id);
+                }else{
+                    layer.alert(res.msg,{icon: 2});//alert('发送失败');
+                }
+            }
+        });
+    }
+
+    //倒计时函数
+    function jsInnerTimeout(id)
+    {
+		 
+        var codeObj=$("#"+id);
+        var intAs=parseInt(codeObj.attr("IntervalTime"));
+
+        intAs--;
+        codeObj.attr("disabled","disabled");
+        if(intAs<=-1)
+        {
+            codeObj.removeAttr("disabled");
+            codeObj.attr("IntervalTime",120);
+            codeObj.val("Get verification code");
+            return true;
+        }
+        codeObj.val(intAs+'s later get again');
+        codeObj.attr("IntervalTime",intAs);
+        setTimeout("jsInnerTimeout('"+id+"')",1000);
+    };
+
+</script>
+</body>
+</html>

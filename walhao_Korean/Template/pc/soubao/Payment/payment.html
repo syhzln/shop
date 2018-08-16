@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>지불-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+<style type="text/css">
+*{ margin:0; padding:0}
+.wihe-ee{width:560px; height:420px; background:#FFF; padding:25px; color:#666; font-family:song,arial; font-size:14px; box-sizing:border-box; border-radius:6px; margin:0 auto; margin-top:10%}
+.wihe-ee p{text-align:center}
+.co999{color:#999}
+.fo-si-18{font-size:18px}
+.fail-fasu{float:left; width:200px; height:180px; padding-top:100px; background:url(__STATIC__/images/icon-pay.png) 50px 0 no-repeat; text-align:center}
+.success-fasu{float:right; width:200px; height:180px; padding-top:100px; background:url(__STATIC__/images/icon-pay.png) -220px 0 no-repeat; text-align:center}
+.fail-fasu a:hover{ background-color:#ee9775}
+.fail-fasu a{padding:8px 24px; background-color:#f8a584; display:table; margin:0 auto; color:#fff; text-decoration:none; margin-top:10px}
+.re-qtzfgg a,.success-fasu a{padding:8px 24px; background-color:#eee; display:table; margin:0 auto; color:#999; text-decoration:none; margin-top:10px}
+.re-qtzfgg a{padding:8px 140px}
+.re-qtzfgg a:hover,.success-fasu a:hover{background-color:#ddd;}
+.fail-success{overflow:hidden; height:185px}
+</style>
+</head>
+<body style="background-color:#666">
+	<div class="tac-sd">
+    	<div class="wihe-ee">
+        	<p>
+            	<span class="fo-si-18">부디 새 열린 페이지 위에 완료 지불!</span>
+                <br>
+                <span class="co999">이 창 닫기 전에 지불 완성 마시오.완성 지불 후 부디 상황에 따라 다음 단추를 누르십시오.</span>
+            </p>
+            <br>
+            <br>
+            <div class="fail-success">
+            	<div class="fail-fasu">
+                    지불 완료
+                    <br>
+                    <a href="{:U('Home/Cart/cart4',array('order_id'=>$order_id,'master_order_sn'=>$master_order_sn))}">지불 완료</a>
+                </div>
+                <div class="fail-I-success" style="float:left">
+                	<!--<img src="__STATIC__/images/qrcode_vmall_app01.png" width="110" height="110"/>-->
+                    {$code_str}
+                </div>
+            	<div class="success-fasu">
+                    지불 문제에 봉착하다
+                    <br>
+                    <a href="{:U('Home/Cart/cart4',array('order_id'=>$order_id,'master_order_sn'=>$master_order_sn))}">지불 실패</a>
+                </div>
+            </div>
+            <div class="re-qtzfgg">
+            	<a href="{:U('Home/Cart/cart4',array('order_id'=>$order_id,'master_order_sn'=>$master_order_sn))}">다시 다른 지불 방식을 선택합니다.</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    /**
+     * 检查订单状态
+     */
+    function ajax_check_pay_status(){
+        $.ajax({
+            type: "post",
+            url: "{:U('Home/Api/check_order_pay_status')}",
+            data:{ master_order_id:"{$master_order_sn}",order_id:"{$order_id}"},
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    clearInterval(interval);
+                    location.href = "{:U('Home/Cart/cart4',array('order_id'=>$order_id,'master_order_sn'=>$master_order_sn))}";
+                }
+            }
+        });
+    }
+    var interval = setInterval(ajax_check_pay_status,5000);
+
+</script>
+</html>

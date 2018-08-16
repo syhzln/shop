@@ -1,0 +1,180 @@
+<include file="Public/min-header"/>
+
+<!--物流配置 css -start-->
+<style>
+    ul.group-list {
+        width: 96%;min-width: 1000px; margin: auto 5px;list-style: disc outside none;
+    }
+    ul.group-list li {
+        white-space: nowrap;float: left;
+        width: 150px; height: 25px;
+        padding: 3px 5px;list-style-type: none;
+        list-style-position: outside;border: 0px;margin: 0px;
+    }
+</style>
+
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+        
+                <a href="{:U('Goods/goodsList',array('goods_state'=>1,'is_back'=>1))}" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+                <a onclick="get_help(this)" id="get_help" data-url="http://www.tp-shop.cn/Doc/Indexbbc/article/id/1072/developer/user.html" class="btn btn-default" href="javascript:;"><i class="fa fa-question-circle"></i> 
+					<span class="chn">帮助</span>
+					<span class="eng">Help</span>
+				</a>                
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i>&nbsp;修改商品</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i>&nbsp;Modify goods</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active chn" style="margin-top:10px;"><a href="#tab_tongyong" data-toggle="tab">商品信息</a></li>
+                        <li class="active eng" style="margin-top:10px;"><a href="#tab_tongyong" data-toggle="tab">Goods information</a></li>
+                        <li class="active chn" style="margin-top:10px;"><a href="#tab_tongyong" data-toggle="tab" id="record_data">操作记录</a>
+                        <li class="active eng" style="margin-top:10px;"><a href="#tab_tongyong" data-toggle="tab" id="record_data">Operation record</a>
+                            <div class="list-group" style="display: none" id="content_record">
+                                <foreach name="record" item="vo">
+                                    <a href="#" class="list-group-item">
+                                        <h5 class="list-group-item-heading"><button onclick="getinfo({$vo['admin_id']})">{$vo.name}</button>&nbsp; &nbsp; {$vo.addtime|date='Y-m-d H:i:s',###}</h5>
+                                        <p class="list-group-item-text">&nbsp; &nbsp;{$vo.content}</p>
+                                    </a>
+                                </foreach>
+                            </div>
+                        </li>
+
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="ajaxEditGoods">
+
+                    <!--通用信息-->
+                    <div class="tab-content">                     
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                 <tr>
+                                    <td class="chn">商品ID:</td>
+                                    <td class="eng">Goods ID:</td>
+                                    <td>
+                                        <input type="text" value="{$data.goods_id}" name="goods_id" class="form-control" style="width:550px;" readonly/>
+                                        <span id="err_goods_id" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="chn">商品名称:</td>
+                                    <td class="eng">Goods name:</td>
+                                    <td>
+                                        <input type="text" value="{$data.goods_name}" name="goods_name" class="form-control" style="width:550px;" readonly/>
+                                        <span id="err_goods_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="chn">商品货号：</td>
+                                    <td class="eng">Goods number:</td>
+                                    <td>                                                                               
+                                        <input type="text" value="{$data.goods_sn}" name="goods_sn" class="form-control" style="width:350px;" readonly/>
+                                        <span id="err_goods_sn" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                             <!-- 价格编辑-->
+                               <tr>
+                                    <td class="chn">成本价:</td>
+                                    <td class="eng">Cost price:</td>
+                                    <td>
+                                        <input type="text" value="{$data.cost_price}" name="cost_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" readonly/>
+                                        <span id="err_cost_price" style="color:#F00; display:none"></span>                                                          
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td class="chn">商城价格:</td>
+                                    <td class="eng">Walhao price:</td>
+                                    <td>
+                                        <input type="text" value="{$data.shop_price}" name="shop_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_shop_price" style="color:#F00; display:none;"></span>                                                         
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td class="chn">市场价格:</td>
+                                    <td class="eng">Market price:</td>
+                                    <td>
+                                        <input type="text" value="{$data.market_price}" name="market_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_market_price" style="color:#F00; display:none;"></span>                                                           
+                                    </td>
+                                </tr>  
+                              
+                                 <tr>
+                                    <td class="chn">淘宝价格:</td>
+                                    <td class="eng">Taobao price:</td>
+                                    <td>
+                                        <input type="text" value="{$data.tb_price}" name="tb_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_tb_price" style="color:#F00; display:none;"></span>                                                           
+                                    </td>
+                                </tr>
+                                  <tr>
+                                    <td class="chn">京东价格:</td>
+                                    <td class="eng">Joybuy price:</td>
+                                    <td>
+                                        <input type="text" value="{$data.jd_price}" name="jd_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_jd_price" style="color:#F00; display:none;"></span>                                                           
+                                    </td>
+                                </tr>
+
+
+                                </tbody>                                
+                                </table>
+                        </div>
+
+                         <!--其他信息-->
+                    </div> 
+
+                    <div class="pull-right">
+                        <input type="hidden" name="goods_id" value="{$data.goods_id}">
+                        <!--<input type="submit" value="提交">-->
+                        <button class="btn btn-primary" id="sub" data-toggle="tooltip" type="button" data-original-title="保存">
+							<span class="chn">保存</span>
+							<span class="eng">Submit</span>
+						</button>
+                    </div>
+                </form><!--表单数据-->
+                </div>
+            </div>
+        </div>   
+    </section>
+</div>
+</body>
+<script>
+  $('#sub').click(function(){
+      var url= "{:U('Admin/Goods/ajaxSaveGoods')}";
+      var data = $('#ajaxEditGoods').serialize();
+      $.ajax({
+          type: "POST",
+          url: url,
+          data: data,
+          error: function () {
+              alert("Server busy, please contact administrator!<br>服务器繁忙, 请联系管理员!");
+          },
+          success: function (v) {
+              layer.msg(v.msg, {icon: 1})
+          }
+      })
+  });
+
+  $("#record_data").click(function(){
+      if($("#content_record").css("display")=="none"){
+          $("#content_record").show();
+      }else{
+          $("#content_record").hide();
+      }
+  });
+
+  function getinfo(o){
+      alert(o);
+  }
+
+</script>
+</html>

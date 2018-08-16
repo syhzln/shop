@@ -1,0 +1,99 @@
+<include file="Public/min-header" />
+<div class="wrapper">
+  <include file="Public/breadcrumb"/>
+    <section class="content ">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title chn"><i class="fa fa-list"></i> 添加会员等级</h3>
+                    <h3 class="panel-title eng"><i class="fa fa-list"></i> Add member grade</h3>
+                </div>
+                <div class="panel-body ">   
+                    <!--表单数据-->
+                    <form method="post" id="handleposition" action="{:U('Admin/User/levelHandle')}">                    
+                        <!--通用信息-->
+                    <div class="tab-content col-md-10">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td class="col-sm-2">
+										<span class="chn">等级名称：</span>
+										<span class="eng">Grade name:</span>
+									</td>
+                                    <td class="col-sm-4">
+                                        <input type="text" class="form-control" name="level_name" value="{$info.level_name}" >
+                                        <span id="err_attr_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                    <td class="col-sm-4">
+										<span class="chn">设置会员等级名称</span>
+										<span class="eng">Set member's garde name</span>
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td>
+										<span class="chn">消费额度：</span>
+										<span class="eng">Consumption quota:</span>
+									</td>
+                                    <td >
+                         				<input type="text" class="form-control" name="amount" value="{$info.amount}">
+                                    </td>
+                                    <td class="col-sm-4">
+										<span class="chn">设置会员等级所需要的消费额度</span>
+										<span class="eng">The amount of consumption required to set the membership level</span>
+									</td>
+                                </tr>
+                                <!--  
+                                <tr>
+                                    <td>折扣率：</td>
+                                    <td>
+                               			<input type="text" class="form-control" name="discount" value="{$info.discount}">     
+                                    </td>
+                                    <td class="col-sm-4">折扣率单位为百分比，如输入90，表示该会员等级的用户可以以商品原价的90%购买</td>
+                                </tr>  -->
+                                <tr>
+                                    <td>
+										<span class="chn">等级描述：</span>
+										<span class="eng">Level description:</span>
+									</td>
+                                    <td>
+                             			<textarea rows="5" cols="30" name="describe">{$info.describe}</textarea>
+                                    </td>
+                                    <td class="col-sm-4">
+										<span class="chn">会员等级描述信息</span>
+										<span class="eng">Member level description information</span>
+									</td>
+                                </tr>                              
+                                </tbody> 
+                                <tfoot>
+                                	<tr>
+                                	<td><input type="hidden" name="act" value="{$act}">
+                                		<input type="hidden" name="level_id" value="{$info.level_id}">
+                                	</td>
+                                	<td class="col-sm-4"></td>
+                                	<td class="text-right">
+										<input class="btn btn-primary chn" type="buuton" onclick="adsubmit()" value="保存">
+										<input class="btn btn-primary eng" type="buuton" onclick="adsubmit()" value="Submit">
+									</td>
+								  </tr>
+                                </tfoot>                               
+                                </table>
+                        </div>                           
+                    </div>              
+			    	</form><!--表单数据-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+function adsubmit(){
+	$('#handleposition').submit();
+}
+</script>
+</body>
+</html>

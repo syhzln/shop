@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<title>보안 센터-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+</head>
+<body> 
+<!-- 头部-s -->
+<include file="Public/min-header" />
+<!-- 头部-e -->
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/security_code.css"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/security_set.css"/>
+
+<div class="wrap">
+  <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">내 Walhao</a>&gt;<span class="color">보안 설정</span></div>
+  <!--菜单--> 
+  <include file="User/menu" /> 
+  <!--菜单-->     
+  <!--侧边导航栏结束-->
+<div class="col_main">
+    <div class="main shop_red"> 
+          <!-- themes star -->
+          <div class="themes_title">
+        <h3>보안 설정</h3>
+      </div>
+          <!-- themes end --> 
+          <!-- Security Center star -->
+          <div class="security_center">
+        <div class="security_center_top"> <a href="" class="personal_head target_no"> <img height="100" width="100" src="{$user.head_pic|default='__STATIC__/images/headPic.jpg'}" alt=""> </a>
+         <div class="pers_info">
+            <h3 class="name">{$user['nickname']}</h3>
+            <p class="rat"> 
+            	<span class='rat_00 <if condition="($user['email_validated'] eq 1) and ($user['email_validated'] eq 0)"> on </if>'>낮음</span>
+                <span class='rat_01 <if condition="($user['email_validated'] eq 1) or ($user['email_validated'] eq 1)"> on </if>'>있음</span>
+                <span class='rat_02 <if condition="($user['mobile_validated'] eq 1) and ($user['email_validated'] eq 1)"> on </if>'>높음</span>
+             </p>
+            <p class="tips">이 플랫폼은 계정 자금의 보안을 보호 할 수 있습니다.</p>
+          </div>
+            </div>
+        <div class="security_center_list">
+          <ul>
+            <li class="list_name"> <i class="<if condition="$user['password'] eq ''">icon_big_warning<else/>icon_correct</if>"></i>로그인 비밀번호 </li>
+            <li class="list_des">인터넷 계정 도난 위험이 있으므로 계정 보안을 위해 정기적으로 암호를 변경하는 것이 좋습니다.</li>
+            <li class="list_opear"> <a id="target_no" href="{:U('Home/User/password')}"  class="edit">수정</a> </li>
+          </ul>               
+          <ul>
+            <li class="list_name"> <i class="<if condition="$user['mobile_validated'] eq 0">icon_big_warning<else/>icon_correct</if>"></i>모바일 인증</li>
+            <li class="list_des">분실했거나 비활성화 된 경우 계정을 도난 당하지 않도록 즉시 교체하십시오..</li>
+            <li class="list_opear">
+                <a id="target_no" href="{:U('Home/User/mobile_validate',array('type'=>'mobile','step'=>1))}" class="edit">
+	                 <if condition="$user['mobile_validated'] eq 0">확인되지 않음 <br>(클릭 확인)<else/>검증 됨 <br>(수정 클릭)</if>
+                </a> 
+            </li>
+          </ul>
+          <ul>
+            <li class="list_name"> <i class="<if condition="$user['email_validated'] eq 0">icon_big_warning<else/>icon_correct</if>"></i>전자 메일 인증 </li>
+            <li class="list_des">전자 메일, 인터넷 계정 도난 위험이 있으므로 계정 보안을 위해 즉시 바인딩하는 것이 좋습니다. </li>
+            <li class="list_opear"> 
+            	<a id="target_no" class="target_no" href="{:U('Home/User/email_validate',array('type'=>'email','step'=>1))}">
+	                <if condition="$user['email_validated'] eq 0">확인되지 않음 <br> (클릭 확인)<else/>검증 됨 <br>(수정 클릭)</if>
+                </a> 
+            </li>
+          </ul>
+            </div>
+      </div>
+          <!-- Security Center end --> 
+        </div>
+  </div>    
+</div>
+ 
+<div style="clear: both;"></div>
+<include file="Public/footer1" />
+</body>
+</html>
